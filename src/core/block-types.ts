@@ -21,6 +21,8 @@ export interface BlockMeta {
 	 * provenienze (un sito cliente, una libreria esterna) si aggiungono qui quando servono.
 	 */
 	source: { from: 'originale' };
+	/** true se il blocco ha un comportamento in JS: deve seguire docs/blocchi-interattivi.md. */
+	interactive?: boolean;
 	/** Varianti: nome → descrizione. I nomi sono i valori ammessi dalla prop `variant` dello schema. */
 	variants: Record<string, string>;
 }

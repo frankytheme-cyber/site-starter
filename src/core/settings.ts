@@ -14,6 +14,8 @@ const placeholder = z.literal(PLACEHOLDER);
 
 export const siteSettingsSchema = z.object({
 	businessName: z.string().min(1),
+	/** Logo: percorso relativo a src/assets/images (es. "logo.png"). Il testo alternativo è businessName. */
+	logo: z.string().min(1).optional(),
 	/** Come va mostrato, es. "055 123 4567" o "+39 333 123 4567". */
 	phone: z
 		.string()

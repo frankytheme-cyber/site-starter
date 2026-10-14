@@ -20,7 +20,9 @@ L'aspetto del sito si sceglie in `src/site.config.ts` (`palette`, `fonts`, `shap
 
 ## Blocchi
 
-- Il contratto è in `src/blocks/README.md`; i blocchi di riferimento sono `hero/`, `services/` e `cta/` in `src/blocks/`.
+- Il contratto è in `src/blocks/README.md`; i blocchi di riferimento sono `hero/`, `services/`, `cta/` e `header/` (interattivo) in `src/blocks/`.
+- Blocchi interattivi (`interactive: true` in `meta.ts`): JS vanilla nel componente, progressive enhancement, tastiera, focus, movimento ridotto, niente autoplay. Regole in `docs/blocchi-interattivi.md`.
+- Menu del sito: solo in `src/content/settings/navigation.json`, letto con `getNavigation()` (`@/core/navigation`).
 - Anteprima: `/catalogo` (tutti i blocchi con le loro fixture, selettori di palette, font e forma) e `/catalogo/<type>`.
 - La radice di ogni blocco è `<Section>` (`tone`: `default`, `muted`, `primary`). Dentro usa sempre `text-fg`, `text-fg-muted`, `bg-primary`...: Section ridefinisce i token per il tono, così il contrasto resta quello verificato.
 - Immagini: solo file in `src/assets/images`, indicati con il percorso relativo (`"fixtures/foto.jpg"`); `alt` obbligatorio.

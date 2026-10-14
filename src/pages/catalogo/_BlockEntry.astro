@@ -18,6 +18,7 @@ const variants = Object.entries(meta.variants);
 		<div class="py-10">
 			<p class="text-sm text-fg-muted">
 				{meta.category} · <code>{meta.type}</code> · v{meta.version} · {meta.source.from}
+				{meta.interactive && ' · interattivo'}
 			</p>
 			<h2 class="mt-1 text-3xl font-bold">
 				{href ? <a href={href} class="underline-offset-4 hover:underline">{meta.name}</a> : meta.name}
@@ -70,6 +71,14 @@ const variants = Object.entries(meta.variants);
 					</p>
 				</Container>
 				<Component {...fixture.props} />
+				{/* Un blocco sticky resta agganciato solo dentro il suo contenitore: qui gli si dà spazio per scorrere. */}
+				{fixture.props.sticky === true && (
+					<Container>
+						<p class="flex h-[150vh] items-start pt-10 text-fg-muted">
+							Scorri: il blocco resta in cima e dopo 80px si compatta.
+						</p>
+					</Container>
+				)}
 			</div>
 		))
 	}

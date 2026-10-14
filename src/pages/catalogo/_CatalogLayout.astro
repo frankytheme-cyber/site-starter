@@ -18,7 +18,7 @@ const controls = [
 ---
 
 <BaseLayout title={title} noindex allFonts>
-	<header class="sticky top-0 z-50 border-b border-border bg-bg/95 backdrop-blur">
+	<header data-catalog-bar class="sticky top-0 z-50 border-b border-border bg-bg/95 backdrop-blur">
 		<Container>
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
 				<nav aria-label="Catalogo" class="mr-auto flex items-baseline gap-6">
@@ -45,6 +45,13 @@ const controls = [
 			</div>
 		</Container>
 	</header>
+	{/* Subito, prima degli script dei blocchi: l'header sticky legge --sticky-offset all'avvio. */}
+	<script is:inline>
+		document.documentElement.style.setProperty(
+			'--sticky-offset',
+			`${document.querySelector('[data-catalog-bar]').offsetHeight}px`,
+		);
+	</script>
 	<slot />
 </BaseLayout>
 
@@ -52,6 +59,10 @@ const controls = [
 	// Cambia i data-* di <html> al volo e ricorda la scelta tra le pagine del catalogo.
 	const STORAGE_KEY = 'catalogo-tema';
 	const root = document.documentElement;
+
+	// I blocchi sticky (es. header) si agganciano sotto questa barra, che su mobile va su più righe.
+	const bar = document.querySelector<HTMLElement>('[data-catalog-bar]')!;
+	new ResizeObserver(() => root.style.setProperty('--sticky-offset', `${bar.offsetHeight}px`)).observe(bar);
 
 	let saved: Record<string, string> = {};
 	try {

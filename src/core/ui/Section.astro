@@ -9,9 +9,22 @@ interface Props {
 	id?: string;
 	/** default: bg · muted: surface · primary: primary (i token del contenuto si adattano, vedi base.css). */
 	tone?: 'default' | 'muted' | 'primary';
+	/** Elemento radice: section, oppure header per l'intestazione della pagina. */
+	as?: 'section' | 'header';
+	/** Senza spaziatura verticale: per i blocchi che regolano da sé l'altezza (es. header). */
+	flush?: boolean;
+	/**
+	 * Resta in cima durante lo scroll. Si aggancia sotto --sticky-offset (default 0), che la
+	 * pagina può impostare se ha già un'altra barra fissa in alto.
+	 */
+	sticky?: boolean;
+	class?: string;
+	/** Attributi data-* per gli script dei blocchi interattivi. */
+	[data: `data-${string}`]: string | boolean | undefined;
 }
 
-const { id, tone = 'default' } = Astro.props;
+const { id, tone = 'default', as: Tag = 'section', flush = false, sticky = false, class: className, ...data } =
+	Astro.props;
 
 const tones = {
 	default: 'bg-bg text-fg',
@@ -22,10 +35,18 @@ const tones = {
 const hasBackground = Astro.slots.has('background');
 ---
 
-<section
+<Tag
 	id={id}
 	data-tone={tone}
-	class:list={['relative isolate py-16 sm:py-24', tones[tone], hasBackground && 'overflow-hidden']}
+	class:list={[
+		sticky ? 'sticky top-[var(--sticky-offset,0px)] z-40' : 'relative',
+		'isolate',
+		!flush && 'py-16 sm:py-24',
+		tones[tone],
+		hasBackground && 'overflow-hidden',
+		className,
+	]}
+	{...data}
 >
 	{
 		hasBackground && (
@@ -37,4 +58,4 @@ const hasBackground = Astro.slots.has('background');
 	<Container>
 		<slot />
 	</Container>
-</section>
+</Tag>
