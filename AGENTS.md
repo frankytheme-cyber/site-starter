@@ -12,7 +12,7 @@ Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, u
 
 ## Tema
 
-L'aspetto del sito si sceglie in `src/site.config.ts` (`palette`, `fonts`, `shape`) tra i preset di `src/themes/`. Token disponibili:
+L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `fonts`, `shape`) tra i preset di `src/themes/presets.ts`. Token disponibili:
 
 - **Colori:** `bg`, `fg`, `fg-muted`, `surface`, `surface-fg`, `primary`, `primary-fg`, `accent`, `accent-fg`, `border`, `ring` (+ `white`, `black`, `transparent`, `current`)
 - **Font:** `font-heading`, `font-body`
@@ -25,8 +25,15 @@ L'aspetto del sito si sceglie in `src/site.config.ts` (`palette`, `fonts`, `shap
 - Menu del sito: solo in `src/content/settings/navigation.json`, letto con `getNavigation()` (`@/core/navigation`).
 - Anteprima: `/catalogo` (tutti i blocchi con le loro fixture, selettori di palette, font e forma) e `/catalogo/<type>`.
 - La radice di ogni blocco è `<Section>` (`tone`: `default`, `muted`, `primary`). Dentro usa sempre `text-fg`, `text-fg-muted`, `bg-primary`...: Section ridefinisce i token per il tono, così il contrasto resta quello verificato.
-- Immagini: solo file in `src/assets/images`, indicati con il percorso relativo (`"fixtures/foto.jpg"`); `alt` obbligatorio.
+- Immagini: solo file in `src/assets/images`. Nelle ricette il percorso è relativo al JSON (`"../../assets/images/foto.jpg"`), nelle fixture il file si importa; `alt` di almeno 5 caratteri che descrive la foto.
 - Icone: solo `<Icon name="..." />` (`@/core/ui/Icon.astro`) con gli alias di `src/core/icons.ts`, mai SVG scritti a mano; negli schemi `z.enum(ICON_NAMES)`. Elenco in `/catalogo/icone`; licenze in `docs/THIRD_PARTY_LICENSES.md`.
+
+## Pagine
+
+- Ogni pagina è una ricetta JSON in `src/content/pages/` (`index.json` → `/`, `chi-siamo.json` → `/chi-siamo/`), con `"$schema"` per il completamento nell'editor. Formato in `src/content/pages/README.md`, schema in `src/core/page-schema.ts`.
+- Le sezioni sono piatte: `type` (il blocco), `id` facoltativo (ancora in kebab-case), `tone` (`default`, `muted`, `primary`) e accanto le props del blocco. Alterna i toni tra sezioni vicine.
+- Una pagina ha un solo `hero`, in apertura, e di norma una `cta`. Link interni solo a pagine e ancore che esistono.
+- Prima di pubblicare: `npm run check:recipes -- --strict` (segnaposto, recapiti scritti a mano, link rotti...).
 
 ## Comandi
 
@@ -36,6 +43,7 @@ L'aspetto del sito si sceglie in `src/site.config.ts` (`palette`, `fonts`, `shap
 | `npm run build`          | Build di produzione in `dist/`                    |
 | `npm run preview`        | Anteprima locale della build                      |
 | `npm run check:contrast` | Verifica il contrasto WCAG AA di tutte le palette |
+| `npm run check:recipes`  | Controlla ricette e dati del sito; `-- --strict` esce con errore |
 
 Per gli agenti: avvia il server di sviluppo in background con `npx astro dev --background` e gestiscilo con `astro dev stop`, `astro dev status` e `astro dev logs`.
 

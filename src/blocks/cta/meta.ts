@@ -12,8 +12,8 @@ export const meta: BlockMeta = {
 	version: '1.0.0',
 	source: { from: 'originale' },
 	variants: {
-		banner: 'Fascia piena nel colore primario, testo centrato e 1-2 pulsanti. Molto visibile: al massimo una per pagina.',
+		banner: 'Testo centrato e 1-2 pulsanti; con tone primary diventa una fascia piena. Molto visibile: al massimo una per pagina.',
 		'split-contatto':
-			'Testo a sinistra e pulsanti a destra, su fondo tenue; con showContacts aggiunge Chiama e WhatsApp. Adatta a chiudere la pagina.',
+			'Testo a sinistra e pulsanti a destra; con showContacts aggiunge Chiama e WhatsApp. Con tone muted è adatta a chiudere la pagina.',
 	},
 };

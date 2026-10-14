@@ -7,7 +7,7 @@ import type { ServicesProps } from './schema';
 
 type Props = ServicesProps;
 
-const { variant, eyebrow, title, intro, items } = Astro.props;
+const { id, tone, variant, eyebrow, title, intro, items } = Astro.props;
 
 const isAlternato = variant === 'alternato';
 
@@ -19,7 +19,7 @@ const cardSizes = twoColumns
 	: '(min-width: 1152px) 341px, (min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw';
 ---
 
-<Section>
+<Section id={id} tone={tone}>
 	<div class="mx-auto max-w-2xl text-center">
 		{eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider text-primary uppercase">{eyebrow}</p>}
 		<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>

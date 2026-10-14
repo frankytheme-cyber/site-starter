@@ -1,0 +1,35 @@
+---
+/**
+ * Una pagina per ricetta in src/content/pages: index.json → "/", servizi.json → "/servizi/".
+ * Le bozze (draft: true) si vedono in sviluppo e nelle anteprime, non nella produzione su Vercel.
+ */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { getCollection } from 'astro:content';
+import RenderSections from '@/core/RenderSections.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export const getStaticPaths = (async () => {
+	const hideDrafts = import.meta.env.PROD && process.env.VERCEL_ENV === 'production';
+	const pages = await getCollection('pages', ({ data }) => !(hideDrafts && data.draft));
+	return pages.map((page) => ({
+		params: { slug: page.id === 'index' ? undefined : page.id },
+		props: { page },
+	}));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page } = Astro.props;
+const { title, description, draft, ogImage, noindex, sections } = page.data;
+
+// Gli header in testa alla ricetta stanno fuori da <main>: sono l'intestazione del sito, non contenuto.
+const leading = sections.findIndex((section) => section.type !== 'header');
+const split = leading === -1 ? sections.length : leading;
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage} noindex={noindex || draft}>
+	<RenderSections sections={sections.slice(0, split)} />
+	<main>
+		<RenderSections sections={sections.slice(split)} />
+	</main>
+</BaseLayout>

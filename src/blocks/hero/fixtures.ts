@@ -1,3 +1,5 @@
+import facciata from '@/assets/images/fixtures/imbianchino-facciata.jpg';
+import interno from '@/assets/images/fixtures/imbianchino-interno.jpg';
 import type { BlockFixture } from '@/core/block-types';
 import type { schema } from './schema';
 
@@ -13,7 +15,7 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 			primaryCta: { label: 'Chiedi un preventivo', href: '#preventivo' },
 			secondaryCta: { label: 'Guarda i lavori', href: '#lavori' },
 			image: {
-				src: 'fixtures/imbianchino-interno.jpg',
+				src: interno,
 				alt: 'Parete tinteggiata a metà in verde salvia, con un rullo appoggiato',
 			},
 		},
@@ -29,7 +31,7 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 			primaryCta: { label: 'Prenota un sopralluogo', href: '#sopralluogo' },
 			secondaryCta: { label: 'Come lavoriamo', href: '#metodo' },
 			image: {
-				src: 'fixtures/imbianchino-facciata.jpg',
+				src: facciata,
 				alt: 'Facciata di una casa color ocra con persiane verdi',
 			},
 		},
@@ -55,7 +57,7 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 			primaryCta: { label: 'Chiedi un preventivo oggi', href: '#preventivo' },
 			secondaryCta: { label: 'Guarda i lavori terminati', href: '#lavori' },
 			image: {
-				src: 'fixtures/imbianchino-interno.jpg',
+				src: interno,
 				alt: 'Parete tinteggiata a metà in verde salvia, con un rullo appoggiato',
 			},
 		},

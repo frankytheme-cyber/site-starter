@@ -1,25 +1,30 @@
+import antimuffa from '@/assets/images/fixtures/imbianchino-antimuffa.jpg';
+import cartongesso from '@/assets/images/fixtures/imbianchino-cartongesso.jpg';
+import decorazioni from '@/assets/images/fixtures/imbianchino-decorazioni.jpg';
+import facciata from '@/assets/images/fixtures/imbianchino-facciata.jpg';
+import interno from '@/assets/images/fixtures/imbianchino-interno.jpg';
 import type { BlockFixture } from '@/core/block-types';
 import type { schema } from './schema';
 
 const images = {
 	interno: {
-		src: 'fixtures/imbianchino-interno.jpg',
+		src: interno,
 		alt: 'Parete tinteggiata a metà in verde salvia, con un rullo appoggiato',
 	},
 	facciata: {
-		src: 'fixtures/imbianchino-facciata.jpg',
+		src: facciata,
 		alt: 'Facciata di una casa color ocra con persiane verdi',
 	},
 	decorazioni: {
-		src: 'fixtures/imbianchino-decorazioni.jpg',
+		src: decorazioni,
 		alt: 'Parete a stucco veneziano color ocra con una spatola appoggiata',
 	},
 	cartongesso: {
-		src: 'fixtures/imbianchino-cartongesso.jpg',
+		src: cartongesso,
 		alt: 'Lastre di cartongesso montate su una parete, con i giunti stuccati e una livella',
 	},
 	antimuffa: {
-		src: 'fixtures/imbianchino-antimuffa.jpg',
+		src: antimuffa,
 		alt: 'Angolo di una stanza con macchie di muffa a sinistra e parete risanata a destra',
 	},
 };
@@ -126,6 +131,7 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 	},
 	{
 		name: 'Card con immagine, 4 servizi',
+		tone: 'muted',
 		props: {
 			variant: 'cards-immagine',
 			title: 'Interni, esterni e finiture',

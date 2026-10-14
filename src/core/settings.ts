@@ -1,5 +1,6 @@
 import { getEntry } from 'astro:content';
 import { z } from 'astro/zod';
+import type { Theme } from '@/themes/presets';
 
 /*
  * Dati dell'attività: stanno solo in src/content/settings/site.json (collezione "settings",
@@ -14,6 +15,8 @@ const placeholder = z.literal(PLACEHOLDER);
 
 export const siteSettingsSchema = z.object({
 	businessName: z.string().min(1),
+	/** Indirizzo del sito, es. "https://www.esempio.it": serve per canonical, Open Graph e JSON-LD (astro.config.mjs lo usa come site). */
+	url: z.url({ protocol: /^https$/ }),
 	/** Logo: percorso relativo a src/assets/images (es. "logo.png"). Il testo alternativo è businessName. */
 	logo: z.string().min(1).optional(),
 	/** Come va mostrato, es. "055 123 4567" o "+39 333 123 4567". */
@@ -54,6 +57,13 @@ export type SiteSettings = z.infer<typeof siteSettingsSchema>;
 export async function getSiteSettings(): Promise<SiteSettings> {
 	const entry = await getEntry('settings', 'site');
 	if (!entry) throw new Error('Dati dell’attività mancanti: crea src/content/settings/site.json');
+	return entry.data;
+}
+
+/** Aspetto del sito: src/content/settings/theme.json (schema in src/themes/presets.ts). */
+export async function getTheme(): Promise<Theme> {
+	const entry = await getEntry('theme', 'theme');
+	if (!entry) throw new Error('Tema mancante: crea src/content/settings/theme.json');
 	return entry.data;
 }
 

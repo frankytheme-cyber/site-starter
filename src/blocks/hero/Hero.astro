@@ -6,14 +6,14 @@ import type { HeroProps } from './schema';
 
 type Props = HeroProps;
 
-const { variant, eyebrow, title, subtitle, primaryCta, secondaryCta, image } = Astro.props;
+const { id, tone, variant, eyebrow, title, subtitle, primaryCta, secondaryCta, image } = Astro.props;
 
 const isSplit = variant === 'split';
 const isFull = variant === 'full';
 const isCentered = variant === 'centered';
 ---
 
-<Section>
+<Section id={id} tone={tone}>
 	{
 		isFull && image && (
 			<Fragment slot="background">

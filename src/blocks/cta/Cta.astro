@@ -8,7 +8,7 @@ import type { CtaProps } from './schema';
 
 type Props = CtaProps;
 
-const { variant, title, text, primary, secondary, showContacts } = Astro.props;
+const { id, tone, variant, title, text, primary, secondary, showContacts } = Astro.props;
 
 // I recapiti arrivano solo da site.json: lo schema del blocco non li contiene.
 const settings = showContacts ? await getSiteSettings() : undefined;
@@ -23,7 +23,7 @@ if (settings) {
 
 {
 	variant === 'banner' ? (
-		<Section tone="primary">
+		<Section id={id} tone={tone}>
 			<div class="mx-auto max-w-3xl text-center">
 				<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
 				{text && <p class="mt-4 text-lg text-pretty text-fg-muted">{text}</p>}
@@ -50,7 +50,7 @@ if (settings) {
 			</div>
 		</Section>
 	) : (
-		<Section tone="muted">
+		<Section id={id} tone={tone}>
 			<div class="grid items-center gap-10 lg:grid-cols-5 lg:gap-16">
 				<div class="lg:col-span-3">
 					<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>

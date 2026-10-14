@@ -1,0 +1,24 @@
+---
+/**
+ * Disegna le sezioni di una ricetta: per ogni sezione prende dal registry il componente del
+ * suo type e gli passa tutto il resto (props del blocco, id, tone). I dati arrivano già
+ * validati dalla collezione "pages", con le immagini già risolte.
+ */
+import type { SectionData } from './page-schema';
+import { blocksByType } from './registry';
+
+interface Props {
+	sections: SectionData[];
+}
+
+const { sections } = Astro.props;
+---
+
+{
+	sections.map(({ type, ...props }) => {
+		const block = blocksByType.get(type);
+		if (!block) throw new Error(`Sezione di tipo "${type}": nessun blocco src/blocks/${type}/`);
+		const { Component } = block;
+		return <Component {...props} />;
+	})
+}

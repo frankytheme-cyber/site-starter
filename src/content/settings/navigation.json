@@ -5,9 +5,9 @@
 			"label": "Servizi",
 			"href": "/servizi/",
 			"children": [
-				{ "label": "DA-COMPILARE servizio 1", "href": "/servizi/servizio-1/" },
-				{ "label": "DA-COMPILARE servizio 2", "href": "/servizi/servizio-2/" },
-				{ "label": "DA-COMPILARE servizio 3", "href": "/servizi/servizio-3/" }
+				{ "label": "DA-COMPILARE servizio 1", "href": "/servizi/#servizio-1" },
+				{ "label": "DA-COMPILARE servizio 2", "href": "/servizi/#servizio-2" },
+				{ "label": "DA-COMPILARE servizio 3", "href": "/servizi/#servizio-3" }
 			]
 		},
 		{ "label": "Lavori", "href": "/lavori/" },

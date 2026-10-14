@@ -1,10 +1,21 @@
 import type { ImageMetadata } from 'astro';
+import type { ImageFunction } from 'astro:content';
 import { z } from 'astro/zod';
 
 /**
- * Le immagini dei blocchi si indicano con un percorso relativo a src/assets/images
- * (es. "fixtures/foto.jpg"), così le props restano JSON e le ricette delle pagine
- * non devono importare file. Qui i percorsi diventano immagini ottimizzabili da Astro.
+ * Immagine nelle props di un blocco. Nelle ricette di pagina src è un percorso relativo al
+ * file JSON (es. "../../assets/images/foto.jpg"): image() di Astro lo verifica e lo rende
+ * ottimizzabile. Nelle fixture è un file importato.
+ */
+export const imageSchema = (image: ImageFunction) =>
+	z.object({
+		src: image(),
+		alt: z.string().min(5, 'il testo alternativo deve descrivere l’immagine (almeno 5 caratteri)'),
+	});
+
+/*
+ * Immagini indicate con un percorso relativo a src/assets/images (es. il logo in site.json):
+ * qui il percorso diventa un'immagine ottimizzabile.
  */
 const ROOT = '/src/assets/images/';
 
@@ -18,9 +29,3 @@ export function resolveImage(path: string): ImageMetadata {
 	if (!image) throw new Error(`Immagine "${path}" non trovata in src/assets/images/`);
 	return image;
 }
-
-/** Immagine nelle props di un blocco: percorso esistente e testo alternativo obbligatorio. */
-export const imageSchema = z.object({
-	src: z.string().refine((path) => ROOT + path in images, 'immagine non trovata in src/assets/images/'),
-	alt: z.string().min(1, 'il testo alternativo è obbligatorio'),
-});

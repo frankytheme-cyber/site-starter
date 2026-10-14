@@ -4,6 +4,7 @@ import type { schema } from './schema';
 export const fixtures: BlockFixture<typeof schema>[] = [
 	{
 		name: 'Banner',
+		tone: 'primary',
 		props: {
 			variant: 'banner',
 			title: 'Pareti nuove prima delle feste?',
@@ -15,6 +16,7 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 	},
 	{
 		name: 'Banner con recapiti',
+		tone: 'primary',
 		props: {
 			variant: 'banner',
 			title: 'Hai una parete da sistemare?',
@@ -25,6 +27,7 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 	},
 	{
 		name: 'Split con recapiti',
+		tone: 'muted',
 		props: {
 			variant: 'split-contatto',
 			title: 'Parliamo del tuo lavoro',
@@ -35,6 +38,7 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 	},
 	{
 		name: 'Split senza recapiti',
+		tone: 'muted',
 		props: {
 			variant: 'split-contatto',
 			title: 'Vuoi vedere come lavoriamo?',
@@ -46,6 +50,7 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 	},
 	{
 		name: 'Split, testi al limite',
+		tone: 'muted',
 		props: {
 			variant: 'split-contatto',
 			title: 'Rinnoviamo casa tua in pochi giorni, con un preventivo chiaro e fisso',

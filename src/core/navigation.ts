@@ -32,8 +32,11 @@ export async function getNavigation(): Promise<Navigation> {
 
 const trimSlash = (path: string) => (path.length > 1 ? path.replace(/\/+$/, '') : path);
 
-/** true se href è la pagina in cui ci si trova (solo percorsi interni, slash finale ignorato). */
+/**
+ * true se href è la pagina in cui ci si trova (solo percorsi interni, slash finale ignorato).
+ * Un link con ancora (/servizi/#interni) porta a una parte della pagina, non alla pagina: false.
+ */
 export function isCurrentPage(href: string, pathname: string): boolean {
-	if (!href.startsWith('/')) return false;
-	return trimSlash(href.split(/[?#]/)[0]) === trimSlash(pathname);
+	if (!href.startsWith('/') || href.includes('#')) return false;
+	return trimSlash(href.split('?')[0]) === trimSlash(pathname);
 }

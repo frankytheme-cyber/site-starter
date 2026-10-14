@@ -1,4 +1,25 @@
+import type { SchemaContext } from 'astro:content';
 import type { z } from 'astro/zod';
+
+/**
+ * Schema delle props di un blocco (schema.ts): una funzione del contesto di Astro, come lo
+ * schema di una collezione, così le immagini usano image() con percorsi relativi al JSON.
+ */
+export type BlockSchema = (context: SchemaContext) => z.ZodObject;
+
+/** Props del componente di un blocco: quelle dello schema più id e tone della sezione. */
+export type BlockProps<S extends BlockSchema> = z.infer<ReturnType<S>> & SectionProps;
+
+/** Toni di sezione (core/ui/Section.astro). */
+export const TONES = ['default', 'muted', 'primary'] as const;
+export type Tone = (typeof TONES)[number];
+
+/** Props che ogni blocco riceve dalla sezione della ricetta, oltre alle sue: non vanno negli schemi. */
+export interface SectionProps {
+	/** Ancora della sezione (#id), in kebab-case. */
+	id?: string;
+	tone?: Tone;
+}
 
 /** Scheda di un blocco (meta.ts): la leggono il catalogo e chi compone le pagine. */
 export interface BlockMeta {
@@ -28,8 +49,11 @@ export interface BlockMeta {
 }
 
 /** Dati di esempio di un blocco (fixtures.ts), validati con lo schema del blocco. */
-export interface BlockFixture<S extends z.ZodType = z.ZodType> {
+export interface BlockFixture<S extends BlockSchema = BlockSchema> {
 	/** Nome mostrato nel catalogo. */
 	name: string;
-	props: z.input<S>;
+	/** Tono con cui il catalogo mostra la fixture (default "default"). */
+	tone?: Tone;
+	/** Le immagini sono file importati (import foto from '@/assets/images/...'), non percorsi. */
+	props: z.input<ReturnType<S>>;
 }

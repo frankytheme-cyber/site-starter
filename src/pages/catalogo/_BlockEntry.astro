@@ -68,9 +68,15 @@ const variants = Object.entries(meta.variants);
 								<code>{fixture.props.variant}</code>
 							</>
 						)}
+						{fixture.tone && (
+							<>
+								{' · tone '}
+								<code>{fixture.tone}</code>
+							</>
+						)}
 					</p>
 				</Container>
-				<Component {...fixture.props} />
+				<Component tone={fixture.tone} {...fixture.props} />
 				{/* Un blocco sticky resta agganciato solo dentro il suo contenitore: qui gli si dà spazio per scorrere. */}
 				{fixture.props.sticky === true && (
 					<Container>

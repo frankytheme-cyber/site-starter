@@ -1,6 +1,6 @@
 # Impostazioni
 
-Dati dell'attività in `site.json` (nome, logo, indirizzo, telefono, email, P.IVA, orari); menu del sito in `navigation.json` (voci, sottomenu, pulsante in evidenza; schema in `src/core/navigation.ts`).
+Aspetto del sito in `theme.json` (`palette`, `fonts`, `shape` tra i preset di `src/themes/presets.ts`). Dati dell'attività in `site.json` (nome, indirizzo del sito, logo, indirizzo, telefono, email, P.IVA, orari): `url` è anche il `site` di Astro, per canonical e Open Graph; menu del sito in `navigation.json` (voci, sottomenu, pulsante in evidenza; schema in `src/core/navigation.ts`).
 Unica fonte per questi dati: le pagine li leggono da qui, mai scritti nei testi.
 
 Lo schema è in `src/core/settings.ts` (campi, formati ammessi ed esempi); i blocchi leggono i dati con `getSiteSettings()`.

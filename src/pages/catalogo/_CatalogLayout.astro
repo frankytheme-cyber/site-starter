@@ -1,7 +1,7 @@
 ---
 import Container from '@/core/ui/Container.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import site from '@/site.config';
+import { getTheme } from '@/core/settings';
 import { fonts, palettes, shapes } from '@/themes/presets';
 
 interface Props {
@@ -9,11 +9,12 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const theme = await getTheme();
 
 const controls = [
-	{ key: 'palette', label: 'Palette', options: palettes, value: site.palette },
-	{ key: 'fonts', label: 'Font', options: fonts, value: site.fonts },
-	{ key: 'shape', label: 'Forma', options: shapes, value: site.shape },
+	{ key: 'palette', label: 'Palette', options: palettes, value: theme.palette },
+	{ key: 'fonts', label: 'Font', options: fonts, value: theme.fonts },
+	{ key: 'shape', label: 'Forma', options: shapes, value: theme.shape },
 ];
 ---
 
