@@ -1,0 +1,38 @@
+---
+interface Props {
+	/** Con href è un link, altrimenti un <button>. */
+	href?: string;
+	/**
+	 * primary: pieno · secondary: bordo nel colore del testo circostante (funziona anche su
+	 * foto e su tono primary) · link: testo sottolineato.
+	 */
+	variant?: 'primary' | 'secondary' | 'link';
+	type?: 'button' | 'submit' | 'reset';
+}
+
+const { href, variant = 'primary', type = 'button' } = Astro.props;
+
+// L'hover sottolinea invece di cambiare colore, così il contrasto resta quello verificato.
+// Il focus usa un anello con stacco nel colore di sfondo: visibile su ogni tono e sulle foto.
+const classes = [
+	'inline-flex items-center justify-center gap-2 font-semibold underline-offset-4 decoration-2',
+	'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg',
+	{
+		primary: 'min-h-11 rounded-button bg-primary px-6 py-2.5 text-primary-fg hover:underline',
+		secondary: 'min-h-11 rounded-button border-2 border-current px-6 py-2 hover:underline',
+		link: 'text-primary underline hover:decoration-transparent',
+	}[variant],
+];
+---
+
+{
+	href ? (
+		<a href={href} class:list={classes}>
+			<slot />
+		</a>
+	) : (
+		<button type={type} class:list={classes}>
+			<slot />
+		</button>
+	)
+}

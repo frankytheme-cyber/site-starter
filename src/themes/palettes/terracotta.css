@@ -1,0 +1,28 @@
+/*
+ * Terracotta: calda, toscana. Cotto, pietra serena, oliva.
+ *
+ * Contrasti WCAG (npm run check:contrast); le coppie su surface valgono per tone="muted":
+ *   fg / bg               14.74:1
+ *   fg-muted / bg          6.62:1
+ *   primary / bg           5.60:1
+ *   surface-fg / surface  12.89:1
+ *   fg-muted / surface     5.79:1
+ *   primary / surface      4.90:1
+ *   primary-fg / primary   5.76:1
+ *   accent-fg / accent     6.10:1
+ *   ring / bg              5.60:1   (non testuale, minimo 3:1)
+ *   ring / surface         4.90:1   (non testuale, minimo 3:1)
+ */
+[data-palette="terracotta"] {
+	--bg: #fbf6ef;
+	--fg: #2e1f17;
+	--fg-muted: #6b5344;
+	--surface: #f2e6d7;
+	--surface-fg: #2e1f17;
+	--primary: #a5452a;
+	--primary-fg: #fff9f2;
+	--accent: #56652b;
+	--accent-fg: #fff9f2;
+	--border: #e2d2bf;
+	--ring: #a5452a;
+}

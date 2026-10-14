@@ -1,0 +1,18 @@
+{
+	"businessName": "DA-COMPILARE",
+	"phone": "DA-COMPILARE",
+	"whatsapp": "DA-COMPILARE",
+	"email": "DA-COMPILARE@example.com",
+	"address": {
+		"street": "DA-COMPILARE",
+		"postalCode": "DA-COMPILARE",
+		"city": "DA-COMPILARE",
+		"province": "DA-COMPILARE"
+	},
+	"vatNumber": "DA-COMPILARE",
+	"openingHours": [{ "days": "DA-COMPILARE", "hours": "DA-COMPILARE" }],
+	"social": {
+		"facebook": "https://www.facebook.com/DA-COMPILARE",
+		"instagram": "https://www.instagram.com/DA-COMPILARE"
+	}
+}

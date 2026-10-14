@@ -1,0 +1,40 @@
+---
+/**
+ * Radice di ogni blocco: tono, spaziatura verticale e Container.
+ * Lo slot "background" ospita media a tutta larghezza dietro al contenuto (es. foto con velatura).
+ */
+import Container from './Container.astro';
+
+interface Props {
+	id?: string;
+	/** default: bg · muted: surface · primary: primary (i token del contenuto si adattano, vedi base.css). */
+	tone?: 'default' | 'muted' | 'primary';
+}
+
+const { id, tone = 'default' } = Astro.props;
+
+const tones = {
+	default: 'bg-bg text-fg',
+	muted: 'bg-surface text-surface-fg',
+	primary: 'bg-primary text-primary-fg',
+};
+
+const hasBackground = Astro.slots.has('background');
+---
+
+<section
+	id={id}
+	data-tone={tone}
+	class:list={['relative isolate py-16 sm:py-24', tones[tone], hasBackground && 'overflow-hidden']}
+>
+	{
+		hasBackground && (
+			<div class="absolute inset-0 -z-10">
+				<slot name="background" />
+			</div>
+		)
+	}
+	<Container>
+		<slot />
+	</Container>
+</section>

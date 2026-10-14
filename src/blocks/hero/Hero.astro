@@ -1,0 +1,80 @@
+---
+import Button from '@/core/ui/Button.astro';
+import Img from '@/core/ui/Img.astro';
+import Section from '@/core/ui/Section.astro';
+import type { HeroProps } from './schema';
+
+type Props = HeroProps;
+
+const { variant, eyebrow, title, subtitle, primaryCta, secondaryCta, image } = Astro.props;
+
+const isSplit = variant === 'split';
+const isFull = variant === 'full';
+const isCentered = variant === 'centered';
+---
+
+<Section>
+	{
+		isFull && image && (
+			<Fragment slot="background">
+				<Img src={image.src} alt={image.alt} layout="full-width" priority class="size-full object-cover" />
+				{/* Velatura nera al 60%: il testo bianco resta ≥ 5.7:1 anche su una foto tutta bianca. */}
+				<div class="absolute inset-0 bg-black/60" />
+			</Fragment>
+		)
+	}
+
+	<div
+		class:list={[
+			'grid items-center gap-12 lg:gap-16',
+			isSplit && 'lg:grid-cols-2',
+			isFull && 'min-h-96 lg:min-h-128',
+		]}
+	>
+		<div class:list={[isCentered && 'mx-auto max-w-3xl text-center', isFull && 'max-w-2xl text-white']}>
+			{
+				eyebrow && (
+					<p class:list={['mb-4 text-sm font-semibold tracking-wider uppercase', !isFull && 'text-primary']}>
+						{eyebrow}
+					</p>
+				)
+			}
+			<h1
+				class:list={[
+					'text-4xl font-bold tracking-tight text-balance sm:text-5xl',
+					/* In split il titolo ha mezza colonna: a 6xl un titolo di 70 caratteri va su 5 righe. */
+					!isSplit && 'lg:text-6xl',
+				]}
+			>
+				{title}
+			</h1>
+			{
+				subtitle && (
+					<p class:list={['mt-6 text-lg text-pretty sm:text-xl', !isFull && 'text-fg-muted']}>{subtitle}</p>
+				)
+			}
+			<div class:list={['mt-10 flex flex-wrap items-center gap-4', isCentered && 'justify-center']}>
+				<Button href={primaryCta.href}>{primaryCta.label}</Button>
+				{
+					secondaryCta && (
+						<Button href={secondaryCta.href} variant="secondary">
+							{secondaryCta.label}
+						</Button>
+					)
+				}
+			</div>
+		</div>
+
+		{
+			isSplit && image && (
+				<Img
+					src={image.src}
+					alt={image.alt}
+					priority
+					sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 100vw"
+					class="aspect-4/3 w-full rounded-box object-cover lg:aspect-4/5"
+				/>
+			)
+		}
+	</div>
+</Section>

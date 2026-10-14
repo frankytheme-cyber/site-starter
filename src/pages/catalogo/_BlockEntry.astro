@@ -1,0 +1,76 @@
+---
+import type { Block } from '@/core/registry';
+import Container from '@/core/ui/Container.astro';
+
+interface Props {
+	block: Block;
+	/** Link alla pagina del singolo blocco (solo nell'elenco). */
+	href?: string;
+}
+
+const { block, href } = Astro.props;
+const { meta, Component, fixtures } = block;
+const variants = Object.entries(meta.variants);
+---
+
+<article id={meta.type} class="scroll-mt-20 border-t-4 border-border">
+	<Container>
+		<div class="py-10">
+			<p class="text-sm text-fg-muted">
+				{meta.category} · <code>{meta.type}</code> · v{meta.version} · {meta.source.from}
+			</p>
+			<h2 class="mt-1 text-3xl font-bold">
+				{href ? <a href={href} class="underline-offset-4 hover:underline">{meta.name}</a> : meta.name}
+			</h2>
+			<p class="mt-3 max-w-3xl text-lg">{meta.description}</p>
+
+			<dl class="mt-8 grid gap-6 md:grid-cols-2">
+				<div>
+					<dt class="font-semibold">Quando usarlo</dt>
+					<dd class="mt-1 text-fg-muted">{meta.whenToUse}</dd>
+				</div>
+				<div>
+					<dt class="font-semibold">Quando evitarlo</dt>
+					<dd class="mt-1 text-fg-muted">{meta.avoidWhen}</dd>
+				</div>
+			</dl>
+
+			{
+				variants.length > 0 && (
+					<>
+						<h3 class="mt-8 font-semibold">Varianti</h3>
+						<dl class="mt-2 grid gap-3">
+							{variants.map(([name, description]) => (
+								<div class="sm:flex sm:gap-3">
+									<dt class="shrink-0 sm:w-28">
+										<code>{name}</code>
+									</dt>
+									<dd class="text-fg-muted">{description}</dd>
+								</div>
+							))}
+						</dl>
+					</>
+				)
+			}
+		</div>
+	</Container>
+
+	{
+		fixtures.map((fixture) => (
+			<div class="border-t border-border">
+				<Container>
+					<p class="py-2 text-sm text-fg-muted">
+						Fixture <span class="font-semibold text-fg">{fixture.name}</span>
+						{typeof fixture.props.variant === 'string' && (
+							<>
+								{' · variante '}
+								<code>{fixture.props.variant}</code>
+							</>
+						)}
+					</p>
+				</Container>
+				<Component {...fixture.props} />
+			</div>
+		))
+	}
+</article>

@@ -1,3 +1,4 @@
 # Palette
 
-Palette di colori intercambiabili che valorizzano i token semantici (primary, muted, ...).
+Un file per palette con un blocco `[data-palette="nome"]` che imposta tutti i token colore (`--bg`, `--fg`, `--primary`...).
+Ogni coppia testo/sfondo deve superare 4.5:1 (`npm run check:contrast`). Una palette nuova va importata in `base.css` e aggiunta a `presets.ts`.

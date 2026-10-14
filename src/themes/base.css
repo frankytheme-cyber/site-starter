@@ -1,1 +1,104 @@
 @import "tailwindcss";
+@import "./palettes/terracotta.css";
+@import "./palettes/ardesia.css";
+
+/* La documentazione cita classi vietate come esempi: non deve generare CSS. */
+@source not "../../AGENTS.md";
+@source not "../../CLAUDE.md";
+@source not "../../docs";
+
+/*
+ * Token semantici: i blocchi usano solo queste classi (bg-primary, text-fg-muted,
+ * font-heading, rounded-box...). I valori arrivano dalle variabili impostate dai
+ * preset su <html>: data-palette (palettes/), data-fonts (fonts/), data-shape (sotto).
+ *
+ * "inline" fa scrivere alle utility direttamente var(--bg) & co.: un preset messo su
+ * qualsiasi elemento cambia l'aspetto di tutto ciò che contiene.
+ * "--color-*: initial" toglie la palette di Tailwind: bg-blue-600 non genera nulla.
+ * transparent, current e inherit sono valori integrati e restano disponibili.
+ */
+@theme inline {
+	--color-*: initial;
+	--color-white: #fff;
+	--color-black: #000;
+
+	--color-bg: var(--bg);
+	--color-fg: var(--fg);
+	--color-fg-muted: var(--fg-muted);
+	--color-surface: var(--surface);
+	--color-surface-fg: var(--surface-fg);
+	--color-primary: var(--primary);
+	--color-primary-fg: var(--primary-fg);
+	--color-accent: var(--accent);
+	--color-accent-fg: var(--accent-fg);
+	--color-border: var(--border);
+	--color-ring: var(--ring);
+
+	--font-heading: var(--heading-font);
+	--font-body: var(--body-font);
+
+	--radius-box: var(--box-radius);
+	--radius-button: var(--button-radius);
+}
+
+/* Forme: raggi di card/riquadri (rounded-box) e pulsanti (rounded-button). */
+[data-shape="squadrato"] {
+	--box-radius: 0;
+	--button-radius: 0;
+}
+
+[data-shape="morbido"] {
+	--box-radius: 0.75rem;
+	--button-radius: 0.5rem;
+}
+
+[data-shape="arrotondato"] {
+	--box-radius: 1.5rem;
+	--button-radius: 9999px;
+}
+
+/*
+ * Toni di sezione (data-tone, messo da core/ui/Section.astro). La sezione prende i
+ * colori del tono; i suoi figli ricevono i token ridefiniti, così i blocchi scrivono
+ * sempre text-fg, bg-primary... e restano leggibili su ogni tono.
+ * Nel tono primary, primary e primary-fg si invertono (pulsanti chiari su fondo
+ * primary). Una variabile non può riferirsi a un'altra ridefinita sullo stesso
+ * elemento, quindi i valori originali si salvano sulla sezione e si invertono nei figli.
+ */
+[data-tone="muted"] > * {
+	--bg: var(--surface);
+	--fg: var(--surface-fg);
+}
+
+[data-tone="primary"] {
+	--tone-primary: var(--primary);
+	--tone-primary-fg: var(--primary-fg);
+}
+
+[data-tone="primary"] > * {
+	--bg: var(--tone-primary);
+	--fg: var(--tone-primary-fg);
+	--fg-muted: var(--tone-primary-fg);
+	--primary: var(--tone-primary-fg);
+	--primary-fg: var(--tone-primary);
+	--border: color-mix(in oklab, var(--tone-primary-fg) 35%, var(--tone-primary));
+	--ring: var(--tone-primary-fg);
+}
+
+@layer base {
+	body {
+		@apply bg-bg font-body text-fg;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		@apply font-heading;
+	}
+}

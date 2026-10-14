@@ -1,24 +1,41 @@
 ---
 import '@/themes/base.css';
+import site from '@/site.config';
 
 interface Props {
 	title: string;
 	description?: string;
+	/** Esclude la pagina dai motori di ricerca. */
+	noindex?: boolean;
+	/** Carica tutte le coppie di font invece della sola scelta (serve al catalogo per cambiarle al volo). */
+	allFonts?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, noindex = false, allFonts = false } = Astro.props;
+
+// Di norma solo il CSS dei font scelti: gli altri preset non vengono collegati alla pagina.
+const fontStyles = import.meta.glob<string>('/src/themes/fonts/*.css', {
+	query: '?url',
+	import: 'default',
+	eager: true,
+});
+const siteFontsHref = fontStyles[`/src/themes/fonts/${site.fonts}.css`];
+if (!siteFontsHref) throw new Error(`Font "${site.fonts}" non trovati in src/themes/fonts/`);
+const fontHrefs = allFonts ? Object.values(fontStyles) : [siteFontsHref];
 ---
 
 <!doctype html>
-<html lang="it">
+<html lang="it" data-palette={site.palette} data-fonts={site.fonts} data-shape={site.shape}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
+		{fontHrefs.map((href) => <link rel="stylesheet" href={href} />)}
 		<title>{title}</title>
 		{description && <meta name="description" content={description} />}
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
 	</head>
 	<body>
 		<slot />

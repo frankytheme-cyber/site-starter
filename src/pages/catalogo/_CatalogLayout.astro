@@ -1,0 +1,77 @@
+---
+import Container from '@/core/ui/Container.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import site from '@/site.config';
+import { fonts, palettes, shapes } from '@/themes/presets';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+
+const controls = [
+	{ key: 'palette', label: 'Palette', options: palettes, value: site.palette },
+	{ key: 'fonts', label: 'Font', options: fonts, value: site.fonts },
+	{ key: 'shape', label: 'Forma', options: shapes, value: site.shape },
+];
+---
+
+<BaseLayout title={title} noindex allFonts>
+	<header class="sticky top-0 z-50 border-b border-border bg-bg/95 backdrop-blur">
+		<Container>
+			<div class="flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
+				<nav aria-label="Catalogo" class="mr-auto flex items-baseline gap-6">
+					<a href="/catalogo/" class="font-heading text-lg font-bold">Catalogo blocchi</a>
+					<a href="/catalogo/icone/" class="text-sm text-primary underline underline-offset-4">Icone</a>
+				</nav>
+				{
+					controls.map(({ key, label, options, value }) => (
+						<label class="flex items-center gap-2 text-sm">
+							<span class="text-fg-muted">{label}</span>
+							<select
+								data-theme-control={key}
+								class="min-h-9 rounded-button border border-border bg-bg px-3 text-fg"
+							>
+								{options.map((option) => (
+									<option value={option} selected={option === value}>
+										{option}
+									</option>
+								))}
+							</select>
+						</label>
+					))
+				}
+			</div>
+		</Container>
+	</header>
+	<slot />
+</BaseLayout>
+
+<script>
+	// Cambia i data-* di <html> al volo e ricorda la scelta tra le pagine del catalogo.
+	const STORAGE_KEY = 'catalogo-tema';
+	const root = document.documentElement;
+
+	let saved: Record<string, string> = {};
+	try {
+		saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '{}');
+	} catch {}
+
+	for (const select of document.querySelectorAll<HTMLSelectElement>('[data-theme-control]')) {
+		const key = select.dataset.themeControl!;
+		const stored = saved[key];
+		if (stored && [...select.options].some((option) => option.value === stored)) {
+			select.value = stored;
+			root.dataset[key] = stored;
+		}
+
+		select.addEventListener('change', () => {
+			root.dataset[key] = select.value;
+			saved[key] = select.value;
+			try {
+				sessionStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+			} catch {}
+		});
+	}
+</script>
