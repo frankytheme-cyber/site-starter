@@ -2,7 +2,6 @@
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
 import '@/themes/base.css';
-import { resolveImage } from '@/core/images';
 import { getSiteSettings, getTheme } from '@/core/settings';
 
 interface Props {
@@ -36,7 +35,7 @@ const absolute = (path: string) => new URL(path, Astro.site).href;
 const canonical = absolute(Astro.url.pathname);
 
 const og = ogImage && (await getImage({ src: ogImage, width: 1200, height: 630, fit: 'cover', format: 'jpg' }));
-const logo = site.logo && (await getImage({ src: resolveImage(site.logo), width: 512, format: 'png' }));
+const logo = site.logo && (await getImage({ src: site.logo, width: 512, format: 'png' }));
 
 // Scheda dell'attività per i motori di ricerca (schema.org/LocalBusiness), tutta da site.json.
 const { street, postalCode, city, province } = site.address;

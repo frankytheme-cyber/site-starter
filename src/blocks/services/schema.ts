@@ -5,31 +5,46 @@ import { ICON_NAMES } from '@/core/icons';
 import { imageSchema } from '@/core/images';
 
 const link = z.object({
-	label: z.string().min(1).max(25),
-	href: z.string().min(1),
+	label: z.string().min(1).max(25).describe('Testo del link|Al massimo 25 caratteri'),
+	href: z
+		.string()
+		.min(1)
+		.describe('Link|Una pagina del sito (/servizi/), una sezione (#interni) o un indirizzo completo'),
 });
 
 export const schema = ({ image }: SchemaContext) =>
 	z
 		.object({
-			variant: z.enum(['cards-icone', 'cards-immagine', 'alternato']),
-			eyebrow: z.string().min(1).optional(),
-			title: z.string().min(1).max(70),
-			intro: z.string().min(1).max(240).optional(),
+			variant: z
+				.enum(['cards-icone', 'cards-immagine', 'alternato'])
+				.describe('Variante|cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo'),
+			eyebrow: z.string().min(1).optional().describe('Occhiello|Breve testo sopra il titolo'),
+			title: z.string().min(1).max(70).describe('Titolo|Titolo della sezione, al massimo 70 caratteri'),
+			intro: z
+				.string()
+				.min(1)
+				.max(240)
+				.optional()
+				.describe('Introduzione|Una frase che presenta i servizi, al massimo 240 caratteri'),
 			items: z
 				.array(
 					z.object({
 						/** Obbligatoria per cards-icone; le altre varianti non la mostrano. */
-						icon: z.enum(ICON_NAMES).optional(),
+						icon: z.enum(ICON_NAMES).optional().describe('Icona|Obbligatoria per la variante cards-icone'),
 						/** Obbligatoria per cards-immagine e alternato; cards-icone non la mostra. */
-						image: imageSchema(image).optional(),
-						title: z.string().min(1).max(50),
-						text: z.string().min(1).max(180),
-						link: link.optional(),
+						image: imageSchema(image)
+							.optional()
+							.describe('Foto|Obbligatoria per le varianti cards-immagine e alternato'),
+						title: z.string().min(1).max(50).describe('Nome del servizio|Al massimo 50 caratteri'),
+						text: z.string().min(1).max(180).describe('Descrizione|Cosa comprende il servizio, al massimo 180 caratteri'),
+						link: link
+							.optional()
+							.describe('Link|Porta alla pagina o alla sezione del servizio: compila testo e link, oppure nessuno dei due'),
 					}),
 				)
 				.min(2)
-				.max(6),
+				.max(6)
+				.describe('Servizi|Da 2 a 6 servizi'),
 		})
 		.superRefine((props, ctx) => {
 			const needsIcon = props.variant === 'cards-icone';

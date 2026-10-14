@@ -2,7 +2,7 @@ import type { ImageMetadata } from 'astro';
 import type { ImageFunction, SchemaContext } from 'astro:content';
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import { z } from 'astro/zod';
-import { blockSchemas } from './block-schemas';
+import { blockMetas, blockSchemas } from './block-schemas';
 import type { BlockFixture, BlockMeta, BlockSchema, Tone } from './block-types';
 
 /*
@@ -20,7 +20,6 @@ const components = import.meta.glob<AstroComponentFactory>('/src/blocks/*/*.astr
 	eager: true,
 	import: 'default',
 });
-const metas = import.meta.glob<BlockMeta>('/src/blocks/*/meta.ts', { eager: true, import: 'meta' });
 const fixtureLists = import.meta.glob<BlockFixture[]>('/src/blocks/*/fixtures.ts', {
 	eager: true,
 	import: 'fixtures',
@@ -61,7 +60,8 @@ function pick<T>(modules: Record<string, T>, path: string): T {
 
 function loadBlock(type: string): Block {
 	const dir = `/src/blocks/${type}`;
-	const meta = pick(metas, `${dir}/meta.ts`);
+	const meta = blockMetas[type];
+	if (!meta) throw new Error(`Blocco incompleto: manca ${dir}/meta.ts`);
 	const schema = blockSchemas[type];
 	if (!schema) throw new Error(`Blocco incompleto: manca ${dir}/schema.ts`);
 	const Component = pick(components, `${dir}/${pascalCase(type)}.astro`);
@@ -106,7 +106,7 @@ function loadBlock(type: string): Block {
 }
 
 const types = new Set(
-	[components, blockSchemas, metas, fixtureLists].flatMap((modules) =>
+	[components, blockSchemas, blockMetas, fixtureLists].flatMap((modules) =>
 		Object.keys(modules).map((key) => (key.startsWith('/') ? key.split('/')[3] : key)),
 	),
 );

@@ -1,12 +1,20 @@
-import type { BlockSchema } from './block-types';
+import type { BlockMeta, BlockSchema } from './block-types';
 
 /**
- * Schemi di tutti i blocchi (src/blocks/<tipo>/schema.ts), per tipo. Li usano il registry
- * (fixture e catalogo) e page-schema (ricette di pagina): una sola ricerca, stesso elenco.
- * Sta a parte dal registry perché content.config.ts non deve caricare i componenti.
+ * Schemi e schede di tutti i blocchi (src/blocks/<tipo>/schema.ts e meta.ts), per tipo.
+ * Li usano il registry (fixture e catalogo), page-schema (ricette di pagina) e il
+ * generatore della configurazione di Decap. Sta a parte dal registry perché né
+ * content.config.ts né gli script devono caricare i componenti .astro.
  */
-const modules = import.meta.glob<BlockSchema>('/src/blocks/*/schema.ts', { eager: true, import: 'schema' });
+const typeOf = (path: string) => path.split('/')[3];
+
+const schemaModules = import.meta.glob<BlockSchema>('/src/blocks/*/schema.ts', { eager: true, import: 'schema' });
+const metaModules = import.meta.glob<BlockMeta>('/src/blocks/*/meta.ts', { eager: true, import: 'meta' });
 
 export const blockSchemas: Record<string, BlockSchema> = Object.fromEntries(
-	Object.entries(modules).map(([path, schema]) => [path.split('/')[3], schema]),
+	Object.entries(schemaModules).map(([path, schema]) => [typeOf(path), schema]),
+);
+
+export const blockMetas: Record<string, BlockMeta> = Object.fromEntries(
+	Object.entries(metaModules).map(([path, meta]) => [typeOf(path), meta]),
 );

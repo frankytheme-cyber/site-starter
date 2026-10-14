@@ -7,11 +7,15 @@ import type { BlockProps } from '@/core/block-types';
  */
 export const schema = () =>
 	z.object({
-		variant: z.enum(['semplice', 'con-cta']),
+		variant: z
+			.enum(['semplice', 'con-cta'])
+			.describe('Variante|semplice: logo e menu · con-cta: aggiunge il pulsante in evidenza del «Menu»'),
 		/** Resta in cima durante lo scroll e si compatta dopo 80px. */
-		sticky: z.boolean(),
+		sticky: z.boolean().describe('Resta in cima|L’intestazione resta visibile mentre si scorre la pagina'),
 		/** testo: nome dell'attività · immagine: il logo indicato in site.json. */
-		logo: z.enum(['testo', 'immagine']),
+		logo: z
+			.enum(['testo', 'immagine'])
+			.describe('Logo|testo: il nome dell’attività · immagine: il logo caricato in «Dati attività»'),
 	});
 
 export type HeaderProps = BlockProps<typeof schema>;

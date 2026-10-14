@@ -7,11 +7,15 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "npm run gen:decap",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "gen:decap": "node scripts/gen-decap-config.ts",
+    "check:decap": "node scripts/gen-decap-config.ts --check",
     "check:contrast": "node scripts/checks/contrast.ts",
-    "check:recipes": "node scripts/checks/recipes.ts"
+    "check:recipes": "node scripts/checks/recipes.ts",
+    "cms:local": "node scripts/cms-local.ts"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
@@ -23,9 +27,12 @@
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
     "astro-icon": "^1.2.0",
+    "decap-cms": "^3.17.1",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@types/node": "^26.6.5"
+    "@types/node": "^26.6.5",
+    "decap-server": "^3.11.5",
+    "yaml": "^2.9.1"
   }
 }

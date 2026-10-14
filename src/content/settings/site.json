@@ -1,7 +1,7 @@
 {
 	"businessName": "DA-COMPILARE",
 	"url": "https://da-compilare.example.com",
-	"logo": "fixtures/logo-segnaposto.png",
+	"logo": "../../assets/images/fixtures/logo-segnaposto.png",
 	"phone": "DA-COMPILARE",
 	"whatsapp": "DA-COMPILARE",
 	"email": "DA-COMPILARE@example.com",

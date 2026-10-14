@@ -1,6 +1,6 @@
 # Licenze di terze parti
 
-Risorse di terzi incluse nelle pagine generate. Le icone ammesse sono elencate in `src/core/icons.ts`.
+Risorse di terzi incluse nel sito pubblicato. Le icone ammesse sono elencate in `src/core/icons.ts`.
 
 ## Lucide
 
@@ -62,3 +62,11 @@ Icone dei marchi (WhatsApp, Facebook, Instagram, Google), dal pacchetto `@iconif
   - Facebook: https://about.meta.com/brand/resources/facebook/logo
   - Instagram: https://about.meta.com/brand/resources/instagram
   - Google: https://about.google/brand-resource-center/brand-elements/
+
+## Decap CMS
+
+Interfaccia di gestione dei contenuti su `/admin/`, dal pacchetto `decap-cms`, servita dal sito in `/admin/decap/` (vedi `docs/decap.md`).
+
+- Progetto: https://decapcms.org · https://github.com/decaporg/decap-cms
+- Licenza: MIT.
+- Il bundle include librerie di terzi: i loro avvisi di licenza sono in `/admin/decap/decap-cms.js.LICENSE.txt`, copiato insieme al bundle.

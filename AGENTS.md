@@ -8,6 +8,7 @@ Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, u
 - **Cartelle gestite in sola lettura nei siti cliente.** Le cartelle elencate in `library.manifest.json` → `managed` si modificano SOLO nella repo site-starter; nei siti cliente sono in sola lettura.
 - **Dati dell'attività in un solo posto.** Nome, indirizzo, telefono, email, P.IVA e orari stanno solo in `src/content/settings/site.json`; mai scritti nei testi delle pagine né negli schemi dei blocchi, che li leggono con `getSiteSettings()` (`@/core/settings`).
 - **Si compone con blocchi esistenti.** Il sito si costruisce con i blocchi già presenti: un blocco nuovo nasce solo in site-starter, su task approvato.
+- **Ogni campo ha etichetta e aiuto.** Ogni campo degli schemi di blocchi, pagine e impostazioni ha `.describe("Etichetta|Aiuto")` in italiano: da lì nasce il CMS. Dopo aver cambiato uno schema, `npm run gen:decap` e commit di `public/admin/config.yml`.
 - **Build verde prima di chiudere.** Prima di dichiarare finito un lavoro, `npm run build` deve passare.
 
 ## Tema
@@ -35,6 +36,11 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 - Una pagina ha un solo `hero`, in apertura, e di norma una `cta`. Link interni solo a pagine e ancore che esistono.
 - Prima di pubblicare: `npm run check:recipes -- --strict` (segnaposto, recapiti scritti a mano, link rotti...).
 
+## CMS
+
+- Il cliente modifica pagine, Dati attività e Menu con Decap CMS su `/admin/` (flusso editoriale: ogni modifica è una pull request). Il tema non è esposto.
+- `public/admin/config.yml` è generato da `scripts/gen-decap-config.ts`: mai a mano. Setup, inviti e limiti in `docs/decap.md`.
+
 ## Comandi
 
 | Comando                  | Cosa fa                                           |
@@ -44,6 +50,9 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run preview`        | Anteprima locale della build                      |
 | `npm run check:contrast` | Verifica il contrasto WCAG AA di tutte le palette |
 | `npm run check:recipes`  | Controlla ricette e dati del sito; `-- --strict` esce con errore |
+| `npm run gen:decap`      | Genera `public/admin/config.yml` dagli schemi (anche in `prebuild`) |
+| `npm run check:decap`    | Fallisce se `config.yml` non è aggiornato                  |
+| `npm run cms:local`      | `decap-server` per provare `/admin/` in locale, senza GitHub |
 
 Per gli agenti: avvia il server di sviluppo in background con `npx astro dev --background` e gestiscilo con `astro dev stop`, `astro dev status` e `astro dev logs`.
 

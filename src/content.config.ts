@@ -1,5 +1,6 @@
 import { defineCollection } from 'astro:content';
-import { file, glob } from 'astro/loaders';
+import { file, glob, type Loader } from 'astro/loaders';
+import { withoutEmpty } from './core/clean-data';
 import { navigationSchema } from './core/navigation';
 import { pageSchema } from './core/page-schema';
 import { siteSettingsSchema } from './core/settings';
@@ -8,7 +9,7 @@ import { themeSchema } from './themes/presets';
 /** Dati dell'attività: un solo oggetto in site.json, letto come voce "site". Schema in core/settings.ts. */
 const settings = defineCollection({
 	loader: file('src/content/settings/site.json', {
-		parser: (text) => [{ id: 'site', ...JSON.parse(text) }],
+		parser: (text) => [{ id: 'site', ...(withoutEmpty(JSON.parse(text)) as object) }],
 	}),
 	schema: siteSettingsSchema,
 });
@@ -16,7 +17,7 @@ const settings = defineCollection({
 /** Menu del sito: un solo oggetto in navigation.json, letto come voce "navigation". Schema in core/navigation.ts. */
 const navigation = defineCollection({
 	loader: file('src/content/settings/navigation.json', {
-		parser: (text) => [{ id: 'navigation', ...JSON.parse(text) }],
+		parser: (text) => [{ id: 'navigation', ...(withoutEmpty(JSON.parse(text)) as object) }],
 	}),
 	schema: navigationSchema,
 });
@@ -29,9 +30,21 @@ const theme = defineCollection({
 	schema: themeSchema,
 });
 
+/** Toglie i campi vuoti che il CMS lascia ("" e {}) prima della validazione: vedi core/clean-data.ts. */
+function cleaned(loader: Loader): Loader {
+	return {
+		...loader,
+		load: (context) =>
+			loader.load({
+				...context,
+				parseData: (props) => context.parseData({ ...props, data: withoutEmpty(props.data) as typeof props.data }),
+			}),
+	};
+}
+
 /** Ricette di pagina: un JSON per pagina (index.json è la home). Schema in core/page-schema.ts. */
 const pages = defineCollection({
-	loader: glob({ pattern: '*.json', base: './src/content/pages' }),
+	loader: cleaned(glob({ pattern: '*.json', base: './src/content/pages' })),
 	schema: pageSchema,
 });
 
