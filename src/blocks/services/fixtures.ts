@@ -31,6 +31,33 @@ const images = {
 
 export const fixtures: BlockFixture<typeof schema>[] = [
 	{
+		name: 'Schede',
+		props: {
+			variant: 'schede',
+			eyebrow: 'Servizi',
+			title: 'Scegli il lavoro che ti serve',
+			intro: 'Ogni servizio ha la sua squadra e i suoi tempi: qui trovi cosa comprende.',
+			items: [
+				{
+					image: images.interno,
+					title: 'Tinteggiature interne',
+					text: 'Pareti e soffitti con pitture traspiranti o lavabili. Copriamo mobili e pavimenti, stucchiamo le crepe e lasciamo tutto pulito.',
+					link: { label: 'Chiedi un preventivo', href: '#preventivo' },
+				},
+				{
+					image: images.facciata,
+					title: 'Facciate esterne',
+					text: 'Pulizia, ripristino degli intonaci e pitture ai silossani che resistono a pioggia, sole e smog per molti anni.',
+				},
+				{
+					title: 'Trattamenti antimuffa',
+					text: 'Eliminiamo muffa e condensa alla radice con prodotti risananti e pitture termiche anticondensa.',
+					link: { label: 'Scrivici su WhatsApp', href: '@whatsapp', icon: 'whatsapp', style: 'secondary' },
+				},
+			],
+		},
+	},
+	{
 		name: 'Card con icona',
 		props: {
 			variant: 'cards-icone',

@@ -1,0 +1,28 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "Privacy · DA-COMPILARE nome dell’attività",
+	"description": "DA-COMPILARE: come l’attività tratta i dati personali di chi visita il sito e la contatta.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "centered",
+			"eyebrow": "Note legali",
+			"title": "Informativa sulla privacy",
+			"subtitle": "DA-COMPILARE: chi tratta i dati, quali e perché. Il testo va preparato o verificato da chi segue la privacy dell’attività.",
+			"primaryCta": { "label": "Scrivici per chiarimenti", "href": "/contatti/" }
+		},
+		{
+			"type": "accordion",
+			"id": "informativa",
+			"tone": "muted",
+			"variant": "contenuti",
+			"title": "DA-COMPILARE: titolo dell’informativa",
+			"items": [
+				{ "title": "Titolare del trattamento", "text": "DA-COMPILARE: chi è il titolare e come contattarlo." },
+				{ "title": "Dati raccolti e finalità", "text": "DA-COMPILARE: quali dati si raccolgono (modulo, email, telefono) e per cosa si usano." },
+				{ "title": "Conservazione", "text": "DA-COMPILARE: per quanto tempo si conservano i dati." },
+				{ "title": "I tuoi diritti", "text": "DA-COMPILARE: accesso, rettifica, cancellazione, opposizione e reclamo al Garante." }
+			]
+		}
+	]
+}

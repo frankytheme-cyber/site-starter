@@ -12,6 +12,13 @@ export interface SiteConfig {
 		/** Ramo su cui il CMS pubblica le modifiche. */
 		branch: string;
 	};
+	/** Credito in fondo al footer colonne (es. chi ha realizzato il sito); senza, non compare. */
+	credit?: {
+		/** Testo del link, es. "Sito realizzato da Studio Esempio". */
+		label: string;
+		/** Indirizzo completo, es. "https://www.studioesempio.it". */
+		href: string;
+	};
 }
 
 const config: SiteConfig = {
@@ -19,6 +26,7 @@ const config: SiteConfig = {
 		oauthBaseUrl: 'https://decap-oauth.da-compilare.workers.dev',
 		branch: 'main',
 	},
+	// credit: { label: 'Sito realizzato da …', href: 'https://…' },
 };
 
 export default config;

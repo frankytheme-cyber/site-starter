@@ -1,6 +1,6 @@
 # Blocchi interattivi
 
-Regole per i blocchi che hanno un comportamento in JavaScript (menu, caroselli, accordion, form...). Un blocco interattivo dichiara `interactive: true` in `meta.ts` e le rispetta tutte. Riferimento: `src/blocks/header/`.
+Regole per i blocchi che hanno un comportamento in JavaScript (menu, caroselli, accordion, form...). Un blocco interattivo dichiara `interactive: true` in `meta.ts` e le rispetta tutte. Riferimenti: `src/blocks/header/` e le primitive `Accordion`, `Tabs`, `Carousel` di `src/core/ui/` (sezione 8): prima di scrivere JS nuovo, usa quelle.
 
 ## 1. JavaScript vanilla, nel componente
 
@@ -55,6 +55,19 @@ La pagina deve funzionare anche senza JavaScript: lo script migliora l'esperienz
 - Il CSS che non si può scrivere con le classi (fallback senza JS, keyframes) va in `<style is:global>` con selettori sugli attributi `data-*` del blocco.
 - Dati dell'attività e menu non stanno nello schema del blocco: si leggono con `getSiteSettings()` e `getNavigation()`.
 
+## 8. Primitive interattive
+
+In `src/core/ui/`, già conformi a queste regole e provate da `npm run qa` (check `interactive`). Si vedono in `/catalogo/ui`.
+
+| Primitiva | Struttura e ARIA | Tastiera | Senza JS | Movimento |
+| --- | --- | --- | --- | --- |
+| `Accordion` + `AccordionItem` | `<details>`/`<summary>`; `single` chiude le sorelle all'apertura | Invio e Spazio sul titolo (nativi) | Funziona tutto; con `single` restano apribili più voci | Dissolvenza solo quando chi visita apre una voce, non al caricamento; niente con movimento ridotto |
+| `Tabs` | Da `md`: `tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, `tabindex` mobile (0 sulla scheda attiva, −1 sulle altre). Sotto `md`: `Accordion` | Frecce sinistra/destra (a giro), Home, End; la scheda si attiva spostandosi | Pannelli uno dopo l'altro, ognuno col suo titolo | — |
+| `Carousel` + `CarouselSlide` | `aria-roledescription="carosello"` con nome; slide `role="group"` `aria-roledescription="slide"` «N di M»; frecce con `aria-label`, pallini «Vai alla posizione N di M», attivo con `aria-current` | Traccia focalizzabile: frecce della tastiera per scorrere; frecce e pallini sono pulsanti | Scorrimento con swipe, trackpad o tastiera; frecce e pallini non compaiono | Nessun autoplay; scorrimento morbido solo senza movimento ridotto; slide attiva con `IntersectionObserver` |
+| `Button` | `<a>` con `href`, altrimenti `<button>`; link esterni in nuova scheda con `rel="noopener"` e testo «(si apre in una nuova scheda)» per gli screen reader | Nativa | — | — |
+
+Il contenuto di `Tabs` si passa negli slot `panel-0`, `panel-1`... e viene usato due volte (accordion sotto `md`, pannelli da `md`): niente `id` dentro i pannelli.
+
 ## Prima di chiudere un blocco interattivo
 
 - [ ] `npm run build` verde.
@@ -62,4 +75,5 @@ La pagina deve funzionare anche senza JavaScript: lo script migliora l'esperienz
 - [ ] Ogni funzione si usa da tastiera; Esc chiude e il focus torna al punto di partenza.
 - [ ] Senza JavaScript i contenuti e i link restano raggiungibili.
 - [ ] Con più istanze nella stessa pagina (il catalogo) ognuna funziona da sola.
+- [ ] `npm run qa` verde: il check `interactive` prova header, accordion, tabs e carousel; un componente interattivo nuovo aggiunge il suo test in `scripts/checks/interactive.ts`.
 - [ ] Animazioni sotto `motion-safe` o `prefers-reduced-motion: no-preference`.

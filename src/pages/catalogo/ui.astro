@@ -1,0 +1,157 @@
+---
+import facciata from '@/assets/images/fixtures/imbianchino-facciata.jpg';
+import interno from '@/assets/images/fixtures/imbianchino-interno.jpg';
+import { TONES } from '@/core/block-types';
+import { BUTTON_STYLES, SPECIAL_HREFS } from '@/core/schemas/cta';
+import Accordion from '@/core/ui/Accordion.astro';
+import AccordionItem from '@/core/ui/AccordionItem.astro';
+import Button from '@/core/ui/Button.astro';
+import Carousel from '@/core/ui/Carousel.astro';
+import CarouselSlide from '@/core/ui/CarouselSlide.astro';
+import Container from '@/core/ui/Container.astro';
+import Img from '@/core/ui/Img.astro';
+import Section from '@/core/ui/Section.astro';
+import Tabs from '@/core/ui/Tabs.astro';
+import CatalogLayout from './_CatalogLayout.astro';
+
+const sizes = ['sm', 'md', 'lg'] as const;
+const slides = Array.from({ length: 6 }, (_, index) => ({
+	title: `Cantiere ${index + 1}`,
+	image: index % 2 === 0 ? interno : facciata,
+	alt: index % 2 === 0 ? 'Parete tinteggiata a metà in verde salvia' : 'Facciata color ocra con persiane verdi',
+}));
+---
+
+<CatalogLayout title="Primitive UI · Catalogo blocchi">
+	<main>
+		<Container>
+			<div class="py-10">
+				<h1 class="text-3xl font-bold">Primitive UI</h1>
+				<p class="mt-3 max-w-3xl text-fg-muted">
+					I componenti di <code>src/core/ui</code> con cui sono fatti i blocchi, in tutti gli stati. Il focus si vede
+					spostandosi con Tab; le regole dei componenti interattivi sono in <code>docs/blocchi-interattivi.md</code>.
+				</p>
+			</div>
+		</Container>
+
+		{
+			TONES.map((tone) => (
+				<Section tone={tone}>
+					<h2 class="text-2xl font-bold">
+						Button <span class="text-base font-normal text-fg-muted">· tone {tone}</span>
+					</h2>
+					<div class="mt-6 grid gap-6">
+						{BUTTON_STYLES.map((style) => (
+							<div class="flex flex-wrap items-center gap-4">
+								<code class="w-24 text-sm">{style}</code>
+								{sizes.map((size) => (
+									<Button href="#" variant={style} size={size} tone={tone}>
+										{`${style} ${size}`}
+									</Button>
+								))}
+								<Button href="#" variant={style} icon="telefono" tone={tone}>
+									Icona prima
+								</Button>
+								<Button href="#" variant={style} icon="freccia-destra" iconPosition="end" tone={tone}>
+									Icona dopo
+								</Button>
+								{style !== 'link' && (
+									<Button variant={style} disabled tone={tone}>
+										Disabilitato
+									</Button>
+								)}
+							</div>
+						))}
+					</div>
+				</Section>
+			))
+		}
+
+		<Section tone="default">
+			<h2 class="text-2xl font-bold">Link speciali ed esterni</h2>
+			<p class="mt-2 max-w-3xl text-fg-muted">
+				<code>{SPECIAL_HREFS.join(', ')}</code> diventano tel:, wa.me, mailto: e Google Maps con i dati di site.json. I link
+				esterni si aprono in una nuova scheda con rel="noopener".
+			</p>
+			<div class="mt-6 flex flex-wrap items-center gap-4">
+				<Button href="@telefono" icon="telefono">Chiama</Button>
+				<Button href="@whatsapp" icon="whatsapp" variant="secondary">WhatsApp</Button>
+				<Button href="@email" icon="email" variant="ghost">Email</Button>
+				<Button href="@mappa" icon="mappa-pin" variant="link">Come arrivare</Button>
+				<Button href="https://example.com/" variant="link" icon="freccia-destra" iconPosition="end">Sito esterno</Button>
+			</div>
+
+			<h3 class="mt-12 text-xl font-bold">Prop tone fuori da una Section primary</h3>
+			<div class="mt-4 flex flex-wrap gap-4 rounded-box bg-primary p-6 text-primary-fg">
+				<Button href="#" tone="primary">Primary</Button>
+				<Button href="#" variant="secondary" tone="primary">Secondary</Button>
+				<Button href="#" variant="ghost" tone="primary">Ghost</Button>
+			</div>
+		</Section>
+
+		<Section tone="muted">
+			<h2 class="text-2xl font-bold">Accordion</h2>
+			<div class="mt-6 grid gap-10 lg:grid-cols-2">
+				<div>
+					<h3 class="mb-2 font-semibold">Più voci aperte</h3>
+					<Accordion>
+						<AccordionItem title="Aperta al caricamento" open>
+							<p class="text-fg-muted">Il contenuto entra con una breve dissolvenza, se il movimento non è ridotto.</p>
+						</AccordionItem>
+						<AccordionItem title="Seconda voce">
+							<p class="text-fg-muted">Si apre e chiude con Invio o Spazio sul titolo.</p>
+						</AccordionItem>
+						<AccordionItem title="Terza voce">
+							<p class="text-fg-muted">Senza JS funziona lo stesso: è un elemento details.</p>
+						</AccordionItem>
+					</Accordion>
+				</div>
+				<div>
+					<h3 class="mb-2 font-semibold">Una alla volta (single)</h3>
+					<Accordion single>
+						<AccordionItem title="Prima voce" open>
+							<p class="text-fg-muted">Aprendo un'altra voce, questa si chiude.</p>
+						</AccordionItem>
+						<AccordionItem title="Seconda voce">
+							<p class="text-fg-muted">Con JS ne resta aperta una sola.</p>
+						</AccordionItem>
+						<AccordionItem title="Terza voce">
+							<p class="text-fg-muted">Senza JS restano apribili tutte.</p>
+						</AccordionItem>
+					</Accordion>
+				</div>
+			</div>
+		</Section>
+
+		<Section tone="default">
+			<h2 class="text-2xl font-bold">Tabs</h2>
+			<p class="mt-2 max-w-3xl text-fg-muted">
+				Frecce, Home e End tra le schede; sotto 768 px diventa un Accordion. Senza JS, pannelli in sequenza con il titolo.
+			</p>
+			<Tabs label="Esempio di schede" tabs={['Prima', 'Seconda', 'Terza']} class="mt-6">
+				<Fragment slot="panel-0"><p class="text-fg-muted">Contenuto della prima scheda.</p></Fragment>
+				<Fragment slot="panel-1"><p class="text-fg-muted">Contenuto della seconda scheda.</p></Fragment>
+				<Fragment slot="panel-2"><p class="text-fg-muted">Contenuto della terza scheda.</p></Fragment>
+			</Tabs>
+		</Section>
+
+		<Section tone="muted">
+			<h2 class="text-2xl font-bold">Carousel</h2>
+			<p class="mt-2 max-w-3xl text-fg-muted">
+				Scroll-snap e swipe nativo; frecce e pallini con JS, pallino attivo con aria-current. Niente autoplay.
+			</p>
+			<Carousel label="Esempio di carosello" class="mt-6">
+				{
+					slides.map((slide) => (
+						<CarouselSlide width="card">
+							<figure class="overflow-hidden rounded-box bg-bg">
+								<Img src={slide.image} alt={slide.alt} sizes="352px" class="aspect-3/2 w-full object-cover" />
+								<figcaption class="p-4 font-semibold">{slide.title}</figcaption>
+							</figure>
+						</CarouselSlide>
+					))
+				}
+			</Carousel>
+		</Section>
+	</main>
+</CatalogLayout>

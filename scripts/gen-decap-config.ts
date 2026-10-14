@@ -7,19 +7,18 @@
  *
  * Uso: npm run gen:decap                   scrive public/admin/config.yml
  *      npm run gen:decap -- --repo=org/sito  repo GitHub esplicito
- *      npm run check:decap                 rigenera in memoria ed esce con 1 se il file non è aggiornato
+ *      npm run check:decap                 (scripts/checks/decap.ts) fallisce se il file non è aggiornato
  * Repo: --repo, poi DECAP_REPO, poi VERCEL_GIT_REPO_OWNER/VERCEL_GIT_REPO_SLUG, poi il remote "origin".
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createServer } from 'vite';
 import { stringify } from 'yaml';
+import { withProjectModules } from './checks/lib/vite.ts';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
-const OUTPUT = join(ROOT, 'public/admin/config.yml');
-const check = process.argv.includes('--check');
+export const DECAP_CONFIG = join(ROOT, 'public/admin/config.yml');
 
 /** Il JSON di una pagina sta in src/content/pages: da lì le immagini sono in ../../assets/images. */
 const MEDIA_FROM_CONTENT = '../../assets/images';
@@ -55,13 +54,12 @@ function resolveRepo(): string {
 	let repo = flag ?? process.env.DECAP_REPO ?? vercel;
 	if (!repo) {
 		try {
-			const origin = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: ROOT, encoding: 'utf8' }).trim();
+			const origin = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
 			repo = /github\.com[:/]([^/]+\/[^/]+?)(?:\.git)?$/.exec(origin)?.[1];
 		} catch {}
 	}
 	if (!repo || !/^[\w.-]+\/[\w.-]+$/.test(repo)) {
-		console.error('Repo GitHub non trovato: usa --repo=org/nome o la variabile DECAP_REPO.');
-		process.exit(1);
+		throw new Error('Repo GitHub non trovato: usa --repo=org/nome o la variabile DECAP_REPO.');
 	}
 	return repo;
 }
@@ -138,6 +136,13 @@ function stringPattern(schema: ZodLike): [string, string] | undefined {
 const typeOf = (schema: ZodLike) => schema._zod.def.type;
 const isStringLike = (schema: ZodLike) => typeOf(schema) === 'string' || typeOf(schema) === 'literal';
 
+/** Opzioni di una select: con .meta({ optionLabels }) sull'enum diventano { label, value }. */
+function selectOptions(schema: ZodLike): unknown[] {
+	const values = schema.options ?? [];
+	const labels = schema.meta()?.optionLabels as Record<string, string> | undefined;
+	return labels ? values.map((value) => ({ label: labels[String(value)] ?? String(value), value })) : values;
+}
+
 /** Larghezze delle liste (min/max) dai check di un array Zod. */
 function listBounds(schema: ZodLike): DecapField {
 	const bounds: DecapField = {};
@@ -173,7 +178,7 @@ function toField(name: string, input: ZodLike, where: string, ctx: { metas: Reco
 			const pattern = stringPattern(base);
 			return { widget: max !== undefined && max > 120 ? 'text' : 'string', ...(pattern && { pattern }) };
 		}
-		if (type === 'enum') return { widget: 'select', options: schema.options };
+		if (type === 'enum') return { widget: 'select', options: selectOptions(schema) };
 		if (type === 'boolean') return { widget: 'boolean', ...(!optionalHere && { default: false }) };
 		if (type === 'number') return { widget: 'number', value_type: 'float' };
 		if (type === 'object') {
@@ -234,6 +239,8 @@ function toList(schema: ZodLike, where: string, ctx: { metas: Record<string, Blo
 	if (typeOf(element) === 'object') {
 		return { widget: 'list', fields: objectFields(element, where, itemCtx), ...bounds, collapsed: optional };
 	}
+	// Lista di valori da un elenco chiuso (es. i giorni di un orario): una select a scelta multipla.
+	if (typeOf(element) === 'enum') return { widget: 'select', multiple: true, options: selectOptions(element), ...bounds };
 	const field = toField('item', schema._zod.def.element, `${where}[]`, itemCtx);
 	return field && { widget: 'list', field, ...bounds };
 }
@@ -241,29 +248,8 @@ function toList(schema: ZodLike, where: string, ctx: { metas: Record<string, Blo
 // ---------------------------------------------------------------------------- moduli del sito
 
 /** Carica gli schemi con Vite (alias @/, import.meta.glob), senza i componenti e senza astro:content. */
-async function loadProject() {
-	const server = await createServer({
-		root: ROOT,
-		configFile: false,
-		logLevel: 'error',
-		appType: 'custom',
-		server: { middlewareMode: true, hmr: false, ws: false },
-		optimizeDeps: { noDiscovery: true, include: [] },
-		resolve: { alias: [{ find: /^@\//, replacement: join(ROOT, 'src/') }] },
-		plugins: [
-			{
-				// settings.ts e navigation.ts importano getEntry: qui servono solo i loro schemi.
-				name: 'astro-content-stub',
-				resolveId: (id) => (id === 'astro:content' ? '\0astro-content-stub' : undefined),
-				load: (id) =>
-					id === '\0astro-content-stub'
-						? 'export const getEntry = () => { throw new Error("astro:content non disponibile nel generatore"); };'
-						: undefined,
-			},
-		],
-	});
-	try {
-		const load = (path: string) => server.ssrLoadModule(path);
+function loadProject() {
+	return withProjectModules(async (load) => {
 		const [blocks, page, settings, navigation, siteConfig] = await Promise.all([
 			load('/src/core/block-schemas.ts'),
 			load('/src/core/page-schema.ts'),
@@ -272,9 +258,7 @@ async function loadProject() {
 			load('/src/site.config.ts'),
 		]);
 		return { blocks, page, settings, navigation, siteConfig: siteConfig.default };
-	} finally {
-		await server.close();
-	}
+	});
 }
 
 // ---------------------------------------------------------------------------- configurazione
@@ -342,7 +326,7 @@ async function buildConfig() {
 			{
 				name: 'site',
 				label: 'Dati attività',
-				description: 'Nome, recapiti, indirizzo e orari: compaiono in tutto il sito.',
+				description: 'Nome, recapiti, indirizzo, orari e dati legali: compaiono in tutto il sito.',
 				...noPreview,
 				files: [
 					{ name: 'site', label: 'Dati attività', file: 'src/content/settings/site.json', ...media, fields: siteFields },
@@ -351,7 +335,7 @@ async function buildConfig() {
 			{
 				name: 'navigation',
 				label: 'Menu',
-				description: 'Le voci del menu in cima al sito e il pulsante in evidenza.',
+				description: 'Le voci del menu in cima al sito, il pulsante in evidenza e i link del footer.',
 				...noPreview,
 				files: [{ name: 'navigation', label: 'Menu', file: 'src/content/settings/navigation.json', fields: navigationFields }],
 			},
@@ -361,31 +345,32 @@ async function buildConfig() {
 
 // ---------------------------------------------------------------------------- uscita
 
-const config = await buildConfig();
+const HEADER =
+	'# Generato da scripts/gen-decap-config.ts (npm run gen:decap): non modificare a mano.\n' +
+	'# I campi vengono dagli schemi Zod di blocchi, pagine e impostazioni.\n';
 
-if (problems.length > 0) {
-	console.error('Configurazione di Decap non generata:');
-	for (const problem of problems) console.error(`  ✗ ${problem}`);
-	process.exit(1);
+/** Genera il contenuto di config.yml; problems elenca i campi da sistemare (senza descrizione o non mappabili). */
+export async function generateDecapConfig() {
+	problems.length = 0;
+	const config = await buildConfig();
+	const output = HEADER + stringify(config, { lineWidth: 0, aliasDuplicateObjects: false });
+	return { output, problems: [...problems], repo: config.backend.repo, collections: config.collections.length };
 }
 
-const output =
-	'# Generato da scripts/gen-decap-config.ts (npm run gen:decap): non modificare a mano.\n' +
-	'# I campi vengono dagli schemi Zod di blocchi, pagine e impostazioni.\n' +
-	stringify(config, { lineWidth: 0, aliasDuplicateObjects: false });
-
-if (check) {
-	const current = existsSync(OUTPUT) ? readFileSync(OUTPUT, 'utf8') : '';
-	if (current !== output) {
-		const lines = [current.split('\n'), output.split('\n')];
-		const at = lines[1].findIndex((line, index) => line !== lines[0][index]);
-		console.error('public/admin/config.yml non è aggiornato: esegui npm run gen:decap.');
-		if (at >= 0) console.error(`  prima differenza alla riga ${at + 1}:\n  - ${lines[0][at] ?? ''}\n  + ${lines[1][at]}`);
+// Eseguito come comando (npm run gen:decap): scrive il file.
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+	try {
+		const { output, problems: found, repo, collections } = await generateDecapConfig();
+		if (found.length > 0) {
+			console.error('Configurazione di Decap non generata:');
+			for (const problem of found) console.error(`  ✗ ${problem}`);
+			process.exit(1);
+		}
+		mkdirSync(dirname(DECAP_CONFIG), { recursive: true });
+		writeFileSync(DECAP_CONFIG, output);
+		console.log(`Scritto public/admin/config.yml (${collections} collezioni, repo ${repo}).`);
+	} catch (error) {
+		console.error((error as Error).message);
 		process.exit(1);
 	}
-	console.log('public/admin/config.yml aggiornato.');
-} else {
-	mkdirSync(dirname(OUTPUT), { recursive: true });
-	writeFileSync(OUTPUT, output);
-	console.log(`Scritto public/admin/config.yml (${config.collections.length} collezioni, repo ${config.backend.repo}).`);
 }

@@ -21,15 +21,9 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { page } = Astro.props;
 const { title, description, draft, ogImage, noindex, sections } = page.data;
-
-// Gli header in testa alla ricetta stanno fuori da <main>: sono l'intestazione del sito, non contenuto.
-const leading = sections.findIndex((section) => section.type !== 'header');
-const split = leading === -1 ? sections.length : leading;
 ---
 
+{/* Header e footer li mette BaseLayout da layout.json: le sezioni della ricetta sono il contenuto di <main>. */}
 <BaseLayout title={title} description={description} ogImage={ogImage} noindex={noindex || draft}>
-	<RenderSections sections={sections.slice(0, split)} />
-	<main>
-		<RenderSections sections={sections.slice(split)} />
-	</main>
+	<RenderSections sections={sections} />
 </BaseLayout>

@@ -22,4 +22,6 @@ if (process.env.MODE === 'git') {
 	}
 }
 
-await import('decap-server');
+// decap-server non ha tipi: lo si carica solo per avviarlo.
+const server = 'decap-server';
+await import(server);

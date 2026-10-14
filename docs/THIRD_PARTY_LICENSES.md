@@ -7,7 +7,7 @@ Risorse di terzi incluse nel sito pubblicato. Le icone ammesse sono elencate in 
 Icone dei simboli (pennello, casa, telefono...), dal pacchetto `@iconify-json/lucide`.
 
 - Progetto: https://lucide.dev · https://github.com/lucide-icons/lucide
-- Licenza: ISC. Alcune icone derivano da Feather e sono sotto licenza MIT; tra quelle in uso: `arrow-right`, `calendar`, `check`, `chevron-down`, `clock`, `x`.
+- Licenza: ISC. Alcune icone derivano da Feather e sono sotto licenza MIT; tra quelle in uso: `arrow-left`, `arrow-right`, `calendar`, `check`, `chevron-down`, `clock`, `x`.
 
 ```text
 ISC License
@@ -53,15 +53,18 @@ SOFTWARE.
 
 ## Simple Icons
 
-Icone dei marchi (WhatsApp, Facebook, Instagram, Google), dal pacchetto `@iconify-json/simple-icons`.
+Icone dei marchi (WhatsApp, Facebook, Instagram, Google, YouTube, TikTok, Tripadvisor), dal pacchetto `@iconify-json/simple-icons`.
 
 - Progetto: https://simpleicons.org · https://github.com/simple-icons/simple-icons
-- Licenza: CC0 1.0 Universal (pubblico dominio), https://creativecommons.org/publicdomain/zero/1.0/. Nessuna delle quattro icone in uso ha una licenza propria diversa da CC0 (verificato su simple-icons 16.35.0).
-- **Marchi.** CC0 copre i file SVG, non i marchi: WhatsApp, Facebook e Instagram sono marchi di Meta Platforms, Google è un marchio di Google LLC. Si usano solo per collegare i profili dell'attività, senza modificarne la forma e rispettando le linee guida dei titolari:
+- Licenza: CC0 1.0 Universal (pubblico dominio), https://creativecommons.org/publicdomain/zero/1.0/. Nessuna delle sette icone in uso ha una licenza propria diversa da CC0 (verificato su simple-icons 16.35.0, `data/simple-icons.json`). LinkedIn non c'è: Simple Icons l'ha tolta su richiesta del titolare.
+- **Marchi.** CC0 copre i file SVG, non i marchi: WhatsApp, Facebook e Instagram sono marchi di Meta Platforms, Google e YouTube di Google LLC, TikTok di ByteDance, Tripadvisor di Tripadvisor LLC. Si usano solo per collegare i profili dell'attività, senza modificarne la forma e rispettando le linee guida dei titolari:
   - WhatsApp: https://about.meta.com/brand/resources/whatsapp/whatsapp-brand
   - Facebook: https://about.meta.com/brand/resources/facebook/logo
   - Instagram: https://about.meta.com/brand/resources/instagram
   - Google: https://about.google/brand-resource-center/brand-elements/
+  - YouTube: https://www.youtube.com/howyoutubeworks/resources/brand-resources/#logos-icons-and-colors
+  - Tripadvisor: https://tripadvisor.mediaroom.com/logo-guidelines
+  - TikTok: Simple Icons non indica linee guida; vale la regola generale (forma invariata, solo per il link al profilo).
 
 ## Decap CMS
 

@@ -2,14 +2,7 @@ import type { SchemaContext } from 'astro:content';
 import { z } from 'astro/zod';
 import type { BlockProps } from '@/core/block-types';
 import { imageSchema } from '@/core/images';
-
-const cta = z.object({
-	label: z.string().min(1).max(25).describe('Testo del pulsante|Al massimo 25 caratteri'),
-	href: z
-		.string()
-		.min(1)
-		.describe('Link|Una pagina del sito (/contatti/), una sezione (#preventivo) o un indirizzo completo'),
-});
+import { ctaSchema } from '@/core/schemas/cta';
 
 export const schema = ({ image }: SchemaContext) =>
 	z
@@ -25,8 +18,8 @@ export const schema = ({ image }: SchemaContext) =>
 				.max(200)
 				.optional()
 				.describe('Sottotitolo|Una o due frasi su cosa offri, al massimo 200 caratteri'),
-			primaryCta: cta.describe('Pulsante principale|L’azione più importante, es. «Chiedi un preventivo»'),
-			secondaryCta: cta
+			primaryCta: ctaSchema.describe('Pulsante principale|L’azione più importante, es. «Chiedi un preventivo»'),
+			secondaryCta: ctaSchema
 				.optional()
 				.describe('Pulsante secondario|Un’alternativa meno importante: compila testo e link, oppure nessuno dei due'),
 			/** Obbligatoria per split e full; centered non la mostra. */

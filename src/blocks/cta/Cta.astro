@@ -1,8 +1,8 @@
 ---
 import type { IconName } from '@/core/icons';
-import { getSiteSettings, phoneHref, whatsappHref } from '@/core/settings';
+import { getSiteSettings } from '@/core/settings';
 import Button from '@/core/ui/Button.astro';
-import Icon from '@/core/ui/Icon.astro';
+import CtaButton from '@/core/ui/CtaButton.astro';
 import Section from '@/core/ui/Section.astro';
 import type { CtaProps } from './schema';
 
@@ -14,10 +14,8 @@ const { id, tone, variant, title, text, primary, secondary, showContacts } = Ast
 const settings = showContacts ? await getSiteSettings() : undefined;
 const contacts: { href: string; icon: IconName; label: string }[] = [];
 if (settings) {
-	contacts.push({ href: phoneHref(settings.phone), icon: 'telefono', label: `Chiama ${settings.phone}` });
-	if (settings.whatsapp) {
-		contacts.push({ href: whatsappHref(settings.whatsapp), icon: 'whatsapp', label: 'Scrivici su WhatsApp' });
-	}
+	contacts.push({ href: '@telefono', icon: 'telefono', label: `Chiama ${settings.phone}` });
+	if (settings.whatsapp) contacts.push({ href: '@whatsapp', icon: 'whatsapp', label: 'Scrivici su WhatsApp' });
 }
 ---
 
@@ -28,19 +26,14 @@ if (settings) {
 				<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
 				{text && <p class="mt-4 text-lg text-pretty text-fg-muted">{text}</p>}
 				<div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-					<Button href={primary.href}>{primary.label}</Button>
-					{secondary && (
-						<Button href={secondary.href} variant="secondary">
-							{secondary.label}
-						</Button>
-					)}
+					<CtaButton cta={primary} tone={tone} />
+					{secondary && <CtaButton cta={secondary} defaultStyle="secondary" tone={tone} />}
 				</div>
 				{contacts.length > 0 && (
 					<ul class="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
 						{contacts.map((contact) => (
 							<li>
-								<Button href={contact.href} variant="link">
-									<Icon name={contact.icon} />
+								<Button href={contact.href} variant="link" icon={contact.icon} tone={tone}>
 									{contact.label}
 								</Button>
 							</li>
@@ -58,15 +51,10 @@ if (settings) {
 				</div>
 				{/* In una griglia i pulsanti si allungano a tutta la colonna. */}
 				<div class="grid gap-3 lg:col-span-2">
-					<Button href={primary.href}>{primary.label}</Button>
-					{secondary && (
-						<Button href={secondary.href} variant="secondary">
-							{secondary.label}
-						</Button>
-					)}
+					<CtaButton cta={primary} tone={tone} />
+					{secondary && <CtaButton cta={secondary} defaultStyle="secondary" tone={tone} />}
 					{contacts.map((contact) => (
-						<Button href={contact.href} variant="secondary">
-							<Icon name={contact.icon} />
+						<Button href={contact.href} variant="secondary" icon={contact.icon} tone={tone}>
 							{contact.label}
 						</Button>
 					))}

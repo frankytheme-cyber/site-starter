@@ -26,6 +26,7 @@ export const icons = {
 	email: 'lucide:mail',
 	'mappa-pin': 'lucide:map-pin',
 	'freccia-destra': 'lucide:arrow-right',
+	'freccia-sinistra': 'lucide:arrow-left',
 	menu: 'lucide:menu',
 	chiudi: 'lucide:x',
 	'chevron-giu': 'lucide:chevron-down',
@@ -39,6 +40,9 @@ export const icons = {
 	facebook: 'simple-icons:facebook',
 	instagram: 'simple-icons:instagram',
 	google: 'simple-icons:google',
+	youtube: 'simple-icons:youtube',
+	tiktok: 'simple-icons:tiktok',
+	tripadvisor: 'simple-icons:tripadvisor',
 } as const;
 
 export type IconName = keyof typeof icons;

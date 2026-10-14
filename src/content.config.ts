@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { file, glob, type Loader } from 'astro/loaders';
 import { withoutEmpty } from './core/clean-data';
+import { layoutSchema } from './core/layout';
 import { navigationSchema } from './core/navigation';
 import { pageSchema } from './core/page-schema';
 import { siteSettingsSchema } from './core/settings';
@@ -30,6 +31,14 @@ const theme = defineCollection({
 	schema: themeSchema,
 });
 
+/** Header e footer del sito: variante e opzioni dei blocchi di layout. Schema in core/layout.ts. */
+const layout = defineCollection({
+	loader: file('src/content/settings/layout.json', {
+		parser: (text) => [{ id: 'layout', ...JSON.parse(text) }],
+	}),
+	schema: layoutSchema,
+});
+
 /** Toglie i campi vuoti che il CMS lascia ("" e {}) prima della validazione: vedi core/clean-data.ts. */
 function cleaned(loader: Loader): Loader {
 	return {
@@ -48,4 +57,4 @@ const pages = defineCollection({
 	schema: pageSchema,
 });
 
-export const collections = { settings, navigation, theme, pages };
+export const collections = { settings, navigation, theme, layout, pages };

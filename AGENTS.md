@@ -6,10 +6,10 @@ Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, u
 
 - **Solo classi semantiche nei blocchi.** Usa `bg-primary`, `text-fg-muted`, `font-heading`, `rounded-box`... MAI colori Tailwind fissi (`bg-blue-600`, `text-gray-500`...) né valori arbitrari di colore (`bg-[#1e40af]`, `text-[rgb(...)]`...). La palette di Tailwind è disattivata, quindi i colori fissi non generano CSS; i valori arbitrari invece funzionano ancora e vanno evitati a mano.
 - **Cartelle gestite in sola lettura nei siti cliente.** Le cartelle elencate in `library.manifest.json` → `managed` si modificano SOLO nella repo site-starter; nei siti cliente sono in sola lettura.
-- **Dati dell'attività in un solo posto.** Nome, indirizzo, telefono, email, P.IVA e orari stanno solo in `src/content/settings/site.json`; mai scritti nei testi delle pagine né negli schemi dei blocchi, che li leggono con `getSiteSettings()` (`@/core/settings`).
+- **Dati dell'attività in un solo posto.** Nome, descrizione, indirizzo, telefono, email, dati legali (ragione sociale, forma giuridica, P.IVA, REA, capitale) e orari stanno solo in `src/content/settings/site.json`; mai scritti nei testi delle pagine né negli schemi dei blocchi, che li leggono con `getSiteSettings()` (`@/core/settings`).
 - **Si compone con blocchi esistenti.** Il sito si costruisce con i blocchi già presenti: un blocco nuovo nasce solo in site-starter, su task approvato.
 - **Ogni campo ha etichetta e aiuto.** Ogni campo degli schemi di blocchi, pagine e impostazioni ha `.describe("Etichetta|Aiuto")` in italiano: da lì nasce il CMS. Dopo aver cambiato uno schema, `npm run gen:decap` e commit di `public/admin/config.yml`.
-- **Build verde prima di chiudere.** Prima di dichiarare finito un lavoro, `npm run build` deve passare.
+- **Controlli verdi prima di chiudere.** Prima di dichiarare finito un lavoro, `npm run check` deve passare (comprende la build); per blocchi, layout e pagine anche `npm run qa`. Elenco dei controlli in `docs/controlli.md`.
 
 ## Tema
 
@@ -21,9 +21,10 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 
 ## Blocchi
 
-- Il contratto è in `src/blocks/README.md`; i blocchi di riferimento sono `hero/`, `services/`, `cta/` e `header/` (interattivo) in `src/blocks/`.
+- Il contratto è in `src/blocks/README.md`; i blocchi di riferimento sono `hero/`, `services/`, `cta/`, `header/` (interattivo), `footer/`, `accordion/`, `tabs/` e `carousel/` in `src/blocks/`. Le primitive (`Button`, `Accordion`, `Tabs`, `Carousel`...) sono in `src/core/ui/` e si vedono in `/catalogo/ui`.
 - Blocchi interattivi (`interactive: true` in `meta.ts`): JS vanilla nel componente, progressive enhancement, tastiera, focus, movimento ridotto, niente autoplay. Regole in `docs/blocchi-interattivi.md`.
-- Menu del sito: solo in `src/content/settings/navigation.json`, letto con `getNavigation()` (`@/core/navigation`).
+- **Blocchi di layout.** `header` e `footer` hanno `scope: "layout"` in `meta.ts`: non vanno nelle ricette (la build li rifiuta) ma si scelgono in `src/content/settings/layout.json` (variante e opzioni, schema in `src/core/layout.ts`) e li disegna `BaseLayout` su ogni pagina. Tutti gli altri blocchi hanno `scope: "page"`.
+- Menu del sito: solo in `src/content/settings/navigation.json`, letto con `getNavigation()` (`@/core/navigation`): voci e pulsante dell'header, gruppo `footer` con i link secondari e quelli legali (privacy, cookie).
 - Anteprima: `/catalogo` (tutti i blocchi con le loro fixture, selettori di palette, font e forma) e `/catalogo/<type>`.
 - La radice di ogni blocco è `<Section>` (`tone`: `default`, `muted`, `primary`). Dentro usa sempre `text-fg`, `text-fg-muted`, `bg-primary`...: Section ridefinisce i token per il tono, così il contrasto resta quello verificato.
 - Immagini: solo file in `src/assets/images`. Nelle ricette il percorso è relativo al JSON (`"../../assets/images/foto.jpg"`), nelle fixture il file si importa; `alt` di almeno 5 caratteri che descrive la foto.
@@ -33,12 +34,13 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 
 - Ogni pagina è una ricetta JSON in `src/content/pages/` (`index.json` → `/`, `chi-siamo.json` → `/chi-siamo/`), con `"$schema"` per il completamento nell'editor. Formato in `src/content/pages/README.md`, schema in `src/core/page-schema.ts`.
 - Le sezioni sono piatte: `type` (il blocco), `id` facoltativo (ancora in kebab-case), `tone` (`default`, `muted`, `primary`) e accanto le props del blocco. Alterna i toni tra sezioni vicine.
-- Una pagina ha un solo `hero`, in apertura, e di norma una `cta`. Link interni solo a pagine e ancore che esistono.
-- Prima di pubblicare: `npm run check:recipes -- --strict` (segnaposto, recapiti scritti a mano, link rotti...).
+- Nei link dei pulsanti i recapiti si scrivono `@telefono`, `@whatsapp`, `@email`, `@mappa`: la build li risolve da `site.json`, mai `tel:` o numeri scritti a mano.
+- Una pagina ha un solo `hero`, in apertura, e di norma una `cta`. Header e footer non sono sezioni. Link interni solo a pagine e ancore che esistono.
+- Prima di pubblicare: `npm run check -- --strict` (recipes come errori e release: segnaposto, recapiti scritti a mano, link rotti, bozze linkate, dati legali e link a privacy e cookie nel footer, Open Graph...).
 
 ## CMS
 
-- Il cliente modifica pagine, Dati attività e Menu con Decap CMS su `/admin/` (flusso editoriale: ogni modifica è una pull request). Il tema non è esposto.
+- Il cliente modifica pagine, Dati attività e Menu con Decap CMS su `/admin/` (flusso editoriale: ogni modifica è una pull request). Tema (`theme.json`) e layout (`layout.json`) non sono esposti.
 - `public/admin/config.yml` è generato da `scripts/gen-decap-config.ts`: mai a mano. Setup, inviti e limiti in `docs/decap.md`.
 
 ## Comandi
@@ -48,6 +50,8 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run dev`            | Server di sviluppo su `localhost:4321`            |
 | `npm run build`          | Build di produzione in `dist/`                    |
 | `npm run preview`        | Anteprima locale della build                      |
+| `npm run check`          | Controlli statici + build; `-- --strict` con le regole di pubblicazione |
+| `npm run qa`             | `check` + link, accessibilità, interattivi, Lighthouse sul sito servito |
 | `npm run check:contrast` | Verifica il contrasto WCAG AA di tutte le palette |
 | `npm run check:recipes`  | Controlla ricette e dati del sito; `-- --strict` esce con errore |
 | `npm run gen:decap`      | Genera `public/admin/config.yml` dagli schemi (anche in `prebuild`) |

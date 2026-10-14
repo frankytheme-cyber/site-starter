@@ -1,0 +1,130 @@
+---
+/**
+ * Schede (pattern ARIA tablist/tab/tabpanel). Il contenuto di ogni scheda è lo slot "panel-<n>",
+ * nell'ordine di tabs:
+ *   <Tabs label="Servizi" tabs={['Interni', 'Esterni']}>
+ *     <Fragment slot="panel-0">...</Fragment>
+ *     <Fragment slot="panel-1">...</Fragment>
+ *   </Tabs>
+ * Da md in su: schede con frecce, Home/End e tabindex mobile (con JS); senza JS i pannelli uno dopo
+ * l'altro, ognuno col suo titolo. Sotto md: Accordion, che funziona anche senza JS.
+ * Regole: docs/blocchi-interattivi.md.
+ */
+import { nextId } from '@/core/ids';
+import Accordion from './Accordion.astro';
+import AccordionItem from './AccordionItem.astro';
+
+interface Props {
+	/** Nome dell'insieme di schede per gli screen reader (aria-label del tablist). */
+	label: string;
+	/** Etichette delle schede, nell'ordine degli slot panel-0, panel-1... */
+	tabs: string[];
+	/** Livello del titolo di ogni pannello quando le schede sono in sequenza (senza JS). */
+	headingLevel?: 2 | 3 | 4;
+	class?: string;
+}
+
+const { label, tabs, headingLevel = 3, class: className } = Astro.props;
+const uid = nextId(Astro.request, 'tabs');
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+
+// Il contenuto si rende una volta e si usa due volte: nell'accordion (mobile) e nei pannelli (desktop).
+const panels = await Promise.all(
+	tabs.map(async (tab, index) => ({
+		label: tab,
+		html: await Astro.slots.render(`panel-${index}`),
+		tabId: `${uid}-tab-${index + 1}`,
+		panelId: `${uid}-panel-${index + 1}`,
+	})),
+);
+---
+
+<div data-tabs class={className}>
+	<div class="md:hidden">
+		<Accordion single>
+			{
+				panels.map((panel, index) => (
+					<AccordionItem title={panel.label} open={index === 0}>
+						<Fragment set:html={panel.html} />
+					</AccordionItem>
+				))
+			}
+		</Accordion>
+	</div>
+
+	<div class="hidden md:block">
+		<div role="tablist" aria-label={label} hidden data-tabs-list class="flex flex-wrap gap-x-2 border-b border-border">
+			{
+				panels.map((panel, index) => (
+					<button
+						type="button"
+						role="tab"
+						id={panel.tabId}
+						aria-controls={panel.panelId}
+						aria-selected={index === 0 ? 'true' : 'false'}
+						tabindex={index === 0 ? 0 : -1}
+						class="-mb-px min-h-11 border-b-2 border-transparent px-4 py-2 font-semibold text-fg-muted hover:text-fg aria-selected:border-primary aria-selected:text-fg"
+					>
+						{panel.label}
+					</button>
+				))
+			}
+		</div>
+		{
+			panels.map((panel) => (
+				<section id={panel.panelId} data-tab-panel class="py-8 not-first-of-type:border-t not-first-of-type:border-border">
+					<Heading data-tab-heading class="mb-4 text-xl font-bold">
+						{panel.label}
+					</Heading>
+					<Fragment set:html={panel.html} />
+				</section>
+			))
+		}
+	</div>
+</div>
+
+<script>
+	// Da md in su le schede: il tablist si mostra e i pannelli diventano tabpanel, uno visibile alla volta.
+	for (const tabs of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
+		const list = tabs.querySelector<HTMLElement>('[data-tabs-list]');
+		if (!list) continue;
+		const buttons = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+		const panels = buttons.map((button) => document.getElementById(button.getAttribute('aria-controls')!)!);
+
+		list.hidden = false;
+		panels.forEach((panel, index) => {
+			panel.setAttribute('role', 'tabpanel');
+			panel.setAttribute('aria-labelledby', buttons[index].id);
+			panel.tabIndex = 0;
+			panel.classList.remove('not-first-of-type:border-t');
+			panel.querySelector<HTMLElement>('[data-tab-heading]')?.setAttribute('hidden', '');
+		});
+
+		const select = (index: number, focus: boolean) => {
+			buttons.forEach((button, i) => {
+				const selected = i === index;
+				button.setAttribute('aria-selected', String(selected));
+				button.tabIndex = selected ? 0 : -1;
+				panels[i].hidden = !selected;
+			});
+			if (focus) buttons[index].focus();
+		};
+		select(0, false);
+
+		buttons.forEach((button, index) => {
+			button.addEventListener('click', () => select(index, false));
+			button.addEventListener('keydown', (event) => {
+				const last = buttons.length - 1;
+				const targets: Record<string, number> = {
+					ArrowRight: index === last ? 0 : index + 1,
+					ArrowLeft: index === 0 ? last : index - 1,
+					Home: 0,
+					End: last,
+				};
+				if (!(event.key in targets)) return;
+				event.preventDefault();
+				select(targets[event.key], true);
+			});
+		});
+	}
+</script>

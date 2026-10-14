@@ -3,21 +3,14 @@ import { z } from 'astro/zod';
 import type { BlockProps } from '@/core/block-types';
 import { ICON_NAMES } from '@/core/icons';
 import { imageSchema } from '@/core/images';
-
-const link = z.object({
-	label: z.string().min(1).max(25).describe('Testo del link|Al massimo 25 caratteri'),
-	href: z
-		.string()
-		.min(1)
-		.describe('Link|Una pagina del sito (/servizi/), una sezione (#interni) o un indirizzo completo'),
-});
+import { ctaSchema } from '@/core/schemas/cta';
 
 export const schema = ({ image }: SchemaContext) =>
 	z
 		.object({
 			variant: z
-				.enum(['cards-icone', 'cards-immagine', 'alternato'])
-				.describe('Variante|cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo'),
+				.enum(['cards-icone', 'cards-immagine', 'alternato', 'schede'])
+				.describe('Variante|cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda'),
 			eyebrow: z.string().min(1).optional().describe('Occhiello|Breve testo sopra il titolo'),
 			title: z.string().min(1).max(70).describe('Titolo|Titolo della sezione, al massimo 70 caratteri'),
 			intro: z
@@ -34,10 +27,10 @@ export const schema = ({ image }: SchemaContext) =>
 						/** Obbligatoria per cards-immagine e alternato; cards-icone non la mostra. */
 						image: imageSchema(image)
 							.optional()
-							.describe('Foto|Obbligatoria per le varianti cards-immagine e alternato'),
+							.describe('Foto|Obbligatoria per le varianti cards-immagine e alternato; facoltativa nelle schede'),
 						title: z.string().min(1).max(50).describe('Nome del servizio|Al massimo 50 caratteri'),
 						text: z.string().min(1).max(180).describe('Descrizione|Cosa comprende il servizio, al massimo 180 caratteri'),
-						link: link
+						link: ctaSchema
 							.optional()
 							.describe('Link|Porta alla pagina o alla sezione del servizio: compila testo e link, oppure nessuno dei due'),
 					}),
@@ -48,11 +41,12 @@ export const schema = ({ image }: SchemaContext) =>
 		})
 		.superRefine((props, ctx) => {
 			const needsIcon = props.variant === 'cards-icone';
+			const needsImage = props.variant === 'cards-immagine' || props.variant === 'alternato';
 			props.items.forEach((item, index) => {
 				if (needsIcon && !item.icon) {
 					ctx.addIssue({ code: 'custom', message: 'la variante cards-icone richiede icon', path: ['items', index, 'icon'] });
 				}
-				if (!needsIcon && !item.image) {
+				if (needsImage && !item.image) {
 					ctx.addIssue({
 						code: 'custom',
 						message: `la variante ${props.variant} richiede image`,

@@ -1,8 +1,9 @@
 ---
-import Button from '@/core/ui/Button.astro';
+import CtaButton from '@/core/ui/CtaButton.astro';
 import Icon from '@/core/ui/Icon.astro';
 import Img from '@/core/ui/Img.astro';
 import Section from '@/core/ui/Section.astro';
+import TabsList from '@/core/ui/Tabs.astro';
 import type { ServicesProps } from './schema';
 
 type Props = ServicesProps;
@@ -10,6 +11,7 @@ type Props = ServicesProps;
 const { id, tone, variant, eyebrow, title, intro, items } = Astro.props;
 
 const isAlternato = variant === 'alternato';
+const isSchede = variant === 'schede';
 
 // 2 e 4 card stanno su due colonne, 3, 5 e 6 su tre: niente card sole sull'ultima riga di una griglia da 2×2.
 const twoColumns = items.length === 2 || items.length === 4;
@@ -27,7 +29,36 @@ const cardSizes = twoColumns
 	</div>
 
 	{
-		isAlternato ? (
+		isSchede && (
+			<TabsList label={title} tabs={items.map((item) => item.title)} class="mt-12">
+				{items.map((item, index) => (
+					<Fragment slot={`panel-${index}`}>
+						<div class:list={['grid gap-8', item.image && 'md:grid-cols-2 md:items-center lg:gap-12']}>
+							{item.image && (
+								<Img
+									src={item.image.src}
+									alt={item.image.alt}
+									sizes="(min-width: 1152px) 520px, (min-width: 768px) 45vw, 100vw"
+									class="aspect-4/3 w-full rounded-box object-cover"
+								/>
+							)}
+							<div class="max-w-2xl">
+								<p class="text-lg text-pretty text-fg-muted">{item.text}</p>
+								{item.link && (
+									<p class="mt-6">
+										<CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} />
+									</p>
+								)}
+							</div>
+						</div>
+					</Fragment>
+				))}
+			</TabsList>
+		)
+	}
+
+	{
+		isSchede ? null : isAlternato ? (
 			<ul class="mt-16 grid gap-16 lg:gap-24">
 				{items.map((item, index) => (
 					<li class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
@@ -44,10 +75,7 @@ const cardSizes = twoColumns
 							<p class="mt-3 text-lg text-pretty text-fg-muted">{item.text}</p>
 							{item.link && (
 								<p class="mt-6">
-									<Button href={item.link.href} variant="link">
-										{item.link.label}
-										<Icon name="freccia-destra" size="sm" />
-									</Button>
+									<CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} />
 								</p>
 							)}
 						</div>
@@ -76,10 +104,7 @@ const cardSizes = twoColumns
 							<p class="mt-2 text-pretty text-fg-muted">{item.text}</p>
 							{item.link && (
 								<p class="mt-auto pt-5">
-									<Button href={item.link.href} variant="link">
-										{item.link.label}
-										<Icon name="freccia-destra" size="sm" />
-									</Button>
+									<CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} />
 								</p>
 							)}
 						</div>

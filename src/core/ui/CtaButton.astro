@@ -1,0 +1,33 @@
+---
+/**
+ * Un valore dello schema cta (core/schemas/cta.ts) come Button: stile della cta o quello
+ * previsto dal blocco, icona prima del testo (le frecce dopo).
+ */
+import type { Tone } from '@/core/block-types';
+import type { ButtonStyle, Cta } from '@/core/schemas/cta';
+import Button from './Button.astro';
+
+interface Props {
+	cta: Cta;
+	/** Stile se la cta non ne indica uno. */
+	defaultStyle?: ButtonStyle;
+	size?: 'sm' | 'md' | 'lg';
+	tone?: Tone;
+	class?: string;
+}
+
+const { cta, defaultStyle = 'primary', size, tone, class: className } = Astro.props;
+const iconPosition = cta.icon === 'freccia-destra' ? 'end' : 'start';
+---
+
+<Button
+	href={cta.href}
+	variant={cta.style ?? defaultStyle}
+	size={size}
+	icon={cta.icon}
+	iconPosition={iconPosition}
+	tone={tone}
+	class={className}
+>
+	{cta.label}
+</Button>

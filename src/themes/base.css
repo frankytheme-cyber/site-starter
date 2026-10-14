@@ -85,6 +85,24 @@
 	--ring: var(--tone-primary-fg);
 }
 
+/*
+ * Un elemento su fondo primary fuori da una Section primary (es. Button tone="primary") prende
+ * i token invertiti partendo dai valori della palette, salvati su <html>: così l'inversione non
+ * si somma a quella di una Section primary.
+ */
+[data-palette] {
+	--palette-primary: var(--primary);
+	--palette-primary-fg: var(--primary-fg);
+}
+
+[data-on-tone="primary"] {
+	--bg: var(--palette-primary);
+	--fg: var(--palette-primary-fg);
+	--primary: var(--palette-primary-fg);
+	--primary-fg: var(--palette-primary);
+	--ring: var(--palette-primary-fg);
+}
+
 @layer base {
 	body {
 		@apply bg-bg font-body text-fg;

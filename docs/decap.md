@@ -12,9 +12,9 @@ Il cliente modifica i contenuti del proprio sito da `https://<sito>/admin/`, ent
 | `src/core/integrations/decap-bundle.ts` | Serve Decap da `/admin/decap/`, copiato da `node_modules/decap-cms` (niente CDN).          |
 | `src/site.config.ts`                   | Indirizzo del servizio OAuth (`cms.oauthBaseUrl`) e ramo di pubblicazione (`cms.branch`). |
 
-I campi del CMS sono quelli degli schemi dei blocchi (`src/blocks/*/schema.ts`), delle pagine (`src/core/page-schema.ts`) e delle impostazioni (`src/core/settings.ts`, `src/core/navigation.ts`). Etichetta e aiuto di ogni campo vengono da `.describe("Etichetta|Aiuto")`: un campo senza descrizione, o di un tipo che Decap non sa rappresentare, ferma `gen:decap` con il blocco e il campo da sistemare.
+I campi del CMS sono quelli degli schemi dei blocchi di pagina (`src/blocks/*/schema.ts` con `scope: 'page'`), delle pagine (`src/core/page-schema.ts`) e delle impostazioni (`src/core/settings.ts`, `src/core/navigation.ts`). Header e footer (blocchi di layout) e `layout.json` non sono nel CMS. Le scelte da un elenco chiuso mostrano un'etichetta leggibile se l'enum ha `.meta({ optionLabels })` (es. forma giuridica, giorni degli orari); una lista di valori da un enum diventa una select a scelta multipla. Etichetta e aiuto di ogni campo vengono da `.describe("Etichetta|Aiuto")`: un campo senza descrizione, o di un tipo che Decap non sa rappresentare, ferma `gen:decap` con il blocco e il campo da sistemare.
 
-Dopo aver cambiato uno schema: `npm run gen:decap` e commit di `config.yml`. `npm run check:decap` (da mettere in CI) fallisce se il file non è aggiornato.
+Dopo aver cambiato uno schema: `npm run gen:decap` e commit di `config.yml`. `npm run check:decap` (compreso in `npm run check` e quindi in CI) fallisce se il file non è aggiornato.
 
 Il repository GitHub nella configurazione si ricava, in quest'ordine, da `--repo=org/nome`, dalla variabile `DECAP_REPO`, da `VERCEL_GIT_REPO_OWNER`/`VERCEL_GIT_REPO_SLUG` (su Vercel) e dal remote `origin`.
 
@@ -72,7 +72,7 @@ Il CMS usa `publish_mode: editorial_workflow`: niente va online senza una pubbli
 2. **In revisione / Pronto.** Lo stato si cambia dal menu in alto o nella scheda **Flusso editoriale**, dove le modifiche in corso sono in colonne. Vercel pubblica un'anteprima di ogni ramo: il link è nella pull request su GitHub.
 3. **Pubblica.** Da **Pronto** la modifica si pubblica: la pull request viene unita a `main` e Vercel ricostruisce il sito.
 
-Se la build fallisce (es. una variante a cui manca la foto), il sito resta alla versione precedente e il deploy fallito mostra file, sezione e campo da correggere. Prima di pubblicare un sito nuovo esegui comunque `npm run check:recipes -- --strict`.
+Se la build fallisce (es. una variante a cui manca la foto), il sito resta alla versione precedente e il deploy fallito mostra file, sezione e campo da correggere. Prima di pubblicare un sito nuovo esegui comunque `npm run check -- --strict`; in CI le pull request verso `main` lo fanno da sole (`docs/controlli.md`).
 
 Il campo **Bozza** di una pagina è una cosa diversa: una pagina con `draft: true`, anche pubblicata, compare solo nelle anteprime e non in produzione.
 
@@ -81,13 +81,13 @@ Il campo **Bozza** di una pagina è una cosa diversa: una pagina con `draft: tru
 **Può:**
 
 - **Pagine:** creare pagine, modificarne titolo, descrizione per Google, immagine per i social e stato di bozza; aggiungere, riordinare (trascinando) ed eliminare sezioni, scegliendo tra i blocchi della libreria; cambiare testi, foto, link, varianti e sfondi delle sezioni.
-- **Dati attività:** nome, indirizzo del sito, logo, telefono, WhatsApp, email, indirizzo, partita IVA, orari, profili social.
-- **Menu:** voci, sottomenu e pulsante in evidenza.
+- **Dati attività:** nome, descrizione, indirizzo del sito, logo, telefono, WhatsApp, email, indirizzo, dati legali (ragione sociale, forma giuridica, partita IVA, REA e capitale sociale), orari (giorni e fasce orarie), profili social.
+- **Menu:** voci, sottomenu e pulsante in evidenza dell'intestazione; link del footer e link legali (privacy, cookie).
 - **Media:** caricare foto, che vanno in `src/assets/images/` e vengono ottimizzate dalla build.
 
 **Non può:**
 
-- cambiare l'aspetto del sito: palette, font e forma (`theme.json` non è nel CMS);
+- cambiare l'aspetto del sito: palette, font e forma (`theme.json` non è nel CMS), né variante e opzioni di header e footer (`layout.json` non è nel CMS);
 - creare blocchi nuovi o cambiarne il disegno: si compone solo con i blocchi esistenti;
 - toccare codice, configurazione e cartelle gestite della libreria;
 - cambiare l'indirizzo di una pagina dopo averla creata: il nome del file nasce dal titolo alla creazione. Per cambiarlo serve lo sviluppatore.
@@ -96,7 +96,7 @@ Non eliminare la pagina **index**: è la home del sito.
 
 ## Limiti noti
 
-- **Regole tra campi.** Il CMS non sa che la foto è obbligatoria solo per alcune varianti (hero `split`/`full`, servizi `cards-immagine`/`alternato`), né che l'icona serve per `cards-icone`. Gli aiuti dei campi lo dicono; il controllo vero lo fa la build.
+- **Regole tra campi.** Il CMS non sa che la foto è obbligatoria solo per alcune varianti (hero `split`/`full`, servizi `cards-immagine`/`alternato`), né che l'icona serve per `cards-icone`, che REA e capitale sociale sono obbligatori per le società, né controlla la cifra di controllo della partita IVA o l'ordine delle fasce orarie. Gli aiuti dei campi lo dicono; il controllo vero lo fa la build.
 - **Campi «tutto o niente».** Pulsante secondario, link di un servizio, foto: si compilano tutti i campi o nessuno. Un campo lasciato a metà ferma la build. I campi svuotati invece non danno problemi: prima della validazione `""` e `{}` vengono tolti (`src/core/clean-data.ts`).
 - **Anteprima nell'editor disattivata.** Il sito si controlla sull'anteprima di Vercel.
 - **Foto in sottocartelle.** La libreria media mostra solo `src/assets/images/`: le foto in sottocartelle (es. `fixtures/` del template) restano valide ma nel CMS non hanno l'anteprima.

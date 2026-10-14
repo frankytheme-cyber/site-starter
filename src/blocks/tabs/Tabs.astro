@@ -1,0 +1,51 @@
+---
+import CtaButton from '@/core/ui/CtaButton.astro';
+import Img from '@/core/ui/Img.astro';
+import Section from '@/core/ui/Section.astro';
+import TabsList from '@/core/ui/Tabs.astro';
+import type { TabsProps } from './schema';
+
+type Props = TabsProps;
+
+const { id, tone, variant, eyebrow, title, intro, items } = Astro.props;
+
+const withImage = variant === 'testo-immagine';
+const paragraphs = (text: string) => text.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
+---
+
+<Section id={id} tone={tone}>
+	<div class="max-w-2xl">
+		{eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider text-primary uppercase">{eyebrow}</p>}
+		<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+		{intro && <p class="mt-4 text-lg text-pretty text-fg-muted">{intro}</p>}
+	</div>
+
+	<TabsList label={title} tabs={items.map((item) => item.label)} class="mt-10">
+		{
+			items.map((item, index) => (
+				<Fragment slot={`panel-${index}`}>
+					<div class:list={['grid gap-8', withImage && 'md:grid-cols-2 md:items-center lg:gap-12']}>
+						{withImage && item.image && (
+							<Img
+								src={item.image.src}
+								alt={item.image.alt}
+								sizes="(min-width: 1152px) 520px, (min-width: 768px) 45vw, 100vw"
+								class="aspect-4/3 w-full rounded-box object-cover"
+							/>
+						)}
+						<div class:list={['grid gap-4 text-lg text-pretty text-fg-muted', !withImage && 'max-w-3xl']}>
+							{paragraphs(item.text).map((paragraph) => (
+								<p>{paragraph}</p>
+							))}
+							{item.cta && (
+								<p class="mt-2">
+									<CtaButton cta={item.cta} defaultStyle="secondary" tone={tone} />
+								</p>
+							)}
+						</div>
+					</div>
+				</Fragment>
+			))
+		}
+	</TabsList>
+</Section>

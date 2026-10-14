@@ -1,0 +1,25 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "DA-COMPILARE: Contatti · nome dell’attività",
+	"description": "DA-COMPILARE: come contattare l’attività, dove si trova e in quanto tempo risponde.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "centered",
+			"eyebrow": "Contatti",
+			"title": "DA-COMPILARE: titolo della pagina contatti",
+			"subtitle": "DA-COMPILARE: una frase su come e quando contattare l’attività.",
+			"primaryCta": { "label": "Vedi i recapiti", "href": "#recapiti" }
+		},
+		{
+			"type": "cta",
+			"id": "recapiti",
+			"tone": "muted",
+			"variant": "split-contatto",
+			"title": "DA-COMPILARE: invito a chiamare o scrivere",
+			"text": "DA-COMPILARE: orari in cui rispondete e tempi di risposta.",
+			"primary": { "label": "Torna alla home", "href": "/" },
+			"showContacts": true
+		}
+	]
+}

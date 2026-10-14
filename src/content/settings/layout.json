@@ -1,0 +1,4 @@
+{
+	"header": { "variant": "con-cta", "sticky": true },
+	"footer": { "variant": "colonne", "ctaBand": false }
+}

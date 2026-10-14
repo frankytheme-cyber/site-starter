@@ -9,7 +9,8 @@ export const meta: BlockMeta = {
 	avoidWhen:
 		'Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei cantieri, non un elenco.',
 	category: 'contenuti',
-	version: '1.0.0',
+	scope: 'page',
+	version: '1.1.0',
 	source: { from: 'originale' },
 	variants: {
 		'cards-icone':
@@ -17,5 +18,6 @@ export const meta: BlockMeta = {
 		'cards-immagine': 'Griglia di card con una foto in alto. Più concreta, richiede una foto adatta per ogni servizio.',
 		alternato:
 			'Righe con foto e testo che si alternano a destra e a sinistra. Occupa più spazio: adatta alla pagina dei servizi.',
+		schede: 'Un servizio per scheda (su mobile elenco da aprire), con testo, foto facoltativa e link. Per servizi alternativi tra cui scegliere; non per servizi che tutti devono vedere.',
 	},
 };

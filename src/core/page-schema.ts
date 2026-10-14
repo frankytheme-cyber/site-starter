@@ -1,6 +1,6 @@
 import type { SchemaContext } from 'astro:content';
 import { z } from 'astro/zod';
-import { blockSchemas } from './block-schemas';
+import { blockSchemas, blockTypesOf } from './block-schemas';
 import { TONES } from './block-types';
 
 /*
@@ -15,11 +15,11 @@ const sectionId = z
 	.optional()
 	.describe('Ancora|Nome della sezione per i link (#nome): minuscole, cifre e trattini');
 
-/** Uno schema per blocco del registry: le sue props più i campi della sezione. */
+/** Uno schema per blocco di pagina (scope "page"): le sue props più i campi della sezione. */
 function sectionSchemas(context: SchemaContext) {
-	const sections = Object.entries(blockSchemas).map(([type, schema]) =>
+	const sections = blockTypesOf('page').map((type) =>
 		// safeExtend conserva i refine/superRefine del blocco (es. image obbligatoria per hero split).
-		schema(context).safeExtend({
+		blockSchemas[type](context).safeExtend({
 			type: z.literal(type),
 			id: sectionId,
 			tone: z
@@ -28,8 +28,15 @@ function sectionSchemas(context: SchemaContext) {
 				.describe('Sfondo|default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine'),
 		}),
 	);
-	if (sections.length === 0) throw new Error('Nessun blocco in src/blocks/');
+	if (sections.length === 0) throw new Error('Nessun blocco di pagina in src/blocks/');
 	return sections as [(typeof sections)[number], ...typeof sections];
+}
+
+/** Un blocco di layout (header, footer) messo tra le sezioni: messaggio che dice dove va. */
+function layoutBlockError(issue: { code?: string; input?: unknown }) {
+	const type = (issue.input as { type?: unknown } | undefined)?.type;
+	if (issue.code !== 'invalid_union' || typeof type !== 'string' || !blockTypesOf('layout').includes(type)) return undefined;
+	return `«${type}» è un blocco di layout, uguale su tutte le pagine: non va nelle sezioni ma in src/content/settings/layout.json`;
 }
 
 export const pageSchema = (context: SchemaContext) =>
@@ -58,7 +65,7 @@ export const pageSchema = (context: SchemaContext) =>
 			.optional()
 			.describe('Nascondi ai motori di ricerca|Solo per pagine che non devono comparire su Google'),
 		sections: z
-			.array(z.discriminatedUnion('type', sectionSchemas(context)))
+			.array(z.discriminatedUnion('type', sectionSchemas(context), { error: layoutBlockError }))
 			.min(1)
 			.describe('Sezioni|I blocchi della pagina, dall’alto in basso'),
 	});

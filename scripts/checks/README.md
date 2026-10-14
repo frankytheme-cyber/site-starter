@@ -1,6 +1,12 @@
 # Controlli
 
-Script di controllo, da lanciare con npm:
+`run.ts` esegue i controlli e scrive `reports/qa.md` e `reports/qa.json`: `npm run check`, `npm run qa`, oppure `node scripts/checks/run.ts <check...> [--strict]`. Elenco, livelli e cosa fare quando falliscono: `docs/controlli.md`.
 
-- `contrast.ts` (`npm run check:contrast`): contrasto WCAG AA delle coppie di colori di ogni palette.
-- `recipes.ts` (`npm run check:recipes`): ricette di pagina e dati del sito. Errori: segnaposto (`DA-COMPILARE`, lorem, TODO, `[…]`), telefoni/email/P.IVA scritti nelle sezioni, più di un hero, id duplicati, link interni a pagine o ancore inesistenti, `alt` uguale al nome del file. Avvisi: toni uguali consecutivi, più di 12 sezioni, prima sezione non hero, nessuna cta. Solo report; con `-- --strict` gli errori fanno uscire con codice 1.
+Ogni check è un file che esporta una funzione `(context) => Finding[]` (formato in `lib/report.ts`):
+
+- `commands.ts`: `astroCheck` e `build` (comandi del progetto).
+- `decap.ts`, `tokens.ts`, `contrast.ts`, `blocks.ts`, `lock.ts`, `recipes.ts`, `release.ts`: statici.
+- `links.ts`, `a11y.ts`, `interactive.ts`, `lighthouse.ts`: sul sito servito da `astro preview` (suite qa).
+
+`lib/`: formato dei report, percorsi del progetto, lettura di ricette e link (`content.ts`), caricamento dei moduli con Vite (`vite.ts`).
+`lock.ts --write` (`npm run lock:write`) registra gli hash delle cartelle gestite in `blocks.lock.json`, quando si installa o aggiorna la libreria in un sito cliente.

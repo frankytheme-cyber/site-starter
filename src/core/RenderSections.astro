@@ -16,7 +16,7 @@ const { sections } = Astro.props;
 
 {
 	sections.map(({ type, ...props }) => {
-		const block = blocksByType.get(type);
+		const block = blocksByType.get(String(type));
 		if (!block) throw new Error(`Sezione di tipo "${type}": nessun blocco src/blocks/${type}/`);
 		const { Component } = block;
 		return <Component {...props} />;

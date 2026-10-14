@@ -2,6 +2,10 @@
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
 import '@/themes/base.css';
+import Footer from '@/blocks/footer/Footer.astro';
+import Header from '@/blocks/header/Header.astro';
+import { getLayout } from '@/core/layout';
+import { openingHoursSpecification } from '@/core/opening-hours';
 import { getSiteSettings, getTheme } from '@/core/settings';
 
 interface Props {
@@ -13,12 +17,17 @@ interface Props {
 	ogImage?: ImageMetadata;
 	/** Carica tutte le coppie di font invece della sola scelta (serve al catalogo per cambiarle al volo). */
 	allFonts?: boolean;
+	/**
+	 * Header e footer del sito da layout.json, con il contenuto della pagina in <main> (default true).
+	 * Il catalogo li toglie: ha la sua barra e mette da sé il suo <main>.
+	 */
+	siteLayout?: boolean;
 }
 
-const { title, description, noindex = false, ogImage, allFonts = false } = Astro.props;
+const { title, description, noindex = false, ogImage, allFonts = false, siteLayout = true } = Astro.props;
 
-// Aspetto da theme.json, dati dell'attività da site.json.
-const [theme, site] = await Promise.all([getTheme(), getSiteSettings()]);
+// Aspetto da theme.json, dati dell'attività da site.json, header e footer da layout.json.
+const [theme, site, layout] = await Promise.all([getTheme(), getSiteSettings(), getLayout()]);
 
 // Di norma solo il CSS dei font scelti: gli altri preset non vengono collegati alla pagina.
 const fontStyles = import.meta.glob<string>('/src/themes/fonts/*.css', {
@@ -39,10 +48,13 @@ const logo = site.logo && (await getImage({ src: site.logo, width: 512, format: 
 
 // Scheda dell'attività per i motori di ricerca (schema.org/LocalBusiness), tutta da site.json.
 const { street, postalCode, city, province } = site.address;
+const openingHours = openingHoursSpecification(site.openingHours);
 const localBusiness = {
 	'@context': 'https://schema.org',
 	'@type': 'LocalBusiness',
 	name: site.businessName,
+	legalName: site.legalName,
+	description: site.description,
 	url: site.url,
 	telephone: site.phone,
 	email: site.email,
@@ -55,6 +67,7 @@ const localBusiness = {
 		addressRegion: province,
 		addressCountry: 'IT',
 	},
+	...(openingHours.length > 0 && { openingHoursSpecification: openingHours }),
 	...(logo && { logo: absolute(logo.src), image: absolute(logo.src) }),
 	...(site.social && { sameAs: Object.values(site.social) }),
 };
@@ -96,6 +109,18 @@ const jsonLd = JSON.stringify(localBusiness).replace(/</g, '\\u003c');
 		<script is:inline type="application/ld+json" set:html={jsonLd} />
 	</head>
 	<body>
-		<slot />
+		{
+			siteLayout ? (
+				<>
+					<Header {...layout.header} />
+					<main>
+						<slot />
+					</main>
+					<Footer {...layout.footer} />
+				</>
+			) : (
+				<slot />
+			)
+		}
 	</body>
 </html>

@@ -9,7 +9,8 @@ export const meta: BlockMeta = {
 	avoidWhen:
 		'In apertura di pagina (lì va l’hero) o più di due volte nella stessa pagina: troppi inviti si annullano a vicenda.',
 	category: 'contatti',
-	version: '1.0.0',
+	scope: 'page',
+	version: '1.1.0',
 	source: { from: 'originale' },
 	variants: {
 		banner: 'Testo centrato e 1-2 pulsanti; con tone primary diventa una fascia piena. Molto visibile: al massimo una per pagina.',

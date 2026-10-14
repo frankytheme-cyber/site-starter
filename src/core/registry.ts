@@ -3,7 +3,9 @@ import type { ImageFunction, SchemaContext } from 'astro:content';
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import { z } from 'astro/zod';
 import { blockMetas, blockSchemas } from './block-schemas';
-import type { BlockFixture, BlockMeta, BlockSchema, Tone } from './block-types';
+import { type BlockFixture, type BlockMeta, type BlockSchema, SCOPES, type Tone } from './block-types';
+import { layoutSchema } from './layout';
+import { type SiteSettings, siteSettingsSchema } from './settings';
 
 /*
  * Registry dei blocchi: trova da solo ogni cartella in src/blocks/ con
@@ -12,8 +14,9 @@ import type { BlockFixture, BlockMeta, BlockSchema, Tone } from './block-types';
  *   meta.ts       export const meta: BlockMeta
  *   fixtures.ts   export const fixtures: BlockFixture[]
  * Ogni blocco viene validato al caricamento: un file mancante, meta.type diverso dalla
- * cartella, un campo riservato alla sezione, una fixture non valida o una variante senza
- * fixture fermano la build.
+ * cartella, uno scope sconosciuto, un blocco di layout senza la sua chiave in layout.json,
+ * un campo riservato alla sezione, una fixture non valida (props o dati `site` di prova) o
+ * una variante senza fixture fermano la build.
  */
 
 const components = import.meta.glob<AstroComponentFactory>('/src/blocks/*/*.astro', {
@@ -30,8 +33,8 @@ export interface Block {
 	meta: BlockMeta;
 	schema: BlockSchema;
 	Component: AstroComponentFactory;
-	/** Fixture già validate: props pronte per il componente. */
-	fixtures: { name: string; tone?: Tone; props: Record<string, unknown> }[];
+	/** Fixture già validate: props pronte per il componente, e i dati dell'attività di prova se ci sono. */
+	fixtures: { name: string; tone?: Tone; props: Record<string, unknown>; site?: SiteSettings }[];
 }
 
 /** Campi che la ricetta aggiunge a ogni sezione (core/page-schema.ts): uno schema di blocco non li può usare. */
@@ -45,6 +48,9 @@ const importedImage = z.custom<ImageMetadata>(
 const fixtureContext: SchemaContext = {
 	image: (() => importedImage) as unknown as ImageFunction,
 };
+
+/** Dati dell'attività di prova delle fixture: lo schema di site.json, con il logo importato. */
+const siteFixtureSchema = siteSettingsSchema(fixtureContext);
 
 const pascalCase = (type: string) =>
 	type
@@ -69,6 +75,12 @@ function loadBlock(type: string): Block {
 	if (meta.type !== type) {
 		throw new Error(`${dir}/meta.ts: type "${meta.type}" diverso dal nome della cartella "${type}"`);
 	}
+	if (!SCOPES.includes(meta.scope)) {
+		throw new Error(`${dir}/meta.ts: scope "${meta.scope}" sconosciuto (ammessi: ${SCOPES.join(', ')})`);
+	}
+	if (meta.scope === 'layout' && !(type in layoutSchema.shape)) {
+		throw new Error(`${dir}: blocco di layout senza la chiave "${type}" in layoutSchema (src/core/layout.ts)`);
+	}
 
 	const fixtureSchema = schema(fixtureContext);
 	const reserved = SECTION_FIELDS.filter((field) => field in fixtureSchema.shape);
@@ -83,7 +95,13 @@ function loadBlock(type: string): Block {
 				`Props non valide per il blocco "${type}" (fixture "${fixture.name}"):\n${z.prettifyError(result.error)}`,
 			);
 		}
-		return { name: fixture.name, tone: fixture.tone, props: result.data as Record<string, unknown> };
+		const site = fixture.site && siteFixtureSchema.safeParse(fixture.site);
+		if (site && !site.success) {
+			throw new Error(
+				`Dati site non validi per il blocco "${type}" (fixture "${fixture.name}"):\n${z.prettifyError(site.error)}`,
+			);
+		}
+		return { name: fixture.name, tone: fixture.tone, props: result.data as Record<string, unknown>, site: site?.data };
 	});
 
 	const variants = Object.keys(meta.variants);

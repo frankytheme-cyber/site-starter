@@ -1,0 +1,27 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "Cookie · DA-COMPILARE nome dell’attività",
+	"description": "DA-COMPILARE: quali cookie usa il sito, a cosa servono e come gestirli.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "centered",
+			"eyebrow": "Note legali",
+			"title": "Informativa sui cookie",
+			"subtitle": "DA-COMPILARE: quali cookie usa il sito e come gestirli. Il testo va preparato o verificato da chi segue la privacy dell’attività.",
+			"primaryCta": { "label": "Informativa privacy", "href": "/privacy/" }
+		},
+		{
+			"type": "accordion",
+			"id": "cookie",
+			"tone": "muted",
+			"variant": "contenuti",
+			"title": "DA-COMPILARE: titolo dell’informativa",
+			"items": [
+				{ "title": "Cookie tecnici", "text": "DA-COMPILARE: i cookie necessari al funzionamento del sito." },
+				{ "title": "Cookie di terze parti", "text": "DA-COMPILARE: servizi esterni (mappe, video, statistiche) e i loro cookie, oppure «nessuno»." },
+				{ "title": "Come gestirli", "text": "DA-COMPILARE: come cambiare le preferenze o disattivarli dal browser." }
+			]
+		}
+	]
+}

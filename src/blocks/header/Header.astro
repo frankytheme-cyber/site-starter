@@ -1,8 +1,9 @@
 ---
 import { nextId } from '@/core/ids';
+import { resolveHref } from '@/core/links';
 import { getNavigation, isCurrentPage } from '@/core/navigation';
 import { getSiteSettings, phoneHref } from '@/core/settings';
-import Button from '@/core/ui/Button.astro';
+import CtaButton from '@/core/ui/CtaButton.astro';
 import Icon from '@/core/ui/Icon.astro';
 import Img from '@/core/ui/Img.astro';
 import Section from '@/core/ui/Section.astro';
@@ -10,10 +11,11 @@ import type { HeaderProps } from './schema';
 
 type Props = HeaderProps;
 
-const { id, tone, variant, sticky, logo } = Astro.props;
+const { id, tone, variant, sticky } = Astro.props;
 
 // Nome, logo, telefono e menu arrivano da site.json e navigation.json: lo schema del blocco non li contiene.
 const [site, navigation] = await Promise.all([getSiteSettings(), getNavigation()]);
+const logo = Astro.props.logo ?? (site.logo ? 'immagine' : 'testo');
 
 if (logo === 'immagine' && !site.logo) {
 	throw new Error('Header con logo "immagine": manca "logo" in src/content/settings/site.json');
@@ -22,6 +24,8 @@ if (variant === 'con-cta' && !navigation.cta) {
 	throw new Error('Header "con-cta": manca "cta" in src/content/settings/navigation.json');
 }
 const cta = variant === 'con-cta' ? navigation.cta : undefined;
+// Il fallback senza JS usa un <a> semplice: il link speciale (@telefono...) va risolto qui.
+const ctaHref = cta && (await resolveHref(cta.href));
 
 const uid = nextId(Astro.request, 'header');
 const menuId = `${uid}-menu`;
@@ -145,7 +149,7 @@ const linkClass =
 		{
 			cta ? (
 				<div class="hidden lg:block">
-					<Button href={cta.href}>{cta.label}</Button>
+					<CtaButton cta={cta} tone={tone} />
 				</div>
 			) : (
 				<a
@@ -199,7 +203,7 @@ const linkClass =
 				{
 					cta && (
 						<li>
-							<a href={cta.href} class="flex min-h-11 items-center font-semibold text-primary underline underline-offset-4">
+							<a href={ctaHref} class="flex min-h-11 items-center font-semibold text-primary underline underline-offset-4">
 								{cta.label}
 							</a>
 						</li>
@@ -258,7 +262,7 @@ const linkClass =
 			{
 				cta && (
 					<div class="mt-auto grid pt-8">
-						<Button href={cta.href}>{cta.label}</Button>
+						<CtaButton cta={cta} tone={tone} />
 					</div>
 				)
 			}

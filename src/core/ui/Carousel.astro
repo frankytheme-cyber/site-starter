@@ -1,0 +1,112 @@
+---
+/**
+ * Carosello a scorrimento orizzontale (scroll-snap): si scorre col dito, col trackpad o con la
+ * tastiera sulla traccia. Con JS aggiunge frecce e pallini (aria-label, pallino attivo con
+ * aria-current). Niente scorrimento automatico. Le slide sono CarouselSlide nello slot.
+ * Regole: docs/blocchi-interattivi.md.
+ */
+import Button from './Button.astro';
+
+interface Props {
+	/** Nome del carosello per gli screen reader. */
+	label: string;
+	class?: string;
+}
+
+const { label, class: className } = Astro.props;
+---
+
+<section data-carousel aria-roledescription="carosello" aria-label={label} class={className}>
+	<div
+		data-carousel-track
+		tabindex="0"
+		aria-label={`${label}: scorri per vedere tutto`}
+		class="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pt-1 pb-4 motion-safe:scroll-smooth"
+	>
+		<slot />
+	</div>
+	<div data-carousel-controls hidden class="mt-2 flex items-center justify-between gap-4">
+		<div data-carousel-dots class="flex flex-wrap items-center gap-1"></div>
+		<div class="flex gap-2">
+			<Button variant="secondary" size="sm" icon="freccia-sinistra" aria-label="Precedente" data-carousel-prev />
+			<Button variant="secondary" size="sm" icon="freccia-destra" aria-label="Successiva" data-carousel-next />
+		</div>
+	</div>
+</section>
+
+<script>
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	for (const carousel of document.querySelectorAll<HTMLElement>('[data-carousel]')) {
+		const track = carousel.querySelector<HTMLElement>('[data-carousel-track]')!;
+		const controls = carousel.querySelector<HTMLElement>('[data-carousel-controls]')!;
+		const dots = carousel.querySelector<HTMLElement>('[data-carousel-dots]')!;
+		const prev = carousel.querySelector<HTMLButtonElement>('[data-carousel-prev]')!;
+		const next = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]')!;
+		const slides = [...track.querySelectorAll<HTMLElement>(':scope > [data-carousel-slide]')];
+		if (slides.length < 2) continue;
+
+		slides.forEach((slide, index) => slide.setAttribute('aria-label', `${index + 1} di ${slides.length}`));
+		controls.hidden = false;
+
+		// Posizioni possibili: con più slide visibili insieme, le ultime non possono arrivare a sinistra.
+		const step = () => slides[1].offsetLeft - slides[0].offsetLeft;
+		const pageCount = () => Math.max(1, slides.length - Math.max(1, Math.round(track.clientWidth / step())) + 1);
+		let pages = 0;
+		let active = 0;
+
+		const goTo = (page: number) => {
+			track.scrollTo({ left: slides[page].offsetLeft - slides[0].offsetLeft, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+		};
+
+		const render = () => {
+			dots.querySelectorAll('button').forEach((dot, index) => {
+				if (index === active) dot.setAttribute('aria-current', 'true');
+				else dot.removeAttribute('aria-current');
+			});
+			prev.disabled = active === 0;
+			next.disabled = active >= pages - 1;
+		};
+
+		const buildDots = () => {
+			const count = pageCount();
+			if (count === pages) return;
+			pages = count;
+			dots.replaceChildren(
+				...Array.from({ length: pages }, (_, index) => {
+					const dot = document.createElement('button');
+					dot.type = 'button';
+					dot.className = 'group flex size-6 items-center justify-center rounded-full';
+					dot.setAttribute('aria-label', `Vai alla posizione ${index + 1} di ${pages}`);
+					dot.innerHTML = '<span class="size-2.5 rounded-full bg-current opacity-35 group-aria-current:opacity-100 group-aria-current:scale-125 motion-safe:transition"></span>';
+					dot.addEventListener('click', () => goTo(index));
+					return dot;
+				}),
+			);
+			active = Math.min(active, pages - 1);
+			render();
+		};
+
+		prev.addEventListener('click', () => goTo(Math.max(0, active - 1)));
+		next.addEventListener('click', () => goTo(Math.min(pages - 1, active + 1)));
+
+		// La slide attiva è la prima ben visibile nella traccia: IntersectionObserver, non eventi di scroll.
+		const visible = new Set<number>();
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					const index = slides.indexOf(entry.target as HTMLElement);
+					if (entry.isIntersecting) visible.add(index);
+					else visible.delete(index);
+				}
+				if (visible.size === 0) return;
+				active = Math.min(Math.min(...visible), pages - 1);
+				render();
+			},
+			{ root: track, threshold: 0.6 },
+		);
+		slides.forEach((slide) => observer.observe(slide));
+		new ResizeObserver(buildDots).observe(track);
+		buildDots();
+	}
+</script>

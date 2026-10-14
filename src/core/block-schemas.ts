@@ -1,4 +1,4 @@
-import type { BlockMeta, BlockSchema } from './block-types';
+import type { BlockMeta, BlockSchema, Scope } from './block-types';
 
 /**
  * Schemi e schede di tutti i blocchi (src/blocks/<tipo>/schema.ts e meta.ts), per tipo.
@@ -18,3 +18,7 @@ export const blockSchemas: Record<string, BlockSchema> = Object.fromEntries(
 export const blockMetas: Record<string, BlockMeta> = Object.fromEntries(
 	Object.entries(metaModules).map(([path, meta]) => [typeOf(path), meta]),
 );
+
+/** Tipi dei blocchi con un certo scope: "page" per le sezioni delle ricette, "layout" per layout.json. */
+export const blockTypesOf = (scope: Scope): string[] =>
+	Object.keys(blockSchemas).filter((type) => blockMetas[type]?.scope === scope);

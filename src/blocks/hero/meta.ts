@@ -9,7 +9,8 @@ export const meta: BlockMeta = {
 	avoidWhen:
 		'A metà pagina o più di una volta nella stessa pagina: contiene l’unico h1. Per inviti all’azione intermedi serve un blocco dedicato.',
 	category: 'apertura',
-	version: '1.0.0',
+	scope: 'page',
+	version: '1.1.0',
 	source: { from: 'originale' },
 	variants: {
 		split: 'Testo a sinistra e immagine a destra (sotto su mobile). Equilibrata, va bene per quasi tutte le attività.',

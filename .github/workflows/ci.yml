@@ -1,0 +1,90 @@
+# Controlli automatici: docs/controlli.md.
+# - check: su ogni push (e sulle pull request), suite "check": statici + build.
+# - qa: solo sulle pull request, dopo check: link, accessibilità, interattivi, Lighthouse.
+# Sulle pull request verso main entrambi usano --strict (regole di pubblicazione).
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  STRICT_FLAG: ${{ github.event_name == 'pull_request' && github.base_ref == 'main' && '--strict' || '' }}
+  # Repo per la configurazione di Decap (scripts/gen-decap-config.ts).
+  DECAP_REPO: ${{ github.repository }}
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: npm run check ${{ env.STRICT_FLAG }}
+        run: npm run check -- $STRICT_FLAG
+
+      - name: Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-check
+          path: reports/
+          if-no-files-found: ignore
+
+  qa:
+    name: qa
+    if: github.event_name == 'pull_request'
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Versione di Playwright
+        id: playwright
+        run: echo "version=$(node -p 'require("playwright/package.json").version')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache dei browser di Playwright
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      - name: Chromium e dipendenze di sistema
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Solo dipendenze di sistema (Chromium dalla cache)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: npm run qa ${{ env.STRICT_FLAG }}
+        run: npm run qa -- $STRICT_FLAG
+
+      - name: Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-qa
+          path: reports/
+          if-no-files-found: ignore

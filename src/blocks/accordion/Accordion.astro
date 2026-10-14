@@ -1,0 +1,50 @@
+---
+import AccordionList from '@/core/ui/Accordion.astro';
+import AccordionItem from '@/core/ui/AccordionItem.astro';
+import Section from '@/core/ui/Section.astro';
+import type { AccordionProps } from './schema';
+
+type Props = AccordionProps;
+
+const { id, tone, variant, eyebrow, title, intro, items, single } = Astro.props;
+
+const isFaq = variant === 'faq';
+const paragraphs = (text: string) => text.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
+
+// FAQPage: le stesse domande e risposte, per i risultati di Google. "<" diventa < come nel layout.
+const faqJsonLd =
+	isFaq &&
+	JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': 'FAQPage',
+		mainEntity: items.map((item) => ({
+			'@type': 'Question',
+			name: item.title,
+			acceptedAnswer: { '@type': 'Answer', text: item.text },
+		})),
+	}).replace(/</g, '\\u003c');
+---
+
+<Section id={id} tone={tone}>
+	<div class:list={[isFaq ? 'mx-auto max-w-3xl' : 'grid gap-10 lg:grid-cols-3 lg:gap-16']}>
+		<div class:list={[isFaq && 'text-center']}>
+			{eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider text-primary uppercase">{eyebrow}</p>}
+			<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+			{intro && <p class="mt-4 text-lg text-pretty text-fg-muted">{intro}</p>}
+		</div>
+		<AccordionList single={single} class:list={[isFaq ? 'mt-10' : 'lg:col-span-2']}>
+			{
+				items.map((item) => (
+					<AccordionItem title={item.title}>
+						<div class="grid gap-3 text-pretty text-fg-muted">
+							{paragraphs(item.text).map((paragraph) => (
+								<p>{paragraph}</p>
+							))}
+						</div>
+					</AccordionItem>
+				))
+			}
+		</AccordionList>
+	</div>
+	{faqJsonLd && <script is:inline type="application/ld+json" set:html={faqJsonLd} />}
+</Section>

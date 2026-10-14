@@ -1,9 +1,11 @@
 import { getEntry } from 'astro:content';
 import { z } from 'astro/zod';
+import { ctaSchema } from './schemas/cta';
 
 /*
  * Menu del sito: sta solo in src/content/settings/navigation.json (collezione "navigation",
- * registrata in src/content.config.ts). Header e footer lo leggono con getNavigation().
+ * registrata in src/content.config.ts). Header e footer lo leggono con getNavigation():
+ * items e cta per l'intestazione, footer per i link in fondo alla pagina.
  */
 
 const link = z.object({
@@ -26,7 +28,23 @@ export const navigationSchema = z.object({
 		.max(7)
 		.describe('Voci del menu|Al massimo 7, nell’ordine in cui compaiono'),
 	/** Pulsante in evidenza, mostrato dai blocchi che lo prevedono (es. header con-cta). */
-	cta: link.optional().describe('Pulsante in evidenza|Mostrato dall’intestazione con-cta: compila testo e link, oppure nessuno dei due'),
+	cta: ctaSchema.optional().describe('Pulsante in evidenza|Mostrato dall’intestazione con-cta: compila testo e link, oppure nessuno dei due'),
+	/** Link del footer: quelli legali in fondo a ogni pagina, i secondari nella colonna del footer colonne. */
+	footer: z
+		.object({
+			links: z
+				.array(link)
+				.min(1)
+				.max(8)
+				.optional()
+				.describe('Link del footer|Pagine da mostrare nella colonna «Link» del footer, fino a 8; lascia vuoto per ripetere le voci del menu'),
+			legal: z
+				.array(link)
+				.min(1)
+				.max(4)
+				.describe('Link legali|Privacy e cookie (obbligatori) ed eventuali note legali: compaiono in fondo a ogni pagina'),
+		})
+		.describe('Footer|I link in fondo a ogni pagina'),
 });
 
 export type Navigation = z.infer<typeof navigationSchema>;

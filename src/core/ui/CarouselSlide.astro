@@ -1,0 +1,21 @@
+---
+/** Una slide di Carousel. width: quanto spazio occupa nella traccia. */
+interface Props {
+	/** full: una alla volta · wide: quasi una, due da md · card: una e un pezzo, due da sm, tre da lg. */
+	width?: 'full' | 'wide' | 'card';
+	class?: string;
+}
+
+const { width = 'card', class: className } = Astro.props;
+
+// gap-4 tra le slide: le larghezze tolgono lo spazio dei gap per stare esatte nella traccia.
+const widths = {
+	full: 'basis-full',
+	wide: 'basis-[88%] md:basis-[calc((100%-1rem)/2)]',
+	card: 'basis-[85%] sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)]',
+};
+---
+
+<div data-carousel-slide role="group" aria-roledescription="slide" class:list={['shrink-0 snap-start', widths[width], className]}>
+	<slot />
+</div>

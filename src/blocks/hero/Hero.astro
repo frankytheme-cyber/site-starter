@@ -1,5 +1,5 @@
 ---
-import Button from '@/core/ui/Button.astro';
+import CtaButton from '@/core/ui/CtaButton.astro';
 import Img from '@/core/ui/Img.astro';
 import Section from '@/core/ui/Section.astro';
 import type { HeroProps } from './schema';
@@ -54,14 +54,8 @@ const isCentered = variant === 'centered';
 				)
 			}
 			<div class:list={['mt-10 flex flex-wrap items-center gap-4', isCentered && 'justify-center']}>
-				<Button href={primaryCta.href}>{primaryCta.label}</Button>
-				{
-					secondaryCta && (
-						<Button href={secondaryCta.href} variant="secondary">
-							{secondaryCta.label}
-						</Button>
-					)
-				}
+				<CtaButton cta={primaryCta} tone={tone} />
+				{secondaryCta && <CtaButton cta={secondaryCta} defaultStyle="secondary" tone={tone} />}
 			</div>
 		</div>
 

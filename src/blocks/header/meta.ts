@@ -5,11 +5,13 @@ export const meta: BlockMeta = {
 	name: 'Header',
 	description:
 		'Intestazione del sito: logo o nome, menu con sottomenu e, su mobile, un pannello a tutta altezza. Voci e recapiti arrivano da navigation.json e site.json.',
-	whenToUse: 'In cima a ogni pagina, una sola volta, prima di tutti gli altri blocchi.',
+	whenToUse:
+		'Sempre: è l’intestazione di tutte le pagine. Non è una sezione delle ricette: variante, sticky e logo si scelgono in src/content/settings/layout.json (chiave header) e BaseLayout la disegna in cima a ogni pagina.',
 	avoidWhen:
-		'Dentro la pagina o più di una volta: è l’intestazione del sito. Per un invito all’azione a metà pagina usa cta.',
+		'Nelle sezioni di una ricetta (la build lo rifiuta). Per un invito all’azione a metà pagina usa cta.',
 	category: 'navigazione',
-	version: '1.0.0',
+	scope: 'layout',
+	version: '2.0.0',
 	source: { from: 'originale' },
 	interactive: true,
 	variants: {

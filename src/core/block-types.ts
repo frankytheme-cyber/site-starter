@@ -1,5 +1,6 @@
 import type { SchemaContext } from 'astro:content';
 import type { z } from 'astro/zod';
+import type { SiteSettings, siteSettingsSchema } from './settings';
 
 /**
  * Schema delle props di un blocco (schema.ts): una funzione del contesto di Astro, come lo
@@ -21,6 +22,13 @@ export interface SectionProps {
 	tone?: Tone;
 }
 
+/**
+ * Dove si usa un blocco: "page" nelle sezioni delle ricette di pagina; "layout" una volta per
+ * tutto il sito, in src/content/settings/layout.json (header e footer, disegnati da BaseLayout).
+ */
+export const SCOPES = ['page', 'layout'] as const;
+export type Scope = (typeof SCOPES)[number];
+
 /** Scheda di un blocco (meta.ts): la leggono il catalogo e chi compone le pagine. */
 export interface BlockMeta {
 	/** Identificativo: uguale al nome della cartella in src/blocks (es. "hero"). */
@@ -35,13 +43,26 @@ export interface BlockMeta {
 	avoidWhen: string;
 	/** Gruppo nel catalogo (es. "apertura", "contenuti", "contatti"). */
 	category: string;
+	/** page: sezione di una ricetta · layout: in layout.json, uguale su tutte le pagine. */
+	scope: Scope;
 	/** Versione semver: la major sale quando lo schema cambia in modo incompatibile. */
 	version: string;
 	/**
-	 * Provenienza del disegno: "originale" se il blocco è nato in site-starter. Altre
-	 * provenienze (un sito cliente, una libreria esterna) si aggiungono qui quando servono.
+	 * Provenienza del disegno: "originale" se il blocco è nato in site-starter; "esterno" se
+	 * deriva da un progetto di terzi, la cui licenza va riportata in docs/THIRD_PARTY_LICENSES.md
+	 * (lo verifica npm run check, check "blocks").
 	 */
-	source: { from: 'originale' };
+	source:
+		| { from: 'originale' }
+		| {
+				from: 'esterno';
+				/** Progetto o autore da cui deriva il disegno, come compare in THIRD_PARTY_LICENSES.md. */
+				name: string;
+				/** Indirizzo del progetto o del componente di partenza. */
+				url: string;
+				/** Licenza, identificativo SPDX (es. "MIT"). */
+				license: string;
+		  };
 	/** true se il blocco ha un comportamento in JS: deve seguire docs/blocchi-interattivi.md. */
 	interactive?: boolean;
 	/** Varianti: nome → descrizione. I nomi sono i valori ammessi dalla prop `variant` dello schema. */
@@ -56,4 +77,18 @@ export interface BlockFixture<S extends BlockSchema = BlockSchema> {
 	tone?: Tone;
 	/** Le immagini sono file importati (import foto from '@/assets/images/...'), non percorsi. */
 	props: z.input<ReturnType<S>>;
+	/**
+	 * Dati dell'attività di prova al posto di site.json, per i blocchi che cambiano con quei dati
+	 * (es. il footer di una ditta individuale e di una SRL). Validati con lo schema di site.json;
+	 * il catalogo li passa al componente nella prop `site` (SiteProps).
+	 */
+	site?: z.input<ReturnType<typeof siteSettingsSchema>>;
+}
+
+/**
+ * Prop facoltativa dei blocchi che leggono site.json e hanno fixture con `site`: se c'è, il
+ * componente la usa al posto di getSiteSettings(). Solo per il catalogo: nelle pagine non si passa.
+ */
+export interface SiteProps {
+	site?: SiteSettings;
 }
