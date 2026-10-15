@@ -1,9 +1,10 @@
-import cartongesso from '@/assets/images/fixtures/imbianchino-cartongesso.jpg';
-import facciata from '@/assets/images/fixtures/imbianchino-facciata.jpg';
-import interno from '@/assets/images/fixtures/imbianchino-interno.jpg';
+import cucina from '@/assets/images/fixtures/ristorante-cucina.jpg';
+import piatto from '@/assets/images/fixtures/ristorante-piatto.jpg';
+import sala from '@/assets/images/fixtures/ristorante-sala.jpg';
 import type { BlockFixture } from '@/core/block-types';
 import type { schema } from './schema';
 
+// Attività di esempio: uno studio professionale (testo) e un ristorante (testo e immagine).
 export const fixtures: BlockFixture<typeof schema>[] = [
 	{
 		name: 'Testo',
@@ -13,17 +14,17 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 			title: 'Ogni cliente ha esigenze diverse',
 			items: [
 				{
-					label: 'Privati',
-					text: 'Lavoriamo una stanza alla volta, così puoi continuare a vivere in casa. Copriamo mobili e pavimenti e a fine giornata puliamo.\n\nTi aiutiamo a scegliere colori e finiture provando i campioni sulle tue pareti.',
-					cta: { label: 'Chiedi un preventivo', href: '#preventivo' },
+					label: 'Famiglie',
+					text: 'Dichiarazione dei redditi, successioni e pratiche per la casa: raccogliamo noi i documenti e ti spieghiamo ogni voce.\n\nIl primo incontro per capire cosa ti serve è gratuito.',
+					cta: { label: 'Fissa un appuntamento', href: '#appuntamento' },
 				},
 				{
-					label: 'Condomini',
-					text: 'Concordiamo i lavori con l’amministratore e li dividiamo a fasce orarie, per disturbare il meno possibile chi ci abita. Vani scala, androni e facciate con un unico referente.',
+					label: 'Professionisti',
+					text: 'Partita IVA, regime forfettario o ordinario, fatture elettroniche e contributi: ti diciamo quanto mettere da parte ogni mese per le tasse.',
 				},
 				{
-					label: 'Negozi e uffici',
-					text: 'Interveniamo la sera o nel fine settimana, per non fermare la tua attività. Pitture lavabili e resistenti, adatte agli ambienti di passaggio.',
+					label: 'Imprese',
+					text: 'Contabilità, bilanci, buste paga e rapporti con la banca, con un referente fisso che conosce la tua attività.',
 				},
 			],
 		},
@@ -33,24 +34,24 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		tone: 'muted',
 		props: {
 			variant: 'testo-immagine',
-			title: 'Interni, esterni e cartongesso',
-			intro: 'Tre squadre specializzate, un solo preventivo.',
+			title: 'Pranzo, cena e cucina a vista',
+			intro: 'Una sola cucina, tre modi di stare a tavola.',
 			items: [
 				{
-					label: 'Interni',
-					text: 'Pareti e soffitti con pitture traspiranti o lavabili, scelte stanza per stanza.',
-					image: { src: interno, alt: 'Parete tinteggiata a metà in verde salvia, con un rullo appoggiato' },
+					label: 'Pranzo',
+					text: 'Menu del giorno con primo, secondo e caffè, pensato per chi ha un’ora di pausa.',
+					image: { src: piatto, alt: 'Piatto di pasta al pomodoro visto dall’alto, con forchetta e coltello su una tovaglia a quadri' },
 				},
 				{
-					label: 'Facciate',
-					text: 'Ripristino degli intonaci e pitture ai silossani che resistono a pioggia e smog.',
-					image: { src: facciata, alt: 'Facciata di una casa color ocra con persiane verdi' },
-					cta: { label: 'Prenota un sopralluogo', href: '#sopralluogo', icon: 'calendario' },
+					label: 'Cena',
+					text: 'Piatti della tradizione e proposte di stagione, con una carta dei vini della zona.',
+					image: { src: sala, alt: 'Sala di un ristorante con tre tavoli apparecchiati sotto lampade a sospensione' },
+					cta: { label: 'Prenota un tavolo', href: '#prenota', icon: 'calendario' },
 				},
 				{
-					label: 'Cartongesso',
-					text: 'Contropareti, controsoffitti e nicchie su misura, montati e tinteggiati dalla stessa squadra.',
-					image: { src: cartongesso, alt: 'Lastre di cartongesso montate su una parete, con i giunti stuccati' },
+					label: 'La cucina',
+					text: 'Pasta fresca tirata ogni mattina e sughi che cuociono piano, sotto gli occhi dei clienti.',
+					image: { src: cucina, alt: 'Cucina professionale con una pentola che fuma e una padella sui fornelli' },
 				},
 			],
 		},

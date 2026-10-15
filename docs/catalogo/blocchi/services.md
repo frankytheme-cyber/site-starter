@@ -8,7 +8,7 @@ Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione br
 
 **Quando usarlo:** Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno.
 
-**Evitare quando:** Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei cantieri, non un elenco.
+**Evitare quando:** Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei lavori, non un elenco.
 
 **Varianti:**
 
@@ -71,38 +71,38 @@ Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `ty
 	"type": "services",
 	"variant": "cards-icone",
 	"eyebrow": "Cosa facciamo",
-	"title": "Tutto quello che serve alle tue pareti",
-	"intro": "Dalla singola stanza al condominio intero: un’unica squadra per preparare, tinteggiare e rifinire, con tempi concordati prima di iniziare.",
+	"title": "Manutenzioni e impianti per la casa",
+	"intro": "Dal rubinetto che perde al nuovo condizionatore: un’unica squadra di tecnici per gli impianti di casa, con appuntamenti in giornata per le urgenze.",
 	"items": [
 		{
-			"icon": "rullo",
-			"title": "Tinteggiature interne",
-			"text": "Pareti e soffitti con pitture traspiranti o lavabili. Copriamo mobili e pavimenti, stucchiamo le crepe e lasciamo tutto pulito."
+			"icon": "rubinetto",
+			"title": "Impianti idraulici",
+			"text": "Riparazioni, sostituzione di sanitari e rubinetti, ricerca delle perdite senza rompere i muri."
 		},
 		{
-			"icon": "edificio",
-			"title": "Facciate esterne",
-			"text": "Pulizia, ripristino degli intonaci e pitture ai silossani che resistono a pioggia, sole e smog per molti anni."
+			"icon": "lampadina",
+			"title": "Impianti elettrici",
+			"text": "Nuove prese e punti luce, quadri elettrici a norma e certificazione degli impianti."
 		},
 		{
-			"icon": "pennello",
-			"title": "Decorazioni e velature",
-			"text": "Stucco veneziano, velature e spatolati per dare carattere all’ingresso o a una parete del soggiorno."
+			"icon": "aria-condizionata",
+			"title": "Clima e riscaldamento",
+			"text": "Installazione e pulizia di condizionatori, manutenzione delle caldaie e dei termosifoni."
 		},
 		{
-			"icon": "goccia",
-			"title": "Trattamenti antimuffa",
-			"text": "Eliminiamo muffa e condensa alla radice con prodotti risananti e pitture termiche anticondensa."
+			"icon": "fiamma",
+			"title": "Impianti a gas",
+			"text": "Allacci, prove di tenuta e controlli periodici fatti da tecnici abilitati."
 		},
 		{
-			"icon": "muro",
-			"title": "Cartongesso",
-			"text": "Contropareti, controsoffitti e nicchie su misura, montati, stuccati e tinteggiati dalla stessa squadra."
+			"icon": "porta",
+			"title": "Porte e serramenti",
+			"text": "Regolazione di porte e finestre, sostituzione di serrature e maniglie."
 		},
 		{
-			"icon": "scala",
-			"title": "Vani scala condominiali",
-			"text": "Lavori programmati con l’amministratore e divisi a fasce orarie, per disturbare il meno possibile chi ci abita."
+			"icon": "scale",
+			"title": "Parti comuni dei condomini",
+			"text": "Manutenzioni programmate con l’amministratore, a fasce orarie per disturbare il meno possibile."
 		}
 	]
 }

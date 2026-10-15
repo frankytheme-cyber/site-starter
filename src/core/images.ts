@@ -12,5 +12,5 @@ export const imageSchema = (image: ImageFunction) =>
 		alt: z
 			.string()
 			.min(5, 'il testo alternativo deve descrivere l’immagine (almeno 5 caratteri)')
-			.describe('Testo alternativo|Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»'),
+			.describe('Testo alternativo|Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»'),
 	});

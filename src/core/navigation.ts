@@ -49,6 +49,23 @@ export const navigationSchema = z.object({
 
 export type Navigation = z.infer<typeof navigationSchema>;
 export type NavLink = z.infer<typeof link>;
+export type NavItem = Navigation['items'][number];
+
+/**
+ * Voce «Catalogo» del menu, solo nella libreria (import.meta.env.LIBRARY_MODE, impostato da
+ * core/integrations/library.ts): la aggiunge BaseLayout all'header, navigation.json non cambia.
+ * In un sito cliente la voce non esiste, come le pagine del catalogo.
+ */
+export const CATALOG_NAV_ITEM: NavItem = {
+	label: 'Catalogo',
+	href: '/catalogo/',
+	children: [
+		{ label: 'Blocchi', href: '/catalogo/' },
+		{ label: 'Bottoni', href: '/catalogo/bottoni/' },
+		{ label: 'Icone', href: '/catalogo/icone/' },
+		{ label: 'UI', href: '/catalogo/ui/' },
+	],
+};
 
 export async function getNavigation(): Promise<Navigation> {
 	const entry = await getEntry('navigation', 'navigation');

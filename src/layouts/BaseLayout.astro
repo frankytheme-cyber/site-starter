@@ -5,6 +5,7 @@ import '@/themes/base.css';
 import Footer from '@/blocks/footer/Footer.astro';
 import Header from '@/blocks/header/Header.astro';
 import { getLayout } from '@/core/layout';
+import { CATALOG_NAV_ITEM } from '@/core/navigation';
 import { openingHoursSpecification } from '@/core/opening-hours';
 import { getSiteSettings, getTheme } from '@/core/settings';
 
@@ -28,6 +29,8 @@ const { title, description, noindex = false, ogImage, allFonts = false, siteLayo
 
 // Aspetto da theme.json, dati dell'attività da site.json, header e footer da layout.json.
 const [theme, site, layout] = await Promise.all([getTheme(), getSiteSettings(), getLayout()]);
+// Nella libreria il menu ha anche la voce «Catalogo»; nei siti cliente no (core/navigation.ts).
+const extraNavItems = import.meta.env.LIBRARY_MODE ? [CATALOG_NAV_ITEM] : [];
 
 // Di norma solo il CSS dei font scelti: gli altri preset non vengono collegati alla pagina.
 const fontStyles = import.meta.glob<string>('/src/themes/fonts/*.css', {
@@ -113,7 +116,7 @@ const jsonLd = JSON.stringify(localBusiness).replace(/</g, '\\u003c');
 		{
 			siteLayout ? (
 				<>
-					<Header {...layout.header} />
+					<Header {...layout.header} extraItems={extraNavItems} />
 					<main>
 						<slot />
 					</main>

@@ -12,7 +12,7 @@
 			"primaryCta": { "label": "Chiedi un preventivo", "href": "#preventivo" },
 			"secondaryCta": { "label": "I nostri servizi", "href": "#servizi" },
 			"image": {
-				"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
+				"src": "../../assets/images/fixtures/artigiano-laboratorio.jpg",
 				"alt": "DA-COMPILARE: descrizione della foto"
 			}
 		},
@@ -26,17 +26,17 @@
 			"intro": "DA-COMPILARE: una frase che presenta i servizi nel loro insieme.",
 			"items": [
 				{
-					"icon": "rullo",
+					"icon": "chiave-inglese",
 					"title": "DA-COMPILARE servizio 1",
 					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto."
 				},
 				{
-					"icon": "edificio",
+					"icon": "casa",
 					"title": "DA-COMPILARE servizio 2",
 					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto."
 				},
 				{
-					"icon": "pennello",
+					"icon": "martello",
 					"title": "DA-COMPILARE servizio 3",
 					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto."
 				}

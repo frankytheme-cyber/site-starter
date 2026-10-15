@@ -3,9 +3,10 @@ import { blocks } from '@/core/registry';
 import Container from '@/core/ui/Container.astro';
 import BlockEntry from './_BlockEntry.astro';
 import CatalogLayout from './_CatalogLayout.astro';
+import { catalogTitle } from './_library';
 ---
 
-<CatalogLayout title="Catalogo blocchi">
+<CatalogLayout title={catalogTitle()}>
 	<main>
 		<Container>
 			<div class="py-10">

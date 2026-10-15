@@ -1,5 +1,5 @@
 import { z } from 'astro/zod';
-import { ICON_NAMES } from '@/core/icons';
+import { iconSchema } from '@/core/icons';
 
 /**
  * Pulsante o link d'azione nelle props dei blocchi (hero, services, cta) e nel menu.
@@ -34,7 +34,7 @@ export const ctaSchema = z.object({
 		.enum(BUTTON_STYLES)
 		.optional()
 		.describe('Stile|primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco'),
-	icon: z.enum(ICON_NAMES).optional().describe('Icona|Facoltativa, accanto al testo (le frecce vanno dopo il testo)'),
+	icon: iconSchema().optional().describe('Icona|Facoltativa, accanto al testo (le frecce vanno dopo il testo)'),
 });
 
 export type Cta = z.infer<typeof ctaSchema>;

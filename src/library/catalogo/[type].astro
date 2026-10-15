@@ -3,6 +3,7 @@ import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { blocks } from '@/core/registry';
 import BlockEntry from './_BlockEntry.astro';
 import CatalogLayout from './_CatalogLayout.astro';
+import { catalogTitle } from './_library';
 
 export const getStaticPaths = (() =>
 	blocks.map((block) => ({ params: { type: block.type }, props: { block } }))) satisfies GetStaticPaths;
@@ -12,7 +13,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { block } = Astro.props;
 ---
 
-<CatalogLayout title={`${block.meta.name} · Catalogo blocchi`}>
+<CatalogLayout title={catalogTitle(block.meta.name)}>
 	<main>
 		<BlockEntry block={block} />
 	</main>

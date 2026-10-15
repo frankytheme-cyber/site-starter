@@ -64,9 +64,9 @@ Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `ty
 {
 	"type": "hero",
 	"variant": "split",
-	"eyebrow": "Tinteggiature e decorazioni",
-	"title": "Pareti come nuove, senza pensieri",
-	"subtitle": "Tinteggiamo case, uffici e condomini con pitture traspiranti e lavabili. Proteggiamo mobili e pavimenti e a fine lavoro lasciamo tutto pulito.",
+	"eyebrow": "Falegnameria su misura",
+	"title": "Mobili fatti a mano, pensati per casa tua",
+	"subtitle": "Progettiamo e costruiamo mobili su misura e restauriamo quelli di famiglia. Prendiamo le misure a casa tua e ti seguiamo fino al montaggio.",
 	"primaryCta": {
 		"label": "Chiedi un preventivo",
 		"href": "#preventivo"
@@ -76,8 +76,8 @@ Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `ty
 		"href": "#lavori"
 	},
 	"image": {
-		"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
-		"alt": "Parete tinteggiata a metà in verde salvia, con un rullo appoggiato"
+		"src": "../../assets/images/fixtures/artigiano-laboratorio.jpg",
+		"alt": "Banco da lavoro in legno con martello, scalpello e sega appesi a un pannello forato"
 	}
 }
 ```

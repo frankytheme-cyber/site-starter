@@ -12,8 +12,8 @@
 	font-family: "Fraunces Variable ripiego";
 	font-weight: 100 549;
 	src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("Tinos");
-	size-adjust: 115.5%;
-	ascent-override: 84.7%;
+	size-adjust: 115.4%;
+	ascent-override: 84.8%;
 	descent-override: 22.1%;
 	line-gap-override: 0%;
 }
@@ -21,9 +21,9 @@
 	font-family: "Fraunces Variable ripiego";
 	font-weight: 550 900;
 	src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"), local("Tinos Bold");
-	size-adjust: 115.9%;
-	ascent-override: 84.4%;
-	descent-override: 22.0%;
+	size-adjust: 115.6%;
+	ascent-override: 84.6%;
+	descent-override: 22.1%;
 	line-gap-override: 0%;
 }
 
@@ -32,18 +32,18 @@
 	font-family: "Source Sans 3 Variable ripiego";
 	font-weight: 100 549;
 	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
-	size-adjust: 93.7%;
-	ascent-override: 109.3%;
-	descent-override: 42.7%;
+	size-adjust: 94.1%;
+	ascent-override: 108.9%;
+	descent-override: 42.5%;
 	line-gap-override: 0%;
 }
 @font-face {
 	font-family: "Source Sans 3 Variable ripiego";
 	font-weight: 550 900;
 	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
-	size-adjust: 92.2%;
-	ascent-override: 111.1%;
-	descent-override: 43.4%;
+	size-adjust: 92.3%;
+	ascent-override: 110.9%;
+	descent-override: 43.3%;
 	line-gap-override: 0%;
 }
 

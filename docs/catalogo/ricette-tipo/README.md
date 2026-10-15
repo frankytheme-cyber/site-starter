@@ -9,7 +9,7 @@ Pagine già composte con i blocchi della libreria, da copiare in un sito cliente
 | `artigiano-chi-siamo.json` | `src/content/pages/chi-siamo.json` → `/chi-siamo/` | hero split, storia in schede con foto, carosello di lavori, invito a contattarsi |
 | `artigiano-contatti.json` | `src/content/pages/contatti.json` → `/contatti/` | hero centrato con Chiama e Come arrivare, recapiti, domande sul primo contatto |
 
-Pensate per un artigiano o un'impresa di servizi a domicilio (imbianchino, idraulico, elettricista, falegname...), vanno bene anche per altre piccole attività togliendo o cambiando le sezioni.
+Pensate per un artigiano o un'impresa di servizi a domicilio (falegname, idraulico, elettricista, imbianchino...), vanno bene anche per altre piccole attività togliendo o cambiando le sezioni.
 
 ## Come usarle
 

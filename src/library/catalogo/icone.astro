@@ -1,44 +1,80 @@
 ---
-import { icons, type IconName } from '@/core/icons';
+import { iconGroups, icons, type IconName } from '@/core/icons';
 import Button from '@/core/ui/button/Button.astro';
 import Container from '@/core/ui/Container.astro';
 import Icon from '@/core/ui/Icon.astro';
 import CatalogLayout from './_CatalogLayout.astro';
+import { catalogTitle } from './_library';
 
-const entries = Object.entries(icons) as [IconName, string][];
-const groups = [
-	{ title: 'Simboli', source: 'Lucide', set: 'lucide' },
-	{ title: 'Marchi', source: 'Simple Icons', set: 'simple-icons' },
-].map((group) => ({ ...group, icons: entries.filter(([, id]) => id.startsWith(`${group.set}:`)) }));
+const total = Object.keys(icons).length;
+const groups = Object.entries(iconGroups).map(([key, group]) => ({
+	key,
+	label: group.label,
+	brands: key === 'marchi',
+	icons: Object.entries(group.icons) as [IconName, string][],
+}));
 
 const sizes = ['sm', 'md', 'lg'] as const;
 ---
 
-<CatalogLayout title="Icone · Catalogo blocchi">
+<CatalogLayout title={catalogTitle('Icone')}>
 	<main>
 		<Container>
 			<div class="py-10">
 				<h1 class="text-3xl font-bold">Icone</h1>
 				<p class="mt-3 max-w-3xl text-fg-muted">
-					{entries.length} icone ammesse, definite in <code>src/core/icons.ts</code>. Nei componenti:{' '}
-					<code>&lt;Icon name="pennello" /&gt;</code>; negli schemi dei blocchi: <code>z.enum(ICON_NAMES)</code>. Il
-					colore è quello del testo intorno.
+					{total} icone ammesse in {groups.length} categorie, definite in <code>src/core/icons.ts</code>. Nei componenti:{' '}
+					<code>&lt;Icon name="casa" /&gt;</code>; negli schemi dei blocchi: <code>iconSchema()</code>. Il colore è quello
+					del testo intorno.
 				</p>
+
+				<div data-icon-search hidden class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
+					<label for="icon-search" class="font-semibold">Cerca</label>
+					<input
+						id="icon-search"
+						type="search"
+						autocomplete="off"
+						placeholder="alias o nome, es. casa, wrench"
+						class="min-h-11 w-full max-w-sm rounded-button border border-border bg-bg px-3 text-fg"
+					/>
+					<p data-icon-count aria-live="polite" class="text-sm text-fg-muted"></p>
+				</div>
+
+				<nav aria-label="Categorie di icone" class="mt-6">
+					<ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+						{
+							groups.map((group) => (
+								<li data-icon-group-link={group.key}>
+									<a href={`#icone-${group.key}`} class="text-primary underline underline-offset-4">
+										{group.label}
+									</a>{' '}
+									<span class="text-fg-muted">({group.icons.length})</span>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
 
 				{
 					groups.map((group) => (
-						<section class="mt-10">
+						<section id={`icone-${group.key}`} data-icon-group={group.key} class="mt-10 scroll-mt-32">
 							<h2 class="text-xl font-bold">
-								{group.title} <span class="text-base font-normal text-fg-muted">· {group.source}</span>
+								{group.label}{' '}
+								<span class="text-base font-normal text-fg-muted">
+									· {group.icons.length} · {group.brands ? 'Simple Icons' : 'Lucide'}
+								</span>
 							</h2>
-							{group.set === 'simple-icons' && (
+							{group.brands && (
 								<p class="mt-1 text-sm text-fg-muted">
 									Solo per i link ai profili dell’attività: sono marchi registrati dei rispettivi titolari.
 								</p>
 							)}
 							<ul class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
 								{group.icons.map(([name, id]) => (
-									<li class="flex flex-col items-center gap-3 rounded-box border border-border px-2 py-5 text-center">
+									<li
+										data-icon-item={`${name} ${id.split(':')[1]}`}
+										class="flex flex-col items-center gap-3 rounded-box border border-border px-2 py-5 text-center"
+									>
 										<Icon name={name} size="lg" />
 										<span>
 											<code class="block font-semibold">{name}</code>
@@ -50,6 +86,7 @@ const sizes = ['sm', 'md', 'lg'] as const;
 						</section>
 					))
 				}
+				<p data-icon-empty hidden class="mt-10 text-fg-muted">Nessuna icona trovata.</p>
 
 				<section class="mt-12">
 					<h2 class="text-xl font-bold">Dimensioni</h2>
@@ -57,7 +94,7 @@ const sizes = ['sm', 'md', 'lg'] as const;
 						{
 							sizes.map((size) => (
 								<li class="flex flex-col items-center gap-2">
-									<Icon name="rullo" size={size} />
+									<Icon name="casa" size={size} />
 									<code class="text-sm">{size}</code>
 								</li>
 							))
@@ -113,3 +150,36 @@ const sizes = ['sm', 'md', 'lg'] as const;
 		</Container>
 	</main>
 </CatalogLayout>
+
+<script>
+	// Ricerca per alias o nome dell'icona: nasconde le icone e le categorie che non corrispondono.
+	const box = document.querySelector<HTMLElement>('[data-icon-search]')!;
+	const input = box.querySelector<HTMLInputElement>('input')!;
+	const count = box.querySelector<HTMLElement>('[data-icon-count]')!;
+	const empty = document.querySelector<HTMLElement>('[data-icon-empty]')!;
+	const groups = [...document.querySelectorAll<HTMLElement>('[data-icon-group]')];
+	box.hidden = false;
+
+	const normalize = (text: string) => text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+
+	function filter() {
+		const query = normalize(input.value);
+		let shown = 0;
+		for (const group of groups) {
+			let inGroup = 0;
+			for (const item of group.querySelectorAll<HTMLElement>('[data-icon-item]')) {
+				const match = !query || normalize(item.dataset.iconItem!).includes(query);
+				item.hidden = !match;
+				if (match) inGroup++;
+			}
+			group.hidden = inGroup === 0;
+			const link = document.querySelector<HTMLElement>(`[data-icon-group-link="${group.dataset.iconGroup}"]`);
+			if (link) link.hidden = inGroup === 0;
+			shown += inGroup;
+		}
+		empty.hidden = shown > 0;
+		count.textContent = query ? `${shown} ${shown === 1 ? 'icona trovata' : 'icone trovate'}` : '';
+	}
+
+	input.addEventListener('input', filter);
+</script>

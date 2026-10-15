@@ -1,6 +1,6 @@
 ---
-import facciata from '@/assets/images/fixtures/imbianchino-facciata.jpg';
-import interno from '@/assets/images/fixtures/imbianchino-interno.jpg';
+import sala from '@/assets/images/fixtures/ristorante-sala.jpg';
+import scrivania from '@/assets/images/fixtures/studio-scrivania.jpg';
 import Accordion from '@/core/ui/Accordion.astro';
 import AccordionItem from '@/core/ui/AccordionItem.astro';
 import Carousel from '@/core/ui/Carousel.astro';
@@ -10,15 +10,16 @@ import Img from '@/core/ui/Img.astro';
 import Section from '@/core/ui/Section.astro';
 import Tabs from '@/core/ui/Tabs.astro';
 import CatalogLayout from './_CatalogLayout.astro';
+import { catalogTitle } from './_library';
 
 const slides = Array.from({ length: 6 }, (_, index) => ({
-	title: `Cantiere ${index + 1}`,
-	image: index % 2 === 0 ? interno : facciata,
-	alt: index % 2 === 0 ? 'Parete tinteggiata a metà in verde salvia' : 'Facciata color ocra con persiane verdi',
+	title: `Foto ${index + 1}`,
+	image: index % 2 === 0 ? sala : scrivania,
+	alt: index % 2 === 0 ? 'Sala di un ristorante con tavoli apparecchiati' : 'Scrivania con computer portatile e una pianta',
 }));
 ---
 
-<CatalogLayout title="Primitive UI · Catalogo blocchi">
+<CatalogLayout title={catalogTitle('Primitive UI')}>
 	<main>
 		<Container>
 			<div class="py-10">

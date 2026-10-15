@@ -1,32 +1,32 @@
-import antimuffa from '@/assets/images/fixtures/imbianchino-antimuffa.jpg';
-import cartongesso from '@/assets/images/fixtures/imbianchino-cartongesso.jpg';
-import decorazioni from '@/assets/images/fixtures/imbianchino-decorazioni.jpg';
-import facciata from '@/assets/images/fixtures/imbianchino-facciata.jpg';
-import interno from '@/assets/images/fixtures/imbianchino-interno.jpg';
+import archivio from '@/assets/images/fixtures/studio-archivio.jpg';
+import attrezzi from '@/assets/images/fixtures/artigiano-attrezzi.jpg';
+import cucina from '@/assets/images/fixtures/ristorante-cucina.jpg';
+import laboratorio from '@/assets/images/fixtures/artigiano-laboratorio.jpg';
+import mobile from '@/assets/images/fixtures/artigiano-mobile.jpg';
+import piatto from '@/assets/images/fixtures/ristorante-piatto.jpg';
+import regalo from '@/assets/images/fixtures/negozio-regalo.jpg';
+import riunione from '@/assets/images/fixtures/studio-riunione.jpg';
+import sala from '@/assets/images/fixtures/ristorante-sala.jpg';
+import scaffali from '@/assets/images/fixtures/negozio-scaffali.jpg';
+import scrivania from '@/assets/images/fixtures/studio-scrivania.jpg';
+import vetrina from '@/assets/images/fixtures/negozio-vetrina.jpg';
 import type { BlockFixture } from '@/core/block-types';
 import type { schema } from './schema';
 
+// Ogni fixture è un'attività di esempio di un settore diverso: ristorante, impianti, negozio, studio, artigiano.
 const images = {
-	interno: {
-		src: interno,
-		alt: 'Parete tinteggiata a metà in verde salvia, con un rullo appoggiato',
-	},
-	facciata: {
-		src: facciata,
-		alt: 'Facciata di una casa color ocra con persiane verdi',
-	},
-	decorazioni: {
-		src: decorazioni,
-		alt: 'Parete a stucco veneziano color ocra con una spatola appoggiata',
-	},
-	cartongesso: {
-		src: cartongesso,
-		alt: 'Lastre di cartongesso montate su una parete, con i giunti stuccati e una livella',
-	},
-	antimuffa: {
-		src: antimuffa,
-		alt: 'Angolo di una stanza con macchie di muffa a sinistra e parete risanata a destra',
-	},
+	sala: { src: sala, alt: 'Sala di un ristorante con tre tavoli apparecchiati sotto lampade a sospensione' },
+	piatto: { src: piatto, alt: 'Piatto di pasta al pomodoro visto dall’alto, con forchetta e coltello su una tovaglia a quadri' },
+	cucina: { src: cucina, alt: 'Cucina professionale con una pentola che fuma e una padella sui fornelli' },
+	vetrina: { src: vetrina, alt: 'Vetrina di una bottega con la tenda a righe bianche e rosse e la porta verde' },
+	scaffali: { src: scaffali, alt: 'Scaffali di legno con barattoli e scatole colorate in fila' },
+	regalo: { src: regalo, alt: 'Pacco regalo rosso con il fiocco giallo appoggiato sul banco' },
+	scrivania: { src: scrivania, alt: 'Scrivania con computer portatile, lampada e una pianta in vaso' },
+	riunione: { src: riunione, alt: 'Tavolo riunioni con quattro sedie e una lavagna con un grafico in crescita' },
+	archivio: { src: archivio, alt: 'Libreria con file di raccoglitori colorati su tre ripiani' },
+	laboratorio: { src: laboratorio, alt: 'Banco da lavoro in legno con martello, scalpello e sega appesi a un pannello forato' },
+	attrezzi: { src: attrezzi, alt: 'Martello, cacciavite e metro giallo appoggiati su un piano di legno' },
+	mobile: { src: mobile, alt: 'Credenza in legno a due ante con maniglie dorate, in una stanza chiara' },
 };
 
 export const fixtures: BlockFixture<typeof schema>[] = [
@@ -34,24 +34,24 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		name: 'Schede',
 		props: {
 			variant: 'schede',
-			eyebrow: 'Servizi',
-			title: 'Scegli il lavoro che ti serve',
-			intro: 'Ogni servizio ha la sua squadra e i suoi tempi: qui trovi cosa comprende.',
+			eyebrow: 'Il ristorante',
+			title: 'Pranzo, cena o una serata tutta per voi',
+			intro: 'Ogni momento ha il suo menu e i suoi orari: qui trovi cosa proponiamo.',
 			items: [
 				{
-					image: images.interno,
-					title: 'Tinteggiature interne',
-					text: 'Pareti e soffitti con pitture traspiranti o lavabili. Copriamo mobili e pavimenti, stucchiamo le crepe e lasciamo tutto pulito.',
-					link: { label: 'Chiedi un preventivo', href: '#preventivo' },
+					image: images.piatto,
+					title: 'Pranzo di lavoro',
+					text: 'Un primo, un secondo e il caffè in meno di un’ora, con piatti che cambiano ogni giorno in base al mercato.',
+					link: { label: 'Prenota un tavolo', href: '#prenota' },
 				},
 				{
-					image: images.facciata,
-					title: 'Facciate esterne',
-					text: 'Pulizia, ripristino degli intonaci e pitture ai silossani che resistono a pioggia, sole e smog per molti anni.',
+					image: images.sala,
+					title: 'Cena alla carta',
+					text: 'Pasta fatta in casa, carni alla brace e una carta dei vini con molte etichette della zona.',
 				},
 				{
-					title: 'Trattamenti antimuffa',
-					text: 'Eliminiamo muffa e condensa alla radice con prodotti risananti e pitture termiche anticondensa.',
+					title: 'Feste ed eventi privati',
+					text: 'Compleanni, cene aziendali e ricorrenze: riserviamo la sala e componiamo il menu con te.',
 					link: { label: 'Scrivici su WhatsApp', href: '@whatsapp', icon: 'whatsapp', style: 'secondary' },
 				},
 			],
@@ -62,39 +62,39 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		props: {
 			variant: 'cards-icone',
 			eyebrow: 'Cosa facciamo',
-			title: 'Tutto quello che serve alle tue pareti',
+			title: 'Manutenzioni e impianti per la casa',
 			intro:
-				'Dalla singola stanza al condominio intero: un’unica squadra per preparare, tinteggiare e rifinire, con tempi concordati prima di iniziare.',
+				'Dal rubinetto che perde al nuovo condizionatore: un’unica squadra di tecnici per gli impianti di casa, con appuntamenti in giornata per le urgenze.',
 			items: [
 				{
-					icon: 'rullo',
-					title: 'Tinteggiature interne',
-					text: 'Pareti e soffitti con pitture traspiranti o lavabili. Copriamo mobili e pavimenti, stucchiamo le crepe e lasciamo tutto pulito.',
+					icon: 'rubinetto',
+					title: 'Impianti idraulici',
+					text: 'Riparazioni, sostituzione di sanitari e rubinetti, ricerca delle perdite senza rompere i muri.',
 				},
 				{
-					icon: 'edificio',
-					title: 'Facciate esterne',
-					text: 'Pulizia, ripristino degli intonaci e pitture ai silossani che resistono a pioggia, sole e smog per molti anni.',
+					icon: 'lampadina',
+					title: 'Impianti elettrici',
+					text: 'Nuove prese e punti luce, quadri elettrici a norma e certificazione degli impianti.',
 				},
 				{
-					icon: 'pennello',
-					title: 'Decorazioni e velature',
-					text: 'Stucco veneziano, velature e spatolati per dare carattere all’ingresso o a una parete del soggiorno.',
+					icon: 'aria-condizionata',
+					title: 'Clima e riscaldamento',
+					text: 'Installazione e pulizia di condizionatori, manutenzione delle caldaie e dei termosifoni.',
 				},
 				{
-					icon: 'goccia',
-					title: 'Trattamenti antimuffa',
-					text: 'Eliminiamo muffa e condensa alla radice con prodotti risananti e pitture termiche anticondensa.',
+					icon: 'fiamma',
+					title: 'Impianti a gas',
+					text: 'Allacci, prove di tenuta e controlli periodici fatti da tecnici abilitati.',
 				},
 				{
-					icon: 'muro',
-					title: 'Cartongesso',
-					text: 'Contropareti, controsoffitti e nicchie su misura, montati, stuccati e tinteggiati dalla stessa squadra.',
+					icon: 'porta',
+					title: 'Porte e serramenti',
+					text: 'Regolazione di porte e finestre, sostituzione di serrature e maniglie.',
 				},
 				{
-					icon: 'scala',
-					title: 'Vani scala condominiali',
-					text: 'Lavori programmati con l’amministratore e divisi a fasce orarie, per disturbare il meno possibile chi ci abita.',
+					icon: 'scale',
+					title: 'Parti comuni dei condomini',
+					text: 'Manutenzioni programmate con l’amministratore, a fasce orarie per disturbare il meno possibile.',
 				},
 			],
 		},
@@ -103,26 +103,26 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		name: 'Card con immagine',
 		props: {
 			variant: 'cards-immagine',
-			eyebrow: 'I nostri servizi',
-			title: 'Lavori fatti bene, dentro e fuori casa',
+			eyebrow: 'In negozio',
+			title: 'Tutto per la casa e per i regali',
 			items: [
 				{
-					image: images.interno,
-					title: 'Tinteggiature interne',
-					text: 'Pitture traspiranti, lavabili o antimuffa, scelte in base alla stanza. Proteggiamo mobili e pavimenti e a fine giornata puliamo.',
-					link: { label: 'Vedi gli interni', href: '#interni' },
+					image: images.scaffali,
+					title: 'Casalinghi e dispensa',
+					text: 'Barattoli, utensili da cucina e prodotti del territorio scelti da piccoli produttori della zona.',
+					link: { label: 'Vedi i prodotti', href: '#prodotti' },
 				},
 				{
-					image: images.facciata,
-					title: 'Facciate esterne',
-					text: 'Ripristino di intonaci e cornicioni, trattamento delle infiltrazioni e pitture ai silossani che durano negli anni.',
-					link: { label: 'Vedi le facciate', href: '#facciate' },
+					image: images.regalo,
+					title: 'Confezioni regalo',
+					text: 'Componiamo cesti e confezioni su misura per ogni budget, anche per le aziende.',
+					link: { label: 'Vedi le confezioni', href: '#regali' },
 				},
 				{
-					image: images.decorazioni,
-					title: 'Decorazioni e velature',
-					text: 'Stucco veneziano, velature e spatolati: proviamo i campioni sulle tue pareti prima di scegliere.',
-					link: { label: 'Vedi le decorazioni', href: '#decorazioni' },
+					image: images.vetrina,
+					title: 'Ritiro in negozio',
+					text: 'Ordina al telefono o su WhatsApp e passa a ritirare quando vuoi, senza fare la fila.',
+					link: { label: 'Come funziona', href: '#ritiro' },
 				},
 			],
 		},
@@ -134,24 +134,24 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 			eyebrow: 'Servizi',
 			title: 'Come possiamo aiutarti',
 			intro:
-				'Ogni lavoro parte da un sopralluogo gratuito: guardiamo le pareti, ascoltiamo cosa ti serve e ti lasciamo un preventivo scritto e dettagliato.',
+				'Ogni incarico parte da un primo incontro gratuito: ascoltiamo cosa ti serve, guardiamo i documenti e ti lasciamo un preventivo scritto e dettagliato.',
 			items: [
 				{
-					image: images.interno,
-					title: 'Tinteggiature interne',
-					text: 'Dalla stuccatura delle crepe all’ultima mano di colore. Copriamo mobili e pavimenti e lavoriamo una stanza alla volta, così puoi continuare a vivere in casa.',
-					link: { label: 'Chiedi un preventivo', href: '#preventivo' },
+					image: images.scrivania,
+					title: 'Contabilità e bilanci',
+					text: 'Teniamo la contabilità della tua attività, prepariamo il bilancio e ti avvisiamo per tempo di ogni scadenza, così non hai sorprese.',
+					link: { label: 'Fissa un appuntamento', href: '#appuntamento' },
 				},
 				{
-					image: images.cartongesso,
-					title: 'Cartongesso e controsoffitti',
-					text: 'Contropareti isolanti, controsoffitti con faretti, nicchie e librerie su misura: montiamo, stucchiamo e tinteggiamo, senza passare il lavoro ad altri.',
+					image: images.riunione,
+					title: 'Consulenza per le imprese',
+					text: 'Business plan, richieste di finanziamento e scelta della forma societaria: ne parliamo insieme, con numeri alla mano.',
 				},
 				{
-					image: images.antimuffa,
-					title: 'Trattamenti antimuffa',
-					text: 'Cerchiamo la causa prima di coprire la macchia: puliamo con prodotti risananti e applichiamo pitture termiche che riducono la condensa.',
-					link: { label: 'Come trattiamo la muffa', href: '#antimuffa' },
+					image: images.archivio,
+					title: 'Dichiarazioni dei redditi',
+					text: 'Modello 730 e Redditi per famiglie e professionisti: raccogliamo noi i documenti e controlliamo ogni detrazione.',
+					link: { label: 'Quali documenti servono', href: '#documenti' },
 				},
 			],
 		},
@@ -161,27 +161,27 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		tone: 'muted',
 		props: {
 			variant: 'cards-immagine',
-			title: 'Interni, esterni e finiture',
+			title: 'Dal laboratorio a casa tua',
 			items: [
 				{
-					image: images.interno,
-					title: 'Tinteggiature interne',
-					text: 'Pareti e soffitti con pitture traspiranti o lavabili, scelte stanza per stanza.',
+					image: images.mobile,
+					title: 'Mobili su misura',
+					text: 'Credenze, librerie e cucine disegnate sugli spazi di casa tua.',
 				},
 				{
-					image: images.facciata,
-					title: 'Facciate esterne',
-					text: 'Intonaci ripristinati e pitture ai silossani che resistono a pioggia e smog.',
+					image: images.laboratorio,
+					title: 'Restauro',
+					text: 'Mobili antichi e di famiglia riportati come nuovi, nel rispetto del legno.',
 				},
 				{
-					image: images.cartongesso,
-					title: 'Cartongesso',
-					text: 'Contropareti, controsoffitti e nicchie su misura, già pronti da tinteggiare.',
+					image: images.attrezzi,
+					title: 'Riparazioni',
+					text: 'Cassetti, ante e sedie sistemati in laboratorio o direttamente a casa.',
 				},
 				{
-					image: images.antimuffa,
-					title: 'Trattamenti antimuffa',
-					text: 'Prodotti risananti e pitture termiche contro muffa e condensa.',
+					image: images.cucina,
+					title: 'Arredi per locali',
+					text: 'Banconi, tavoli e mensole per ristoranti, bar e negozi.',
 				},
 			],
 		},
@@ -190,22 +190,22 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		name: 'Card con icona, testi al limite',
 		props: {
 			variant: 'cards-icone',
-			eyebrow: 'Imbiancature, decorazioni e cartongesso',
-			title: 'Tinteggiature, decorazioni e cartongesso per case, uffici e condomini',
+			eyebrow: 'Contabilità, consulenza e dichiarazioni',
+			title: 'Contabilità, consulenza e dichiarazioni per famiglie e piccole imprese',
 			intro:
-				'Lavoriamo in tutta la provincia con una squadra fissa di quattro persone. Prima di iniziare concordiamo date, colori e prodotti, e durante il cantiere hai sempre un solo referente da chiamare per qualsiasi dubbio o cambio di programma.',
+				'Lavoriamo con clienti di tutta la provincia, con uno studio di quattro professionisti. Prima di iniziare concordiamo servizi, costi e scadenze, e durante l’anno hai sempre un solo referente da chiamare per qualsiasi dubbio o novità fiscale.',
 			items: [
 				{
-					icon: 'scudo',
-					title: 'Garanzia scritta di cinque anni su tutti i lavori',
-					text: 'Se una parete si crepa o la pittura si stacca entro cinque anni dalla fine dei lavori torniamo a sistemarla senza costi, con la stessa squadra e gli stessi prodotti usati allora.',
+					icon: 'garanzia',
+					title: 'Assicurazione professionale su tutte le pratiche',
+					text: 'Se un errore nostro ti costa una sanzione, la copriamo noi con la nostra assicurazione professionale, senza discussioni e senza costi in più per te o per la tua attività.',
 					link: { label: 'Leggi come funziona tutto', href: '#garanzia' },
 				},
 				{
 					icon: 'calendario',
-					title: 'Date di inizio e di fine fissate nel preventivo',
-					text: 'Nel preventivo scriviamo il giorno di inizio e quello di fine. Se il cantiere finisce in ritardo per colpa nostra, ogni giorno in più ti viene scalato dal totale del preventivo.',
-					link: { label: 'Chiedi un preventivo oggi', href: '#preventivo' },
+					title: 'Scadenze fiscali segnate e ricordate in anticipo',
+					text: 'Ogni mese ti mandiamo l’elenco delle scadenze e gli importi da pagare. Se una pratica arriva in ritardo per colpa nostra, il costo dell’intera pratica è a carico dello studio.',
+					link: { label: 'Fissa un appuntamento ora', href: '#appuntamento' },
 				},
 			],
 		},

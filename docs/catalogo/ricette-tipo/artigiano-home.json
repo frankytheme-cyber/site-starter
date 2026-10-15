@@ -12,7 +12,7 @@
 			"primaryCta": { "label": "Chiedi un preventivo", "href": "/contatti/" },
 			"secondaryCta": { "label": "I nostri servizi", "href": "#servizi" },
 			"image": {
-				"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
+				"src": "../../assets/images/fixtures/artigiano-laboratorio.jpg",
 				"alt": "DA-COMPILARE: cosa mostra la foto di un lavoro"
 			}
 		},
@@ -26,19 +26,19 @@
 			"intro": "DA-COMPILARE: una frase che presenta i servizi nel loro insieme.",
 			"items": [
 				{
-					"icon": "rullo",
+					"icon": "chiave-inglese",
 					"title": "DA-COMPILARE servizio 1",
 					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto.",
 					"link": { "label": "Dettagli", "href": "/servizi/#elenco" }
 				},
 				{
-					"icon": "edificio",
+					"icon": "casa",
 					"title": "DA-COMPILARE servizio 2",
 					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto.",
 					"link": { "label": "Dettagli", "href": "/servizi/#elenco" }
 				},
 				{
-					"icon": "pennello",
+					"icon": "martello",
 					"title": "DA-COMPILARE servizio 3",
 					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto.",
 					"link": { "label": "Dettagli", "href": "/servizi/#elenco" }
@@ -53,19 +53,19 @@
 			"title": "DA-COMPILARE: titolo della galleria dei lavori",
 			"items": [
 				{
-					"image": { "src": "../../assets/images/fixtures/imbianchino-facciata.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"image": { "src": "../../assets/images/fixtures/negozio-vetrina.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
 					"title": "DA-COMPILARE: lavoro e luogo"
 				},
 				{
-					"image": { "src": "../../assets/images/fixtures/imbianchino-decorazioni.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"image": { "src": "../../assets/images/fixtures/artigiano-mobile.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
 					"title": "DA-COMPILARE: lavoro e luogo"
 				},
 				{
-					"image": { "src": "../../assets/images/fixtures/imbianchino-cartongesso.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"image": { "src": "../../assets/images/fixtures/artigiano-attrezzi.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
 					"title": "DA-COMPILARE: lavoro e luogo"
 				},
 				{
-					"image": { "src": "../../assets/images/fixtures/imbianchino-antimuffa.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"image": { "src": "../../assets/images/fixtures/artigiano-laboratorio.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
 					"title": "DA-COMPILARE: lavoro e luogo"
 				}
 			]

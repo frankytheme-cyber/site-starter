@@ -6,7 +6,7 @@
 
 Contenuti alternativi in schede: se ne vede uno alla volta, da desktop con le linguette, su mobile come elenco da aprire.
 
-**Quando usarlo:** Quando chi visita sceglie una strada tra poche alternative parallele dello stesso tipo: interni o esterni, privati o condomini, tipi di finitura.
+**Quando usarlo:** Quando chi visita sceglie una strada tra poche alternative parallele dello stesso tipo: pranzo o cena, privati o imprese, servizi di base o completi.
 
 **Evitare quando:** Per informazioni che tutti devono leggere (prezzi, condizioni, garanzie): nelle schede chiuse non le vede quasi nessuno, meglio un testo aperto o services. Per più di 6 voci o etichette lunghe, per confrontare elementi fianco a fianco (servono card o una tabella) e per passaggi in sequenza (meglio accordion o un elenco numerato).
 
@@ -60,20 +60,20 @@ Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `ty
 	"title": "Ogni cliente ha esigenze diverse",
 	"items": [
 		{
-			"label": "Privati",
-			"text": "Lavoriamo una stanza alla volta, così puoi continuare a vivere in casa. Copriamo mobili e pavimenti e a fine giornata puliamo.\n\nTi aiutiamo a scegliere colori e finiture provando i campioni sulle tue pareti.",
+			"label": "Famiglie",
+			"text": "Dichiarazione dei redditi, successioni e pratiche per la casa: raccogliamo noi i documenti e ti spieghiamo ogni voce.\n\nIl primo incontro per capire cosa ti serve è gratuito.",
 			"cta": {
-				"label": "Chiedi un preventivo",
-				"href": "#preventivo"
+				"label": "Fissa un appuntamento",
+				"href": "#appuntamento"
 			}
 		},
 		{
-			"label": "Condomini",
-			"text": "Concordiamo i lavori con l’amministratore e li dividiamo a fasce orarie, per disturbare il meno possibile chi ci abita. Vani scala, androni e facciate con un unico referente."
+			"label": "Professionisti",
+			"text": "Partita IVA, regime forfettario o ordinario, fatture elettroniche e contributi: ti diciamo quanto mettere da parte ogni mese per le tasse."
 		},
 		{
-			"label": "Negozi e uffici",
-			"text": "Interveniamo la sera o nel fine settimana, per non fermare la tua attività. Pitture lavabili e resistenti, adatte agli ambienti di passaggio."
+			"label": "Imprese",
+			"text": "Contabilità, bilanci, buste paga e rapporti con la banca, con un referente fisso che conosce la tua attività."
 		}
 	]
 }

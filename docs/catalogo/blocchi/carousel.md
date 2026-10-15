@@ -56,43 +56,43 @@ Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `ty
 {
 	"type": "carousel",
 	"variant": "foto",
-	"eyebrow": "Lavori finiti",
-	"title": "Gli ultimi cantieri",
+	"eyebrow": "La bottega",
+	"title": "Vieni a trovarci",
 	"items": [
 		{
 			"image": {
-				"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
-				"alt": "Parete tinteggiata a metà in verde salvia, con un rullo appoggiato"
+				"src": "../../assets/images/fixtures/negozio-vetrina.jpg",
+				"alt": "Vetrina di una bottega con la tenda a righe bianche e rosse e la porta verde"
 			},
-			"title": "Soggiorno in verde salvia, Firenze centro"
+			"title": "La vetrina, rinnovata ogni stagione"
 		},
 		{
 			"image": {
-				"src": "../../assets/images/fixtures/imbianchino-facciata.jpg",
-				"alt": "Facciata di una casa color ocra con persiane verdi"
+				"src": "../../assets/images/fixtures/negozio-scaffali.jpg",
+				"alt": "Scaffali di legno con barattoli e scatole colorate in fila"
 			},
-			"title": "Facciata ai silossani, Sesto Fiorentino"
+			"title": "Barattoli e dispensa dei produttori locali"
 		},
 		{
 			"image": {
-				"src": "../../assets/images/fixtures/imbianchino-decorazioni.jpg",
-				"alt": "Parete a stucco veneziano color ocra con una spatola appoggiata"
+				"src": "../../assets/images/fixtures/negozio-regalo.jpg",
+				"alt": "Pacco regalo rosso con il fiocco giallo appoggiato sul banco"
 			},
-			"title": "Stucco veneziano in un ingresso"
+			"title": "Confezioni regalo preparate al banco"
 		},
 		{
 			"image": {
-				"src": "../../assets/images/fixtures/imbianchino-cartongesso.jpg",
-				"alt": "Lastre di cartongesso montate su una parete, con i giunti stuccati"
+				"src": "../../assets/images/fixtures/artigiano-mobile.jpg",
+				"alt": "Credenza in legno a due ante con maniglie dorate, in una stanza chiara"
 			},
-			"title": "Controsoffitto con faretti in cucina"
+			"title": "Gli arredi del negozio, fatti su misura"
 		},
 		{
 			"image": {
-				"src": "../../assets/images/fixtures/imbianchino-antimuffa.jpg",
-				"alt": "Angolo di una stanza con macchie di muffa a sinistra e parete risanata a destra"
+				"src": "../../assets/images/fixtures/artigiano-attrezzi.jpg",
+				"alt": "Martello, cacciavite e metro giallo appoggiati su un piano di legno"
 			},
-			"title": "Bagno risanato dalla muffa"
+			"title": "L’angolo della ferramenta"
 		}
 	]
 }

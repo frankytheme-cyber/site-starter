@@ -1,17 +1,20 @@
-import antimuffa from '@/assets/images/fixtures/imbianchino-antimuffa.jpg';
-import cartongesso from '@/assets/images/fixtures/imbianchino-cartongesso.jpg';
-import decorazioni from '@/assets/images/fixtures/imbianchino-decorazioni.jpg';
-import facciata from '@/assets/images/fixtures/imbianchino-facciata.jpg';
-import interno from '@/assets/images/fixtures/imbianchino-interno.jpg';
+import attrezzi from '@/assets/images/fixtures/artigiano-attrezzi.jpg';
+import laboratorio from '@/assets/images/fixtures/artigiano-laboratorio.jpg';
+import mobile from '@/assets/images/fixtures/artigiano-mobile.jpg';
+import regalo from '@/assets/images/fixtures/negozio-regalo.jpg';
+import scaffali from '@/assets/images/fixtures/negozio-scaffali.jpg';
+import vetrina from '@/assets/images/fixtures/negozio-vetrina.jpg';
 import type { BlockFixture } from '@/core/block-types';
 import type { schema } from './schema';
 
+// Attività di esempio: un negozio (foto) e un artigiano (card).
 const photos = {
-	interno: { src: interno, alt: 'Parete tinteggiata a metà in verde salvia, con un rullo appoggiato' },
-	facciata: { src: facciata, alt: 'Facciata di una casa color ocra con persiane verdi' },
-	decorazioni: { src: decorazioni, alt: 'Parete a stucco veneziano color ocra con una spatola appoggiata' },
-	cartongesso: { src: cartongesso, alt: 'Lastre di cartongesso montate su una parete, con i giunti stuccati' },
-	antimuffa: { src: antimuffa, alt: 'Angolo di una stanza con macchie di muffa a sinistra e parete risanata a destra' },
+	vetrina: { src: vetrina, alt: 'Vetrina di una bottega con la tenda a righe bianche e rosse e la porta verde' },
+	scaffali: { src: scaffali, alt: 'Scaffali di legno con barattoli e scatole colorate in fila' },
+	regalo: { src: regalo, alt: 'Pacco regalo rosso con il fiocco giallo appoggiato sul banco' },
+	mobile: { src: mobile, alt: 'Credenza in legno a due ante con maniglie dorate, in una stanza chiara' },
+	laboratorio: { src: laboratorio, alt: 'Banco da lavoro in legno con martello, scalpello e sega appesi a un pannello forato' },
+	attrezzi: { src: attrezzi, alt: 'Martello, cacciavite e metro giallo appoggiati su un piano di legno' },
 };
 
 export const fixtures: BlockFixture<typeof schema>[] = [
@@ -19,14 +22,14 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		name: 'Foto',
 		props: {
 			variant: 'foto',
-			eyebrow: 'Lavori finiti',
-			title: 'Gli ultimi cantieri',
+			eyebrow: 'La bottega',
+			title: 'Vieni a trovarci',
 			items: [
-				{ image: photos.interno, title: 'Soggiorno in verde salvia, Firenze centro' },
-				{ image: photos.facciata, title: 'Facciata ai silossani, Sesto Fiorentino' },
-				{ image: photos.decorazioni, title: 'Stucco veneziano in un ingresso' },
-				{ image: photos.cartongesso, title: 'Controsoffitto con faretti in cucina' },
-				{ image: photos.antimuffa, title: 'Bagno risanato dalla muffa' },
+				{ image: photos.vetrina, title: 'La vetrina, rinnovata ogni stagione' },
+				{ image: photos.scaffali, title: 'Barattoli e dispensa dei produttori locali' },
+				{ image: photos.regalo, title: 'Confezioni regalo preparate al banco' },
+				{ image: photos.mobile, title: 'Gli arredi del negozio, fatti su misura' },
+				{ image: photos.attrezzi, title: 'L’angolo della ferramenta' },
 			],
 		},
 	},
@@ -35,23 +38,23 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		tone: 'muted',
 		props: {
 			variant: 'card',
-			title: 'Progetti recenti',
+			title: 'Lavori recenti',
 			intro: 'Ogni lavoro con il racconto di cosa abbiamo fatto e in quanto tempo.',
 			items: [
 				{
-					image: photos.interno,
-					title: 'Trilocale in tre giorni',
-					text: 'Stuccatura delle crepe e due mani di pittura lavabile in tutte le stanze.',
-					cta: { label: 'Leggi il progetto', href: '#trilocale' },
+					image: photos.mobile,
+					title: 'Credenza in rovere',
+					text: 'Disegnata sulle misure del soggiorno e consegnata in tre settimane.',
+					cta: { label: 'Leggi il progetto', href: '#credenza' },
 				},
 				{
-					image: photos.facciata,
-					title: 'Facciata di una villetta',
-					text: 'Pulizia, ripristino dei cornicioni e pittura ai silossani color ocra.',
-					cta: { label: 'Leggi il progetto', href: '#villetta' },
+					image: photos.laboratorio,
+					title: 'Restauro di un tavolo',
+					text: 'Un tavolo di famiglia riportato al legno naturale e rifinito a cera.',
+					cta: { label: 'Leggi il progetto', href: '#tavolo' },
 				},
-				{ image: photos.decorazioni, title: 'Ingresso decorato', text: 'Stucco veneziano su una parete d’accento, provato prima su un campione.' },
-				{ image: photos.antimuffa, title: 'Bagno senza muffa', text: 'Trattamento risanante e pittura termica anticondensa.' },
+				{ image: photos.attrezzi, title: 'Sedie riparate', text: 'Sei sedie da trattoria rincollate e rinforzate in due giorni.' },
+				{ image: photos.vetrina, title: 'Arredi per una bottega', text: 'Bancone e scaffali su misura per un negozio del centro.' },
 			],
 		},
 	},

@@ -9,6 +9,7 @@ import { catalogVariants } from '@/core/catalog';
 import { blocks } from '@/core/registry';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { fonts, palettes, shapes } from '@/themes/presets';
+import { catalogTitle, LIBRARY_DESCRIPTION } from '../_library';
 
 export const getStaticPaths = (() =>
 	blocks.flatMap((block) =>
@@ -25,7 +26,7 @@ const { Component } = block;
 const presets = { palette: palettes, fonts, shape: shapes };
 ---
 
-<BaseLayout title={`${block.meta.name} · ${variant} · Catalogo blocchi`} noindex allFonts siteLayout={false}>
+<BaseLayout title={catalogTitle(`${block.meta.name} · ${variant}`)} description={LIBRARY_DESCRIPTION} noindex allFonts siteLayout={false}>
 	{/* Prima del blocco, così non si vede il cambio di tema: solo valori ammessi dai preset. */}
 	<script is:inline define:vars={{ presets }}>
 		const params = new URLSearchParams(location.search);

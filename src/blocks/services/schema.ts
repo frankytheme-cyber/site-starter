@@ -1,7 +1,7 @@
 import type { SchemaContext } from 'astro:content';
 import { z } from 'astro/zod';
 import type { BlockProps } from '@/core/block-types';
-import { ICON_NAMES } from '@/core/icons';
+import { iconSchema } from '@/core/icons';
 import { imageSchema } from '@/core/images';
 import { ctaSchema } from '@/core/ui/button/cta';
 
@@ -23,7 +23,7 @@ export const schema = ({ image }: SchemaContext) =>
 				.array(
 					z.object({
 						/** Obbligatoria per cards-icone; le altre varianti non la mostrano. */
-						icon: z.enum(ICON_NAMES).optional().describe('Icona|Obbligatoria per la variante cards-icone'),
+						icon: iconSchema().optional().describe('Icona|Obbligatoria per la variante cards-icone'),
 						/** Obbligatoria per cards-immagine e alternato; cards-icone non la mostra. */
 						image: imageSchema(image)
 							.optional()
