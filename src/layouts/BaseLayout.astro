@@ -1,0 +1,127 @@
+---
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import '@/themes/base.css';
+import Footer from '@/blocks/footer/Footer.astro';
+import Header from '@/blocks/header/Header.astro';
+import { getLayout } from '@/core/layout';
+import { openingHoursSpecification } from '@/core/opening-hours';
+import { getSiteSettings, getTheme } from '@/core/settings';
+
+interface Props {
+	title: string;
+	description?: string;
+	/** Esclude la pagina dai motori di ricerca. */
+	noindex?: boolean;
+	/** Immagine per le anteprime social (Open Graph): ritagliata a 1200×630. Senza, defaultOgImage di site.json. */
+	ogImage?: ImageMetadata;
+	/** Carica tutte le coppie di font invece della sola scelta (serve al catalogo per cambiarle al volo). */
+	allFonts?: boolean;
+	/**
+	 * Header e footer del sito da layout.json, con il contenuto della pagina in <main> (default true).
+	 * Il catalogo li toglie: ha la sua barra e mette da sé il suo <main>.
+	 */
+	siteLayout?: boolean;
+}
+
+const { title, description, noindex = false, ogImage, allFonts = false, siteLayout = true } = Astro.props;
+
+// Aspetto da theme.json, dati dell'attività da site.json, header e footer da layout.json.
+const [theme, site, layout] = await Promise.all([getTheme(), getSiteSettings(), getLayout()]);
+
+// Di norma solo il CSS dei font scelti: gli altri preset non vengono collegati alla pagina.
+const fontStyles = import.meta.glob<string>('/src/themes/fonts/*.css', {
+	query: '?url',
+	import: 'default',
+	eager: true,
+});
+const siteFontsHref = fontStyles[`/src/themes/fonts/${theme.fonts}.css`];
+if (!siteFontsHref) throw new Error(`Font "${theme.fonts}" non trovati in src/themes/fonts/`);
+const fontHrefs = allFonts ? Object.values(fontStyles) : [siteFontsHref];
+
+// Indirizzi assoluti: Astro.site arriva da site.json (astro.config.mjs).
+const absolute = (path: string) => new URL(path, Astro.site).href;
+const canonical = absolute(Astro.url.pathname);
+
+const ogSource = ogImage ?? site.defaultOgImage;
+const og = ogSource && (await getImage({ src: ogSource, width: 1200, height: 630, fit: 'cover', format: 'jpg' }));
+const logo = site.logo && (await getImage({ src: site.logo, width: 512, format: 'png' }));
+
+// Scheda dell'attività per i motori di ricerca (schema.org/LocalBusiness), tutta da site.json.
+const { street, postalCode, city, province } = site.address;
+const openingHours = openingHoursSpecification(site.openingHours);
+const localBusiness = {
+	'@context': 'https://schema.org',
+	'@type': 'LocalBusiness',
+	name: site.businessName,
+	legalName: site.legalName,
+	description: site.description,
+	url: site.url,
+	telephone: site.phone,
+	email: site.email,
+	vatID: site.vatNumber,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: street,
+		postalCode,
+		addressLocality: city,
+		addressRegion: province,
+		addressCountry: 'IT',
+	},
+	...(openingHours.length > 0 && { openingHoursSpecification: openingHours }),
+	...(logo && { logo: absolute(logo.src), image: absolute(logo.src) }),
+	...(site.social && { sameAs: Object.values(site.social) }),
+};
+// "<" diventa <: un testo con </script> non può chiudere il tag.
+const jsonLd = JSON.stringify(localBusiness).replace(/</g, '\\u003c');
+---
+
+<!doctype html>
+<html lang="it" data-palette={theme.palette} data-fonts={theme.fonts} data-shape={theme.shape}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		{fontHrefs.map((href) => <link rel="stylesheet" href={href} />)}
+		<title>{title}</title>
+		{description && <meta name="description" content={description} />}
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+		<link rel="canonical" href={canonical} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="it_IT" />
+		<meta property="og:site_name" content={site.businessName} />
+		<meta property="og:title" content={title} />
+		{description && <meta property="og:description" content={description} />}
+		<meta property="og:url" content={canonical} />
+		{
+			og && (
+				<>
+					<meta property="og:image" content={absolute(og.src)} />
+					<meta property="og:image:width" content="1200" />
+					<meta property="og:image:height" content="630" />
+					<meta name="twitter:card" content="summary_large_image" />
+				</>
+			)
+		}
+
+		<script is:inline type="application/ld+json" set:html={jsonLd} />
+	</head>
+	<body>
+		{
+			siteLayout ? (
+				<>
+					<Header {...layout.header} />
+					<main>
+						<slot />
+					</main>
+					<Footer {...layout.footer} />
+				</>
+			) : (
+				<slot />
+			)
+		}
+	</body>
+</html>

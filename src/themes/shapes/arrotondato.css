@@ -1,0 +1,5 @@
+/* Arrotondato: card molto arrotondate, pulsanti a pillola. */
+[data-shape="arrotondato"] {
+	--box-radius: 1.5rem;
+	--button-radius: 9999px;
+}

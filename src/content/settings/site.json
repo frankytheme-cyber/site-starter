@@ -1,0 +1,30 @@
+{
+	"businessName": "DA-COMPILARE",
+	"description": "DA-COMPILARE: cosa fa l’attività e dove, in una frase di al massimo 160 caratteri.",
+	"url": "https://da-compilare.example.com",
+	"logo": "../../assets/images/fixtures/logo-segnaposto.png",
+	"defaultOgImage": "../../assets/images/og-DA-COMPILARE.jpg",
+	"phone": "DA-COMPILARE",
+	"whatsapp": "DA-COMPILARE",
+	"email": "DA-COMPILARE@example.com",
+	"address": {
+		"street": "DA-COMPILARE",
+		"postalCode": "DA-COMPILARE",
+		"city": "DA-COMPILARE",
+		"province": "DA-COMPILARE"
+	},
+	"legalName": "DA-COMPILARE",
+	"legalForm": "ditta-individuale",
+	"vatNumber": "DA-COMPILARE",
+	"openingHours": [
+		{
+			"days": ["lun", "mar", "mer", "gio", "ven"],
+			"slots": [{ "opens": "DA-COMPILARE", "closes": "DA-COMPILARE" }]
+		},
+		{ "days": ["sab", "dom"], "slots": [] }
+	],
+	"social": {
+		"facebook": "https://www.facebook.com/DA-COMPILARE",
+		"instagram": "https://www.instagram.com/DA-COMPILARE"
+	}
+}

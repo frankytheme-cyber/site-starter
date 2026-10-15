@@ -1,0 +1,240 @@
+---
+import { nextId } from '@/core/ids';
+import type { IconName } from '@/core/icons';
+import { isExternal, mapsHref, resolveSpecialHref } from '@/core/links';
+import { getNavigation, isCurrentPage, type NavLink } from '@/core/navigation';
+import { formatDays, formatSlots } from '@/core/opening-hours';
+import type { ButtonStyle } from '@/core/ui/button/cta';
+import { getSiteSettings, phoneHref, type SocialNetwork, whatsappHref } from '@/core/settings';
+import Button from '@/core/ui/button/Button.astro';
+import Icon from '@/core/ui/Icon.astro';
+import Img from '@/core/ui/Img.astro';
+import Section from '@/core/ui/Section.astro';
+import config from '@/site.config';
+import type { FooterProps } from './schema';
+
+type Props = FooterProps;
+
+const { id, variant, ctaBand, ctaBandTitle = 'Parliamo del tuo progetto' } = Astro.props;
+
+// Dati dell'attività da site.json (nel catalogo, quelli di prova della fixture) e link da navigation.json:
+// lo schema del blocco non li contiene.
+const [site, navigation] = await Promise.all([Astro.props.site ?? getSiteSettings(), getNavigation()]);
+
+const uid = nextId(Astro.request, 'footer');
+const NEW_TAB = '(si apre in una nuova scheda)';
+
+const SOCIAL_NAMES: Record<SocialNetwork, string> = {
+	facebook: 'Facebook',
+	instagram: 'Instagram',
+	google: 'Google',
+	youtube: 'YouTube',
+	tiktok: 'TikTok',
+	tripadvisor: 'Tripadvisor',
+};
+const social = (Object.entries(site.social ?? {}) as [SocialNetwork, string | undefined][]).flatMap(([network, href]) =>
+	href ? [{ network, href, label: `${SOCIAL_NAMES[network]} ${NEW_TAB}` }] : [],
+);
+
+const pathname = Astro.url.pathname;
+const prepare = (links: NavLink[]) =>
+	links.map((link) => ({
+		...link,
+		current: isCurrentPage(link.href, pathname),
+		external: isExternal(link.href, Astro.site),
+	}));
+// Senza link propri, la colonna ripete le voci principali del menu.
+const footerLinks = prepare(navigation.footer.links ?? navigation.items.map(({ label, href }) => ({ label, href })));
+const legalLinks = prepare(navigation.footer.legal);
+const credit = config.credit && { ...config.credit, external: isExternal(config.credit.href, Astro.site) };
+
+// Riga legale: ragione sociale, sede (nella variante colonne), P.IVA e, quando ci sono (per le società sono obbligatori), REA e capitale.
+const { street, postalCode, city, province } = site.address;
+const legalParts = [
+	`© ${new Date().getFullYear()} ${site.legalName}`,
+	variant === 'colonne' && `Sede: ${street}, ${postalCode} ${city} (${province})`,
+	`P.IVA ${site.vatNumber}`,
+	site.rea && `REA ${site.rea}`,
+	site.shareCapital && `Capitale sociale ${site.shareCapital}`,
+].filter((part): part is string => Boolean(part));
+
+// I link speciali si risolvono con i dati in uso: anche le fixture del catalogo puntano ai loro recapiti.
+const bandActions: { href: string; icon: IconName; label: string; variant: ButtonStyle }[] = [
+	{ href: resolveSpecialHref('@telefono', site), icon: 'telefono', label: `Chiama ${site.phone}`, variant: 'primary' },
+];
+if (site.whatsapp) {
+	bandActions.push({ href: resolveSpecialHref('@whatsapp', site), icon: 'whatsapp', label: 'Scrivici su WhatsApp', variant: 'secondary' });
+}
+
+const ariaCurrent = (current: boolean) => (current ? 'page' : undefined);
+const newTab = (external: boolean) => (external ? ({ target: '_blank', rel: 'noopener' } as const) : {});
+const linkClass = 'inline-flex min-h-11 items-center decoration-2 underline-offset-4 hover:underline aria-[current=page]:underline';
+const headingClass = 'text-sm font-bold tracking-wider uppercase';
+const socialClass = 'inline-flex size-11 items-center justify-center rounded-button hover:text-primary';
+---
+
+{
+	ctaBand && (
+		<Section tone="primary" flush aria-labelledby={`${uid}-fascia`}>
+			<div class="flex flex-col gap-6 py-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:py-12">
+				<h2 id={`${uid}-fascia`} class="text-2xl font-bold tracking-tight text-balance sm:text-3xl">
+					{ctaBandTitle}
+				</h2>
+				<div class="flex flex-wrap gap-3 lg:shrink-0">
+					{bandActions.map((action) => (
+						<Button href={action.href} variant={action.variant} icon={action.icon}>
+							{action.label}
+						</Button>
+					))}
+				</div>
+			</div>
+		</Section>
+	)
+}
+
+<Section id={id} as="footer" tone="muted" flush class="border-t border-border">
+	{
+		variant === 'colonne' && (
+			<div class="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 lg:py-16">
+				<div class="sm:col-span-2 lg:col-span-4">
+					<a href="/" class="inline-flex min-h-11 items-center">
+						{site.logo ? (
+							<Img src={site.logo} alt={site.businessName} sizes="200px" class="h-10 w-auto" />
+						) : (
+							<span class="font-heading text-xl font-bold tracking-tight">{site.businessName}</span>
+						)}
+					</a>
+					<p class="mt-3 max-w-sm text-pretty text-fg-muted">{site.description}</p>
+					{social.length > 0 && (
+						<ul class="mt-4 -ml-3 flex flex-wrap" aria-label="Profili social">
+							{social.map((item) => (
+								<li>
+									<a href={item.href} target="_blank" rel="noopener" class={socialClass}>
+										<Icon name={item.network} size="lg" label={item.label} />
+									</a>
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+
+				<nav aria-labelledby={`${uid}-link`} class="lg:col-span-2">
+					<h2 id={`${uid}-link`} class={headingClass}>
+						Link
+					</h2>
+					<ul class="mt-3">
+						{footerLinks.map((link) => (
+							<li>
+								<a href={link.href} aria-current={ariaCurrent(link.current)} class={linkClass} {...newTab(link.external)}>
+									{link.label}
+									{link.external && <span class="sr-only">{NEW_TAB}</span>}
+								</a>
+							</li>
+						))}
+					</ul>
+				</nav>
+
+				<div class="lg:col-span-3">
+					<h2 class={headingClass}>Contatti</h2>
+					<address class="mt-3 grid not-italic">
+						<a href={phoneHref(site.phone)} class:list={[linkClass, 'gap-2']}>
+							<Icon name="telefono" />
+							<span class="sr-only">Telefono:</span>
+							{site.phone}
+						</a>
+						{site.whatsapp && (
+							<a href={whatsappHref(site.whatsapp)} target="_blank" rel="noopener" class:list={[linkClass, 'gap-2']}>
+								<Icon name="whatsapp" />
+								<span class="sr-only">WhatsApp:</span>
+								{site.whatsapp}
+								<span class="sr-only">{NEW_TAB}</span>
+							</a>
+						)}
+						<a href={`mailto:${site.email}`} class:list={[linkClass, 'gap-2 break-all']}>
+							<Icon name="email" />
+							<span class="sr-only">Email:</span>
+							{site.email}
+						</a>
+						<div class="mt-2 flex gap-2">
+							<Icon name="mappa-pin" class="mt-0.5" />
+							<p>
+								<span class="sr-only">Indirizzo:</span>
+								{street}
+								<br />
+								{postalCode} {city} ({province})
+								<br />
+								<a
+									href={mapsHref(site.address)}
+									target="_blank"
+									rel="noopener"
+									class:list={[linkClass, 'font-semibold text-primary underline']}
+								>
+									Apri in Maps
+									<span class="sr-only">{NEW_TAB}</span>
+								</a>
+							</p>
+						</div>
+					</address>
+				</div>
+
+				<div class="lg:col-span-3">
+					<h2 class={headingClass}>Orari</h2>
+					<dl class="mt-3 grid gap-3">
+						{site.openingHours.map((row) => (
+							<div>
+								<dt class="font-semibold">{formatDays(row.days)}</dt>
+								<dd class="text-fg-muted">{formatSlots(row.slots)}</dd>
+							</div>
+						))}
+					</dl>
+				</div>
+			</div>
+		)
+	}
+
+	<div
+		class:list={[
+			'flex flex-col gap-x-8 gap-y-2 py-6 text-sm lg:flex-row lg:items-center lg:justify-between',
+			variant === 'colonne' && 'border-t border-border',
+		]}
+	>
+		<p class="max-w-3xl text-fg-muted">{legalParts.join(' · ')}</p>
+		<div class="flex flex-wrap items-center gap-x-6">
+			<nav aria-label="Note legali">
+				<ul class="flex flex-wrap gap-x-5">
+					{
+						legalLinks.map((link) => (
+							<li>
+								<a href={link.href} aria-current={ariaCurrent(link.current)} class={linkClass} {...newTab(link.external)}>
+									{link.label}
+									{link.external && <span class="sr-only">{NEW_TAB}</span>}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+			{
+				variant === 'colonne' && credit && (
+					<a href={credit.href} class={linkClass} {...newTab(credit.external)}>
+						{credit.label}
+						{credit.external && <span class="sr-only">{NEW_TAB}</span>}
+					</a>
+				)
+			}
+			{
+				variant === 'minimale' && social.length > 0 && (
+					<ul class="-ml-3 flex flex-wrap lg:-mr-3 lg:ml-0" aria-label="Profili social">
+						{social.map((item) => (
+							<li>
+								<a href={item.href} target="_blank" rel="noopener" class={socialClass}>
+									<Icon name={item.network} label={item.label} />
+								</a>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+	</div>
+</Section>

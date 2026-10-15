@@ -1,0 +1,74 @@
+<!-- Generato da scripts/gen-catalog.ts (npm run gen:catalog): non modificare a mano. -->
+
+# accordion — Accordion
+
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.0.0 · contenuti · interattivo · disegno originale · dal vivo `/catalogo/accordion/`
+
+Domande frequenti o sezioni di testo che si aprono una per una: tanti contenuti in poco spazio.
+
+**Quando usarlo:** Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, preparazione del cantiere.
+
+**Evitare quando:** Per informazioni che tutti devono leggere (prezzi, garanzie principali): nascoste in una voce chiusa le legge poca gente, meglio un testo aperto. Con una voce sola o più di 12: dividi in più blocchi.
+
+**Varianti:**
+
+- `faq` — Domande e risposte centrate, con i dati strutturati FAQPage per Google. **Quando usarla:** Per le domande frequenti: una sola faq per pagina. Fixture «FAQ», dal vivo `/catalogo/accordion/faq/`.
+
+  ![Accordion, faq, 1280 px](../img/accordion-faq-desktop.webp)
+
+  <img src="../img/accordion-faq-mobile.webp" alt="Accordion, faq, 375 px" width="240">
+
+- `contenuti` — Titolo a sinistra e voci a destra (sotto su mobile). **Quando usarla:** Per testi di dettaglio da aprire: condizioni, tempi, preparazione del cantiere. Fixture «Contenuti, una alla volta», dal vivo `/catalogo/accordion/contenuti/`.
+
+  ![Accordion, contenuti, 1280 px](../img/accordion-contenuti-desktop.webp)
+
+  <img src="../img/accordion-contenuti-mobile.webp" alt="Accordion, contenuti, 375 px" width="240">
+
+**Campi:**
+
+| Campo | Tipo | Obbl. | Limiti | Note |
+| --- | --- | --- | --- | --- |
+| `variant` | scelta | sì | `faq` · `contenuti` | «Variante» |
+| `eyebrow` | testo | no |  | «Occhiello» |
+| `title` | testo | sì | max 70 | «Titolo» |
+| `intro` | testo | no | max 240 | «Introduzione» |
+| `items` | elenco | sì | 2–12 voci | «Voci» |
+| `items[].title` | testo | sì | max 120 | «Domanda o titolo» |
+| `items[].text` | testo | sì | max 1200 | «Risposta o testo» |
+| `single` | sì/no | no (predefinito `false`) |  | «Una alla volta» |
+
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`accordion`), `id` (ancora facoltativa, in kebab-case) e `tone` (`default`, `muted`, `primary`): vedi `src/content/pages/README.md`.
+
+**Regole:**
+
+- Al massimo un accordion faq per pagina: ognuno scrive i dati strutturati FAQPage, che Google vuole uno solo (il check recipes avvisa). Per altre sezioni da aprire si usa contenuti.
+
+**Esempio pronto** (fixture «FAQ», una sezione per `sections`; immagini relative a `src/content/pages`):
+
+```json
+{
+	"type": "accordion",
+	"variant": "faq",
+	"eyebrow": "Domande frequenti",
+	"title": "Prima di iniziare i lavori",
+	"intro": "Le risposte alle domande che ci fate più spesso al primo sopralluogo.",
+	"items": [
+		{
+			"title": "Il sopralluogo e il preventivo sono gratuiti?",
+			"text": "Sì. Veniamo a vedere le pareti, prendiamo le misure e ti lasciamo un preventivo scritto, senza costi e senza impegno."
+		},
+		{
+			"title": "Quanto tempo serve per tinteggiare un appartamento?",
+			"text": "Per un trilocale di solito bastano tre o quattro giorni lavorativi, compresa la stuccatura delle crepe.\n\nI tempi esatti sono scritti nel preventivo: se finiamo in ritardo per colpa nostra, ogni giorno in più è scalato dal totale."
+		},
+		{
+			"title": "Devo spostare io i mobili?",
+			"text": "No. Spostiamo noi i mobili al centro delle stanze e li copriamo con teli; proteggiamo anche pavimenti, porte e prese."
+		},
+		{
+			"title": "Che pitture usate?",
+			"text": "Pitture traspiranti o lavabili a basse emissioni, scelte in base alla stanza: antimuffa per bagni e cucine, lavabili per corridoi e camere dei bambini."
+		}
+	]
+}
+```

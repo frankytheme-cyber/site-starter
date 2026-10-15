@@ -1,0 +1,76 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "Servizi · DA-COMPILARE nome dell’attività",
+	"description": "DA-COMPILARE: i servizi dell’attività e la zona in cui lavora, in una frase.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "centered",
+			"eyebrow": "Servizi",
+			"title": "DA-COMPILARE: titolo della pagina servizi",
+			"subtitle": "DA-COMPILARE: una frase su cosa fai e per chi, con la zona in cui lavori.",
+			"primaryCta": { "label": "Chiedi un preventivo", "href": "/contatti/" },
+			"secondaryCta": { "label": "Come lavoriamo", "href": "#come-lavoriamo" }
+		},
+		{
+			"type": "services",
+			"id": "elenco",
+			"tone": "muted",
+			"variant": "alternato",
+			"eyebrow": "Cosa facciamo",
+			"title": "DA-COMPILARE: titolo dell’elenco dei servizi",
+			"items": [
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-interno.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE servizio 1",
+					"text": "DA-COMPILARE: cosa comprende il servizio, i materiali e per chi è adatto."
+				},
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-facciata.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE servizio 2",
+					"text": "DA-COMPILARE: cosa comprende il servizio, i materiali e per chi è adatto."
+				},
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-decorazioni.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE servizio 3",
+					"text": "DA-COMPILARE: cosa comprende il servizio, i materiali e per chi è adatto."
+				}
+			]
+		},
+		{
+			"type": "tabs",
+			"id": "come-lavoriamo",
+			"variant": "testo",
+			"eyebrow": "Come lavoriamo",
+			"title": "DA-COMPILARE: dal primo contatto al lavoro finito",
+			"items": [
+				{ "label": "Sopralluogo", "text": "DA-COMPILARE: come si fissa, quanto dura, se è gratuito." },
+				{ "label": "Preventivo", "text": "DA-COMPILARE: in quanti giorni arriva e cosa contiene." },
+				{ "label": "Lavori", "text": "DA-COMPILARE: come proteggi la casa e quanto durano i lavori." },
+				{ "label": "Garanzia", "text": "DA-COMPILARE: cosa garantisci e per quanto tempo." }
+			]
+		},
+		{
+			"type": "accordion",
+			"id": "domande",
+			"tone": "muted",
+			"variant": "faq",
+			"eyebrow": "Domande frequenti",
+			"title": "DA-COMPILARE: domande sui servizi",
+			"items": [
+				{ "title": "DA-COMPILARE: domanda su prezzi o tempi", "text": "DA-COMPILARE: risposta breve e concreta." },
+				{ "title": "DA-COMPILARE: domanda sui materiali", "text": "DA-COMPILARE: risposta breve e concreta." }
+			]
+		},
+		{
+			"type": "cta",
+			"id": "preventivo",
+			"tone": "primary",
+			"variant": "banner",
+			"title": "DA-COMPILARE: invito a chiedere un preventivo",
+			"text": "DA-COMPILARE: cosa succede dopo la richiesta.",
+			"primary": { "label": "Chiedi un preventivo", "href": "/contatti/" },
+			"showContacts": true
+		}
+	]
+}

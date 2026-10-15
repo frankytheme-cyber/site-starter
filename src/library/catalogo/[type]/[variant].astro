@@ -1,0 +1,42 @@
+---
+/**
+ * Una variante di un blocco da sola: la prima fixture che la usa, senza la barra del catalogo né
+ * header e footer del sito. La usano gli screenshot (npm run screenshots) e chi vuole vedere il
+ * blocco a tutta pagina. Il tema si cambia con ?palette=&fonts=&shape= (valori di presets.ts).
+ */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { catalogVariants } from '@/core/catalog';
+import { blocks } from '@/core/registry';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { fonts, palettes, shapes } from '@/themes/presets';
+
+export const getStaticPaths = (() =>
+	blocks.flatMap((block) =>
+		catalogVariants(block.meta, block.fixtures).map(({ name, fixture }) => ({
+			params: { type: block.type, variant: name },
+			props: { block, fixture, variant: name },
+		})),
+	)) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { block, fixture, variant } = Astro.props;
+const { Component } = block;
+const presets = { palette: palettes, fonts, shape: shapes };
+---
+
+<BaseLayout title={`${block.meta.name} · ${variant} · Catalogo blocchi`} noindex allFonts siteLayout={false}>
+	{/* Prima del blocco, così non si vede il cambio di tema: solo valori ammessi dai preset. */}
+	<script is:inline define:vars={{ presets }}>
+		const params = new URLSearchParams(location.search);
+		for (const [key, values] of Object.entries(presets)) {
+			const value = params.get(key);
+			if (value && values.includes(value)) document.documentElement.dataset[key] = value;
+		}
+	</script>
+	<main data-catalog-variant={`${block.type}/${variant}`}>
+		{/* Titolo della pagina per gli screen reader: molti blocchi non hanno un h1 (l'hero ne ha già uno). */}
+		{block.type !== 'hero' && <h1 class="sr-only">{block.meta.name}, variante {variant}</h1>}
+		<Component tone={fixture.tone} {...fixture.props} site={fixture.site} />
+	</main>
+</BaseLayout>

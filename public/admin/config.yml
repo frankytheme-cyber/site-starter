@@ -1,0 +1,1531 @@
+# Generato da scripts/gen-decap-config.ts (npm run gen:decap): non modificare a mano.
+# I campi vengono dagli schemi Zod di blocchi, pagine e impostazioni.
+backend:
+  name: github
+  repo: frankytheme-cyber/site-starter
+  branch: main
+  base_url: https://decap-oauth.da-compilare.workers.dev
+  auth_endpoint: auth
+  commit_messages:
+    create: Crea {{collection}} «{{slug}}»
+    update: Aggiorna {{collection}} «{{slug}}»
+    delete: Elimina {{collection}} «{{slug}}»
+    uploadMedia: Carica «{{path}}»
+    deleteMedia: Elimina «{{path}}»
+local_backend: true
+publish_mode: editorial_workflow
+locale: it
+site_url: https://da-compilare.example.com
+display_url: https://da-compilare.example.com
+media_folder: src/assets/images
+public_folder: /src/assets/images
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+editor:
+  preview: false
+collections:
+  - name: pages
+    label: Pagine
+    label_singular: Pagina
+    description: "Le pagine del sito: ogni pagina è un elenco di sezioni. La home è «index»."
+    folder: src/content/pages
+    extension: json
+    format: json
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}}"
+    media_folder: ../../assets/images
+    public_folder: ../../assets/images
+    editor:
+      preview: false
+    fields:
+      - name: $schema
+        widget: hidden
+        default: ../../../.astro/collections/pages.schema.json
+      - name: title
+        label: Titolo della pagina
+        hint: Compare nella scheda del browser e su Google, al massimo 60 caratteri
+        widget: string
+        pattern:
+          - ^[\s\S]{1,60}$
+          - al massimo 60 caratteri
+      - name: description
+        label: Descrizione
+        hint: Il testo sotto il titolo nei risultati di Google, al massimo 160 caratteri
+        widget: text
+        pattern:
+          - ^[\s\S]{1,160}$
+          - al massimo 160 caratteri
+      - name: draft
+        label: Bozza
+        hint: Una bozza non compare sul sito pubblicato
+        required: false
+        default: false
+        widget: boolean
+      - name: ogImage
+        label: Immagine per i social
+        hint: Compare quando la pagina viene condivisa; se manca si usa quella dei Dati attività. Viene ritagliata a 1200×630
+        required: false
+        widget: image
+        choose_url: false
+      - name: noindex
+        label: Nascondi ai motori di ricerca
+        hint: Solo per pagine che non devono comparire su Google
+        required: false
+        widget: boolean
+      - name: kind
+        label: Tipo di pagina
+        hint: «Pagina legale» per privacy, cookie e note legali, che non hanno un invito all’azione; vuoto = pagina normale
+        required: false
+        widget: select
+        options:
+          - label: Pagina
+            value: pagina
+          - label: Pagina legale
+            value: legale
+      - name: sections
+        label: Sezioni
+        hint: I blocchi della pagina, dall’alto in basso
+        widget: list
+        typeKey: type
+        types:
+          - name: hero
+            label: Hero
+            widget: object
+            hint: "Apertura della pagina: titolo principale, sottotitolo e invito all’azione."
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "split: testo e foto affiancati · full: foto a tutta larghezza · centered: solo testo"
+                widget: select
+                options:
+                  - split
+                  - full
+                  - centered
+              - name: eyebrow
+                label: Occhiello
+                hint: Breve testo sopra il titolo, es. il settore
+                required: false
+                widget: string
+              - name: title
+                label: Titolo
+                hint: Il titolo principale della pagina, al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: subtitle
+                label: Sottotitolo
+                hint: Una o due frasi su cosa offri, al massimo 200 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,200}$
+                  - al massimo 200 caratteri
+              - name: primaryCta
+                label: Pulsante principale
+                hint: L’azione più importante, es. «Chiedi un preventivo»
+                widget: object
+                collapsed: false
+                fields:
+                  - name: label
+                    label: Testo del pulsante
+                    hint: Al massimo 25 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                    widget: string
+                    pattern:
+                      - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                      - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                  - name: style
+                    label: Stile
+                    hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                    required: false
+                    widget: select
+                    options:
+                      - primary
+                      - secondary
+                      - ghost
+                      - link
+                  - name: icon
+                    label: Icona
+                    hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                    required: false
+                    widget: select
+                    options:
+                      - pennello
+                      - rullo
+                      - secchio-vernice
+                      - casa
+                      - edificio
+                      - scala
+                      - muro
+                      - goccia
+                      - scudo
+                      - check
+                      - stella
+                      - orologio
+                      - calendario
+                      - telefono
+                      - email
+                      - mappa-pin
+                      - freccia-destra
+                      - freccia-sinistra
+                      - menu
+                      - chiudi
+                      - chevron-giu
+                      - citazione
+                      - preventivo
+                      - euro
+                      - utenti
+                      - foto
+                      - whatsapp
+                      - facebook
+                      - instagram
+                      - google
+                      - youtube
+                      - tiktok
+                      - tripadvisor
+              - name: secondaryCta
+                label: Pulsante secondario
+                hint: "Un’alternativa meno importante: compila testo e link, oppure nessuno dei due"
+                required: false
+                widget: object
+                collapsed: true
+                fields:
+                  - name: label
+                    label: Testo del pulsante
+                    hint: Al massimo 25 caratteri
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                      - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                  - name: style
+                    label: Stile
+                    hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                    required: false
+                    widget: select
+                    options:
+                      - primary
+                      - secondary
+                      - ghost
+                      - link
+                  - name: icon
+                    label: Icona
+                    hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                    required: false
+                    widget: select
+                    options:
+                      - pennello
+                      - rullo
+                      - secchio-vernice
+                      - casa
+                      - edificio
+                      - scala
+                      - muro
+                      - goccia
+                      - scudo
+                      - check
+                      - stella
+                      - orologio
+                      - calendario
+                      - telefono
+                      - email
+                      - mappa-pin
+                      - freccia-destra
+                      - freccia-sinistra
+                      - menu
+                      - chiudi
+                      - chevron-giu
+                      - citazione
+                      - preventivo
+                      - euro
+                      - utenti
+                      - foto
+                      - whatsapp
+                      - facebook
+                      - instagram
+                      - google
+                      - youtube
+                      - tiktok
+                      - tripadvisor
+              - name: image
+                label: Foto
+                hint: Obbligatoria per le varianti split e full
+                required: false
+                widget: object
+                collapsed: true
+                fields:
+                  - name: src
+                    label: File
+                    hint: JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza
+                    required: false
+                    widget: image
+                    choose_url: false
+                  - name: alt
+                    label: Testo alternativo
+                    hint: Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{5,}$
+                      - almeno 5 caratteri
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
+          - name: accordion
+            label: Accordion
+            widget: object
+            hint: "Domande frequenti o sezioni di testo che si aprono una per una: tanti contenuti in poco spazio."
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "faq: domande e risposte, segnalate anche a Google · contenuti: sezioni di testo da aprire, accanto al titolo"
+                widget: select
+                options:
+                  - faq
+                  - contenuti
+              - name: eyebrow
+                label: Occhiello
+                hint: Breve testo sopra il titolo
+                required: false
+                widget: string
+              - name: title
+                label: Titolo
+                hint: Al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: intro
+                label: Introduzione
+                hint: Al massimo 240 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,240}$
+                  - al massimo 240 caratteri
+              - name: items
+                label: Voci
+                hint: Da 2 a 12
+                widget: list
+                fields:
+                  - name: title
+                    label: Domanda o titolo
+                    hint: Al massimo 120 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,120}$
+                      - al massimo 120 caratteri
+                  - name: text
+                    label: Risposta o testo
+                    hint: Al massimo 1200 caratteri; una riga vuota separa i paragrafi
+                    widget: text
+                    pattern:
+                      - ^[\s\S]{1,1200}$
+                      - al massimo 1200 caratteri
+                min: 2
+                max: 12
+                collapsed: false
+              - name: single
+                label: Una alla volta
+                hint: Aprendo una voce si chiudono le altre
+                required: false
+                default: false
+                widget: boolean
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
+          - name: carousel
+            label: Carosello
+            widget: object
+            hint: Una fila di foto o di card che si scorre in orizzontale, col dito o con le frecce. Non scorre mai da sola.
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "foto: foto grandi con didascalia · card: foto, titolo, testo e link per ogni elemento"
+                widget: select
+                options:
+                  - foto
+                  - card
+              - name: eyebrow
+                label: Occhiello
+                hint: Breve testo sopra il titolo
+                required: false
+                widget: string
+              - name: title
+                label: Titolo
+                hint: Al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: intro
+                label: Introduzione
+                hint: Al massimo 240 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,240}$
+                  - al massimo 240 caratteri
+              - name: items
+                label: Elementi
+                hint: Da 3 a 12
+                widget: list
+                fields:
+                  - name: image
+                    label: Foto
+                    hint: JPG, PNG o WebP
+                    widget: object
+                    collapsed: false
+                    fields:
+                      - name: src
+                        label: File
+                        hint: JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza
+                        widget: image
+                        choose_url: false
+                      - name: alt
+                        label: Testo alternativo
+                        hint: Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»
+                        widget: string
+                        pattern:
+                          - ^[\s\S]{5,}$
+                          - almeno 5 caratteri
+                  - name: title
+                    label: Titolo
+                    hint: Obbligatorio per la variante card; nelle foto è la didascalia
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,60}$
+                      - al massimo 60 caratteri
+                  - name: text
+                    label: Testo
+                    hint: Obbligatorio per la variante card, al massimo 200 caratteri
+                    required: false
+                    widget: text
+                    pattern:
+                      - ^[\s\S]{1,200}$
+                      - al massimo 200 caratteri
+                  - name: cta
+                    label: Link
+                    hint: Facoltativo, solo nella variante card
+                    required: false
+                    widget: object
+                    collapsed: true
+                    fields:
+                      - name: label
+                        label: Testo del pulsante
+                        hint: Al massimo 25 caratteri
+                        required: false
+                        widget: string
+                        pattern:
+                          - ^[\s\S]{1,25}$
+                          - al massimo 25 caratteri
+                      - name: href
+                        label: Link
+                        hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                        required: false
+                        widget: string
+                        pattern:
+                          - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                          - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                      - name: style
+                        label: Stile
+                        hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                        required: false
+                        widget: select
+                        options:
+                          - primary
+                          - secondary
+                          - ghost
+                          - link
+                      - name: icon
+                        label: Icona
+                        hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                        required: false
+                        widget: select
+                        options:
+                          - pennello
+                          - rullo
+                          - secchio-vernice
+                          - casa
+                          - edificio
+                          - scala
+                          - muro
+                          - goccia
+                          - scudo
+                          - check
+                          - stella
+                          - orologio
+                          - calendario
+                          - telefono
+                          - email
+                          - mappa-pin
+                          - freccia-destra
+                          - freccia-sinistra
+                          - menu
+                          - chiudi
+                          - chevron-giu
+                          - citazione
+                          - preventivo
+                          - euro
+                          - utenti
+                          - foto
+                          - whatsapp
+                          - facebook
+                          - instagram
+                          - google
+                          - youtube
+                          - tiktok
+                          - tripadvisor
+                min: 3
+                max: 12
+                collapsed: false
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
+          - name: tabs
+            label: Schede
+            widget: object
+            hint: "Contenuti alternativi in schede: se ne vede uno alla volta, da desktop con le linguette, su mobile come elenco da aprire."
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "testo: solo testo nelle schede · testo-immagine: testo e foto affiancati in ogni scheda"
+                widget: select
+                options:
+                  - testo
+                  - testo-immagine
+              - name: eyebrow
+                label: Occhiello
+                hint: Breve testo sopra il titolo
+                required: false
+                widget: string
+              - name: title
+                label: Titolo
+                hint: Al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: intro
+                label: Introduzione
+                hint: Al massimo 240 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,240}$
+                  - al massimo 240 caratteri
+              - name: items
+                label: Schede
+                hint: Da 2 a 6
+                widget: list
+                fields:
+                  - name: label
+                    label: Nome della scheda
+                    hint: Corto, al massimo 30 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,30}$
+                      - al massimo 30 caratteri
+                  - name: text
+                    label: Testo
+                    hint: Al massimo 600 caratteri; una riga vuota separa i paragrafi
+                    widget: text
+                    pattern:
+                      - ^[\s\S]{1,600}$
+                      - al massimo 600 caratteri
+                  - name: image
+                    label: Foto
+                    hint: Obbligatoria per la variante testo-immagine
+                    required: false
+                    widget: object
+                    collapsed: true
+                    fields:
+                      - name: src
+                        label: File
+                        hint: JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza
+                        required: false
+                        widget: image
+                        choose_url: false
+                      - name: alt
+                        label: Testo alternativo
+                        hint: Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»
+                        required: false
+                        widget: string
+                        pattern:
+                          - ^[\s\S]{5,}$
+                          - almeno 5 caratteri
+                  - name: cta
+                    label: Pulsante
+                    hint: Facoltativo, sotto il testo
+                    required: false
+                    widget: object
+                    collapsed: true
+                    fields:
+                      - name: label
+                        label: Testo del pulsante
+                        hint: Al massimo 25 caratteri
+                        required: false
+                        widget: string
+                        pattern:
+                          - ^[\s\S]{1,25}$
+                          - al massimo 25 caratteri
+                      - name: href
+                        label: Link
+                        hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                        required: false
+                        widget: string
+                        pattern:
+                          - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                          - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                      - name: style
+                        label: Stile
+                        hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                        required: false
+                        widget: select
+                        options:
+                          - primary
+                          - secondary
+                          - ghost
+                          - link
+                      - name: icon
+                        label: Icona
+                        hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                        required: false
+                        widget: select
+                        options:
+                          - pennello
+                          - rullo
+                          - secchio-vernice
+                          - casa
+                          - edificio
+                          - scala
+                          - muro
+                          - goccia
+                          - scudo
+                          - check
+                          - stella
+                          - orologio
+                          - calendario
+                          - telefono
+                          - email
+                          - mappa-pin
+                          - freccia-destra
+                          - freccia-sinistra
+                          - menu
+                          - chiudi
+                          - chevron-giu
+                          - citazione
+                          - preventivo
+                          - euro
+                          - utenti
+                          - foto
+                          - whatsapp
+                          - facebook
+                          - instagram
+                          - google
+                          - youtube
+                          - tiktok
+                          - tripadvisor
+                min: 2
+                max: 6
+                collapsed: false
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
+          - name: services
+            label: Servizi
+            widget: object
+            hint: Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione breve e link facoltativo.
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda"
+                widget: select
+                options:
+                  - cards-icone
+                  - cards-immagine
+                  - alternato
+                  - schede
+              - name: eyebrow
+                label: Occhiello
+                hint: Breve testo sopra il titolo
+                required: false
+                widget: string
+              - name: title
+                label: Titolo
+                hint: Titolo della sezione, al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: intro
+                label: Introduzione
+                hint: Una frase che presenta i servizi, al massimo 240 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,240}$
+                  - al massimo 240 caratteri
+              - name: items
+                label: Servizi
+                hint: Da 2 a 6 servizi
+                widget: list
+                fields:
+                  - name: icon
+                    label: Icona
+                    hint: Obbligatoria per la variante cards-icone
+                    required: false
+                    widget: select
+                    options:
+                      - pennello
+                      - rullo
+                      - secchio-vernice
+                      - casa
+                      - edificio
+                      - scala
+                      - muro
+                      - goccia
+                      - scudo
+                      - check
+                      - stella
+                      - orologio
+                      - calendario
+                      - telefono
+                      - email
+                      - mappa-pin
+                      - freccia-destra
+                      - freccia-sinistra
+                      - menu
+                      - chiudi
+                      - chevron-giu
+                      - citazione
+                      - preventivo
+                      - euro
+                      - utenti
+                      - foto
+                      - whatsapp
+                      - facebook
+                      - instagram
+                      - google
+                      - youtube
+                      - tiktok
+                      - tripadvisor
+                  - name: image
+                    label: Foto
+                    hint: Obbligatoria per le varianti cards-immagine e alternato; facoltativa nelle schede
+                    required: false
+                    widget: object
+                    collapsed: true
+                    fields:
+                      - name: src
+                        label: File
+                        hint: JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza
+                        required: false
+                        widget: image
+                        choose_url: false
+                      - name: alt
+                        label: Testo alternativo
+                        hint: Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»
+                        required: false
+                        widget: string
+                        pattern:
+                          - ^[\s\S]{5,}$
+                          - almeno 5 caratteri
+                  - name: title
+                    label: Nome del servizio
+                    hint: Al massimo 50 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,50}$
+                      - al massimo 50 caratteri
+                  - name: text
+                    label: Descrizione
+                    hint: Cosa comprende il servizio, al massimo 180 caratteri
+                    widget: text
+                    pattern:
+                      - ^[\s\S]{1,180}$
+                      - al massimo 180 caratteri
+                  - name: link
+                    label: Link
+                    hint: "Porta alla pagina o alla sezione del servizio: compila testo e link, oppure nessuno dei due"
+                    required: false
+                    widget: object
+                    collapsed: true
+                    fields:
+                      - name: label
+                        label: Testo del pulsante
+                        hint: Al massimo 25 caratteri
+                        required: false
+                        widget: string
+                        pattern:
+                          - ^[\s\S]{1,25}$
+                          - al massimo 25 caratteri
+                      - name: href
+                        label: Link
+                        hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                        required: false
+                        widget: string
+                        pattern:
+                          - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                          - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                      - name: style
+                        label: Stile
+                        hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                        required: false
+                        widget: select
+                        options:
+                          - primary
+                          - secondary
+                          - ghost
+                          - link
+                      - name: icon
+                        label: Icona
+                        hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                        required: false
+                        widget: select
+                        options:
+                          - pennello
+                          - rullo
+                          - secchio-vernice
+                          - casa
+                          - edificio
+                          - scala
+                          - muro
+                          - goccia
+                          - scudo
+                          - check
+                          - stella
+                          - orologio
+                          - calendario
+                          - telefono
+                          - email
+                          - mappa-pin
+                          - freccia-destra
+                          - freccia-sinistra
+                          - menu
+                          - chiudi
+                          - chevron-giu
+                          - citazione
+                          - preventivo
+                          - euro
+                          - utenti
+                          - foto
+                          - whatsapp
+                          - facebook
+                          - instagram
+                          - google
+                          - youtube
+                          - tiktok
+                          - tripadvisor
+                min: 2
+                max: 6
+                collapsed: false
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
+          - name: cta
+            label: Invito all’azione
+            widget: object
+            hint: "Fascia che chiede a chi visita di fare il passo successivo: chiedere un preventivo, chiamare, scrivere."
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "banner: testo centrato e pulsanti · split-contatto: testo a sinistra, pulsanti a destra"
+                widget: select
+                options:
+                  - banner
+                  - split-contatto
+              - name: title
+                label: Titolo
+                hint: Al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: text
+                label: Testo
+                hint: Una o due frasi, al massimo 200 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,200}$
+                  - al massimo 200 caratteri
+              - name: primary
+                label: Pulsante principale
+                hint: L’azione che chiedi di fare
+                widget: object
+                collapsed: false
+                fields:
+                  - name: label
+                    label: Testo del pulsante
+                    hint: Al massimo 25 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                    widget: string
+                    pattern:
+                      - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                      - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                  - name: style
+                    label: Stile
+                    hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                    required: false
+                    widget: select
+                    options:
+                      - primary
+                      - secondary
+                      - ghost
+                      - link
+                  - name: icon
+                    label: Icona
+                    hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                    required: false
+                    widget: select
+                    options:
+                      - pennello
+                      - rullo
+                      - secchio-vernice
+                      - casa
+                      - edificio
+                      - scala
+                      - muro
+                      - goccia
+                      - scudo
+                      - check
+                      - stella
+                      - orologio
+                      - calendario
+                      - telefono
+                      - email
+                      - mappa-pin
+                      - freccia-destra
+                      - freccia-sinistra
+                      - menu
+                      - chiudi
+                      - chevron-giu
+                      - citazione
+                      - preventivo
+                      - euro
+                      - utenti
+                      - foto
+                      - whatsapp
+                      - facebook
+                      - instagram
+                      - google
+                      - youtube
+                      - tiktok
+                      - tripadvisor
+              - name: secondary
+                label: Pulsante secondario
+                hint: "Un’alternativa: compila testo e link, oppure nessuno dei due"
+                required: false
+                widget: object
+                collapsed: true
+                fields:
+                  - name: label
+                    label: Testo del pulsante
+                    hint: Al massimo 25 caratteri
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                      - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                  - name: style
+                    label: Stile
+                    hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                    required: false
+                    widget: select
+                    options:
+                      - primary
+                      - secondary
+                      - ghost
+                      - link
+                  - name: icon
+                    label: Icona
+                    hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                    required: false
+                    widget: select
+                    options:
+                      - pennello
+                      - rullo
+                      - secchio-vernice
+                      - casa
+                      - edificio
+                      - scala
+                      - muro
+                      - goccia
+                      - scudo
+                      - check
+                      - stella
+                      - orologio
+                      - calendario
+                      - telefono
+                      - email
+                      - mappa-pin
+                      - freccia-destra
+                      - freccia-sinistra
+                      - menu
+                      - chiudi
+                      - chevron-giu
+                      - citazione
+                      - preventivo
+                      - euro
+                      - utenti
+                      - foto
+                      - whatsapp
+                      - facebook
+                      - instagram
+                      - google
+                      - youtube
+                      - tiktok
+                      - tripadvisor
+              - name: showContacts
+                label: Mostra telefono e WhatsApp
+                hint: Aggiunge i pulsanti con i recapiti presi da «Dati attività»
+                widget: boolean
+                default: false
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
+        min: 1
+        collapsed: true
+  - name: site
+    label: Dati attività
+    description: "Nome, recapiti, indirizzo, orari e dati legali: compaiono in tutto il sito."
+    editor:
+      preview: false
+    files:
+      - name: site
+        label: Dati attività
+        file: src/content/settings/site.json
+        media_folder: ../../assets/images
+        public_folder: ../../assets/images
+        fields:
+          - name: businessName
+            label: Nome dell’attività
+            hint: Come compare sul sito e su Google
+            widget: string
+          - name: description
+            label: Descrizione dell’attività
+            hint: "Una frase su cosa fa e dove: compare nel footer e su Google, al massimo 160 caratteri"
+            widget: text
+            pattern:
+              - ^[\s\S]{1,160}$
+              - al massimo 160 caratteri
+          - name: url
+            label: Indirizzo del sito
+            hint: Completo, es. https://www.esempio.it
+            widget: string
+            pattern:
+              - ^https://\S+$
+              - un indirizzo completo che inizia con https://
+          - name: logo
+            label: Logo
+            hint: PNG o WebP con sfondo trasparente, almeno 400 px di larghezza
+            required: false
+            widget: image
+            choose_url: false
+          - name: defaultOgImage
+            label: Immagine per i social
+            hint: Compare quando una pagina del sito viene condivisa, se la pagina non ne ha una sua; JPG orizzontale, almeno 1200×630 px
+            required: false
+            widget: image
+            choose_url: false
+          - name: phone
+            label: Telefono
+            hint: Come va mostrato, es. 055 123 4567
+            widget: string
+            pattern:
+              - ^\+?\d[\d\s./-]{4,18}\d$
+              - numero di telefono non valido (es. "055 123 4567")
+          - name: whatsapp
+            label: WhatsApp
+            hint: Con il prefisso internazionale, es. +39 333 123 4567; lascia vuoto se non lo usi
+            required: false
+            widget: string
+            pattern:
+              - ^\+\d[\d\s]{6,18}\d$
+              - numero WhatsApp con prefisso internazionale (es. "+39 333 123 4567")
+          - name: email
+            label: Email
+            hint: Indirizzo a cui scrivere, es. info@esempio.it
+            widget: string
+            pattern:
+              - ^[^\s@]+@[^\s@]+\.[^\s@]+$
+              - un indirizzo email, es. info@esempio.it
+          - name: address
+            label: Indirizzo
+            hint: Sede dell’attività
+            widget: object
+            collapsed: false
+            fields:
+              - name: street
+                label: Via e numero civico
+                hint: Es. Via Roma 12
+                widget: string
+              - name: postalCode
+                label: CAP
+                hint: 5 cifre, es. 50121
+                widget: string
+                pattern:
+                  - ^\d{5}$
+                  - CAP di 5 cifre
+              - name: city
+                label: Comune
+                hint: Es. Firenze
+                widget: string
+              - name: province
+                label: Provincia
+                hint: Sigla in maiuscolo, es. FI
+                widget: string
+                pattern:
+                  - ^[A-Z]{2}$
+                  - sigla della provincia in maiuscolo (es. "FI")
+          - name: legalName
+            label: Ragione sociale
+            hint: "Il nome registrato in Camera di commercio, forma giuridica compresa: es. «Rossi Imbiancature S.r.l.» o «Imbiancature Rossi di Mario Rossi»"
+            widget: string
+            pattern:
+              - ^[\s\S]{1,120}$
+              - al massimo 120 caratteri
+          - name: legalForm
+            label: Forma giuridica
+            hint: Per S.r.l., S.r.l.s., S.n.c. e S.a.s. compila anche REA e capitale sociale
+            widget: select
+            options:
+              - label: Ditta individuale
+                value: ditta-individuale
+              - label: S.r.l.
+                value: srl
+              - label: S.r.l.s.
+                value: srls
+              - label: S.n.c.
+                value: snc
+              - label: S.a.s.
+                value: sas
+              - label: Altro
+                value: altro
+          - name: vatNumber
+            label: Partita IVA
+            hint: 11 cifre, senza IT davanti
+            widget: string
+            pattern:
+              - ^\d{11}$
+              - partita IVA di 11 cifre, senza IT davanti
+          - name: rea
+            label: Numero REA
+            hint: Sigla della provincia e numero, es. FI-123456; obbligatorio per le società
+            required: false
+            widget: string
+            pattern:
+              - ^[A-Z]{2}[- ]?\d{1,7}$
+              - sigla della provincia e numero, es. FI-123456
+          - name: shareCapital
+            label: Capitale sociale
+            hint: "Quello versato, come va mostrato: es. 10.000 € i.v.; obbligatorio per le società"
+            required: false
+            widget: string
+            pattern:
+              - (?=^[\s\S]{0,40}$)(?=^\D*\d)
+              - al massimo 40 caratteri; indica l’importo, es. 10.000 € i.v.
+          - name: openingHours
+            label: Orari
+            hint: Una riga per gruppo di giorni con lo stesso orario; aggiungi una riga senza fasce per i giorni di chiusura
+            widget: list
+            fields:
+              - name: days
+                label: Giorni
+                hint: Tutti i giorni che hanno questo orario, es. da lunedì a venerdì
+                widget: select
+                multiple: true
+                options:
+                  - label: Lunedì
+                    value: lun
+                  - label: Martedì
+                    value: mar
+                  - label: Mercoledì
+                    value: mer
+                  - label: Giovedì
+                    value: gio
+                  - label: Venerdì
+                    value: ven
+                  - label: Sabato
+                    value: sab
+                  - label: Domenica
+                    value: dom
+                min: 1
+              - name: slots
+                label: Fasce orarie
+                hint: Una per ogni apertura della giornata, es. mattina e pomeriggio; nessuna fascia = chiuso
+                required: false
+                default: []
+                widget: list
+                fields:
+                  - name: opens
+                    label: Apre alle
+                    hint: Es. 08:30
+                    widget: string
+                    pattern:
+                      - ^(?:[01]\d|2[0-3]):[0-5]\d$
+                      - ora nel formato 08:30, da 00:00 a 23:59
+                  - name: closes
+                    label: Chiude alle
+                    hint: Es. 12:30
+                    widget: string
+                    pattern:
+                      - ^(?:[01]\d|2[0-3]):[0-5]\d$
+                      - ora nel formato 08:30, da 00:00 a 23:59
+                max: 3
+                collapsed: true
+            min: 1
+            max: 7
+            collapsed: false
+          - name: social
+            label: Profili social
+            hint: Lascia vuoti quelli che non usi
+            required: false
+            widget: object
+            collapsed: true
+            fields:
+              - name: facebook
+                label: Facebook
+                hint: Indirizzo completo della pagina
+                required: false
+                widget: string
+                pattern:
+                  - ^https://\S+$
+                  - un indirizzo completo che inizia con https://
+              - name: instagram
+                label: Instagram
+                hint: Indirizzo completo del profilo
+                required: false
+                widget: string
+                pattern:
+                  - ^https://\S+$
+                  - un indirizzo completo che inizia con https://
+              - name: google
+                label: Google
+                hint: Indirizzo della scheda Google dell’attività
+                required: false
+                widget: string
+                pattern:
+                  - ^https://\S+$
+                  - un indirizzo completo che inizia con https://
+              - name: youtube
+                label: YouTube
+                hint: Indirizzo completo del canale
+                required: false
+                widget: string
+                pattern:
+                  - ^https://\S+$
+                  - un indirizzo completo che inizia con https://
+              - name: tiktok
+                label: TikTok
+                hint: Indirizzo completo del profilo
+                required: false
+                widget: string
+                pattern:
+                  - ^https://\S+$
+                  - un indirizzo completo che inizia con https://
+              - name: tripadvisor
+                label: Tripadvisor
+                hint: Indirizzo della scheda dell’attività
+                required: false
+                widget: string
+                pattern:
+                  - ^https://\S+$
+                  - un indirizzo completo che inizia con https://
+  - name: navigation
+    label: Menu
+    description: Le voci del menu in cima al sito, il pulsante in evidenza e i link del footer.
+    editor:
+      preview: false
+    files:
+      - name: navigation
+        label: Menu
+        file: src/content/settings/navigation.json
+        fields:
+          - name: items
+            label: Voci del menu
+            hint: Al massimo 7, nell’ordine in cui compaiono
+            widget: list
+            fields:
+              - name: label
+                label: Testo
+                hint: Al massimo 25 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,25}$
+                  - al massimo 25 caratteri
+              - name: href
+                label: Link
+                hint: Una pagina del sito (/servizi/), una sezione (/servizi/#interni) o un indirizzo completo
+                widget: string
+              - name: children
+                label: Sottomenu
+                hint: Fino a 6 voci; lascia vuoto se non serve
+                required: false
+                widget: list
+                fields:
+                  - name: label
+                    label: Testo
+                    hint: Al massimo 25 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/servizi/), una sezione (/servizi/#interni) o un indirizzo completo
+                    widget: string
+                min: 1
+                max: 6
+                collapsed: true
+            min: 1
+            max: 7
+            collapsed: false
+          - name: cta
+            label: Pulsante in evidenza
+            hint: "Mostrato dall’intestazione con-cta: compila testo e link, oppure nessuno dei due"
+            required: false
+            widget: object
+            collapsed: true
+            fields:
+              - name: label
+                label: Testo del pulsante
+                hint: Al massimo 25 caratteri
+                required: false
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,25}$
+                  - al massimo 25 caratteri
+              - name: href
+                label: Link
+                hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                required: false
+                widget: string
+                pattern:
+                  - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                  - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+              - name: style
+                label: Stile
+                hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                required: false
+                widget: select
+                options:
+                  - primary
+                  - secondary
+                  - ghost
+                  - link
+              - name: icon
+                label: Icona
+                hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                required: false
+                widget: select
+                options:
+                  - pennello
+                  - rullo
+                  - secchio-vernice
+                  - casa
+                  - edificio
+                  - scala
+                  - muro
+                  - goccia
+                  - scudo
+                  - check
+                  - stella
+                  - orologio
+                  - calendario
+                  - telefono
+                  - email
+                  - mappa-pin
+                  - freccia-destra
+                  - freccia-sinistra
+                  - menu
+                  - chiudi
+                  - chevron-giu
+                  - citazione
+                  - preventivo
+                  - euro
+                  - utenti
+                  - foto
+                  - whatsapp
+                  - facebook
+                  - instagram
+                  - google
+                  - youtube
+                  - tiktok
+                  - tripadvisor
+          - name: footer
+            label: Footer
+            hint: I link in fondo a ogni pagina
+            widget: object
+            collapsed: false
+            fields:
+              - name: links
+                label: Link del footer
+                hint: Pagine da mostrare nella colonna «Link» del footer, fino a 8; lascia vuoto per ripetere le voci del menu
+                required: false
+                widget: list
+                fields:
+                  - name: label
+                    label: Testo
+                    hint: Al massimo 25 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/servizi/), una sezione (/servizi/#interni) o un indirizzo completo
+                    widget: string
+                min: 1
+                max: 8
+                collapsed: true
+              - name: legal
+                label: Link legali
+                hint: "Privacy e cookie (obbligatori) ed eventuali note legali: compaiono in fondo a ogni pagina"
+                widget: list
+                fields:
+                  - name: label
+                    label: Testo
+                    hint: Al massimo 25 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/servizi/), una sezione (/servizi/#interni) o un indirizzo completo
+                    widget: string
+                min: 1
+                max: 4
+                collapsed: false

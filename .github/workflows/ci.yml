@@ -1,0 +1,160 @@
+# Controlli automatici: docs/controlli.md.
+# - check: suite "check" (statici + build) sulle pull request, sui push su main e a mano.
+# - qa: sulle pull request (e a mano), dopo check: link, accessibilità, interattivi, Lighthouse.
+# - template-as-site: solo nella libreria, sulle pull request (e a mano), dopo check: il template,
+#   copiato e inizializzato come sito cliente, deve fallire qa --strict solo per i segnaposto attesi.
+# Sulle pull request verso main check e qa usano --strict (regole di pubblicazione).
+# Modalità (src/core/mode.ts): la variabile del repository SITE_STARTER_LIBRARY vale 1 solo nella
+# libreria site-starter (Settings → Secrets and variables → Actions → Variables); nei siti cliente
+# non c'è e arriva vuota, cioè modalità sito (docs/siti-cliente.md). template-as-site la svuota.
+name: CI
+
+# Push solo su main: un branch con una pull request aperta gira una volta sola, come pull request,
+# e non anche per il push dello stesso commit. Un branch senza pull request si prova a mano
+# (Actions → CI → Run workflow) o aprendo una pull request in bozza.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Il token del workflow legge soltanto: nessun job scrive nel repository.
+permissions:
+  contents: read
+
+# Una sola esecuzione per branch: un push nuovo annulla quella in corso (pull request comprese,
+# raggruppate per il branch di partenza).
+concurrency:
+  group: ci-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  # Tutti i job: 1 nella libreria, vuota nei siti cliente.
+  SITE_STARTER_LIBRARY: ${{ vars.SITE_STARTER_LIBRARY }}
+  STRICT_FLAG: ${{ github.event_name == 'pull_request' && github.base_ref == 'main' && '--strict' || '' }}
+  # Repo per la configurazione di Decap (scripts/gen-decap-config.ts).
+  DECAP_REPO: ${{ github.repository }}
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: npm run check ${{ env.STRICT_FLAG }}
+        run: npm run check -- $STRICT_FLAG
+
+      - name: Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-check
+          path: reports/
+          if-no-files-found: ignore
+
+  qa:
+    name: qa
+    if: github.event_name != 'push'
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Versione di Playwright
+        id: playwright
+        run: echo "version=$(node -p 'require("playwright/package.json").version')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache dei browser di Playwright
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      - name: Chromium e dipendenze di sistema
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Solo dipendenze di sistema (Chromium dalla cache)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: npm run qa ${{ env.STRICT_FLAG }}
+        run: npm run qa -- $STRICT_FLAG
+
+      - name: Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-qa
+          path: reports/
+          if-no-files-found: ignore
+
+  template-as-site:
+    name: template-as-site
+    # Parte solo nella libreria (la condizione legge vars, non l'ambiente del job), ma gira da sito
+    # cliente: la variabile vuota dà la modalità sito anche allo script che prepara la copia.
+    if: vars.SITE_STARTER_LIBRARY == '1' && github.event_name != 'push'
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SITE_STARTER_LIBRARY: ""
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Versione di Playwright
+        id: playwright
+        run: echo "version=$(node -p 'require("playwright/package.json").version')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache dei browser di Playwright
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      - name: Chromium e dipendenze di sistema
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Solo dipendenze di sistema (Chromium dalla cache)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      # Copia in una cartella temporanea, senza SITE_STARTER_LIBRARY né DECAP_REPO: site:init e
+      # qa --strict, che deve fallire esclusivamente per DA-COMPILARE e og-DA-COMPILARE.
+      - name: Template come sito cliente
+        run: npm run check:template
+
+      - name: Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-template-as-site
+          path: reports/template-as-site/
+          if-no-files-found: ignore

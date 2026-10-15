@@ -1,0 +1,97 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "DA-COMPILARE: mestiere e città · nome dell’attività",
+	"description": "DA-COMPILARE: cosa fa l’attività, in che zona lavora e perché sceglierla, in una frase.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "split",
+			"eyebrow": "DA-COMPILARE: il mestiere",
+			"title": "DA-COMPILARE: cosa fai, detto in una riga",
+			"subtitle": "DA-COMPILARE: per chi lavori, in che zona e cosa ti distingue. Al massimo due righe.",
+			"primaryCta": { "label": "Chiedi un preventivo", "href": "/contatti/" },
+			"secondaryCta": { "label": "I nostri servizi", "href": "#servizi" },
+			"image": {
+				"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
+				"alt": "DA-COMPILARE: cosa mostra la foto di un lavoro"
+			}
+		},
+		{
+			"type": "services",
+			"id": "servizi",
+			"tone": "muted",
+			"variant": "cards-icone",
+			"eyebrow": "Servizi",
+			"title": "DA-COMPILARE: cosa possiamo fare per te",
+			"intro": "DA-COMPILARE: una frase che presenta i servizi nel loro insieme.",
+			"items": [
+				{
+					"icon": "rullo",
+					"title": "DA-COMPILARE servizio 1",
+					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto.",
+					"link": { "label": "Dettagli", "href": "/servizi/#elenco" }
+				},
+				{
+					"icon": "edificio",
+					"title": "DA-COMPILARE servizio 2",
+					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto.",
+					"link": { "label": "Dettagli", "href": "/servizi/#elenco" }
+				},
+				{
+					"icon": "pennello",
+					"title": "DA-COMPILARE servizio 3",
+					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto.",
+					"link": { "label": "Dettagli", "href": "/servizi/#elenco" }
+				}
+			]
+		},
+		{
+			"type": "carousel",
+			"id": "lavori",
+			"variant": "foto",
+			"eyebrow": "Lavori finiti",
+			"title": "DA-COMPILARE: titolo della galleria dei lavori",
+			"items": [
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-facciata.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE: lavoro e luogo"
+				},
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-decorazioni.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE: lavoro e luogo"
+				},
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-cartongesso.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE: lavoro e luogo"
+				},
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-antimuffa.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE: lavoro e luogo"
+				}
+			]
+		},
+		{
+			"type": "accordion",
+			"id": "domande",
+			"tone": "muted",
+			"variant": "faq",
+			"eyebrow": "Domande frequenti",
+			"title": "DA-COMPILARE: le domande che ti fanno più spesso",
+			"items": [
+				{ "title": "DA-COMPILARE: il sopralluogo è gratuito?", "text": "DA-COMPILARE: risposta breve e concreta." },
+				{ "title": "DA-COMPILARE: in che zona lavorate?", "text": "DA-COMPILARE: comuni o province in cui lavori." },
+				{ "title": "DA-COMPILARE: quanto tempo serve per un preventivo?", "text": "DA-COMPILARE: tempi di risposta e cosa contiene il preventivo." }
+			]
+		},
+		{
+			"type": "cta",
+			"id": "preventivo",
+			"tone": "primary",
+			"variant": "banner",
+			"title": "DA-COMPILARE: invito a chiedere un preventivo",
+			"text": "DA-COMPILARE: cosa succede dopo la richiesta (sopralluogo, tempi di risposta).",
+			"primary": { "label": "Chiedi un preventivo", "href": "/contatti/" },
+			"showContacts": true
+		}
+	]
+}

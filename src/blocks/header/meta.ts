@@ -1,0 +1,35 @@
+import type { BlockMeta } from '@/core/block-types';
+
+export const meta: BlockMeta = {
+	type: 'header',
+	name: 'Header',
+	description:
+		'Intestazione del sito: logo o nome, menu con sottomenu e, su mobile, un pannello a tutta altezza. Voci e recapiti arrivano da navigation.json e site.json.',
+	whenToUse:
+		'Sempre: è l’intestazione di tutte le pagine. Non è una sezione delle ricette: variante, sticky e logo si scelgono in src/content/settings/layout.json (chiave header) e BaseLayout la disegna in cima a ogni pagina.',
+	avoidWhen:
+		'Nelle sezioni di una ricetta (la build lo rifiuta). Per un invito all’azione a metà pagina usa cta.',
+	category: 'intestazione',
+	scope: 'layout',
+	version: '2.0.0',
+	source: { from: 'originale' },
+	interactive: true,
+	variants: {
+		semplice: {
+			description: 'Logo e menu; su desktop a destra c’è il telefono.',
+			whenToUse: 'Siti con poche pagine o senza un’azione principale da spingere.',
+		},
+		'con-cta': {
+			description: 'Logo, menu e un pulsante in evidenza a destra (la cta di navigation.json), ripetuto nel menu mobile.',
+			whenToUse: 'Per spingere preventivi o prenotazioni da ogni pagina.',
+		},
+	},
+	rules: [
+		'La variante con-cta richiede la cta in navigation.json.',
+		'Il logo immagine richiede il logo in site.json.',
+	],
+	fieldRules: {
+		variant: { note: 'con-cta richiede la cta in navigation.json.' },
+		logo: { note: 'immagine richiede il logo in site.json.' },
+	},
+};

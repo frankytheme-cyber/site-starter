@@ -1,0 +1,61 @@
+---
+/**
+ * Radice di ogni blocco: tono, spaziatura verticale e Container.
+ * Lo slot "background" ospita media a tutta larghezza dietro al contenuto (es. foto con velatura).
+ */
+import Container from './Container.astro';
+
+interface Props {
+	id?: string;
+	/** default: bg · muted: surface · primary: primary (i token del contenuto si adattano, vedi base.css). */
+	tone?: 'default' | 'muted' | 'primary';
+	/** Elemento radice: section, oppure header e footer per intestazione e piede del sito. */
+	as?: 'section' | 'header' | 'footer';
+	/** Senza spaziatura verticale: per i blocchi che regolano da sé l'altezza (es. header). */
+	flush?: boolean;
+	/**
+	 * Resta in cima durante lo scroll. Si aggancia sotto --sticky-offset (default 0), che la
+	 * pagina può impostare se ha già un'altra barra fissa in alto.
+	 */
+	sticky?: boolean;
+	class?: string;
+	/** Attributi data-* per gli script dei blocchi interattivi, aria-* (es. aria-labelledby per una regione). */
+	[attribute: `data-${string}` | `aria-${string}`]: string | boolean | undefined;
+}
+
+const { id, tone = 'default', as: Tag = 'section', flush = false, sticky = false, class: className, ...attributes } =
+	Astro.props;
+
+const tones = {
+	default: 'bg-bg text-fg',
+	muted: 'bg-surface text-surface-fg',
+	primary: 'bg-primary text-primary-fg',
+};
+
+const hasBackground = Astro.slots.has('background');
+---
+
+<Tag
+	id={id}
+	data-tone={tone}
+	class:list={[
+		sticky ? 'sticky top-[var(--sticky-offset,0px)] z-40' : 'relative',
+		'isolate',
+		!flush && 'py-16 sm:py-24',
+		tones[tone],
+		hasBackground && 'overflow-hidden',
+		className,
+	]}
+	{...attributes}
+>
+	{
+		hasBackground && (
+			<div class="absolute inset-0 -z-10">
+				<slot name="background" />
+			</div>
+		)
+	}
+	<Container>
+		<slot />
+	</Container>
+</Tag>

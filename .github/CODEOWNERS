@@ -1,0 +1,15 @@
+# Proprietario della libreria site-starter. Con «Require review from Code Owners» nella protezione
+# di main (docs/controlli.md → «Proteggere main su GitHub») una pull request che tocca questi
+# percorsi si unisce solo con la sua approvazione. Il CMS non li modifica mai: le pull request del
+# cliente (src/content, src/assets/images) restano senza revisione obbligatoria.
+# File gestito dalla libreria (library.manifest.json): nei siti cliente non si modifica.
+
+# Il lock: chi lo riscrive fa passare qualsiasi modifica ai file gestiti. Lo cambiano solo
+# npm run site:init e npm run blocks:sync.
+/blocks.lock.json @frankytheme-cyber
+
+# Chi esegue il controllo del lock: cambiandoli lo si spegnerebbe senza toccare il lock.
+/.github/ @frankytheme-cyber
+/scripts/ @frankytheme-cyber
+/library.manifest.json @frankytheme-cyber
+/package.json @frankytheme-cyber

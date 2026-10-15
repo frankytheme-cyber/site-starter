@@ -1,0 +1,91 @@
+---
+import Container from '@/core/ui/Container.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getTheme } from '@/core/settings';
+import { fonts, palettes, shapes } from '@/themes/presets';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+const theme = await getTheme();
+
+const controls = [
+	{ key: 'palette', label: 'Palette', options: palettes, value: theme.palette },
+	{ key: 'fonts', label: 'Font', options: fonts, value: theme.fonts },
+	{ key: 'shape', label: 'Forma', options: shapes, value: theme.shape },
+];
+---
+
+<BaseLayout title={title} noindex allFonts siteLayout={false}>
+	<header data-catalog-bar class="sticky top-0 z-50 border-b border-border bg-bg/95 backdrop-blur">
+		<Container>
+			<div class="flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
+				<nav aria-label="Catalogo" class="mr-auto flex items-baseline gap-6">
+					<a href="/catalogo/" class="font-heading text-lg font-bold">Catalogo blocchi</a>
+					<a href="/catalogo/bottoni/" class="text-sm text-primary underline underline-offset-4">Bottoni</a>
+					<a href="/catalogo/icone/" class="text-sm text-primary underline underline-offset-4">Icone</a>
+					<a href="/catalogo/ui/" class="text-sm text-primary underline underline-offset-4">UI</a>
+				</nav>
+				{
+					controls.map(({ key, label, options, value }) => (
+						<label class="flex items-center gap-2 text-sm">
+							<span class="text-fg-muted">{label}</span>
+							<select
+								data-theme-control={key}
+								class="min-h-9 rounded-button border border-border bg-bg px-3 text-fg"
+							>
+								{options.map((option) => (
+									<option value={option} selected={option === value}>
+										{option}
+									</option>
+								))}
+							</select>
+						</label>
+					))
+				}
+			</div>
+		</Container>
+	</header>
+	{/* Subito, prima degli script dei blocchi: l'header sticky legge --sticky-offset all'avvio. */}
+	<script is:inline>
+		document.documentElement.style.setProperty(
+			'--sticky-offset',
+			`${document.querySelector('[data-catalog-bar]').offsetHeight}px`,
+		);
+	</script>
+	<slot />
+</BaseLayout>
+
+<script>
+	// Cambia i data-* di <html> al volo e ricorda la scelta tra le pagine del catalogo.
+	const STORAGE_KEY = 'catalogo-tema';
+	const root = document.documentElement;
+
+	// I blocchi sticky (es. header) si agganciano sotto questa barra, che su mobile va su più righe.
+	const bar = document.querySelector<HTMLElement>('[data-catalog-bar]')!;
+	new ResizeObserver(() => root.style.setProperty('--sticky-offset', `${bar.offsetHeight}px`)).observe(bar);
+
+	let saved: Record<string, string> = {};
+	try {
+		saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '{}');
+	} catch {}
+
+	for (const select of document.querySelectorAll<HTMLSelectElement>('[data-theme-control]')) {
+		const key = select.dataset.themeControl!;
+		const stored = saved[key];
+		if (stored && [...select.options].some((option) => option.value === stored)) {
+			select.value = stored;
+			root.dataset[key] = stored;
+		}
+
+		select.addEventListener('change', () => {
+			root.dataset[key] = select.value;
+			saved[key] = select.value;
+			try {
+				sessionStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+			} catch {}
+		});
+	}
+</script>

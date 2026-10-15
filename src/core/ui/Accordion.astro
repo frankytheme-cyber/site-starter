@@ -1,0 +1,53 @@
+---
+/**
+ * Elenco di voci apribili (AccordionItem nello slot), fatto con <details>/<summary>: si apre e
+ * chiude da tastiera e funziona senza JS. single: aprendo una voce si chiudono le altre (con JS;
+ * senza, restano apribili tutte). Regole: docs/blocchi-interattivi.md.
+ */
+interface Props {
+	single?: boolean;
+	class?: string;
+}
+
+const { single = false, class: className } = Astro.props;
+---
+
+<div data-accordion data-single={single ? '' : undefined} class:list={['border-y border-border divide-y divide-border', className]}>
+	<slot />
+</div>
+
+<style is:global>
+	/*
+	 * Quando chi visita apre una voce, il contenuto entra con una breve dissolvenza (data-animating,
+	 * messo dallo script). Le voci aperte al caricamento non si animano; niente animazione per chi
+	 * chiede movimento ridotto.
+	 */
+	@media (prefers-reduced-motion: no-preference) {
+		[data-accordion-item][data-animating][open] > [data-accordion-content] {
+			animation: accordion-open 200ms ease-out;
+		}
+	}
+	@keyframes accordion-open {
+		from {
+			opacity: 0;
+			transform: translateY(-0.25rem);
+		}
+	}
+</style>
+
+<script>
+	for (const accordion of document.querySelectorAll<HTMLElement>('[data-accordion]')) {
+		const single = accordion.hasAttribute('data-single');
+		const items = [...accordion.querySelectorAll<HTMLDetailsElement>(':scope > [data-accordion-item]')];
+		for (const item of items) {
+			// L'animazione vale solo per le aperture fatte da chi visita, non per lo stato iniziale.
+			item.querySelector(':scope > summary')?.addEventListener('click', () => item.setAttribute('data-animating', ''));
+			item.addEventListener('animationend', () => item.removeAttribute('data-animating'));
+			item.addEventListener('toggle', () => {
+				if (!item.open || !single) return;
+				// Una voce alla volta: quando una si apre, le sorelle si chiudono.
+				for (const other of items) if (other !== item) other.open = false;
+			});
+		}
+	}
+</script>

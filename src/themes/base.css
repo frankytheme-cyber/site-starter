@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@import "./palettes/terracotta.css";
+@import "./palettes/ardesia.css";
+@import "./shapes/squadrato.css";
+@import "./shapes/morbido.css";
+@import "./shapes/arrotondato.css";
+@import "../core/ui/button/button.css";
+
+/* La documentazione cita classi vietate come esempi: non deve generare CSS. */
+@source not "../../AGENTS.md";
+@source not "../../CLAUDE.md";
+@source not "../../README.md";
+@source not "../../docs";
+
+/*
+ * Token semantici: i blocchi usano solo queste classi (bg-primary, text-fg-muted,
+ * font-heading, rounded-box...). I valori arrivano dalle variabili impostate dai
+ * preset su <html>: data-palette (palettes/), data-fonts (fonts/), data-shape (shapes/).
+ *
+ * "inline" fa scrivere alle utility direttamente var(--bg) & co.: un preset messo su
+ * qualsiasi elemento cambia l'aspetto di tutto ciò che contiene.
+ * "--color-*: initial" toglie la palette di Tailwind: bg-blue-600 non genera nulla, ma resterebbe
+ * nell'HTML senza effetto. Per questo check:tokens vieta le classi della palette.
+ * transparent, current e inherit sono valori integrati e restano disponibili.
+ */
+@theme inline {
+	--color-*: initial;
+	--color-white: #fff;
+	--color-black: #000;
+
+	--color-bg: var(--bg);
+	--color-fg: var(--fg);
+	--color-fg-muted: var(--fg-muted);
+	--color-surface: var(--surface);
+	--color-surface-fg: var(--surface-fg);
+	--color-primary: var(--primary);
+	--color-primary-fg: var(--primary-fg);
+	--color-primary-hover: var(--primary-hover);
+	--color-accent: var(--accent);
+	--color-accent-fg: var(--accent-fg);
+	--color-accent-hover: var(--accent-hover);
+	--color-border: var(--border);
+	--color-ring: var(--ring);
+
+	--font-heading: var(--heading-font);
+	--font-body: var(--body-font);
+
+	--radius-box: var(--box-radius);
+	--radius-button: var(--button-radius);
+}
+
+/*
+ * Toni di sezione (data-tone, messo da core/ui/Section.astro). La sezione prende i
+ * colori del tono; i suoi figli ricevono i token ridefiniti, così i blocchi scrivono
+ * sempre text-fg, bg-primary... e restano leggibili su ogni tono.
+ * Nel tono primary, primary e primary-fg si invertono (pulsanti chiari su fondo
+ * primary). Una variabile non può riferirsi a un'altra ridefinita sullo stesso
+ * elemento, quindi i valori originali si salvano sulla sezione e si invertono nei figli.
+ */
+[data-tone="muted"] > * {
+	--bg: var(--surface);
+	--fg: var(--surface-fg);
+}
+
+[data-tone="primary"] {
+	--tone-primary: var(--primary);
+	--tone-primary-fg: var(--primary-fg);
+}
+
+[data-tone="primary"] > * {
+	--bg: var(--tone-primary);
+	--fg: var(--tone-primary-fg);
+	--fg-muted: var(--tone-primary-fg);
+	--primary: var(--tone-primary-fg);
+	--primary-fg: var(--tone-primary);
+	/* Passaggio sul pieno chiaro: surface, con testo primary (coppia primary / surface verificata). */
+	--primary-hover: var(--surface);
+	--border: color-mix(in oklab, var(--tone-primary-fg) 35%, var(--tone-primary));
+	--ring: var(--tone-primary-fg);
+}
+
+/*
+ * Un elemento su fondo primary fuori da una Section primary (es. Button tone="primary") prende
+ * i token invertiti partendo dai valori della palette, salvati su <html>: così l'inversione non
+ * si somma a quella di una Section primary.
+ */
+[data-palette] {
+	--palette-bg: var(--bg);
+	--palette-fg: var(--fg);
+	--palette-primary: var(--primary);
+	--palette-primary-fg: var(--primary-fg);
+	--palette-primary-hover: var(--primary-hover);
+}
+
+[data-on-tone="primary"] {
+	--bg: var(--palette-primary);
+	--fg: var(--palette-primary-fg);
+	--primary: var(--palette-primary-fg);
+	--primary-fg: var(--palette-primary);
+	--primary-hover: var(--surface);
+	--ring: var(--palette-primary-fg);
+}
+
+@layer base {
+	body {
+		@apply bg-bg font-body text-fg;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		@apply font-heading;
+	}
+}

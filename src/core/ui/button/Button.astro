@@ -1,0 +1,88 @@
+---
+/**
+ * Pulsante o link d'azione. Con href è un <a>, altrimenti un <button>. Aspetto e stati (hover,
+ * focus, active, disabled) stanno in button.css: .btn con data-variant e data-size.
+ * href accetta anche @telefono, @whatsapp, @email, @mappa (risolti da site.json, core/links.ts);
+ * i link esterni si aprono in una nuova scheda con rel="noopener".
+ * disabled: <button disabled>, o un <a> senza href con aria-disabled (non si apre e non prende il focus).
+ *
+ * Tono: dentro una Section i token si adattano già al suo data-tone (base.css), quindi su
+ * tone primary il pulsante pieno diventa chiaro da solo. La prop tone serve a dichiararlo quando il
+ * pulsante sta su un fondo primary fuori da una Section primary.
+ */
+import type { Tone } from '@/core/block-types';
+import type { IconName } from '@/core/icons';
+import { isExternal, resolveHref } from '@/core/links';
+import Icon from '../Icon.astro';
+import type { ButtonStyle } from './cta';
+
+interface Props {
+	href?: string;
+	/** primary: pieno · secondary: bordato · ghost: solo testo, sfondo al passaggio · link: sottolineato. */
+	variant?: ButtonStyle;
+	size?: 'sm' | 'md' | 'lg';
+	icon?: IconName;
+	iconPosition?: 'start' | 'end';
+	tone?: Tone;
+	type?: 'button' | 'submit' | 'reset';
+	disabled?: boolean;
+	class?: string;
+	/** data-state="hover|focus|active|disabled" forza uno stato: solo nel catalogo (/catalogo/bottoni). */
+	[attribute: `data-${string}` | `aria-${string}`]: string | boolean | undefined;
+}
+
+const {
+	href,
+	variant = 'primary',
+	size = 'md',
+	icon,
+	iconPosition = 'start',
+	tone,
+	type = 'button',
+	disabled = false,
+	class: className,
+	...attributes
+} = Astro.props;
+
+const url = href ? await resolveHref(href) : undefined;
+const external = url && !disabled ? isExternal(url, Astro.site) : false;
+
+const iconSize = size === 'sm' ? 'sm' : 'md';
+const onTone = tone === 'primary' ? 'primary' : undefined;
+---
+
+{
+	url ? (
+		<a
+			href={disabled ? undefined : url}
+			role={disabled ? 'link' : undefined}
+			aria-disabled={disabled ? 'true' : undefined}
+			class:list={['btn', className]}
+			data-variant={variant}
+			data-size={size}
+			data-on-tone={onTone}
+			target={external ? '_blank' : undefined}
+			rel={external ? 'noopener' : undefined}
+			{...attributes}
+		>
+			{icon && iconPosition === 'start' && <Icon name={icon} size={iconSize} />}
+			<slot />
+			{external && <span class="sr-only">(si apre in una nuova scheda)</span>}
+			{icon && iconPosition === 'end' && <Icon name={icon} size={iconSize} />}
+		</a>
+	) : (
+		<button
+			type={type}
+			disabled={disabled}
+			class:list={['btn', className]}
+			data-variant={variant}
+			data-size={size}
+			data-on-tone={onTone}
+			{...attributes}
+		>
+			{icon && iconPosition === 'start' && <Icon name={icon} size={iconSize} />}
+			<slot />
+			{icon && iconPosition === 'end' && <Icon name={icon} size={iconSize} />}
+		</button>
+	)
+}

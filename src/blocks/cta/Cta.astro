@@ -1,0 +1,65 @@
+---
+import type { IconName } from '@/core/icons';
+import { getSiteSettings } from '@/core/settings';
+import Button from '@/core/ui/button/Button.astro';
+import CtaButton from '@/core/ui/button/CtaButton.astro';
+import Section from '@/core/ui/Section.astro';
+import type { CtaProps } from './schema';
+
+type Props = CtaProps;
+
+const { id, tone, variant, title, text, primary, secondary, showContacts } = Astro.props;
+
+// I recapiti arrivano solo da site.json: lo schema del blocco non li contiene.
+const settings = showContacts ? await getSiteSettings() : undefined;
+const contacts: { href: string; icon: IconName; label: string }[] = [];
+if (settings) {
+	contacts.push({ href: '@telefono', icon: 'telefono', label: `Chiama ${settings.phone}` });
+	if (settings.whatsapp) contacts.push({ href: '@whatsapp', icon: 'whatsapp', label: 'Scrivici su WhatsApp' });
+}
+---
+
+{
+	variant === 'banner' ? (
+		<Section id={id} tone={tone}>
+			<div class="mx-auto max-w-3xl text-center">
+				<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+				{text && <p class="mt-4 text-lg text-pretty text-fg-muted">{text}</p>}
+				<div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+					<CtaButton cta={primary} tone={tone} />
+					{secondary && <CtaButton cta={secondary} defaultStyle="secondary" tone={tone} />}
+				</div>
+				{contacts.length > 0 && (
+					<ul class="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+						{contacts.map((contact) => (
+							<li>
+								<Button href={contact.href} variant="link" icon={contact.icon} tone={tone}>
+									{contact.label}
+								</Button>
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+		</Section>
+	) : (
+		<Section id={id} tone={tone}>
+			<div class="grid items-center gap-10 lg:grid-cols-5 lg:gap-16">
+				<div class="lg:col-span-3">
+					<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+					{text && <p class="mt-4 text-lg text-pretty text-fg-muted">{text}</p>}
+				</div>
+				{/* In una griglia i pulsanti si allungano a tutta la colonna. */}
+				<div class="grid gap-3 lg:col-span-2">
+					<CtaButton cta={primary} tone={tone} />
+					{secondary && <CtaButton cta={secondary} defaultStyle="secondary" tone={tone} />}
+					{contacts.map((contact) => (
+						<Button href={contact.href} variant="secondary" icon={contact.icon} tone={tone}>
+							{contact.label}
+						</Button>
+					))}
+				</div>
+			</div>
+		</Section>
+	)
+}

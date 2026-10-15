@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "repository": "https://github.com/frankytheme-cyber/site-starter.git",
+  "managed": ["src/blocks", "src/core", "src/themes", "src/layouts", "scripts", "docs/catalogo", ".github/workflows"],
+  "managedFiles": [
+    ".env.example",
+    ".github/CODEOWNERS",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "astro.config.mjs",
+    "docs/THIRD_PARTY_LICENSES.md",
+    "docs/blocchi-interattivi.md",
+    "docs/controlli.md",
+    "docs/decap.md",
+    "docs/siti-cliente.md",
+    "library.manifest.json",
+    "public/admin/index.html",
+    "src/content.config.ts",
+    "src/pages/[...slug].astro",
+    "src/pages/robots.txt.ts",
+    "tsconfig.json"
+  ],
+  "exclude": ["src/library"],
+  "libraryOnly": ["src/library", "docs/README.md", "CHANGELOG.md"],
+  "libraryScripts": ["site:init", "check:template", "gen:catalog", "screenshots", "catalog", "release"]
+}

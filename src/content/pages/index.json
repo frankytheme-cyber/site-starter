@@ -1,0 +1,56 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "DA-COMPILARE: attività e città, entro 60 caratteri",
+	"description": "DA-COMPILARE: cosa fa l’attività, dove lavora e perché sceglierla, in una frase per i risultati di ricerca.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "split",
+			"eyebrow": "DA-COMPILARE",
+			"title": "DA-COMPILARE: cosa fa l’attività, detto in una riga",
+			"subtitle": "DA-COMPILARE: per chi lavora, in che zona e cosa la distingue. Al massimo due righe.",
+			"primaryCta": { "label": "Chiedi un preventivo", "href": "#preventivo" },
+			"secondaryCta": { "label": "I nostri servizi", "href": "#servizi" },
+			"image": {
+				"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
+				"alt": "DA-COMPILARE: descrizione della foto"
+			}
+		},
+		{
+			"type": "services",
+			"id": "servizi",
+			"tone": "muted",
+			"variant": "cards-icone",
+			"eyebrow": "Servizi",
+			"title": "DA-COMPILARE: titolo della sezione servizi",
+			"intro": "DA-COMPILARE: una frase che presenta i servizi nel loro insieme.",
+			"items": [
+				{
+					"icon": "rullo",
+					"title": "DA-COMPILARE servizio 1",
+					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto."
+				},
+				{
+					"icon": "edificio",
+					"title": "DA-COMPILARE servizio 2",
+					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto."
+				},
+				{
+					"icon": "pennello",
+					"title": "DA-COMPILARE servizio 3",
+					"text": "DA-COMPILARE: cosa comprende il servizio e per chi è adatto."
+				}
+			]
+		},
+		{
+			"type": "cta",
+			"id": "preventivo",
+			"tone": "primary",
+			"variant": "banner",
+			"title": "DA-COMPILARE: invito a chiedere un preventivo",
+			"text": "DA-COMPILARE: cosa succede dopo la richiesta (sopralluogo, tempi di risposta).",
+			"primary": { "label": "Scrivici", "href": "/contatti/" },
+			"showContacts": true
+		}
+	]
+}

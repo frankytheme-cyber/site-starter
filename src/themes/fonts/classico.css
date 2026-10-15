@@ -1,0 +1,9 @@
+/* Classico: Fraunces per i titoli, Source Sans 3 per il testo. */
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/source-sans-3";
+@import "@fontsource-variable/source-sans-3/wght-italic.css";
+
+[data-fonts="classico"] {
+	--heading-font: "Fraunces Variable", Georgia, serif;
+	--body-font: "Source Sans 3 Variable", ui-sans-serif, system-ui, sans-serif;
+}
