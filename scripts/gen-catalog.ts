@@ -512,8 +512,18 @@ export async function generateCatalog() {
 		for (const type of Object.keys(metasByType).sort((a, b) => compareBlocks(metasByType[a], metasByType[b]))) {
 			const meta = metasByType[type];
 			const metaFile = `src/blocks/${type}/meta.ts`;
-			const schema = schemas.blockSchemas[type](context) as ZodLike;
-			const fixtures = (await load(`/src/blocks/${type}/fixtures.ts`)).fixtures as Fixture[];
+			// Un blocco incompleto è un problema come gli altri: non ferma il controllo dei successivi.
+			let schema: ZodLike;
+			let fixtures: Fixture[];
+			try {
+				if (typeof schemas.blockSchemas[type] !== 'function') throw new Error('manca schema.ts');
+				schema = schemas.blockSchemas[type](context) as ZodLike;
+				fixtures = (await load(`/src/blocks/${type}/fixtures.ts`)).fixtures as Fixture[];
+				if (!Array.isArray(fixtures) || fixtures.length === 0) throw new Error('nessuna fixture in fixtures.ts');
+			} catch (cause) {
+				problems.push(`src/blocks/${type}: non si carica: ${(cause as Error).message.split('\n')[0]}`);
+				continue;
+			}
 			const fields = schemaFields(schema, icons.ICON_NAMES as string[], meta.fieldRules);
 
 			for (const [name, variant] of Object.entries(meta.variants)) {

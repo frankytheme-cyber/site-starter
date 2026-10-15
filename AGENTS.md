@@ -4,10 +4,10 @@ Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, u
 
 ## Regole
 
-- **Solo classi semantiche nei blocchi.** Usa `bg-primary`, `text-fg-muted`, `font-heading`, `rounded-box`... MAI colori Tailwind fissi (`bg-blue-600`, `text-gray-500`...) né valori arbitrari di colore (`bg-[#1e40af]`, `text-[rgb(...)]`...). La palette di Tailwind è disattivata, quindi i colori fissi non generano CSS; i valori arbitrari invece funzionano ancora e vanno evitati a mano.
+- **Solo classi semantiche nei blocchi.** Usa `bg-primary`, `text-fg-muted`, `font-heading`, `rounded-box`... MAI colori Tailwind fissi (`bg-blue-600`, `text-gray-500`...) né valori arbitrari di colore (`bg-[#1e40af]`, `text-[rgb(...)]`...). Non contare sul fatto che, con la palette di Tailwind disattivata, una classe come `bg-blue-600` «non genera CSS»: `check:tokens` vieta come errore le classi della palette (anche `fill-*`, `stroke-*`, `ring-*`, `from-`/`via-`/`to-*`) e i valori arbitrari di colore in `src/blocks`, `src/core` e `src/layouts`.
 - **Libreria o sito: lo dice `SITE_STARTER_LIBRARY`.** La repo site-starter è la libreria solo con `SITE_STARTER_LIBRARY=1` (in `.env`, vedi `.env.example`; in CI e su Vercel nelle variabili del progetto); senza, ogni progetto è un sito cliente, anche la libreria (e i controlli falliscono sul lock). Modalità in `src/core/mode.ts`, guida in `docs/siti-cliente.md`.
 - **Cartelle e file gestiti in sola lettura nei siti cliente.** Cartelle e file elencati in `library.manifest.json` (`managed`, `managedFiles`) si modificano SOLO nella repo site-starter; nei siti cliente sono in sola lettura (check `lock`) e si aggiornano con `npm run blocks:sync -- vX.Y.Z`. Note ed eccezioni del singolo sito vanno in `docs/sito.md`.
-- **Dati dell'attività in un solo posto.** Nome, descrizione, indirizzo, telefono, email, dati legali (ragione sociale, forma giuridica, P.IVA, REA, capitale) e orari stanno solo in `src/content/settings/site.json`; mai scritti nei testi delle pagine né negli schemi dei blocchi, che li leggono con `getSiteSettings()` (`@/core/settings`).
+- **Dati dell'attività in un solo posto.** Nome, descrizione, indirizzo, telefono, email, dati legali (ragione sociale, forma giuridica, P.IVA, REA, capitale), orari e immagine per i social di ripiego (`defaultOgImage`) stanno solo in `src/content/settings/site.json`; mai scritti nei testi delle pagine né negli schemi dei blocchi, che li leggono con `getSiteSettings()` (`@/core/settings`).
 - **Si compone con blocchi esistenti.** Il sito si costruisce con i blocchi già presenti: un blocco nuovo nasce solo in site-starter, su task approvato.
 - **Ogni campo ha etichetta e aiuto.** Ogni campo degli schemi di blocchi, pagine e impostazioni ha `.describe("Etichetta|Aiuto")` in italiano: da lì nascono il CMS e la documentazione del catalogo. Dopo aver cambiato uno schema, `npm run gen:decap` e commit di `public/admin/config.yml`; nella libreria, dopo aver cambiato un blocco (schema, meta, fixture, aspetto), un preset del tema o le icone, `npm run catalog` e commit di `docs/catalogo`.
 - **Controlli verdi prima di chiudere.** Prima di dichiarare finito un lavoro, `npm run check` deve passare (comprende la build); per blocchi, layout e pagine anche `npm run qa`. Elenco dei controlli in `docs/controlli.md`.
@@ -56,8 +56,8 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run check`          | Controlli statici + build; `-- --strict` con le regole di pubblicazione |
 | `npm run qa`             | `check` + link, accessibilità, interattivi, Lighthouse sul sito servito |
 | `npm run check:contrast` | Verifica il contrasto WCAG AA di tutte le palette |
-| `npm run check:recipes`  | Controlla ricette e dati del sito; `-- --strict` esce con errore |
-| `npm run check:tokens`   | Niente colori fissi né `!important` in `src/blocks` e `src/core` |
+| `npm run check:recipes`  | Schema e immagini di ricette e impostazioni (prima della build, con pagina, sezione e campo), poi regole di contenuto; `-- --strict` esce con errore |
+| `npm run check:tokens`   | Niente classi della palette Tailwind, colori fissi né `!important` in `src/blocks`, `src/core` e `src/layouts` |
 | `npm run check:lock`     | Sito cliente: niente modifiche locali a cartelle e file gestiti (`blocks.lock.json`) |
 | `npm run gen:decap`      | Genera `public/admin/config.yml` dagli schemi (anche in `prebuild`); senza repository GitHub usa un segnaposto con un avviso |
 | `npm run check:decap`    | Fallisce se `config.yml` non è aggiornato                  |

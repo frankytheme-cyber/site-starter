@@ -4,11 +4,14 @@
  * disegno è esterno, fixture valide contro lo schema (e i dati `site` di prova contro lo schema
  * di site.json), almeno una fixture per variante, ogni blocco di layout con la sua chiave in
  * layout.json.
+ * Raccoglie tutti i problemi: un blocco con un file mancante o che non si carica non ferma gli
+ * altri, e in quel caso il confronto con docs/catalogo si salta (il catalogo non si può generare).
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'astro/zod';
 import { CATEGORIES } from '../../src/core/block-types.ts';
+import { fieldPath } from '../../src/core/content-validation.ts';
 import { checkCatalog } from './catalog.ts';
 import { type CheckContext, collector } from './lib/report.ts';
 import { withProjectModules } from './lib/vite.ts';
@@ -26,6 +29,8 @@ const SCOPES = ['page', 'layout'];
 /** Fuori da Astro un'immagine importata è il suo URL: qui basta che l'import si risolva. */
 const fixtureContext = { image: () => z.union([z.string(), z.looseObject({ src: z.string() })]) };
 
+const firstLine = (cause: unknown) => (cause as Error).message.split('\n')[0];
+
 export async function blocks({ root }: CheckContext) {
 	const { findings, error, warning } = collector('blocks');
 	const blocksDir = join(root, 'src/blocks');
@@ -36,17 +41,42 @@ export async function blocks({ root }: CheckContext) {
 		.map((entry) => entry.name)
 		.sort();
 
+	/** Blocchi con file mancanti o che non si caricano: senza, il catalogo non si può generare. */
+	const broken: string[] = [];
+
 	await withProjectModules(async (load) => {
-		const [{ siteSettingsSchema }, { layoutSchema }] = await Promise.all([load('/src/core/settings.ts'), load('/src/core/layout.ts')]);
-		const siteSchema = siteSettingsSchema(fixtureContext);
+		// Schema di site.json e di layout.json: se non si caricano, si saltano solo i controlli che li usano.
+		let siteSchema: z.ZodType | undefined;
+		let layoutShape: Record<string, unknown> | undefined;
+		try {
+			siteSchema = (await load('/src/core/settings.ts')).siteSettingsSchema(fixtureContext);
+		} catch (cause) {
+			error({ file: 'src/core/settings.ts', message: `non si carica: ${firstLine(cause)}`, hint: 'senza, i dati site di prova delle fixture non si controllano' });
+		}
+		try {
+			layoutShape = (await load('/src/core/layout.ts')).layoutSchema.shape;
+		} catch (cause) {
+			error({ file: 'src/core/layout.ts', message: `non si carica: ${firstLine(cause)}`, hint: 'importa lo schema di un blocco di layout che manca o non si carica?' });
+		}
+
 		for (const type of types) {
+			try {
+				await checkBlock(type);
+			} catch (cause) {
+				broken.push(type);
+				error({ file: `src/blocks/${type}`, message: `controllo interrotto: ${firstLine(cause)}` });
+			}
+		}
+
+		async function checkBlock(type: string) {
 			const folder = `src/blocks/${type}`;
 			const required = [`${pascalCase(type)}.astro`, 'schema.ts', 'meta.ts', 'fixtures.ts'];
 			const missing = required.filter((name) => !existsSync(join(blocksDir, type, name)));
 			for (const name of missing) {
 				error({ file: `${folder}/${name}`, message: 'file mancante', hint: 'ogni blocco ha componente, schema, meta e fixture: vedi src/blocks/README.md' });
 			}
-			if (missing.some((name) => name !== `${pascalCase(type)}.astro`)) continue;
+			if (missing.length > 0) broken.push(type);
+			if (missing.some((name) => name !== `${pascalCase(type)}.astro`)) return;
 
 			let schemaModule, metaModule, fixturesModule;
 			try {
@@ -56,8 +86,9 @@ export async function blocks({ root }: CheckContext) {
 					load(`/${folder}/fixtures.ts`),
 				]);
 			} catch (cause) {
-				error({ file: folder, message: `non si carica: ${(cause as Error).message.split('\n')[0]}` });
-				continue;
+				broken.push(type);
+				error({ file: folder, message: `non si carica: ${firstLine(cause)}` });
+				return;
 			}
 
 			// meta.ts
@@ -65,7 +96,7 @@ export async function blocks({ root }: CheckContext) {
 			const metaFile = `${folder}/meta.ts`;
 			if (!meta || typeof meta !== 'object') {
 				error({ file: metaFile, message: 'manca export const meta: BlockMeta' });
-				continue;
+				return;
 			}
 			if (meta.type !== type) error({ file: metaFile, where: 'type', message: `"${meta.type}" diverso dal nome della cartella "${type}"` });
 			for (const field of TEXT_FIELDS) {
@@ -98,7 +129,7 @@ export async function blocks({ root }: CheckContext) {
 			}
 			if (!SCOPES.includes(meta.scope)) {
 				error({ file: metaFile, where: 'scope', message: `"${meta.scope}" non è uno scope ammesso`, hint: "scope: 'page' per le sezioni delle ricette, 'layout' per header e footer (layout.json)" });
-			} else if (meta.scope === 'layout' && !(type in layoutSchema.shape)) {
+			} else if (meta.scope === 'layout' && layoutShape && !(type in layoutShape)) {
 				error({ file: 'src/core/layout.ts', where: `blocco ${type}`, message: 'blocco di layout senza la sua chiave in layoutSchema', hint: `aggiungi ${type}: schema() del blocco a layoutSchema e a src/content/settings/layout.json` });
 			}
 			const variants = meta.variants && typeof meta.variants === 'object' ? Object.keys(meta.variants) : undefined;
@@ -108,7 +139,7 @@ export async function blocks({ root }: CheckContext) {
 			const schemaFile = `${folder}/schema.ts`;
 			if (typeof schemaModule.schema !== 'function') {
 				error({ file: schemaFile, message: 'schema deve essere una funzione', hint: 'export const schema = ({ image }: SchemaContext) => z.object(...)' });
-				continue;
+				return;
 			}
 			const schema = schemaModule.schema(fixtureContext);
 			const reserved = SECTION_FIELDS.filter((field) => field in (schema.shape ?? {}));
@@ -121,20 +152,20 @@ export async function blocks({ root }: CheckContext) {
 			const fixtures = fixturesModule.fixtures;
 			if (!Array.isArray(fixtures) || fixtures.length === 0) {
 				error({ file: fixturesFile, message: 'nessuna fixture', hint: 'almeno una per variante' });
-				continue;
+				return;
 			}
 			for (const fixture of fixtures) {
 				const result = schema.safeParse(fixture.props);
 				if (!result.success) {
 					for (const issue of result.error.issues) {
-						error({ file: fixturesFile, where: `fixture "${fixture.name}" › ${issue.path.join('.') || '(props)'}`, message: issue.message });
+						error({ file: fixturesFile, where: `fixture "${fixture.name}" → ${fieldPath(issue.path) || '(props)'}`, message: issue.message });
 					}
 				}
-				if (fixture.site === undefined) continue;
+				if (fixture.site === undefined || !siteSchema) continue;
 				const site = siteSchema.safeParse(fixture.site);
 				if (!site.success) {
 					for (const issue of site.error.issues) {
-						error({ file: fixturesFile, where: `fixture "${fixture.name}" › site.${issue.path.join('.')}`, message: issue.message, hint: 'i dati di prova seguono lo schema di site.json (src/core/settings.ts)' });
+						error({ file: fixturesFile, where: `fixture "${fixture.name}" → site.${fieldPath(issue.path)}`, message: issue.message, hint: 'i dati di prova seguono lo schema di site.json (src/core/settings.ts)' });
 					}
 				}
 			}
@@ -153,6 +184,18 @@ export async function blocks({ root }: CheckContext) {
 		}
 	});
 	// docs/catalogo rigenerato in memoria e confrontato coi file (scripts/checks/catalog.ts).
-	await checkCatalog(root, { error, warning });
+	if (broken.length > 0) {
+		warning({
+			file: 'docs/catalogo',
+			message: `non confrontato: il catalogo non si può generare finché ${[...new Set(broken)].join(', ')} ha file mancanti o che non si caricano`,
+			hint: 'sistema gli errori dei blocchi qui sopra e rilancia il check',
+		});
+		return findings;
+	}
+	try {
+		await checkCatalog(root, { error, warning });
+	} catch (cause) {
+		error({ file: 'docs/catalogo', message: `confronto interrotto: ${firstLine(cause)}`, hint: 'prova npm run gen:catalog per vedere l’errore completo' });
+	}
 	return findings;
 }

@@ -135,7 +135,7 @@ Passi successivi:
   2. Dati dell’attività in src/content/settings/site.json (o dal CMS, «Dati attività»): nessun DA-COMPILARE
   3. Menu in navigation.json, aspetto in theme.json (palette, fonts, shape), header e footer in layout.json
   4. Pagine in src/content/pages partendo da docs/catalogo/ricette-tipo; foto in src/assets/images;
-     un ogImage vero al posto di og-DA-COMPILARE in ogni pagina
+     l’immagine per i social vera (defaultOgImage in site.json) al posto di og-DA-COMPILARE.jpg
   5. Indirizzo del worker OAuth in src/site.config.ts (cms.oauthBaseUrl) e dominio del sito nell’elenco del worker (docs/decap.md)
   6. Progetto Vercel collegato al repository, senza la variabile SITE_STARTER_LIBRARY
   7. Protezione di main con i check «check» e «qa» (docs/controlli.md), poi l’invito del cliente al CMS (docs/decap.md)

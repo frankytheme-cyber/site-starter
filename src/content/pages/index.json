@@ -2,7 +2,6 @@
 	"$schema": "../../../.astro/collections/pages.schema.json",
 	"title": "DA-COMPILARE: attività e città, entro 60 caratteri",
 	"description": "DA-COMPILARE: cosa fa l’attività, dove lavora e perché sceglierla, in una frase per i risultati di ricerca.",
-	"ogImage": "../../assets/images/og-DA-COMPILARE.jpg",
 	"sections": [
 		{
 			"type": "hero",

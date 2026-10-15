@@ -1,8 +1,11 @@
 /**
- * recipes: regole di contenuto delle ricette di pagina (src/content/pages/*.json) e dei dati del
- * sito (site.json, navigation.json). Forma e lunghezze dei campi le verifica già la build.
+ * recipes: ricette di pagina (src/content/pages/*.json) e impostazioni (src/content/settings/*.json).
  *
- * Senza --strict sono tutti avvisi. Con --strict:
+ * Sempre errori, prima della build: dati non validi per lo schema (gli stessi controlli e messaggi
+ * della build, src/core/content-validation.ts) e immagini che non esistono, con file, sezione e
+ * campo. Con questi errori run.ts salta astro-check e build, che fallirebbero allo stesso modo.
+ *
+ * Il resto sono regole di contenuto. Senza --strict sono tutti avvisi. Con --strict:
  * - regole strutturali, errori ovunque: telefoni, email o P.IVA scritti nei testi delle sezioni;
  *   più di un hero; id di sezione duplicati; link interni a pagine o ancore inesistenti; alt uguale
  *   al nome del file; JSON non valido;
@@ -13,6 +16,7 @@
  */
 import { existsSync } from 'node:fs';
 import { basename, join } from 'node:path';
+import { CONTENT_HINT, type ContentSchema, contentProblems, fieldLocation, sectionLabel } from '../../src/core/content-validation.ts';
 import { MAX_SECTIONS } from '../../src/core/recipe-rules.ts';
 import { type CheckContext, collector, type Finding } from './lib/report.ts';
 import {
@@ -20,40 +24,65 @@ import {
 	eachString,
 	excerpt,
 	fieldPath,
+	type Json,
 	type JsonObject,
 	lastKey,
 	type LinkTarget,
 	linkResolver,
 	loadRecipes,
-	type Path,
 	placeholdersIn,
 	readJsonFile,
 	type Recipe,
 } from './lib/content.ts';
+import { withProjectModules } from './lib/vite.ts';
 
+const OG_HINT = 'metti l’immagine vera per i social: defaultOgImage in site.json («Dati attività»), o ogImage nella pagina';
 
 /** Chiavi che non contengono testo per chi visita: niente controlli sul contenuto. */
 const NOT_TEXT = new Set(['$schema', 'type', 'id', 'tone', 'variant', 'icon']);
 
-/** Recapiti scritti a mano: devono arrivare da site.json. Restituisce cosa è stato trovato. */
-function businessDataIn(key: string, text: string): string | undefined {
+/** Recapiti da cercare nei testi, nell'ordine: un pezzo di testo già preso non si conta due volte. */
+const BUSINESS_DATA: { label: string; pattern: RegExp; accept?: (match: string) => boolean }[] = [
+	{ label: 'un indirizzo email', pattern: /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g },
+	// «P.IVA 01234567890» è un recapito solo, la parola da sola o il numero da solo pure.
+	{ label: 'una partita IVA', pattern: /\b(?:p\.?\s?iva|partita\s+iva)\b(?:[\s:.]*(?:IT)?\s?\d{11}(?!\d))?|(?<!\w)(?:IT)?\d{11}(?!\d)/gi },
+	{
+		label: 'un numero di telefono',
+		pattern: /(?:\+39[\s.-]?)?(?<!\d)(?:0\d{1,3}|3\d{2})(?:[\s.-]?\d{2,4}){2,3}(?!\d)/g,
+		accept: (match) => {
+			const digits = match.replace(/^\+39/, '').replace(/\D/g, '').length;
+			return digits >= 8 && digits <= 11;
+		},
+	},
+];
+
+/** Tutti i recapiti scritti a mano in un testo (devono arrivare da site.json): cosa sono e il pezzo di testo. */
+function businessDataIn(key: string, text: string): { label: string; match: string }[] {
 	if (key === 'href') {
-		if (/^(?:tel|mailto|sms):/i.test(text)) return 'un link tel:/mailto:';
-		if (/\bwa\.me\/|api\.whatsapp\.com/i.test(text)) return 'un link WhatsApp con il numero';
-		return undefined;
+		if (/^(?:tel|mailto|sms):/i.test(text)) return [{ label: 'un link tel:/mailto:', match: text }];
+		if (/\bwa\.me\/|api\.whatsapp\.com/i.test(text)) return [{ label: 'un link WhatsApp con il numero', match: text }];
+		return [];
 	}
-	if (key === 'src') return undefined;
-	if (/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/.test(text)) return 'un indirizzo email';
-	if (/\b(?:p\.?\s?iva|partita\s+iva)\b/i.test(text) || /(?<!\d)\d{11}(?!\d)/.test(text)) return 'una partita IVA';
-	for (const [match] of text.matchAll(/(?:\+39[\s.-]?)?(?<!\d)(?:0\d{1,3}|3\d{2})(?:[\s.-]?\d{2,4}){2,3}(?!\d)/g)) {
-		const digits = match.replace(/^\+39/, '').replace(/\D/g, '').length;
-		if (digits >= 8 && digits <= 11) return 'un numero di telefono';
+	if (key === 'src') return [];
+	const found: { label: string; match: string; start: number; end: number }[] = [];
+	for (const { label, pattern, accept } of BUSINESS_DATA) {
+		for (const { 0: match, index: start } of text.matchAll(pattern)) {
+			const end = start + match.length;
+			if (accept && !accept(match)) continue;
+			if (found.some((item) => start < item.end && end > item.start)) continue;
+			found.push({ label, match: match.trim(), start, end });
+		}
 	}
-	return undefined;
+	return found.sort((a, b) => a.start - b.start).map(({ label, match }) => ({ label, match }));
 }
 
-const sectionLabel = (section: JsonObject, index: number) =>
-	`sezione ${index + 1} (${String(section.type)}${typeof section.id === 'string' ? `, #${section.id}` : ''})`;
+/** Schemi delle impostazioni, come in src/content.config.ts: i campi vuoti si tolgono solo dove lo fa il loader. */
+const SETTINGS: { name: string; module: string; schema: string; clean: boolean }[] = [
+	{ name: 'site.json', module: '/src/core/settings.ts', schema: 'siteSettingsSchema', clean: true },
+	{ name: 'navigation.json', module: '/src/core/navigation.ts', schema: 'navigationSchema', clean: true },
+	{ name: 'theme.json', module: '/src/themes/presets.ts', schema: 'themeSchema', clean: false },
+	{ name: 'layout.json', module: '/src/core/layout.ts', schema: 'layoutSchema', clean: false },
+];
 
 function linkProblem(href: string, target: LinkTarget): { message: string; hint: string } | undefined {
 	if (target.kind === 'missing-page') {
@@ -68,7 +97,7 @@ function linkProblem(href: string, target: LinkTarget): { message: string; hint:
 	return undefined;
 }
 
-export function recipes({ root, strict, isLibrary }: CheckContext): Finding[] {
+export async function recipes({ root, strict, isLibrary }: CheckContext): Promise<Finding[]> {
 	const { findings, error: asError, warning } = collector('recipes');
 	const rule = strict ? asError : warning;
 	// Nella libreria i segnaposto del template sono voluti: restano avvisi anche con --strict.
@@ -80,20 +109,42 @@ export function recipes({ root, strict, isLibrary }: CheckContext): Finding[] {
 	const resolve = linkResolver(root, all);
 	if (all.length === 0) rule({ file: 'src/content/pages', message: 'nessuna ricetta', hint: 'serve almeno index.json' });
 
+	await checkSchemas();
 	for (const recipe of all) checkRecipe(recipe);
 	checkSettings();
 	return findings;
 
-	function checkRecipe({ file, data, sections, route }: Recipe) {
-		/** "sezione 2 (services, #servizi) › items[0].text" oppure "title". */
-		const where = (path: Path) => {
-			if (path[0] === 'sections' && typeof path[1] === 'number' && sections[path[1]]) {
-				const rest = path.slice(2);
-				const label = sectionLabel(sections[path[1]], path[1]);
-				return rest.length > 0 ? `${label} › ${fieldPath(rest)}` : label;
+	/** Schema e immagini di ricette e impostazioni: gli stessi controlli della build, prima della build. */
+	async function checkSchemas() {
+		const settingsDir = join(root, 'src/content/settings');
+		const report = (file: string, data: Json, schema: ContentSchema) => {
+			for (const { where, message } of contentProblems(schema, data, join(root, file), root)) {
+				asError({ file, where: where || undefined, message, hint: CONTENT_HINT, breaksBuild: true });
 			}
-			return fieldPath(path);
 		};
+		try {
+			await withProjectModules(async (load) => {
+				const { withoutEmpty } = await load('/src/core/clean-data.ts');
+				const { pageSchema } = await load('/src/core/page-schema.ts');
+				for (const { file, data } of all) report(file, withoutEmpty(data), pageSchema);
+				for (const { name, module, schema, clean } of SETTINGS) {
+					const path = join(settingsDir, name);
+					if (!existsSync(path)) continue;
+					const file = `src/content/settings/${name}`;
+					// Un JSON non valido lo segnala già checkSettings.
+					const data = readJsonFile(path, () => {});
+					if (data !== undefined) report(file, clean ? withoutEmpty(data) : data, (await load(module))[schema]);
+				}
+			});
+		} catch (cause) {
+			// Uno schema che non si carica è un problema del codice, non dei contenuti: lo dice la build.
+			asError({ message: `schemi dei contenuti non caricati: ${(cause as Error).message.split('\n')[0]}`, hint: 'la build mostra l’errore completo' });
+		}
+	}
+
+	function checkRecipe({ file, data, sections, route }: Recipe) {
+		/** "sezione 3 (services) → items[2].text" oppure "title". */
+		const where = (path: (string | number)[]) => fieldLocation(data, path);
 
 		eachString(data, [], (path, text) => {
 			const key = lastKey(path);
@@ -103,15 +154,14 @@ export function recipes({ root, strict, isLibrary }: CheckContext): Finding[] {
 					file,
 					where: where(path),
 					message: `segnaposto ${label}: ${excerpt(text)}`,
-					hint: label === 'og-DA-COMPILARE' ? 'metti l’immagine vera per i social (ogImage)' : 'sostituisci con il testo vero',
+					hint: label === 'og-DA-COMPILARE' ? OG_HINT : 'sostituisci con il testo vero',
 				});
 			}
-			const found = businessDataIn(key, text);
-			if (found) {
+			for (const { label, match } of businessDataIn(key, text)) {
 				rule({
 					file,
 					where: where(path),
-					message: `${found}${key === 'href' ? '' : ' nel testo'}: ${excerpt(text)}`,
+					message: `${label}${key === 'href' ? '' : ' nel testo'}: ${excerpt(match)}`,
 					hint: 'i recapiti stanno solo in site.json: nei link usa @telefono, @whatsapp, @email o @mappa',
 				});
 			}
@@ -198,7 +248,12 @@ export function recipes({ root, strict, isLibrary }: CheckContext): Finding[] {
 				const key = lastKey(jsonPath);
 				if (key === '$schema') return;
 				for (const label of placeholdersIn(text)) {
-					placeholder(label, { file, where: fieldPath(jsonPath), message: `segnaposto ${label}: ${excerpt(text)}`, hint: 'sostituisci con il dato vero (anche dal CMS)' });
+					placeholder(label, {
+						file,
+						where: fieldPath(jsonPath),
+						message: `segnaposto ${label}: ${excerpt(text)}`,
+						hint: label === 'og-DA-COMPILARE' ? OG_HINT : 'sostituisci con il dato vero (anche dal CMS)',
+					});
 				}
 				if (name === 'navigation.json' && key === 'href') {
 					const problem = linkProblem(text, resolve(text, undefined));

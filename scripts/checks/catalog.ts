@@ -14,6 +14,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { CATALOG_DIR, generateCatalog, stalePages } from '../gen-catalog.ts';
+import { CONTENT_HINT, contentProblems } from '../../src/core/content-validation.ts';
 import { eachString, fieldPath, type Json, lastKey, readJsonFile, trimSlash } from './lib/content.ts';
 import { rel } from './lib/project.ts';
 import type { collector } from './lib/report.ts';
@@ -31,8 +32,9 @@ export async function checkCatalog(root: string, { error, warning }: Report) {
 		const [file, message] = problem.includes(': ') ? problem.split(/: (.*)/s) : [undefined, problem];
 		error({ file: file?.split(' › ')[0], where: file?.split(' › ')[1], message: message ?? problem, hint: 'sistema la scheda, poi npm run gen:catalog' });
 	}
-	// Senza file generati (es. manca la scheda di un preset) il confronto non avrebbe senso.
-	if (Object.keys(files).length === 0) {
+	// Con problemi (es. un blocco che non si carica, la scheda di un preset che manca) i file generati
+	// sono incompleti e gen:catalog non li scriverebbe: il confronto non avrebbe senso.
+	if (problems.length > 0 || Object.keys(files).length === 0) {
 		await checkRecipes(root, error);
 		return;
 	}
@@ -85,18 +87,12 @@ async function checkRecipes(root: string, error: ReturnType<typeof collector>['e
 		});
 
 	await withProjectModules(async (load) => {
-		const { z } = await import('astro/zod');
 		const { pageSchema } = await load('/src/core/page-schema.ts');
-		// Le immagini sono percorsi relativi a src/content/pages, dove la ricetta va copiata.
-		const context = {
-			image: () => z.string().refine((path) => existsSync(join(pagesDir, path)), 'immagine inesistente (percorso relativo a src/content/pages)'),
-		};
-		const schema = pageSchema(context);
+		// Stessi controlli e messaggi delle ricette vere; le immagini sono relative a src/content/pages,
+		// dove la ricetta va copiata.
 		for (const { file, data } of recipes) {
-			const result = schema.safeParse(data);
-			if (result.success) continue;
-			for (const issue of result.error.issues) {
-				error({ file, where: fieldPath(issue.path as (string | number)[]) || undefined, message: issue.message, hint: 'le ricette tipo seguono lo schema delle pagine: src/content/pages/README.md' });
+			for (const { where, message } of contentProblems(pageSchema, data, join(pagesDir, basename(file)), root)) {
+				error({ file, where: where || undefined, message, hint: `le ricette tipo seguono lo schema delle pagine: ${CONTENT_HINT}` });
 			}
 		}
 	});

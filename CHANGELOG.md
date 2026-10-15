@@ -18,5 +18,13 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 - `npm run site:init` inizializza un sito copiato dal template; `npm run blocks:sync -- vX.Y.Z` lo aggiorna a una versione della libreria.
 - `--strict` nella libreria: errori per le regole strutturali delle ricette, avvisi per i segnaposto. Nei siti cliente tutto errore.
 - `gen:decap` senza repository GitHub usa un segnaposto con un avviso; in un sito cliente con `--strict` è un errore. Il repository del sito sta in `src/site.config.ts` (`cms.repo`).
-- Immagine per i social segnaposto (`og-DA-COMPILARE.jpg`) nelle pagine del template.
+- Immagine per i social: `defaultOgImage` in `site.json` vale per le pagine senza `ogImage`; il template la imposta a `og-DA-COMPILARE.jpg` e toglie `ogImage` dalle pagine. Con `--strict`, `release` fallisce finché il nome contiene `DA-COMPILARE`.
+- Messaggi di validazione di ricette e impostazioni in italiano, con percorsi come «pagina index.json → sezione 3 (services) → items[2].title» (indici da 1), sia nella build sia in `check:recipes`: i loader di `src/content.config.ts` validano con `checkedLoader` (`src/core/content-validation.ts`).
+- `check:recipes` valida schema e immagini prima della build e gira per primo in `npm run check`; con dati non validi `astro-check` e `build` sono saltati.
 - Job CI `template-as-site` (`npm run check:template`): il template, inizializzato come sito, deve fallire solo per i segnaposto.
+- `check:tokens` vieta le classi della palette di Tailwind (`bg-blue-600`, `text-gray-500`, `fill-*`, `stroke-*`, `ring-*`, `from-`/`via-`/`to-*`...) anche se non generano CSS, e guarda anche `src/layouts` e i file `.ts`.
+
+### Correzioni
+
+- `check:blocks` raccoglie tutti i problemi: un file mancante in un blocco non interrompe più il controllo degli altri.
+- `check:recipes` segnala tutti i recapiti scritti in uno stesso testo, non solo il primo.

@@ -108,6 +108,12 @@ export const siteSettingsSchema = ({ image }: SchemaContext) =>
 			url: https().describe('Indirizzo del sito|Completo, es. https://www.esempio.it'),
 			/** Percorso relativo a questo JSON (es. "../../assets/images/logo.png"); il testo alternativo è businessName. */
 			logo: image().optional().describe('Logo|PNG o WebP con sfondo trasparente, almeno 400 px di larghezza'),
+			/** Open Graph delle pagine senza ogImage propria (BaseLayout). Il template ha og-DA-COMPILARE.jpg: release lo ferma. */
+			defaultOgImage: image()
+				.optional()
+				.describe(
+					'Immagine per i social|Compare quando una pagina del sito viene condivisa, se la pagina non ne ha una sua; JPG orizzontale, almeno 1200×630 px',
+				),
 			phone: z
 				.string()
 				.regex(/^\+?\d[\d\s./-]{4,18}\d$/, 'numero di telefono non valido (es. "055 123 4567")')

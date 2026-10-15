@@ -18,7 +18,8 @@
  *
  * "inline" fa scrivere alle utility direttamente var(--bg) & co.: un preset messo su
  * qualsiasi elemento cambia l'aspetto di tutto ciò che contiene.
- * "--color-*: initial" toglie la palette di Tailwind: bg-blue-600 non genera nulla.
+ * "--color-*: initial" toglie la palette di Tailwind: bg-blue-600 non genera nulla, ma resterebbe
+ * nell'HTML senza effetto. Per questo check:tokens vieta le classi della palette.
  * transparent, current e inherit sono valori integrati e restano disponibili.
  */
 @theme inline {

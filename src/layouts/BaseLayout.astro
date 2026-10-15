@@ -13,7 +13,7 @@ interface Props {
 	description?: string;
 	/** Esclude la pagina dai motori di ricerca. */
 	noindex?: boolean;
-	/** Immagine per le anteprime social (Open Graph): ritagliata a 1200×630. */
+	/** Immagine per le anteprime social (Open Graph): ritagliata a 1200×630. Senza, defaultOgImage di site.json. */
 	ogImage?: ImageMetadata;
 	/** Carica tutte le coppie di font invece della sola scelta (serve al catalogo per cambiarle al volo). */
 	allFonts?: boolean;
@@ -43,7 +43,8 @@ const fontHrefs = allFonts ? Object.values(fontStyles) : [siteFontsHref];
 const absolute = (path: string) => new URL(path, Astro.site).href;
 const canonical = absolute(Astro.url.pathname);
 
-const og = ogImage && (await getImage({ src: ogImage, width: 1200, height: 630, fit: 'cover', format: 'jpg' }));
+const ogSource = ogImage ?? site.defaultOgImage;
+const og = ogSource && (await getImage({ src: ogSource, width: 1200, height: 630, fit: 'cover', format: 'jpg' }));
 const logo = site.logo && (await getImage({ src: site.logo, width: 512, format: 'png' }));
 
 // Scheda dell'attività per i motori di ricerca (schema.org/LocalBusiness), tutta da site.json.

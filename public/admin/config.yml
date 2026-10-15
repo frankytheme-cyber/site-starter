@@ -67,7 +67,7 @@ collections:
         widget: boolean
       - name: ogImage
         label: Immagine per i social
-        hint: Compare quando la pagina viene condivisa; viene ritagliata a 1200×630
+        hint: Compare quando la pagina viene condivisa; se manca si usa quella dei Dati attività. Viene ritagliata a 1200×630
         required: false
         widget: image
         choose_url: false
@@ -1140,6 +1140,12 @@ collections:
           - name: logo
             label: Logo
             hint: PNG o WebP con sfondo trasparente, almeno 400 px di larghezza
+            required: false
+            widget: image
+            choose_url: false
+          - name: defaultOgImage
+            label: Immagine per i social
+            hint: Compare quando una pagina del sito viene condivisa, se la pagina non ne ha una sua; JPG orizzontale, almeno 1200×630 px
             required: false
             widget: image
             choose_url: false

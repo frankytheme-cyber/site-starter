@@ -19,6 +19,7 @@ import { decap } from './decap.ts';
 import { interactive } from './interactive.ts';
 import { lighthouse } from './lighthouse.ts';
 import { links } from './links.ts';
+import { useItalianErrors } from '../../src/core/content-validation.ts';
 import { isLibraryMode } from '../../src/core/mode.ts';
 import { lock } from './lock.ts';
 import { freePort, startPreview, stopPreview } from './lib/preview.ts';
@@ -49,10 +50,20 @@ interface CheckDefinition {
 
 const MAX_WARNINGS_SHOWN = 10;
 
-const buildFailed = (results: CheckResult[]) => results.some((result) => result.name === 'build' && result.status === 'failed');
+/** La build di questa esecuzione non c'è: fallita o saltata. Senza build nella selezione vale la dist/ che c'è. */
+const buildMissing = (results: CheckResult[]) => results.some((result) => result.name === 'build' && (result.status === 'failed' || result.status === 'skipped'));
+
+/** recipes ha trovato dati che non passano lo schema: astro check e build fallirebbero con lo stesso errore. */
+const contentInvalid = (_context: CheckContext, results: CheckResult[]) =>
+	results.some((result) => result.findings.some((finding) => finding.breaksBuild))
+		? 'ricette o impostazioni non valide: correggi prima gli errori di recipes'
+		: undefined;
 
 const CHECKS: Record<string, CheckDefinition> = {
-	'astro-check': { run: astroCheck },
+	// Per primo: schema e immagini di ricette e impostazioni, con file, sezione e campo, prima che
+	// astro check e la build si fermino sullo stesso errore.
+	recipes: { run: recipes },
+	'astro-check': { run: astroCheck, skip: contentInvalid },
 	// Prima della build: il prebuild rigenera config.yml e il confronto non avrebbe più senso.
 	decap: { run: decap },
 	tokens: { run: tokens },
@@ -66,8 +77,7 @@ const CHECKS: Record<string, CheckDefinition> = {
 		run: lock,
 		skip: ({ isLibrary: library }) => (library ? 'solo nei siti cliente' : undefined),
 	},
-	recipes: { run: recipes },
-	build: { run: build },
+	build: { run: build, skip: contentInvalid },
 	release: {
 		run: release,
 		needsBuild: true,
@@ -85,7 +95,7 @@ const CHECKS: Record<string, CheckDefinition> = {
 };
 
 const SUITES: Record<string, string[]> = {
-	check: ['astro-check', 'decap', 'tokens', 'contrast', 'blocks', 'lock', 'recipes', 'build', 'release'],
+	check: ['recipes', 'astro-check', 'decap', 'tokens', 'contrast', 'blocks', 'lock', 'build', 'release'],
 };
 SUITES.qa = [...SUITES.check, 'links', 'a11y', 'interactive', 'buttons', 'lighthouse'];
 
@@ -104,6 +114,9 @@ const suite = suiteArg ?? (named.length > 0 ? 'personalizzata' : 'check');
 const selected = named.length > 0 ? named : SUITES[suite];
 
 // ---------------------------------------------------------------------------- esecuzione
+
+// Anche i messaggi di Zod dei check (fixture dei blocchi, ricette tipo) in italiano.
+useItalianErrors();
 
 const needsServer = selected.some((name) => CHECKS[name].needsServer);
 const port = needsServer ? await freePort() : undefined;
@@ -126,7 +139,7 @@ try {
 		const definition = CHECKS[name];
 		const started = Date.now();
 		let reason = definition.skip?.(context, results);
-		if (!reason && definition.needsBuild && (buildFailed(results) || !existsSync(DIST))) reason = 'build non riuscita o mancante';
+		if (!reason && definition.needsBuild && (buildMissing(results) || !existsSync(DIST))) reason = 'build non riuscita o mancante';
 		if (reason) {
 			results.push({ name, status: 'skipped', reason, durationMs: 0, findings: [] });
 			console.log(summaryLine(results.at(-1)!));

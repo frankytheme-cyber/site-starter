@@ -23,6 +23,11 @@ export interface Finding {
 	 * template-as-site della CI accetta solo errori di segnaposto attesi.
 	 */
 	placeholder?: string;
+	/**
+	 * Dati che non passano lo schema (recipes): la build fallirebbe con lo stesso errore, quindi
+	 * run.ts salta astro-check e build.
+	 */
+	breaksBuild?: boolean;
 }
 
 export interface CheckContext {
@@ -74,7 +79,8 @@ export function statusOf(findings: Finding[]): CheckResult['status'] {
 
 const ICONS: Record<CheckResult['status'], string> = { passed: '✓', warnings: '!', failed: '✗', skipped: '–' };
 
-const location = (finding: Finding) => [finding.file, finding.where].filter(Boolean).join(' › ');
+/** "src/content/pages/index.json → sezione 3 (services) → items[2].title". */
+const location = (finding: Finding) => [finding.file, finding.where].filter(Boolean).join(' → ');
 
 export function formatFinding(finding: Finding): string {
 	const head = `  ${finding.level === 'error' ? '✗' : '!'} ${location(finding) ? `${location(finding)}: ` : ''}${finding.message}`;

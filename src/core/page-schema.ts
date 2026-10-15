@@ -55,11 +55,11 @@ export const pageSchema = (context: SchemaContext) =>
 			.describe('Descrizione|Il testo sotto il titolo nei risultati di Google, al massimo 160 caratteri'),
 		/** Le bozze non vengono pubblicate in produzione (e non sono indicizzate altrove). */
 		draft: z.boolean().default(false).describe('Bozza|Una bozza non compare sul sito pubblicato'),
-		/** Immagine per le anteprime social: percorso relativo al JSON, ritagliata a 1200×630. */
+		/** Immagine per le anteprime social: percorso relativo al JSON, ritagliata a 1200×630. Senza, vale defaultOgImage di site.json. */
 		ogImage: context
 			.image()
 			.optional()
-			.describe('Immagine per i social|Compare quando la pagina viene condivisa; viene ritagliata a 1200×630'),
+			.describe('Immagine per i social|Compare quando la pagina viene condivisa; se manca si usa quella dei Dati attività. Viene ritagliata a 1200×630'),
 		noindex: z
 			.boolean()
 			.optional()

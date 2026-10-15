@@ -36,7 +36,7 @@ Nei siti cliente non va mai impostata: né in `.env`, né su GitHub, né su Verc
    - prende il repository GitHub del CMS da `--repo=org/nome`, da `DECAP_REPO` o dal remote `origin` (se manca lo chiede), lo scrive in `src/site.config.ts` (`cms.repo`) e rigenera `public/admin/config.yml`;
    - scrive `blocks.lock.json` con la versione della libreria e gli hash dei file gestiti;
    - crea `docs/sito.md`, per le note di questo sito, e stampa i passi successivi.
-4. Commit, poi i passi della checklist: dati in `site.json`, menu, tema, pagine dalle ricette tipo, `ogImage` vero al posto di `og-DA-COMPILARE`, worker OAuth (`docs/decap.md`), progetto Vercel senza `SITE_STARTER_LIBRARY`, protezione di `main` (`docs/controlli.md`).
+4. Commit, poi i passi della checklist: dati in `site.json`, menu, tema, pagine dalle ricette tipo, immagine per i social vera (`defaultOgImage` in `site.json`) al posto di `og-DA-COMPILARE.jpg`, worker OAuth (`docs/decap.md`), progetto Vercel senza `SITE_STARTER_LIBRARY`, protezione di `main` (`docs/controlli.md`).
 5. Prima di pubblicare: `npm run qa -- --strict` senza errori.
 
 `site:init` non fa commit; si rifiuta di partire se il sito è già inizializzato, se il remote `origin` è la libreria o se `SITE_STARTER_LIBRARY=1`. Senza domande (es. in CI): `npm run site:init -- --yes --repo=org/nome`.

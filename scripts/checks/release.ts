@@ -1,6 +1,8 @@
 /**
  * release (con --strict, nei siti cliente): il sito è pronto per andare online.
  * - nessun DA-COMPILARE nelle impostazioni (site.json, navigation.json, layout.json) né in site.config.ts;
+ * - immagine per i social vera: defaultOgImage di site.json e ogImage delle pagine pubblicate senza
+ *   DA-COMPILARE nel nome (il template ha og-DA-COMPILARE.jpg);
  * - nessuna pagina in bozza linkata da pagine pubblicate o dal menu;
  * - nella build: sitemap, robots.txt, favicon, Open Graph completo su ogni pagina;
  * - nel footer di ogni pagina: P.IVA e, per le società, REA e capitale sociale (da site.json);
@@ -32,6 +34,7 @@ const LEGAL_LINKS = [
 	{ name: 'cookie', label: 'all’informativa cookie', text: /cookie/i, routes: ['/cookie/', '/cookie-policy/', '/informativa-cookie/'] },
 ];
 const OPEN_GRAPH = ['og:title', 'og:description', 'og:url', 'og:image'];
+const OG_HINT = 'carica l’immagine vera (JPG orizzontale, almeno 1200×630) in «Dati attività» → Immagine per i social (defaultOgImage), o nella pagina (ogImage)';
 const SOURCE_KEY = /^(?:fonte|source|credit|credits|crediti)$/i;
 
 const htmlOf = (path: string) => readFileSync(join(DIST, path, 'index.html'), 'utf8');
@@ -68,7 +71,10 @@ export async function release({ root }: CheckContext) {
 		const data = readJsonFile(join(settingsDir, name), (message) => error({ file, message }));
 		if (data === undefined) continue;
 		eachString(data, [], (path, text) => {
-			if (placeholdersIn(text).includes('DA-COMPILARE')) {
+			const found = placeholdersIn(text);
+			if (found.includes('og-DA-COMPILARE')) {
+				error({ file, where: fieldPath(path), message: `immagine per i social segnaposto: ${excerpt(text)}`, hint: OG_HINT, placeholder: 'og-DA-COMPILARE' });
+			} else if (found.includes('DA-COMPILARE')) {
 				error({ file, where: fieldPath(path), message: `segnaposto: ${excerpt(text)}`, hint: 'compila il dato vero (anche dal CMS, «Dati attività» o «Menu»)', placeholder: 'DA-COMPILARE' });
 			}
 		});
@@ -91,6 +97,12 @@ export async function release({ root }: CheckContext) {
 		eachString(recipe.data, [], (path, text) => {
 			if (lastKey(path) === 'href') checkDraftLink(recipe.file, fieldPath(path), text, recipe.route);
 		});
+		// L'immagine per i social della pagina; quella di ripiego (defaultOgImage) la controllano le impostazioni.
+		const ogImage = recipe.data.ogImage;
+		if (typeof ogImage === 'string' && /DA-COMPILARE/i.test(ogImage)) {
+			const placeholder = placeholdersIn(ogImage).includes('og-DA-COMPILARE') ? 'og-DA-COMPILARE' : 'DA-COMPILARE';
+			error({ file: recipe.file, where: 'ogImage', message: `immagine per i social segnaposto: ${excerpt(ogImage)}`, hint: OG_HINT, placeholder });
+		}
 	}
 	const navigationFile = join(settingsDir, 'navigation.json');
 	if (existsSync(navigationFile)) {
@@ -146,7 +158,7 @@ export async function release({ root }: CheckContext) {
 				file: 'dist',
 				where: path,
 				message: `Open Graph incompleto: manca ${missing.join(', ')}`,
-				hint: missing.includes('og:image') ? 'imposta ogImage nella ricetta della pagina' : 'controlla title e description della ricetta',
+				hint: missing.includes('og:image') ? 'imposta defaultOgImage in site.json («Dati attività») o ogImage nella ricetta della pagina' : 'controlla title e description della ricetta',
 			});
 		}
 	}

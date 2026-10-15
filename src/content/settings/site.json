@@ -3,6 +3,7 @@
 	"description": "DA-COMPILARE: cosa fa l’attività e dove, in una frase di al massimo 160 caratteri.",
 	"url": "https://da-compilare.example.com",
 	"logo": "../../assets/images/fixtures/logo-segnaposto.png",
+	"defaultOgImage": "../../assets/images/og-DA-COMPILARE.jpg",
 	"phone": "DA-COMPILARE",
 	"whatsapp": "DA-COMPILARE",
 	"email": "DA-COMPILARE@example.com",

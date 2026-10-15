@@ -64,16 +64,24 @@ export async function build({ root, baseUrl, isLibrary }: CheckContext) {
 		.filter(Boolean);
 	const end = block.findIndex((line) => /^Stack trace|^at /.test(line));
 	const detail = end >= 0 ? block.slice(0, end) : block.slice(0, 12);
-	const location = detail.indexOf('Location:');
-	const path = location >= 0 ? detail[location + 1]?.replace(/:\d+:\d+$/, '') : undefined;
-	const file = path && !path.includes('node_modules') && resolve(path).startsWith(root) ? rel(resolve(path)) : undefined;
+	// Il suggerimento di Astro (righe dopo "Hint:") diventa l'hint del finding.
+	const hintAt = detail.indexOf('Hint:');
+	const hintLines = hintAt >= 0 ? detail.slice(hintAt + 1).filter((line) => !/^(Location:|Error reference:|https:\/\/)/.test(line)) : [];
+	const errorLines = (hintAt >= 0 ? detail.slice(0, hintAt) : detail).map((line, index) => (index === 0 ? line.replace(/^\[\w+\]\s*/, '') : line));
+	const location = errorLines.indexOf('Location:');
+	const path = location >= 0 ? errorLines[location + 1]?.replace(/:\d+:\d+$/, '') : undefined;
+	let file = path && !path.includes('node_modules') && resolve(path).startsWith(root) ? rel(resolve(path)) : undefined;
+	const body = errorLines.filter((_line, index) => location < 0 || (index !== location && index !== location + 1)).filter((line) => !/^(Error reference:|https:\/\/)/.test(line));
+	// Contenuti non validi (src/core/content-validation.ts): "Dati non validi in <file>:", poi un problema per riga.
+	const content = /^Dati non validi in (\S+):$/.exec(body[0] ?? '');
+	if (content) {
+		file = content[1];
+		body.shift();
+	}
 	error({
 		file,
-		message: detail
-			.filter((_line, index) => location < 0 || (index !== location && index !== location + 1))
-			.filter((line) => !/^(Hint:|Error reference:|https:\/\/)/.test(line))
-			.join(' · '),
-		hint: 'correggi l’errore e rilancia npm run build',
+		message: body.join(' · '),
+		hint: hintLines.length > 0 ? hintLines.join(' ') : 'correggi l’errore e rilancia npm run build',
 	});
 	return findings;
 }

@@ -2,6 +2,9 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, extname, join } from 'node:path';
 
+/** Percorso di un campo con gli indici da 1 ("items[2].title"), come nei messaggi della build. */
+export { fieldPath } from '../../../src/core/content-validation.ts';
+
 export type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
 export type JsonObject = { [key: string]: Json };
 export type Path = (string | number)[];
@@ -39,9 +42,6 @@ export function eachObject(value: Json, path: Path, visit: (path: Path, object: 
 }
 
 export const lastKey = (path: Path) => [...path].reverse().find((part): part is string => typeof part === 'string') ?? '';
-
-export const fieldPath = (path: Path) =>
-	path.map((part, index) => (typeof part === 'number' ? `[${part}]` : index === 0 ? part : `.${part}`)).join('');
 
 export const isObject = (value: Json | undefined): value is JsonObject =>
 	typeof value === 'object' && value !== null && !Array.isArray(value);
