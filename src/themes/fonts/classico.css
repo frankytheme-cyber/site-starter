@@ -3,7 +3,51 @@
 @import "@fontsource-variable/source-sans-3";
 @import "@fontsource-variable/source-sans-3/wght-italic.css";
 
+/*
+ * Ripieghi con le misure dei font veri, finché non sono scaricati (font-display: swap): lo scambio
+ * non sposta il testo (CLS). Generati da scripts/font-fallbacks.ts, non scritti a mano.
+ */
+/* Fraunces Variable: ripiego Times New Roman con le sue misure (node scripts/font-fallbacks.ts fraunces:serif). */
+@font-face {
+	font-family: "Fraunces Variable ripiego";
+	font-weight: 100 549;
+	src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("Tinos");
+	size-adjust: 115.5%;
+	ascent-override: 84.7%;
+	descent-override: 22.1%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Fraunces Variable ripiego";
+	font-weight: 550 900;
+	src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"), local("Tinos Bold");
+	size-adjust: 115.9%;
+	ascent-override: 84.4%;
+	descent-override: 22.0%;
+	line-gap-override: 0%;
+}
+
+/* Source Sans 3 Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts source-sans-3:sans). */
+@font-face {
+	font-family: "Source Sans 3 Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 93.7%;
+	ascent-override: 109.3%;
+	descent-override: 42.7%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Source Sans 3 Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 92.2%;
+	ascent-override: 111.1%;
+	descent-override: 43.4%;
+	line-gap-override: 0%;
+}
+
 [data-fonts="classico"] {
-	--heading-font: "Fraunces Variable", Georgia, serif;
-	--body-font: "Source Sans 3 Variable", ui-sans-serif, system-ui, sans-serif;
+	--heading-font: "Fraunces Variable", "Fraunces Variable ripiego", Georgia, serif;
+	--body-font: "Source Sans 3 Variable", "Source Sans 3 Variable ripiego", ui-sans-serif, system-ui, sans-serif;
 }
