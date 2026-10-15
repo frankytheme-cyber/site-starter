@@ -4,6 +4,7 @@
 @import "./shapes/squadrato.css";
 @import "./shapes/morbido.css";
 @import "./shapes/arrotondato.css";
+@import "../core/ui/button/button.css";
 
 /* La documentazione cita classi vietate come esempi: non deve generare CSS. */
 @source not "../../AGENTS.md";
@@ -32,8 +33,10 @@
 	--color-surface-fg: var(--surface-fg);
 	--color-primary: var(--primary);
 	--color-primary-fg: var(--primary-fg);
+	--color-primary-hover: var(--primary-hover);
 	--color-accent: var(--accent);
 	--color-accent-fg: var(--accent-fg);
+	--color-accent-hover: var(--accent-hover);
 	--color-border: var(--border);
 	--color-ring: var(--ring);
 
@@ -68,6 +71,8 @@
 	--fg-muted: var(--tone-primary-fg);
 	--primary: var(--tone-primary-fg);
 	--primary-fg: var(--tone-primary);
+	/* Passaggio sul pieno chiaro: surface, con testo primary (coppia primary / surface verificata). */
+	--primary-hover: var(--surface);
 	--border: color-mix(in oklab, var(--tone-primary-fg) 35%, var(--tone-primary));
 	--ring: var(--tone-primary-fg);
 }
@@ -78,8 +83,11 @@
  * si somma a quella di una Section primary.
  */
 [data-palette] {
+	--palette-bg: var(--bg);
+	--palette-fg: var(--fg);
 	--palette-primary: var(--primary);
 	--palette-primary-fg: var(--primary-fg);
+	--palette-primary-hover: var(--primary-hover);
 }
 
 [data-on-tone="primary"] {
@@ -87,6 +95,7 @@
 	--fg: var(--palette-primary-fg);
 	--primary: var(--palette-primary-fg);
 	--primary-fg: var(--palette-primary);
+	--primary-hover: var(--surface);
 	--ring: var(--palette-primary-fg);
 }
 

@@ -12,6 +12,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { a11y } from './a11y.ts';
 import { blocks } from './blocks.ts';
+import { buttons } from './buttons.ts';
 import { catalog } from './catalog.ts';
 import { astroCheck, build } from './commands.ts';
 import { contrast } from './contrast.ts';
@@ -82,13 +83,14 @@ const CHECKS: Record<string, CheckDefinition> = {
 	links: { run: links, needsBuild: true, needsServer: true },
 	a11y: { run: a11y, needsBuild: true, needsServer: true },
 	interactive: { run: interactive, needsBuild: true, needsServer: true },
+	buttons: { run: buttons, needsBuild: true, needsServer: true },
 	lighthouse: { run: lighthouse, needsBuild: true, needsServer: true },
 };
 
 const SUITES: Record<string, string[]> = {
 	check: ['astro-check', 'decap', 'tokens', 'contrast', 'blocks', 'catalog', 'lock', 'recipes', 'build', 'release'],
 };
-SUITES.qa = [...SUITES.check, 'links', 'a11y', 'interactive', 'lighthouse'];
+SUITES.qa = [...SUITES.check, 'links', 'a11y', 'interactive', 'buttons', 'lighthouse'];
 
 // ---------------------------------------------------------------------------- argomenti
 

@@ -1,4 +1,4 @@
-import { SPECIAL_HREFS, type SpecialHref } from './schemas/cta';
+import { SPECIAL_HREFS, type SpecialHref } from './ui/button/cta';
 import { getSiteSettings, phoneHref, type SiteSettings, whatsappHref } from './settings';
 
 /*

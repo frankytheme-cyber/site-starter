@@ -1,11 +1,8 @@
 ---
 import facciata from '@/assets/images/fixtures/imbianchino-facciata.jpg';
 import interno from '@/assets/images/fixtures/imbianchino-interno.jpg';
-import { TONES } from '@/core/block-types';
-import { BUTTON_STYLES, SPECIAL_HREFS } from '@/core/schemas/cta';
 import Accordion from '@/core/ui/Accordion.astro';
 import AccordionItem from '@/core/ui/AccordionItem.astro';
-import Button from '@/core/ui/Button.astro';
 import Carousel from '@/core/ui/Carousel.astro';
 import CarouselSlide from '@/core/ui/CarouselSlide.astro';
 import Container from '@/core/ui/Container.astro';
@@ -14,7 +11,6 @@ import Section from '@/core/ui/Section.astro';
 import Tabs from '@/core/ui/Tabs.astro';
 import CatalogLayout from './_CatalogLayout.astro';
 
-const sizes = ['sm', 'md', 'lg'] as const;
 const slides = Array.from({ length: 6 }, (_, index) => ({
 	title: `Cantiere ${index + 1}`,
 	image: index % 2 === 0 ? interno : facciata,
@@ -30,64 +26,10 @@ const slides = Array.from({ length: 6 }, (_, index) => ({
 				<p class="mt-3 max-w-3xl text-fg-muted">
 					I componenti di <code>src/core/ui</code> con cui sono fatti i blocchi, in tutti gli stati. Il focus si vede
 					spostandosi con Tab; le regole dei componenti interattivi sono in <code>docs/blocchi-interattivi.md</code>.
+					I pulsanti hanno una pagina loro: <a href="/catalogo/bottoni/" class="text-primary underline underline-offset-4">Bottoni</a>.
 				</p>
 			</div>
 		</Container>
-
-		{
-			TONES.map((tone) => (
-				<Section tone={tone}>
-					<h2 class="text-2xl font-bold">
-						Button <span class="text-base font-normal text-fg-muted">· tone {tone}</span>
-					</h2>
-					<div class="mt-6 grid gap-6">
-						{BUTTON_STYLES.map((style) => (
-							<div class="flex flex-wrap items-center gap-4">
-								<code class="w-24 text-sm">{style}</code>
-								{sizes.map((size) => (
-									<Button href="#" variant={style} size={size} tone={tone}>
-										{`${style} ${size}`}
-									</Button>
-								))}
-								<Button href="#" variant={style} icon="telefono" tone={tone}>
-									Icona prima
-								</Button>
-								<Button href="#" variant={style} icon="freccia-destra" iconPosition="end" tone={tone}>
-									Icona dopo
-								</Button>
-								{style !== 'link' && (
-									<Button variant={style} disabled tone={tone}>
-										Disabilitato
-									</Button>
-								)}
-							</div>
-						))}
-					</div>
-				</Section>
-			))
-		}
-
-		<Section tone="default">
-			<h2 class="text-2xl font-bold">Link speciali ed esterni</h2>
-			<p class="mt-2 max-w-3xl text-fg-muted">
-				<code>{SPECIAL_HREFS.join(', ')}</code> diventano tel:, wa.me, mailto: e Google Maps con i dati di site.json. I link
-				esterni si aprono in una nuova scheda con rel="noopener".
-			</p>
-			<div class="mt-6 flex flex-wrap items-center gap-4">
-				<Button href="@telefono" icon="telefono">Chiama</Button>
-				<Button href="@whatsapp" icon="whatsapp" variant="secondary">WhatsApp</Button>
-				<Button href="@email" icon="email" variant="ghost">Email</Button>
-				<Button href="@mappa" icon="mappa-pin" variant="link">Come arrivare</Button>
-				<Button href="https://example.com/" variant="link" icon="freccia-destra" iconPosition="end">Sito esterno</Button>
-			</div>
-
-			<h3 class="mt-12 text-xl font-bold">Prop tone fuori da una Section primary</h3>
-			<div class="mt-4 flex flex-wrap gap-4 rounded-box bg-primary p-6 text-primary-fg">
-				<Button href="#" tone="primary">Primary</Button>
-				<Button href="#" variant="secondary" tone="primary">Secondary</Button>
-				<Button href="#" variant="ghost" tone="primary">Ghost</Button>
-			</div>
-		</Section>
 
 		<Section tone="muted">
 			<h2 class="text-2xl font-bold">Accordion</h2>

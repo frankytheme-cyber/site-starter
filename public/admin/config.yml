@@ -296,198 +296,6 @@ collections:
                   - default
                   - muted
                   - primary
-          - name: cta
-            label: Invito all’azione
-            widget: object
-            hint: "Fascia che chiede a chi visita di fare il passo successivo: chiedere un preventivo, chiamare, scrivere."
-            summary: "{{fields.title}}"
-            fields:
-              - name: variant
-                label: Variante
-                hint: "banner: testo centrato e pulsanti · split-contatto: testo a sinistra, pulsanti a destra"
-                widget: select
-                options:
-                  - banner
-                  - split-contatto
-              - name: title
-                label: Titolo
-                hint: Al massimo 70 caratteri
-                widget: string
-                pattern:
-                  - ^[\s\S]{1,70}$
-                  - al massimo 70 caratteri
-              - name: text
-                label: Testo
-                hint: Una o due frasi, al massimo 200 caratteri
-                required: false
-                widget: text
-                pattern:
-                  - ^[\s\S]{1,200}$
-                  - al massimo 200 caratteri
-              - name: primary
-                label: Pulsante principale
-                hint: L’azione che chiedi di fare
-                widget: object
-                collapsed: false
-                fields:
-                  - name: label
-                    label: Testo del pulsante
-                    hint: Al massimo 25 caratteri
-                    widget: string
-                    pattern:
-                      - ^[\s\S]{1,25}$
-                      - al massimo 25 caratteri
-                  - name: href
-                    label: Link
-                    hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
-                    widget: string
-                    pattern:
-                      - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
-                      - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
-                  - name: style
-                    label: Stile
-                    hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
-                    required: false
-                    widget: select
-                    options:
-                      - primary
-                      - secondary
-                      - ghost
-                      - link
-                  - name: icon
-                    label: Icona
-                    hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
-                    required: false
-                    widget: select
-                    options:
-                      - pennello
-                      - rullo
-                      - secchio-vernice
-                      - casa
-                      - edificio
-                      - scala
-                      - muro
-                      - goccia
-                      - scudo
-                      - check
-                      - stella
-                      - orologio
-                      - calendario
-                      - telefono
-                      - email
-                      - mappa-pin
-                      - freccia-destra
-                      - freccia-sinistra
-                      - menu
-                      - chiudi
-                      - chevron-giu
-                      - citazione
-                      - preventivo
-                      - euro
-                      - utenti
-                      - foto
-                      - whatsapp
-                      - facebook
-                      - instagram
-                      - google
-                      - youtube
-                      - tiktok
-                      - tripadvisor
-              - name: secondary
-                label: Pulsante secondario
-                hint: "Un’alternativa: compila testo e link, oppure nessuno dei due"
-                required: false
-                widget: object
-                collapsed: true
-                fields:
-                  - name: label
-                    label: Testo del pulsante
-                    hint: Al massimo 25 caratteri
-                    required: false
-                    widget: string
-                    pattern:
-                      - ^[\s\S]{1,25}$
-                      - al massimo 25 caratteri
-                  - name: href
-                    label: Link
-                    hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
-                    required: false
-                    widget: string
-                    pattern:
-                      - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
-                      - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
-                  - name: style
-                    label: Stile
-                    hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
-                    required: false
-                    widget: select
-                    options:
-                      - primary
-                      - secondary
-                      - ghost
-                      - link
-                  - name: icon
-                    label: Icona
-                    hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
-                    required: false
-                    widget: select
-                    options:
-                      - pennello
-                      - rullo
-                      - secchio-vernice
-                      - casa
-                      - edificio
-                      - scala
-                      - muro
-                      - goccia
-                      - scudo
-                      - check
-                      - stella
-                      - orologio
-                      - calendario
-                      - telefono
-                      - email
-                      - mappa-pin
-                      - freccia-destra
-                      - freccia-sinistra
-                      - menu
-                      - chiudi
-                      - chevron-giu
-                      - citazione
-                      - preventivo
-                      - euro
-                      - utenti
-                      - foto
-                      - whatsapp
-                      - facebook
-                      - instagram
-                      - google
-                      - youtube
-                      - tiktok
-                      - tripadvisor
-              - name: showContacts
-                label: Mostra telefono e WhatsApp
-                hint: Aggiunge i pulsanti con i recapiti presi da «Dati attività»
-                widget: boolean
-                default: false
-              - name: id
-                label: Ancora
-                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
-                required: false
-                widget: string
-                pattern:
-                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
-                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
-              - name: tone
-                label: Sfondo
-                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
-                required: false
-                default: default
-                widget: select
-                options:
-                  - default
-                  - muted
-                  - primary
           - name: accordion
             label: Accordion
             widget: object
@@ -1087,6 +895,198 @@ collections:
                 min: 2
                 max: 6
                 collapsed: false
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
+          - name: cta
+            label: Invito all’azione
+            widget: object
+            hint: "Fascia che chiede a chi visita di fare il passo successivo: chiedere un preventivo, chiamare, scrivere."
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "banner: testo centrato e pulsanti · split-contatto: testo a sinistra, pulsanti a destra"
+                widget: select
+                options:
+                  - banner
+                  - split-contatto
+              - name: title
+                label: Titolo
+                hint: Al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: text
+                label: Testo
+                hint: Una o due frasi, al massimo 200 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,200}$
+                  - al massimo 200 caratteri
+              - name: primary
+                label: Pulsante principale
+                hint: L’azione che chiedi di fare
+                widget: object
+                collapsed: false
+                fields:
+                  - name: label
+                    label: Testo del pulsante
+                    hint: Al massimo 25 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                    widget: string
+                    pattern:
+                      - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                      - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                  - name: style
+                    label: Stile
+                    hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                    required: false
+                    widget: select
+                    options:
+                      - primary
+                      - secondary
+                      - ghost
+                      - link
+                  - name: icon
+                    label: Icona
+                    hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                    required: false
+                    widget: select
+                    options:
+                      - pennello
+                      - rullo
+                      - secchio-vernice
+                      - casa
+                      - edificio
+                      - scala
+                      - muro
+                      - goccia
+                      - scudo
+                      - check
+                      - stella
+                      - orologio
+                      - calendario
+                      - telefono
+                      - email
+                      - mappa-pin
+                      - freccia-destra
+                      - freccia-sinistra
+                      - menu
+                      - chiudi
+                      - chevron-giu
+                      - citazione
+                      - preventivo
+                      - euro
+                      - utenti
+                      - foto
+                      - whatsapp
+                      - facebook
+                      - instagram
+                      - google
+                      - youtube
+                      - tiktok
+                      - tripadvisor
+              - name: secondary
+                label: Pulsante secondario
+                hint: "Un’alternativa: compila testo e link, oppure nessuno dei due"
+                required: false
+                widget: object
+                collapsed: true
+                fields:
+                  - name: label
+                    label: Testo del pulsante
+                    hint: Al massimo 25 caratteri
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                      - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                  - name: style
+                    label: Stile
+                    hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                    required: false
+                    widget: select
+                    options:
+                      - primary
+                      - secondary
+                      - ghost
+                      - link
+                  - name: icon
+                    label: Icona
+                    hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                    required: false
+                    widget: select
+                    options:
+                      - pennello
+                      - rullo
+                      - secchio-vernice
+                      - casa
+                      - edificio
+                      - scala
+                      - muro
+                      - goccia
+                      - scudo
+                      - check
+                      - stella
+                      - orologio
+                      - calendario
+                      - telefono
+                      - email
+                      - mappa-pin
+                      - freccia-destra
+                      - freccia-sinistra
+                      - menu
+                      - chiudi
+                      - chevron-giu
+                      - citazione
+                      - preventivo
+                      - euro
+                      - utenti
+                      - foto
+                      - whatsapp
+                      - facebook
+                      - instagram
+                      - google
+                      - youtube
+                      - tiktok
+                      - tripadvisor
+              - name: showContacts
+                label: Mostra telefono e WhatsApp
+                hint: Aggiunge i pulsanti con i recapiti presi da «Dati attività»
+                widget: boolean
+                default: false
               - name: id
                 label: Ancora
                 hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"

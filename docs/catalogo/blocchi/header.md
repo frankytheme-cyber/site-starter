@@ -6,7 +6,7 @@
 
 | Tipo | Scope | Versione | Interattivo | Categoria | Disegno |
 | --- | --- | --- | --- | --- | --- |
-| `header` | `layout`: in layout.json | 2.0.0 | sì | navigazione | originale |
+| `header` | `layout`: in layout.json | 2.0.0 | sì | intestazione | originale |
 
 Intestazione del sito: logo o nome, menu con sottomenu e, su mobile, un pannello a tutta altezza. Voci e recapiti arrivano da navigation.json e site.json.
 

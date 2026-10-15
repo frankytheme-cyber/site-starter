@@ -15,6 +15,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { stringify } from 'yaml';
+import { compareBlocks } from '../src/core/block-types.ts';
 import { withProjectModules } from './checks/lib/vite.ts';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
@@ -35,11 +36,7 @@ export interface ZodLike {
 	options?: unknown[];
 }
 type DecapField = Record<string, unknown>;
-interface BlockMeta {
-	name: string;
-	description: string;
-	category: string;
-}
+type BlockMeta = Parameters<typeof compareBlocks>[0] & { description: string };
 
 const problems: string[] = [];
 
@@ -213,12 +210,11 @@ function toList(schema: ZodLike, where: string, ctx: { metas: Record<string, Blo
 	const discriminator = element._zod.def.discriminator as string | undefined;
 	if (typeOf(element) === 'union' && discriminator) {
 		const typeValue = (option: ZodLike) => String(option._zod.def.shape[discriminator]._zod.def.values[0]);
-		// Stesso ordine del catalogo: categoria, poi nome (l'hero, "apertura", viene per primo).
-		const sortKey = (option: ZodLike) => {
-			const meta = ctx.metas[typeValue(option)];
-			return meta ? `${meta.category}\u0000${meta.name}` : typeValue(option);
-		};
-		const options = [...(element._zod.def.options as ZodLike[])].sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+		// Stesso ordine del catalogo: quello della pagina (compareBlocks), l'hero per primo.
+		const metaOf = (option: ZodLike) => ctx.metas[typeValue(option)];
+		const options = [...(element._zod.def.options as ZodLike[])].sort((a, b) =>
+			metaOf(a) && metaOf(b) ? compareBlocks(metaOf(a), metaOf(b)) : typeValue(a).localeCompare(typeValue(b)),
+		);
 		const types = options.map((option) => {
 			const value = typeValue(option);
 			const meta = ctx.metas[value];

@@ -9,7 +9,11 @@
  *   fg-muted / surface     5.79:1
  *   primary / surface      4.90:1
  *   primary-fg / primary   5.76:1
+ *   primary-fg / primary-hover  7.32:1   (passaggio sui pulsanti pieni)
+ *   primary-hover / bg     7.12:1   (passaggio sui link)
+ *   primary-hover / surface 6.22:1
  *   accent-fg / accent     6.10:1
+ *   accent-fg / accent-hover  7.86:1
  *   ring / bg              5.60:1   (non testuale, minimo 3:1)
  *   ring / surface         4.90:1   (non testuale, minimo 3:1)
  */
@@ -21,8 +25,10 @@
 	--surface-fg: #2e1f17;
 	--primary: #a5452a;
 	--primary-fg: #fff9f2;
+	--primary-hover: #8c3a23;
 	--accent: #56652b;
 	--accent-fg: #fff9f2;
+	--accent-hover: #47541f;
 	--border: #e2d2bf;
 	--ring: #a5452a;
 }

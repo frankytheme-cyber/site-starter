@@ -2,12 +2,15 @@
  * contrast: contrasto WCAG 2.x delle palette in src/themes/palettes/.
  * Ogni coppia testo/sfondo deve arrivare a 4.5:1 (AA, testo normale); l'anello di focus a 3:1
  * sullo sfondo (AA, componenti non testuali). Le coppie su surface valgono per tone="muted".
+ * Pulsanti (core/ui/button/button.css): primary-fg su primary-hover e accent-fg su accent-hover
+ * (passaggio sui pieni), primary-hover su bg e surface (passaggio sui link). Su tone primary il
+ * pieno chiaro passa a surface con testo primary: è la coppia primary / surface.
  */
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { type CheckContext, collector } from './lib/report.ts';
 
-const TOKENS = ['bg', 'fg', 'fg-muted', 'surface', 'surface-fg', 'primary', 'primary-fg', 'accent', 'accent-fg', 'border', 'ring'];
+const TOKENS = ['bg', 'fg', 'fg-muted', 'surface', 'surface-fg', 'primary', 'primary-fg', 'primary-hover', 'accent', 'accent-fg', 'accent-hover', 'border', 'ring'];
 
 /** [primo piano, sfondo, rapporto minimo] */
 const PAIRS: [string, string, number][] = [
@@ -18,7 +21,11 @@ const PAIRS: [string, string, number][] = [
 	['fg-muted', 'surface', 4.5],
 	['primary', 'surface', 4.5],
 	['primary-fg', 'primary', 4.5],
+	['primary-fg', 'primary-hover', 4.5],
+	['primary-hover', 'bg', 4.5],
+	['primary-hover', 'surface', 4.5],
 	['accent-fg', 'accent', 4.5],
+	['accent-fg', 'accent-hover', 4.5],
 	['ring', 'bg', 3],
 	['ring', 'surface', 3],
 ];

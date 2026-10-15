@@ -1,5 +1,5 @@
 ---
-import CtaButton from '@/core/ui/CtaButton.astro';
+import CtaButton from '@/core/ui/button/CtaButton.astro';
 import Img from '@/core/ui/Img.astro';
 import Section from '@/core/ui/Section.astro';
 import type { HeroProps } from './schema';
@@ -53,7 +53,11 @@ const isCentered = variant === 'centered';
 					<p class:list={['mt-6 text-lg text-pretty sm:text-xl', !isFull && 'text-fg-muted']}>{subtitle}</p>
 				)
 			}
-			<div class:list={['mt-10 flex flex-wrap items-center gap-4', isCentered && 'justify-center']}>
+			{/*
+				Su mobile uno sotto l'altro, a tutta larghezza: se andassero a capo solo quando il font è
+				più largo, all'arrivo del web font la pagina salterebbe (CLS).
+			*/}
+			<div class:list={['mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4', isCentered && 'sm:justify-center']}>
 				<CtaButton cta={primaryCta} tone={tone} />
 				{secondaryCta && <CtaButton cta={secondaryCta} defaultStyle="secondary" tone={tone} />}
 			</div>

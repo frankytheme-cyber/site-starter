@@ -3,7 +3,7 @@ import type { ImageFunction, SchemaContext } from 'astro:content';
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import { z } from 'astro/zod';
 import { blockMetas, blockSchemas } from './block-schemas';
-import { type BlockFixture, type BlockMeta, type BlockSchema, SCOPES, type Tone } from './block-types';
+import { type BlockFixture, type BlockMeta, type BlockSchema, CATEGORIES, compareBlocks, SCOPES, type Tone } from './block-types';
 import { layoutSchema } from './layout';
 import { type SiteSettings, siteSettingsSchema } from './settings';
 
@@ -78,6 +78,9 @@ function loadBlock(type: string): Block {
 	if (meta.type !== type) {
 		throw new Error(`${dir}/meta.ts: type "${meta.type}" diverso dal nome della cartella "${type}"`);
 	}
+	if (!CATEGORIES.includes(meta.category)) {
+		throw new Error(`${dir}/meta.ts: categoria "${meta.category}" sconosciuta (ammesse: ${CATEGORIES.join(', ')})`);
+	}
 	if (!SCOPES.includes(meta.scope)) {
 		throw new Error(`${dir}/meta.ts: scope "${meta.scope}" sconosciuto (ammessi: ${SCOPES.join(', ')})`);
 	}
@@ -138,10 +141,10 @@ const types = new Set(
 	),
 );
 
-/** Tutti i blocchi, ordinati per categoria e nome. */
+/** Tutti i blocchi, nell'ordine della pagina: intestazione, apertura, contenuti, contatti, piè di pagina (compareBlocks). */
 export const blocks: Block[] = [...types]
 	.map(loadBlock)
-	.sort((a, b) => a.meta.category.localeCompare(b.meta.category) || a.meta.name.localeCompare(b.meta.name));
+	.sort((a, b) => compareBlocks(a.meta, b.meta));
 
 /** Blocchi per tipo: la usa RenderSections per passare da una sezione al suo componente. */
 export const blocksByType = new Map(blocks.map((block) => [block.type, block]));

@@ -2,7 +2,7 @@ import type { SchemaContext } from 'astro:content';
 import { z } from 'astro/zod';
 import type { BlockProps } from '@/core/block-types';
 import { imageSchema } from '@/core/images';
-import { ctaSchema } from '@/core/schemas/cta';
+import { ctaSchema } from '@/core/ui/button/cta';
 
 export const schema = ({ image }: SchemaContext) =>
 	z

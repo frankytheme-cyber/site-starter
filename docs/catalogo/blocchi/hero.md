@@ -6,7 +6,7 @@
 
 | Tipo | Scope | Versione | Interattivo | Categoria | Disegno |
 | --- | --- | --- | --- | --- | --- |
-| `hero` | `page`: sezione delle ricette | 1.1.0 | no | apertura | originale |
+| `hero` | `page`: sezione delle ricette | 1.1.1 | no | apertura | originale |
 
 Apertura della pagina: titolo principale, sottotitolo e invito all’azione.
 

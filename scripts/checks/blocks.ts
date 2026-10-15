@@ -8,6 +8,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'astro/zod';
+import { CATEGORIES } from '../../src/core/block-types.ts';
 import { type CheckContext, collector } from './lib/report.ts';
 import { withProjectModules } from './lib/vite.ts';
 
@@ -90,6 +91,9 @@ export async function blocks({ root }: CheckContext) {
 						hint: 'aggiungi una sezione con progetto, indirizzo, licenza e testo della licenza',
 					});
 				}
+			}
+			if (typeof meta.category === 'string' && !(CATEGORIES as readonly string[]).includes(meta.category)) {
+				error({ file: metaFile, where: 'category', message: `"${meta.category}" non è una categoria ammessa`, hint: `una di ${CATEGORIES.join(', ')} (src/core/block-types.ts): dice dove sta il blocco nella pagina` });
 			}
 			if (!SCOPES.includes(meta.scope)) {
 				error({ file: metaFile, where: 'scope', message: `"${meta.scope}" non è uno scope ammesso`, hint: "scope: 'page' per le sezioni delle ricette, 'layout' per header e footer (layout.json)" });

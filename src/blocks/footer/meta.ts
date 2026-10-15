@@ -9,7 +9,7 @@ export const meta: BlockMeta = {
 		'Sempre: è il piede di tutte le pagine. Non è una sezione delle ricette: variante e fascia di contatto si scelgono in src/content/settings/layout.json (chiave footer) e BaseLayout lo disegna in fondo a ogni pagina.',
 	avoidWhen:
 		'Nelle sezioni di una ricetta (la build lo rifiuta). Per chiudere una pagina con un invito diverso da chiamare o scrivere usa cta, e lascia ctaBand spento per non ripeterlo.',
-	category: 'navigazione',
+	category: 'piè di pagina',
 	scope: 'layout',
 	version: '1.0.0',
 	source: { from: 'originale' },

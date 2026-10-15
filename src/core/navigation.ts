@@ -1,6 +1,6 @@
 import { getEntry } from 'astro:content';
 import { z } from 'astro/zod';
-import { ctaSchema } from './schemas/cta';
+import { ctaSchema } from './ui/button/cta';
 
 /*
  * Menu del sito: sta solo in src/content/settings/navigation.json (collezione "navigation",

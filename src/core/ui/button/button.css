@@ -1,0 +1,123 @@
+/*
+ * Pulsanti (Button.astro): .btn con data-variant (primary, secondary, ghost, link) e data-size
+ * (sm, md, lg). Importato da src/themes/base.css, dopo Tailwind: aspetto nel layer components (le
+ * classi passate al pulsante, es. w-full, lo sovrascrivono), testo mai sottolineato fuori dai layer.
+ *
+ * Stati: :hover, :focus-visible, :active, :disabled e aria-disabled. Nel catalogo
+ * (/catalogo/bottoni) gli stessi stili si forzano con data-state="hover|focus|active|disabled".
+ * Colori solo da token: i rapporti di contrasto li verifica npm run check:contrast.
+ */
+
+@layer components {
+	.btn {
+		/*
+		 * Sfondo e testo di secondary e ghost al passaggio: diversi dallo sfondo della sezione e con
+		 * il testo in AA. Tono default: surface. I toni muted e primary li ridefiniscono sotto.
+		 */
+		--btn-soft-bg: var(--surface);
+		--btn-soft-fg: var(--surface-fg);
+
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: --spacing(2);
+		border: 2px solid transparent;
+		border-radius: var(--button-radius);
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	/* Tono muted: la sezione è surface, il passaggio va sul fondo chiaro della palette. */
+	[data-tone="muted"] .btn {
+		--btn-soft-bg: var(--palette-bg);
+		--btn-soft-fg: var(--palette-fg);
+	}
+
+	/* Tono primary: testo chiaro, il passaggio scurisce il fondo (primary-fg su primary-hover). */
+	:is([data-tone="primary"] .btn, .btn[data-on-tone="primary"]) {
+		--btn-soft-bg: var(--palette-primary-hover);
+		--btn-soft-fg: var(--palette-primary-fg);
+	}
+
+	.btn[data-size="sm"] {
+		@apply min-h-9 px-4 py-1.5 text-sm;
+	}
+	.btn[data-size="md"] {
+		@apply min-h-11 px-6 py-2.5 text-base;
+	}
+	.btn[data-size="lg"] {
+		@apply min-h-13 px-8 py-3 text-lg;
+	}
+
+	/* Varianti. Su tone primary --primary e --primary-fg sono già invertiti (base.css): pieno chiaro, testo primary. */
+	.btn[data-variant="primary"] {
+		background-color: var(--primary);
+		color: var(--primary-fg);
+	}
+	.btn[data-variant="secondary"] {
+		border-color: color-mix(in srgb, currentColor 45%, transparent);
+	}
+	.btn[data-variant="link"] {
+		min-height: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		color: var(--primary);
+		text-decoration-line: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 4px;
+	}
+
+	/* Passaggio del mouse: niente sui pulsanti disabilitati. */
+	.btn:not(:disabled, [aria-disabled="true"], [data-state="disabled"]):is(:hover, [data-state="hover"]) {
+		&[data-variant="primary"] {
+			background-color: var(--primary-hover);
+		}
+		&:is([data-variant="secondary"], [data-variant="ghost"]) {
+			background-color: var(--btn-soft-bg);
+			color: var(--btn-soft-fg);
+		}
+		&[data-variant="secondary"] {
+			border-color: currentColor;
+		}
+		&[data-variant="link"] {
+			color: var(--primary-hover);
+			text-decoration-thickness: 2px;
+		}
+	}
+
+	/* Focus da tastiera: anello con stacco. Al click del mouse nessun anello. */
+	.btn:is(:focus-visible, [data-state="focus"]) {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
+	}
+	.btn:focus:not(:focus-visible) {
+		outline: none;
+	}
+
+	.btn:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	/* Movimento solo per chi non chiede di ridurlo: transizioni di 150ms e pressione di 1px. */
+	@media (prefers-reduced-motion: no-preference) {
+		.btn {
+			transition-property: background-color, border-color, color, text-decoration-color, transform;
+			transition-duration: 150ms;
+			transition-timing-function: ease-out;
+		}
+		.btn:not(:disabled, [aria-disabled="true"], [data-state="disabled"]):is(:active, [data-state="active"]) {
+			transform: translateY(1px);
+		}
+	}
+}
+
+/*
+ * primary, secondary e ghost non sono mai sottolineati, in nessuno stato (normale, hover, focus,
+ * active, visited). Fuori dai layer e con specificità (0,3,1): batte anche regole globali come
+ * a:hover { text-decoration: underline } o .testo a:hover { ... }.
+ */
+:is(a, button).btn.btn:is([data-variant="primary"], [data-variant="secondary"], [data-variant="ghost"]) {
+	text-decoration-line: none;
+}

@@ -10,14 +10,14 @@ Dal vivo: `/catalogo` (tutti i blocchi, con i selettori di palette, font e forma
 
 | Blocco | Tipo | Scope | Categoria | Varianti |
 | --- | --- | --- | --- | --- |
+| [Header](blocchi/header.md) | `header` | layout | intestazione | `semplice`, `con-cta` |
 | [Hero](blocchi/hero.md) | `hero` | page | apertura | `split`, `full`, `centered` |
-| [Invito all’azione](blocchi/cta.md) | `cta` | page | contatti | `banner`, `split-contatto` |
 | [Accordion](blocchi/accordion.md) | `accordion` | page | contenuti | `faq`, `contenuti` |
 | [Carosello](blocchi/carousel.md) | `carousel` | page | contenuti | `foto`, `card` |
 | [Schede](blocchi/tabs.md) | `tabs` | page | contenuti | `testo`, `testo-immagine` |
 | [Servizi](blocchi/services.md) | `services` | page | contenuti | `cards-icone`, `cards-immagine`, `alternato`, `schede` |
-| [Footer](blocchi/footer.md) | `footer` | layout | navigazione | `colonne`, `minimale` |
-| [Header](blocchi/header.md) | `header` | layout | navigazione | `semplice`, `con-cta` |
+| [Invito all’azione](blocchi/cta.md) | `cta` | page | contatti | `banner`, `split-contatto` |
+| [Footer](blocchi/footer.md) | `footer` | layout | piè di pagina | `colonne`, `minimale` |
 
 ## Altro
 

@@ -32,7 +32,21 @@ export interface PresetMeta {
 }
 
 /** Token colore di una palette (src/themes/palettes/*.css). */
-export const COLOR_TOKENS = ['bg', 'fg', 'fg-muted', 'surface', 'surface-fg', 'primary', 'primary-fg', 'accent', 'accent-fg', 'border', 'ring'] as const;
+export const COLOR_TOKENS = [
+	'bg',
+	'fg',
+	'fg-muted',
+	'surface',
+	'surface-fg',
+	'primary',
+	'primary-fg',
+	'primary-hover',
+	'accent',
+	'accent-fg',
+	'accent-hover',
+	'border',
+	'ring',
+] as const;
 export type ColorToken = (typeof COLOR_TOKENS)[number];
 
 export interface PaletteMeta extends PresetMeta {

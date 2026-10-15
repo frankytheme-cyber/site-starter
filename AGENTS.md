@@ -15,13 +15,13 @@ Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, u
 
 L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `fonts`, `shape`) tra i preset di `src/themes/presets.ts`. Token disponibili:
 
-- **Colori:** `bg`, `fg`, `fg-muted`, `surface`, `surface-fg`, `primary`, `primary-fg`, `accent`, `accent-fg`, `border`, `ring` (+ `white`, `black`, `transparent`, `current`)
+- **Colori:** `bg`, `fg`, `fg-muted`, `surface`, `surface-fg`, `primary`, `primary-fg`, `primary-hover`, `accent`, `accent-fg`, `accent-hover`, `border`, `ring` (+ `white`, `black`, `transparent`, `current`)
 - **Font:** `font-heading`, `font-body`
 - **Raggi:** `rounded-box` (card, riquadri), `rounded-button` (pulsanti)
 
 ## Blocchi
 
-- Il contratto è in `src/blocks/README.md`; i blocchi di riferimento sono `hero/`, `services/`, `cta/`, `header/` (interattivo), `footer/`, `accordion/`, `tabs/` e `carousel/` in `src/blocks/`. Le primitive (`Button`, `Accordion`, `Tabs`, `Carousel`...) sono in `src/core/ui/` e si vedono in `/catalogo/ui`.
+- Il contratto è in `src/blocks/README.md`; i blocchi di riferimento sono `hero/`, `services/`, `cta/`, `header/` (interattivo), `footer/`, `accordion/`, `tabs/` e `carousel/` in `src/blocks/`. Le primitive (`Accordion`, `Tabs`, `Carousel`...) sono in `src/core/ui/` e si vedono in `/catalogo/ui`. I pulsanti sono un modulo a parte, `src/core/ui/button/` (`Button`, `CtaButton`, `button.css` con stati e toni, schema `cta.ts`): mai classi di colore o di stato sui pulsanti nei blocchi, si sceglie solo `variant` e `size`; tutte le combinazioni in `/catalogo/bottoni`.
 - Blocchi interattivi (`interactive: true` in `meta.ts`): JS vanilla nel componente, progressive enhancement, tastiera, focus, movimento ridotto, niente autoplay. Regole in `docs/blocchi-interattivi.md`.
 - **Blocchi di layout.** `header` e `footer` hanno `scope: "layout"` in `meta.ts`: non vanno nelle ricette (la build li rifiuta) ma si scelgono in `src/content/settings/layout.json` (variante e opzioni, schema in `src/core/layout.ts`) e li disegna `BaseLayout` su ogni pagina. Tutti gli altri blocchi hanno `scope: "page"`.
 - Menu del sito: solo in `src/content/settings/navigation.json`, letto con `getNavigation()` (`@/core/navigation`): voci e pulsante dell'header, gruppo `footer` con i link secondari e quelli legali (privacy, cookie).

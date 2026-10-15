@@ -29,6 +29,18 @@ export interface SectionProps {
 export const SCOPES = ['page', 'layout'] as const;
 export type Scope = (typeof SCOPES)[number];
 
+/**
+ * Categorie dei blocchi, nell'ordine in cui compaiono in una pagina: intestazione in cima, poi
+ * apertura, contenuti, contatti e piè di pagina. Catalogo, documentazione e CMS mostrano i blocchi
+ * in quest'ordine (compareBlocks). Solo import di tipo in questo file: lo importano anche gli script.
+ */
+export const CATEGORIES = ['intestazione', 'apertura', 'contenuti', 'contatti', 'piè di pagina'] as const;
+export type Category = (typeof CATEGORIES)[number];
+
+/** Ordine dei blocchi: per posizione della categoria nella pagina, poi per nome. */
+export const compareBlocks = (a: Pick<BlockMeta, 'category' | 'name'>, b: Pick<BlockMeta, 'category' | 'name'>) =>
+	CATEGORIES.indexOf(a.category) - CATEGORIES.indexOf(b.category) || a.name.localeCompare(b.name, 'it');
+
 /** Scheda di un blocco (meta.ts): la leggono il catalogo e chi compone le pagine. */
 export interface BlockMeta {
 	/** Identificativo: uguale al nome della cartella in src/blocks (es. "hero"). */
@@ -41,8 +53,8 @@ export interface BlockMeta {
 	whenToUse: string;
 	/** In quali casi non usarlo, e cosa fare invece. */
 	avoidWhen: string;
-	/** Gruppo nel catalogo (es. "apertura", "contenuti", "contatti"). */
-	category: string;
+	/** Gruppo nel catalogo e posizione nella pagina: una di CATEGORIES. */
+	category: Category;
 	/** page: sezione di una ricetta · layout: in layout.json, uguale su tutte le pagine. */
 	scope: Scope;
 	/** Versione semver: la major sale quando lo schema cambia in modo incompatibile. */

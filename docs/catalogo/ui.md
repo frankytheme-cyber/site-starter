@@ -4,7 +4,7 @@
 
 [← Catalogo](README.md) · dal vivo, in tutti gli stati: `/catalogo/ui`
 
-Componenti di `src/core/ui` con cui sono fatti i blocchi: si usano nei componenti dei blocchi, mai nelle ricette. Le regole dei componenti interattivi sono in `docs/blocchi-interattivi.md`.
+Componenti di `src/core/ui` con cui sono fatti i blocchi: si usano nei componenti dei blocchi, mai nelle ricette. Le regole dei componenti interattivi sono in `docs/blocchi-interattivi.md`. I pulsanti sono un modulo a parte, `src/core/ui/button/` (componenti, `button.css` con stati e toni, schema `cta.ts`): dal vivo in ogni variante, stato, misura e tono in `/catalogo/bottoni`.
 
 ## Accordion
 
@@ -37,11 +37,13 @@ interface Props {
 
 ## Button
 
-`src/core/ui/Button.astro`
+`src/core/ui/button/Button.astro`
 
-Pulsante o link d'azione. Con href è un &lt;a>, altrimenti un &lt;button>.
+Pulsante o link d'azione. Con href è un &lt;a>, altrimenti un &lt;button>. Aspetto e stati (hover,
+focus, active, disabled) stanno in button.css: .btn con data-variant e data-size.
 href accetta anche @telefono, @whatsapp, @email, @mappa (risolti da site.json, core/links.ts);
 i link esterni si aprono in una nuova scheda con rel="noopener".
+disabled: &lt;button disabled>, o un &lt;a> senza href con aria-disabled (non si apre e non prende il focus).
 
 Tono: dentro una Section i token si adattano già al suo data-tone (base.css), quindi su
 tone primary il pulsante pieno diventa chiaro da solo. La prop tone serve a dichiararlo quando il
@@ -50,7 +52,7 @@ pulsante sta su un fondo primary fuori da una Section primary.
 ```ts
 interface Props {
 	href?: string;
-	/** primary: pieno · secondary: bordo nel colore del testo · ghost: solo testo, sfondo al passaggio · link: sottolineato. */
+	/** primary: pieno · secondary: bordato · ghost: solo testo, sfondo al passaggio · link: sottolineato. */
 	variant?: ButtonStyle;
 	size?: 'sm' | 'md' | 'lg';
 	icon?: IconName;
@@ -59,6 +61,7 @@ interface Props {
 	type?: 'button' | 'submit' | 'reset';
 	disabled?: boolean;
 	class?: string;
+	/** data-state="hover|focus|active|disabled" forza uno stato: solo nel catalogo (/catalogo/bottoni). */
 	[attribute: `data-${string}` | `aria-${string}`]: string | boolean | undefined;
 }
 ```
@@ -104,9 +107,9 @@ Nessuna prop.
 
 ## CtaButton
 
-`src/core/ui/CtaButton.astro`
+`src/core/ui/button/CtaButton.astro`
 
-Un valore dello schema cta (core/schemas/cta.ts) come Button: stile della cta o quello
+Un valore dello schema cta (cta.ts) come Button: stile della cta o quello
 previsto dal blocco, icona prima del testo (le frecce dopo).
 
 ```ts

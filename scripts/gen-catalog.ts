@@ -13,9 +13,9 @@
  *      il check "catalog" (npm run check) fallisce se i file non sono aggiornati o manca uno screenshot
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { basename, dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { BlockMeta, Tone } from '../src/core/block-types.ts';
+import { type BlockMeta, compareBlocks, type Tone } from '../src/core/block-types.ts';
 import * as catalog from '../src/core/catalog.ts';
 import type { PaletteMeta, PresetMeta } from '../src/themes/presets.ts';
 import { withProjectModules } from './checks/lib/vite.ts';
@@ -235,11 +235,13 @@ function uiPage() {
 	// Per le primitive senza commento iniziale vale la riga del README della cartella.
 	const readme = readFileSync(join(dir, 'README.md'), 'utf8');
 	const readmeLine = (name: string) => new RegExp(`^- \`${name}\`: (.+)$`, 'm').exec(readme)?.[1];
-	const sections = readdirSync(dir)
-		.filter((name) => name.endsWith('.astro'))
-		.sort()
+	// Anche i moduli in sottocartelle (button/): Button.astro, CtaButton.astro...
+	const sections = (readdirSync(dir, { recursive: true }) as string[])
+		.map((file) => file.split(sep).join('/'))
+		.filter((file) => file.endsWith('.astro'))
+		.sort((a, b) => basename(a).localeCompare(basename(b)))
 		.map((file) => {
-			const name = file.replace(/\.astro$/, '');
+			const name = basename(file, '.astro');
 			const { description, props } = primitiveDoc(join(dir, file));
 			return page(
 				`## ${name}`,
@@ -252,7 +254,7 @@ function uiPage() {
 		GENERATED,
 		'# Primitive UI',
 		'[← Catalogo](README.md) · dal vivo, in tutti gli stati: `/catalogo/ui`',
-		'Componenti di `src/core/ui` con cui sono fatti i blocchi: si usano nei componenti dei blocchi, mai nelle ricette. Le regole dei componenti interattivi sono in `docs/blocchi-interattivi.md`.',
+		'Componenti di `src/core/ui` con cui sono fatti i blocchi: si usano nei componenti dei blocchi, mai nelle ricette. Le regole dei componenti interattivi sono in `docs/blocchi-interattivi.md`. I pulsanti sono un modulo a parte, `src/core/ui/button/` (componenti, `button.css` con stati e toni, schema `cta.ts`): dal vivo in ogni variante, stato, misura e tono in `/catalogo/bottoni`.',
 		...sections,
 	);
 }
@@ -396,9 +398,7 @@ export async function generateCatalog() {
 			typeof value === 'string' && value.startsWith('/src/assets/images/') ? catalog.recipeImagePath(value) : undefined;
 
 		const metasByType = schemas.blockMetas as Record<string, BlockMeta>;
-		const types = Object.keys(metasByType).sort(
-			(a, b) => metasByType[a].category.localeCompare(metasByType[b].category) || metasByType[a].name.localeCompare(metasByType[b].name),
-		);
+		const types = Object.keys(metasByType).sort((a, b) => compareBlocks(metasByType[a], metasByType[b]));
 		const index: { meta: BlockMeta; variants: string[] }[] = [];
 		for (const type of types) {
 			const meta = metasByType[type];

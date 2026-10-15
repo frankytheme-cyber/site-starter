@@ -6,7 +6,7 @@
 
 | Tipo | Scope | Versione | Interattivo | Categoria | Disegno |
 | --- | --- | --- | --- | --- | --- |
-| `footer` | `layout`: in layout.json | 1.0.0 | no | navigazione | originale |
+| `footer` | `layout`: in layout.json | 1.0.0 | no | piè di pagina | originale |
 
 Piede del sito: recapiti cliccabili, orari, social e i dati legali obbligatori (ragione sociale, sede, P.IVA, REA e capitale per le società), con i link a privacy e cookie. Tutto da site.json e navigation.json.
 

@@ -9,7 +9,7 @@ export const meta: BlockMeta = {
 		'Sempre: è l’intestazione di tutte le pagine. Non è una sezione delle ricette: variante, sticky e logo si scelgono in src/content/settings/layout.json (chiave header) e BaseLayout la disegna in cima a ogni pagina.',
 	avoidWhen:
 		'Nelle sezioni di una ricetta (la build lo rifiuta). Per un invito all’azione a metà pagina usa cta.',
-	category: 'navigazione',
+	category: 'intestazione',
 	scope: 'layout',
 	version: '2.0.0',
 	source: { from: 'originale' },

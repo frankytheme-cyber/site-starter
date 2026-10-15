@@ -1,6 +1,6 @@
 import { z } from 'astro/zod';
 import type { BlockProps } from '@/core/block-types';
-import { ctaSchema } from '@/core/schemas/cta';
+import { ctaSchema } from '@/core/ui/button/cta';
 
 export const schema = () =>
 	z.object({
