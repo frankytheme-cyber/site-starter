@@ -2,6 +2,7 @@
 	"$schema": "../../../.astro/collections/pages.schema.json",
 	"title": "Privacy · DA-COMPILARE nome dell’attività",
 	"description": "DA-COMPILARE: come l’attività tratta i dati personali di chi visita il sito e la contatta.",
+	"ogImage": "../../assets/images/og-DA-COMPILARE.jpg",
 	"sections": [
 		{
 			"type": "hero",

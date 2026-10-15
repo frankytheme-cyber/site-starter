@@ -7,8 +7,12 @@
  *
  * Uso: npm run gen:decap                   scrive public/admin/config.yml
  *      npm run gen:decap -- --repo=org/sito  repo GitHub esplicito
+ *      npm run gen:decap -- --strict         in un sito cliente, errore se il repo non si trova
  *      npm run check:decap                 (scripts/checks/decap.ts) fallisce se il file non è aggiornato
- * Repo: --repo, poi DECAP_REPO, poi VERCEL_GIT_REPO_OWNER/VERCEL_GIT_REPO_SLUG, poi il remote "origin".
+ * Repo: --repo, poi DECAP_REPO, poi cms.repo di src/site.config.ts (lo scrive site:init), poi
+ * VERCEL_GIT_REPO_OWNER/VERCEL_GIT_REPO_SLUG, poi il remote "origin" se è su GitHub. Se manca
+ * tutto vale REPO_PLACEHOLDER con un avviso: mai un errore nella libreria; in un sito cliente lo
+ * diventa con --strict.
  */
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -16,6 +20,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { stringify } from 'yaml';
 import { compareBlocks } from '../src/core/block-types.ts';
+import { isLibraryMode } from '../src/core/mode.ts';
 import { withProjectModules } from './checks/lib/vite.ts';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
@@ -24,6 +29,9 @@ export const DECAP_CONFIG = join(ROOT, 'public/admin/config.yml');
 /** Il JSON di una pagina sta in src/content/pages: da lì le immagini sono in ../../assets/images. */
 const MEDIA_FROM_CONTENT = '../../assets/images';
 const PAGES_SCHEMA = '../../../.astro/collections/pages.schema.json';
+/** Repo usato quando non se ne trova uno: la build va avanti, il CMS no finché non si imposta. */
+export const REPO_PLACEHOLDER = 'DA-COMPILARE/repo-github';
+const REPO_FORMAT = /^[\w.-]+\/[\w.-]+$/;
 const IMAGE_MARKER = 'image';
 
 // Tipi minimi per leggere gli schemi di Zod 4 senza dipendere dalle sue classi (li usa anche gen-catalog.ts).
@@ -42,23 +50,29 @@ const problems: string[] = [];
 
 // ---------------------------------------------------------------------------- repo
 
-function resolveRepo(): string {
+/** "org/nome" di un remote GitHub (https o ssh), o undefined. */
+export const githubRepoOf = (url: string) => /github\.com[:/]([^/]+\/[^/]+?)(?:\.git)?\/?$/.exec(url.trim())?.[1];
+
+/** Repo del remote "origin", se è su GitHub. */
+export function originRepo(cwd = ROOT): string | undefined {
+	try {
+		return githubRepoOf(execFileSync('git', ['remote', 'get-url', 'origin'], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
+	} catch {
+		return undefined;
+	}
+}
+
+function resolveRepo(explicit: string | undefined, configured: string | undefined): { repo: string; placeholder: boolean } {
 	const flag = process.argv.find((arg) => arg.startsWith('--repo='))?.slice('--repo='.length);
 	const vercel =
 		process.env.VERCEL_GIT_REPO_OWNER && process.env.VERCEL_GIT_REPO_SLUG
 			? `${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}`
 			: undefined;
-	let repo = flag ?? process.env.DECAP_REPO ?? vercel;
-	if (!repo) {
-		try {
-			const origin = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-			repo = /github\.com[:/]([^/]+\/[^/]+?)(?:\.git)?$/.exec(origin)?.[1];
-		} catch {}
-	}
-	if (!repo || !/^[\w.-]+\/[\w.-]+$/.test(repo)) {
-		throw new Error('Repo GitHub non trovato: usa --repo=org/nome o la variabile DECAP_REPO.');
-	}
-	return repo;
+	// Valori vuoti (es. una variabile della CI non impostata) contano come assenti.
+	const repo = explicit || flag || process.env.DECAP_REPO || configured || vercel || originRepo();
+	if (!repo) return { repo: REPO_PLACEHOLDER, placeholder: true };
+	if (!REPO_FORMAT.test(repo)) throw new Error(`Repo GitHub "${repo}" non valido: serve org/nome.`);
+	return { repo, placeholder: false };
 }
 
 // ---------------------------------------------------------------------------- Zod → Decap
@@ -259,9 +273,9 @@ function loadProject() {
 
 // ---------------------------------------------------------------------------- configurazione
 
-async function buildConfig() {
-	const repo = resolveRepo();
+async function buildConfig(options: { repo?: string }) {
 	const { blocks, page, settings, navigation, siteConfig } = await loadProject();
+	const { repo, placeholder } = resolveRepo(options.repo, siteConfig.cms.repo);
 	const { z } = await import('astro/zod');
 
 	// image() del generatore: una stringa marcata, che diventa il widget image di Decap.
@@ -277,7 +291,7 @@ async function buildConfig() {
 	const media = { media_folder: MEDIA_FROM_CONTENT, public_folder: MEDIA_FROM_CONTENT };
 	const noPreview = { editor: { preview: false } };
 
-	return {
+	const config = {
 		backend: {
 			name: 'github',
 			repo,
@@ -337,6 +351,7 @@ async function buildConfig() {
 			},
 		],
 	};
+	return { config, repoPlaceholder: placeholder };
 }
 
 // ---------------------------------------------------------------------------- uscita
@@ -345,22 +360,34 @@ const HEADER =
 	'# Generato da scripts/gen-decap-config.ts (npm run gen:decap): non modificare a mano.\n' +
 	'# I campi vengono dagli schemi Zod di blocchi, pagine e impostazioni.\n';
 
-/** Genera il contenuto di config.yml; problems elenca i campi da sistemare (senza descrizione o non mappabili). */
-export async function generateDecapConfig() {
+/**
+ * Genera il contenuto di config.yml; problems elenca i campi da sistemare (senza descrizione o non
+ * mappabili); repoPlaceholder dice che il repo non si è trovato ed è REPO_PLACEHOLDER.
+ */
+export async function generateDecapConfig(options: { repo?: string } = {}) {
 	problems.length = 0;
-	const config = await buildConfig();
+	const { config, repoPlaceholder } = await buildConfig(options);
 	const output = HEADER + stringify(config, { lineWidth: 0, aliasDuplicateObjects: false });
-	return { output, problems: [...problems], repo: config.backend.repo, collections: config.collections.length };
+	return { output, problems: [...problems], repo: config.backend.repo, repoPlaceholder, collections: config.collections.length };
 }
+
+export const REPO_HINT = 'imposta cms.repo in src/site.config.ts (lo fa npm run site:init), la variabile DECAP_REPO o un remote "origin" su GitHub';
 
 // Eseguito come comando (npm run gen:decap): scrive il file.
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
 	try {
-		const { output, problems: found, repo, collections } = await generateDecapConfig();
+		const { output, problems: found, repo, repoPlaceholder, collections } = await generateDecapConfig();
 		if (found.length > 0) {
 			console.error('Configurazione di Decap non generata:');
 			for (const problem of found) console.error(`  ✗ ${problem}`);
 			process.exit(1);
+		}
+		if (repoPlaceholder) {
+			if (process.argv.includes('--strict') && !isLibraryMode()) {
+				console.error(`✗ Repo GitHub per Decap non trovato: ${REPO_HINT}.`);
+				process.exit(1);
+			}
+			console.warn(`! Repo GitHub per Decap non trovato: uso "${REPO_PLACEHOLDER}". Il CMS non funziona finché non ${REPO_HINT.replace(/^imposta/, 'imposti')}.`);
 		}
 		mkdirSync(dirname(DECAP_CONFIG), { recursive: true });
 		writeFileSync(DECAP_CONFIG, output);

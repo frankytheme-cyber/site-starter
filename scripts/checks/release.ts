@@ -69,13 +69,13 @@ export async function release({ root }: CheckContext) {
 		if (data === undefined) continue;
 		eachString(data, [], (path, text) => {
 			if (placeholdersIn(text).includes('DA-COMPILARE')) {
-				error({ file, where: fieldPath(path), message: `segnaposto: ${excerpt(text)}`, hint: 'compila il dato vero (anche dal CMS, «Dati attività» o «Menu»)' });
+				error({ file, where: fieldPath(path), message: `segnaposto: ${excerpt(text)}`, hint: 'compila il dato vero (anche dal CMS, «Dati attività» o «Menu»)', placeholder: 'DA-COMPILARE' });
 			}
 		});
 	}
 	const siteConfig = join(root, 'src/site.config.ts');
 	if (existsSync(siteConfig) && /da-compilare/i.test(readFileSync(siteConfig, 'utf8'))) {
-		error({ file: 'src/site.config.ts', where: 'cms.oauthBaseUrl', message: 'indirizzo del servizio OAuth ancora segnaposto', hint: 'metti l’indirizzo del worker condiviso: vedi docs/decap.md' });
+		error({ file: 'src/site.config.ts', where: 'cms', message: 'configurazione del CMS ancora segnaposto (da-compilare)', hint: 'metti l’indirizzo del worker condiviso in cms.oauthBaseUrl: vedi docs/decap.md', placeholder: 'DA-COMPILARE' });
 	}
 
 	// Bozze linkate.

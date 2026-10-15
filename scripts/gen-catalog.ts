@@ -24,6 +24,7 @@ import { basename, dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type BlockMeta, compareBlocks, type Tone } from '../src/core/block-types.ts';
 import * as catalog from '../src/core/catalog.ts';
+import { requireLibraryMode } from '../src/core/mode.ts';
 import { RECIPE_RULES } from '../src/core/recipe-rules.ts';
 import type { PaletteMeta, PresetMeta } from '../src/themes/presets.ts';
 import { withProjectModules } from './checks/lib/vite.ts';
@@ -594,6 +595,8 @@ export function stalePages(files: Record<string, string>): string[] {
 
 // Eseguito come comando (npm run gen:catalog): scrive i file.
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+	// docs/catalogo nei siti cliente arriva già fatto, con blocks:sync.
+	requireLibraryMode('npm run gen:catalog');
 	try {
 		const { files, problems } = await generateCatalog();
 		if (problems.length > 0) {

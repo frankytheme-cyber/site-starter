@@ -2,11 +2,14 @@
  * recipes: regole di contenuto delle ricette di pagina (src/content/pages/*.json) e dei dati del
  * sito (site.json, navigation.json). Forma e lunghezze dei campi le verifica già la build.
  *
- * Errori con --strict (senza, e sempre nella libreria, sono avvisi): segnaposto (DA-COMPILARE,
- * lorem, TODO, […]); telefoni, email o P.IVA scritti nei testi delle sezioni; più di un hero;
- * id di sezione duplicati; link interni a pagine o ancore inesistenti; alt uguale al nome del file.
- * Avvisi: due sezioni consecutive con lo stesso tone; più di 12 sezioni; prima sezione che non è
- * un hero; nessuna cta.
+ * Senza --strict sono tutti avvisi. Con --strict:
+ * - regole strutturali, errori ovunque: telefoni, email o P.IVA scritti nei testi delle sezioni;
+ *   più di un hero; id di sezione duplicati; link interni a pagine o ancore inesistenti; alt uguale
+ *   al nome del file; JSON non valido;
+ * - segnaposto (DA-COMPILARE, og-DA-COMPILARE, lorem, TODO, […]): errori nei siti cliente, avvisi
+ *   nella libreria, dove il template li contiene per scelta.
+ * Sempre avvisi: due sezioni consecutive con lo stesso tone; più di 12 sezioni; prima sezione che
+ * non è un hero; nessuna cta.
  */
 import { existsSync } from 'node:fs';
 import { basename, join } from 'node:path';
@@ -67,8 +70,11 @@ function linkProblem(href: string, target: LinkTarget): { message: string; hint:
 
 export function recipes({ root, strict, isLibrary }: CheckContext): Finding[] {
 	const { findings, error: asError, warning } = collector('recipes');
-	// Nella libreria i segnaposto del template sono voluti: le regole restano avvisi anche con --strict.
-	const rule = strict && !isLibrary ? asError : warning;
+	const rule = strict ? asError : warning;
+	// Nella libreria i segnaposto del template sono voluti: restano avvisi anche con --strict.
+	const placeholderRule = strict && !isLibrary ? asError : warning;
+	const placeholder = (label: string, finding: Omit<Finding, 'check' | 'level' | 'placeholder'>) =>
+		placeholderRule({ ...finding, placeholder: label });
 
 	const all = loadRecipes(root, (file, message) => rule({ file, message }));
 	const resolve = linkResolver(root, all);
@@ -93,7 +99,12 @@ export function recipes({ root, strict, isLibrary }: CheckContext): Finding[] {
 			const key = lastKey(path);
 			if (NOT_TEXT.has(key)) return;
 			for (const label of placeholdersIn(text)) {
-				rule({ file, where: where(path), message: `segnaposto ${label}: ${excerpt(text)}`, hint: 'sostituisci con il testo vero' });
+				placeholder(label, {
+					file,
+					where: where(path),
+					message: `segnaposto ${label}: ${excerpt(text)}`,
+					hint: label === 'og-DA-COMPILARE' ? 'metti l’immagine vera per i social (ogImage)' : 'sostituisci con il testo vero',
+				});
 			}
 			const found = businessDataIn(key, text);
 			if (found) {
@@ -187,7 +198,7 @@ export function recipes({ root, strict, isLibrary }: CheckContext): Finding[] {
 				const key = lastKey(jsonPath);
 				if (key === '$schema') return;
 				for (const label of placeholdersIn(text)) {
-					rule({ file, where: fieldPath(jsonPath), message: `segnaposto ${label}: ${excerpt(text)}`, hint: 'sostituisci con il dato vero (anche dal CMS)' });
+					placeholder(label, { file, where: fieldPath(jsonPath), message: `segnaposto ${label}: ${excerpt(text)}`, hint: 'sostituisci con il dato vero (anche dal CMS)' });
 				}
 				if (name === 'navigation.json' && key === 'href') {
 					const problem = linkProblem(text, resolve(text, undefined));

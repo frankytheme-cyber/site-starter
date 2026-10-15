@@ -6,9 +6,6 @@ import { fileURLToPath } from 'node:url';
 export const ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 export const DIST = join(ROOT, 'dist');
 
-/** La libreria site-starter ha il catalogo dei blocchi; un sito cliente no (escluso dal manifest). */
-export const isLibrary = () => existsSync(join(ROOT, 'src/pages/catalogo'));
-
 /** Percorso relativo alla radice, sempre con "/". */
 export const rel = (file: string) => relative(ROOT, file).split(sep).join('/');
 

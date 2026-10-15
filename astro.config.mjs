@@ -7,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
 import { iconInclude } from './src/core/icons.ts';
 import decapBundle from './src/core/integrations/decap-bundle.ts';
+import library from './src/core/integrations/library.ts';
 
 const readJson = (/** @type {string} */ path) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 
@@ -36,6 +37,8 @@ export default defineConfig({
       },
     },
     decapBundle(),
+    // Catalogo dei blocchi su /catalogo: solo in modalità libreria (SITE_STARTER_LIBRARY=1, src/core/mode.ts).
+    library(),
     sitemap({
       filter: (page) => {
         const path = new URL(page).pathname;

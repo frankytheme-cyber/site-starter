@@ -12,7 +12,9 @@ Motore della libreria:
 - `RenderSections.astro`: disegna le sezioni di una ricetta col componente del loro blocco.
 - `images.ts`: `imageSchema(image)` per le immagini dei blocchi (percorso relativo al JSON, `alt` di almeno 5 caratteri).
 - `clean-data.ts`: `withoutEmpty()` toglie i campi vuoti che il CMS lascia (`""`, `{}`) prima della validazione.
+- `mode.ts`: modalità del progetto, libreria solo con `SITE_STARTER_LIBRARY=1`, altrimenti sito cliente (`isLibraryMode()`); la usano gli script e le integrazioni (`docs/siti-cliente.md`).
 - `integrations/decap-bundle.ts`: serve Decap CMS da `/admin/decap/` (copiato da `node_modules` in build).
+- `integrations/library.ts`: in modalità libreria registra il catalogo (`src/library/catalogo`) su `/catalogo` con `injectRoute`.
 - `settings.ts`: schema dei dati dell'attività (`src/content/settings/site.json`, dati legali compresi), `getSiteSettings()`, `getTheme()`, `isValidVatNumber()` e link `tel:`/WhatsApp.
 - `opening-hours.ts`: giorni della settimana, testo degli orari (`formatDays`, `formatSlots`) e `openingHoursSpecification` per il JSON-LD.
 - `navigation.ts`: schema del menu (`src/content/settings/navigation.json`), `getNavigation()` e `isCurrentPage()`.

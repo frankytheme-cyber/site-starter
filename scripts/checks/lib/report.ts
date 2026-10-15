@@ -18,6 +18,11 @@ export interface Finding {
 	message: string;
 	/** Cosa fare per risolvere. */
 	hint?: string;
+	/**
+	 * Il segnaposto che ha prodotto il finding (DA-COMPILARE, og-DA-COMPILARE...): il job
+	 * template-as-site della CI accetta solo errori di segnaposto attesi.
+	 */
+	placeholder?: string;
 }
 
 export interface CheckContext {
@@ -25,7 +30,7 @@ export interface CheckContext {
 	root: string;
 	/** --strict: le regole di pubblicazione diventano errori (recipes) o si attivano (release). */
 	strict: boolean;
-	/** true nella repo site-starter (esiste src/pages/catalogo), false in un sito cliente. */
+	/** true nella libreria site-starter (SITE_STARTER_LIBRARY=1, src/core/mode.ts), false in un sito cliente. */
 	isLibrary: boolean;
 	/** Indirizzo del server di anteprima (astro preview), solo per i check della suite qa. */
 	baseUrl?: string;

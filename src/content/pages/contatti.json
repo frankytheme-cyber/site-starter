@@ -2,6 +2,7 @@
 	"$schema": "../../../.astro/collections/pages.schema.json",
 	"title": "DA-COMPILARE: Contatti · nome dell’attività",
 	"description": "DA-COMPILARE: come contattare l’attività, dove si trova e in quanto tempo risponde.",
+	"ogImage": "../../assets/images/og-DA-COMPILARE.jpg",
 	"sections": [
 		{
 			"type": "hero",

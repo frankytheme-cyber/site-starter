@@ -18,6 +18,7 @@ import { join } from 'node:path';
 import { chromium, type Page } from 'playwright';
 import sharp from 'sharp';
 import { paletteScreenshotName, SCREEN_WIDTHS, SCREENSHOT_QUALITY, screenshotName } from '../src/core/catalog.ts';
+import { requireLibraryMode } from '../src/core/mode.ts';
 import { freePort, startPreview, stopPreview } from './checks/lib/preview.ts';
 import { ROOT } from './checks/lib/project.ts';
 import { CATALOG_DIR, generateCatalog } from './gen-catalog.ts';
@@ -28,6 +29,9 @@ const SIZES = [
 	{ name: 'mobile', width: SCREEN_WIDTHS.mobile, height: 800 },
 ] as const;
 const IMAGE_TIMEOUT = 15_000;
+
+// Fotografa /catalogo, che esiste solo in modalità libreria; la build qui sotto eredita la variabile.
+requireLibraryMode('npm run screenshots');
 
 const { variants, palettes, images, problems } = await generateCatalog();
 if (problems.length > 0) {

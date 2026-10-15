@@ -5,7 +5,8 @@ Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, u
 ## Regole
 
 - **Solo classi semantiche nei blocchi.** Usa `bg-primary`, `text-fg-muted`, `font-heading`, `rounded-box`... MAI colori Tailwind fissi (`bg-blue-600`, `text-gray-500`...) né valori arbitrari di colore (`bg-[#1e40af]`, `text-[rgb(...)]`...). La palette di Tailwind è disattivata, quindi i colori fissi non generano CSS; i valori arbitrari invece funzionano ancora e vanno evitati a mano.
-- **Cartelle gestite in sola lettura nei siti cliente.** Le cartelle elencate in `library.manifest.json` → `managed` si modificano SOLO nella repo site-starter; nei siti cliente sono in sola lettura.
+- **Libreria o sito: lo dice `SITE_STARTER_LIBRARY`.** La repo site-starter è la libreria solo con `SITE_STARTER_LIBRARY=1` (in `.env`, vedi `.env.example`; in CI e su Vercel nelle variabili del progetto); senza, ogni progetto è un sito cliente, anche la libreria (e i controlli falliscono sul lock). Modalità in `src/core/mode.ts`, guida in `docs/siti-cliente.md`.
+- **Cartelle e file gestiti in sola lettura nei siti cliente.** Cartelle e file elencati in `library.manifest.json` (`managed`, `managedFiles`) si modificano SOLO nella repo site-starter; nei siti cliente sono in sola lettura (check `lock`) e si aggiornano con `npm run blocks:sync -- vX.Y.Z`. Note ed eccezioni del singolo sito vanno in `docs/sito.md`.
 - **Dati dell'attività in un solo posto.** Nome, descrizione, indirizzo, telefono, email, dati legali (ragione sociale, forma giuridica, P.IVA, REA, capitale) e orari stanno solo in `src/content/settings/site.json`; mai scritti nei testi delle pagine né negli schemi dei blocchi, che li leggono con `getSiteSettings()` (`@/core/settings`).
 - **Si compone con blocchi esistenti.** Il sito si costruisce con i blocchi già presenti: un blocco nuovo nasce solo in site-starter, su task approvato.
 - **Ogni campo ha etichetta e aiuto.** Ogni campo degli schemi di blocchi, pagine e impostazioni ha `.describe("Etichetta|Aiuto")` in italiano: da lì nascono il CMS e la documentazione del catalogo. Dopo aver cambiato uno schema, `npm run gen:decap` e commit di `public/admin/config.yml`; nella libreria, dopo aver cambiato un blocco (schema, meta, fixture, aspetto), un preset del tema o le icone, `npm run catalog` e commit di `docs/catalogo`.
@@ -25,7 +26,7 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 - Blocchi interattivi (`interactive: true` in `meta.ts`): JS vanilla nel componente, progressive enhancement, tastiera, focus, movimento ridotto, niente autoplay. Regole in `docs/blocchi-interattivi.md`.
 - **Blocchi di layout.** `header` e `footer` hanno `scope: "layout"` in `meta.ts`: non vanno nelle ricette (la build li rifiuta) ma si scelgono in `src/content/settings/layout.json` (variante e opzioni, schema in `src/core/layout.ts`) e li disegna `BaseLayout` su ogni pagina. Tutti gli altri blocchi hanno `scope: "page"`.
 - Menu del sito: solo in `src/content/settings/navigation.json`, letto con `getNavigation()` (`@/core/navigation`): voci e pulsante dell'header, gruppo `footer` con i link secondari e quelli legali (privacy, cookie).
-- Anteprima: `/catalogo` (tutti i blocchi con le loro fixture, selettori di palette, font e forma, «Copia JSON» per ogni variante), `/catalogo/<type>` e `/catalogo/<type>/<variante>/` (una variante da sola, `?palette=&fonts=&shape=`).
+- Anteprima, solo in modalità libreria (pagine in `src/library/catalogo`, registrate da `src/core/integrations/library.ts`): `/catalogo` (tutti i blocchi con le loro fixture, selettori di palette, font e forma, «Copia JSON» per ogni variante), `/catalogo/<type>` e `/catalogo/<type>/<variante>/` (una variante da sola, `?palette=&fonts=&shape=`).
 - **Catalogo in `docs/catalogo/`** (generato da `npm run gen:catalog`, gestito dalla libreria, mai scritto a mano): `README.md` con versione della libreria, regole d'oro delle ricette, regole di composizione, blocchi, opzioni di `layout.json`, link speciali, temi e icone; una scheda per blocco (`blocchi/<tipo>.md`: quando usarlo, varianti con screenshot, campi, regole, esempio pronto); `catalogo.json` con gli stessi dati per le macchine; `ui.md` (primitive); le **ricette tipo** da copiare (`ricette-tipo/`, scritte a mano). Per comporre una pagina parti da lì.
 - **Schede dei blocchi per il catalogo.** In `meta.ts` ogni variante ha `description` e `whenToUse`; `rules` descrive a parole ogni regola tra campi; ogni `refine`/`superRefine` dello schema ha sopra un commento `// rule: <testo>` con lo stesso testo di una voce di `rules`. Senza, `gen:catalog` si ferma.
 - La radice di ogni blocco è `<Section>` (`tone`: `default`, `muted`, `primary`). Dentro usa sempre `text-fg`, `text-fg-muted`, `bg-primary`...: Section ridefinisce i token per il tono, così il contrasto resta quello verificato.
@@ -38,7 +39,7 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 - Le sezioni sono piatte: `type` (il blocco), `id` facoltativo (ancora in kebab-case), `tone` (`default`, `muted`, `primary`) e accanto le props del blocco. Alterna i toni tra sezioni vicine.
 - Nei link dei pulsanti i recapiti si scrivono `@telefono`, `@whatsapp`, `@email`, `@mappa`: la build li risolve da `site.json`, mai `tel:` o numeri scritti a mano.
 - Una pagina ha un solo `hero`, in apertura, e di norma una `cta`. Header e footer non sono sezioni. Link interni solo a pagine e ancore che esistono.
-- Prima di pubblicare: `npm run check -- --strict` (recipes come errori e release: segnaposto, recapiti scritti a mano, link rotti, bozze linkate, dati legali e link a privacy e cookie nel footer, Open Graph...).
+- Prima di pubblicare un sito: `npm run qa -- --strict` (recipes come errori e release: segnaposto `DA-COMPILARE` e `og-DA-COMPILARE`, recapiti scritti a mano, link rotti, bozze linkate, dati legali e link a privacy e cookie nel footer, Open Graph...). Nella libreria `--strict` ferma le regole strutturali e lascia ad avviso i segnaposto del template.
 
 ## CMS
 
@@ -56,13 +57,18 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run qa`             | `check` + link, accessibilità, interattivi, Lighthouse sul sito servito |
 | `npm run check:contrast` | Verifica il contrasto WCAG AA di tutte le palette |
 | `npm run check:recipes`  | Controlla ricette e dati del sito; `-- --strict` esce con errore |
-| `npm run gen:decap`      | Genera `public/admin/config.yml` dagli schemi (anche in `prebuild`) |
+| `npm run check:tokens`   | Niente colori fissi né `!important` in `src/blocks` e `src/core` |
+| `npm run check:lock`     | Sito cliente: niente modifiche locali a cartelle e file gestiti (`blocks.lock.json`) |
+| `npm run gen:decap`      | Genera `public/admin/config.yml` dagli schemi (anche in `prebuild`); senza repository GitHub usa un segnaposto con un avviso |
 | `npm run check:decap`    | Fallisce se `config.yml` non è aggiornato                  |
-| `npm run gen:catalog`    | Genera `docs/catalogo` (README, schede, catalogo.json) da schemi, meta e fixture |
-| `npm run screenshots`    | Build, anteprima e screenshot di ogni variante in `docs/catalogo/img` |
-| `npm run catalog`        | `gen:catalog` + `screenshots`                     |
-| `npm run check:blocks`   | Contratto dei blocchi; fallisce anche se `docs/catalogo` non è aggiornato o manca uno screenshot (`check:catalog` è lo stesso) |
-| `npm run release -- vX.Y.Z` | Versione in `library.manifest.json`, `gen:catalog`, `screenshots`, `check`, commit e tag (working tree pulito; push a mano) |
+| `npm run site:init`      | Sito cliente, una volta: toglie la parte della libreria, repository del CMS, `blocks.lock.json`, `docs/sito.md` |
+| `npm run blocks:sync -- vX.Y.Z` | Sito cliente: aggiorna cartelle e file gestiti, `package.json` e lock alla versione indicata della libreria |
+| `npm run gen:catalog`    | Libreria: genera `docs/catalogo` (README, schede, catalogo.json) da schemi, meta e fixture |
+| `npm run screenshots`    | Libreria: build, anteprima e screenshot di ogni variante in `docs/catalogo/img` |
+| `npm run catalog`        | Libreria: `gen:catalog` + `screenshots`           |
+| `npm run check:blocks`   | Libreria: contratto dei blocchi; fallisce anche se `docs/catalogo` non è aggiornato o manca uno screenshot (`check:catalog` è lo stesso) |
+| `npm run check:template` | Libreria: il template inizializzato come sito deve fallire `qa --strict` solo per i segnaposto (job CI `template-as-site`) |
+| `npm run release -- vX.Y.Z` | Libreria: versione in `library.manifest.json` e `CHANGELOG.md`, `gen:catalog`, `screenshots`, `check`, commit e tag (working tree pulito; push a mano) |
 | `npm run cms:local`      | `decap-server` per provare `/admin/` in locale, senza GitHub |
 
 Per gli agenti: avvia il server di sviluppo in background con `npx astro dev --background` e gestiscilo con `astro dev stop`, `astro dev status` e `astro dev logs`.

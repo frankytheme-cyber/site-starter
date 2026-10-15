@@ -19,9 +19,10 @@ import { decap } from './decap.ts';
 import { interactive } from './interactive.ts';
 import { lighthouse } from './lighthouse.ts';
 import { links } from './links.ts';
-import { lock, LOCK_FILE } from './lock.ts';
+import { isLibraryMode } from '../../src/core/mode.ts';
+import { lock } from './lock.ts';
 import { freePort, startPreview, stopPreview } from './lib/preview.ts';
-import { DIST, isLibrary, ROOT } from './lib/project.ts';
+import { DIST, ROOT } from './lib/project.ts';
 import {
 	type CheckContext,
 	type CheckFn,
@@ -58,11 +59,12 @@ const CHECKS: Record<string, CheckDefinition> = {
 	contrast: { run: contrast },
 	blocks: {
 		run: blocks,
-		skip: ({ isLibrary: library }) => (library ? undefined : 'solo nella libreria (manca src/pages/catalogo)'),
+		skip: ({ isLibrary: library }) => (library ? undefined : 'solo nella libreria, con SITE_STARTER_LIBRARY=1'),
 	},
+	// Nei siti cliente un blocks.lock.json mancante è un errore: il sito non è stato inizializzato.
 	lock: {
 		run: lock,
-		skip: ({ root }) => (existsSync(join(root, LOCK_FILE)) ? undefined : `nessun ${LOCK_FILE}`),
+		skip: ({ isLibrary: library }) => (library ? 'solo nei siti cliente' : undefined),
 	},
 	recipes: { run: recipes },
 	build: { run: build },
@@ -108,7 +110,8 @@ const port = needsServer ? await freePort() : undefined;
 const context: CheckContext = {
 	root: ROOT,
 	strict,
-	isLibrary: isLibrary(),
+	// Prima di avviare build e anteprima: legge anche .env, così i processi figli ereditano la modalità.
+	isLibrary: isLibraryMode(),
 	// Nella suite qa la build usa questo indirizzo come site (SITE_URL), così canonical e og:url restano sull'anteprima.
 	baseUrl: port ? `http://127.0.0.1:${port}/` : undefined,
 	reportsDir: join(ROOT, 'reports'),

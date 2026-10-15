@@ -6,8 +6,10 @@ export type Json = string | number | boolean | null | Json[] | { [key: string]: 
 export type JsonObject = { [key: string]: Json };
 export type Path = (string | number)[];
 
+/** Segnaposto del template. og-DA-COMPILARE è l'immagine per i social di prova (src/assets/images/og-DA-COMPILARE.jpg). */
 export const PLACEHOLDERS: [RegExp, string][] = [
-	[/DA-COMPILARE/i, 'DA-COMPILARE'],
+	[/og-DA-COMPILARE/i, 'og-DA-COMPILARE'],
+	[/(?<!og-)DA-COMPILARE/i, 'DA-COMPILARE'],
 	[/\blorem\b|\bipsum\b/i, 'lorem ipsum'],
 	[/\bTODO\b/, 'TODO'],
 	[/\[(?:…|\.{3})\]/, '[…]'],

@@ -9,4 +9,4 @@ Ogni check è un file che esporta una funzione `(context) => Finding[]` (formato
 - `links.ts`, `a11y.ts`, `interactive.ts`, `lighthouse.ts`: sul sito servito da `astro preview` (suite qa).
 
 `lib/`: formato dei report, percorsi del progetto, lettura di ricette e link (`content.ts`), caricamento dei moduli con Vite (`vite.ts`), server di anteprima (`preview.ts`, usato anche da `scripts/screenshots.ts`).
-`lock.ts --write` (`npm run lock:write`) registra gli hash delle cartelle gestite in `blocks.lock.json`, quando si installa o aggiorna la libreria in un sito cliente.
+`lock.ts` legge il manifest e scrive `blocks.lock.json` (versione della libreria e hash di cartelle e file gestiti) per `scripts/site-init.ts` e `scripts/blocks-sync.ts`: nei siti il lock non si scrive a mano. La modalità (libreria o sito) viene da `src/core/mode.ts`; `scripts/template-as-site.ts` (`npm run check:template`) prova il template come sito cliente.

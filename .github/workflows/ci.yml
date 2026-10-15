@@ -1,7 +1,11 @@
 # Controlli automatici: docs/controlli.md.
 # - check: su ogni push (e sulle pull request), suite "check": statici + build.
 # - qa: solo sulle pull request, dopo check: link, accessibilità, interattivi, Lighthouse.
-# Sulle pull request verso main entrambi usano --strict (regole di pubblicazione).
+# - template-as-site: solo nella libreria e sulle pull request, dopo check: il template, copiato e
+#   inizializzato come sito cliente, deve fallire qa --strict solo per i segnaposto attesi.
+# Sulle pull request verso main check e qa usano --strict (regole di pubblicazione).
+# Modalità (src/core/mode.ts): la variabile del repository SITE_STARTER_LIBRARY vale 1 solo nella
+# libreria site-starter; nei siti cliente non c'è (docs/siti-cliente.md).
 name: CI
 
 on:
@@ -13,6 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  SITE_STARTER_LIBRARY: ${{ vars.SITE_STARTER_LIBRARY }}
   STRICT_FLAG: ${{ github.event_name == 'pull_request' && github.base_ref == 'main' && '--strict' || '' }}
   # Repo per la configurazione di Decap (scripts/gen-decap-config.ts).
   DECAP_REPO: ${{ github.repository }}
@@ -87,4 +92,52 @@ jobs:
         with:
           name: reports-qa
           path: reports/
+          if-no-files-found: ignore
+
+  template-as-site:
+    name: template-as-site
+    if: vars.SITE_STARTER_LIBRARY == '1' && github.event_name == 'pull_request'
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Versione di Playwright
+        id: playwright
+        run: echo "version=$(node -p 'require("playwright/package.json").version')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache dei browser di Playwright
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      - name: Chromium e dipendenze di sistema
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Solo dipendenze di sistema (Chromium dalla cache)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      # Copia in una cartella temporanea, senza SITE_STARTER_LIBRARY né DECAP_REPO: site:init e
+      # qa --strict, che deve fallire esclusivamente per DA-COMPILARE e og-DA-COMPILARE.
+      - name: Template come sito cliente
+        run: npm run check:template
+
+      - name: Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-template-as-site
+          path: reports/template-as-site/
           if-no-files-found: ignore

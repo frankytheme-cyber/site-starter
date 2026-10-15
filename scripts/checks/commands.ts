@@ -2,7 +2,8 @@
  * astro-check e build: due comandi del progetto, con l'esito tradotto in Finding.
  */
 import { spawn } from 'node:child_process';
-import { resolve } from 'node:path';
+import { existsSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { type CheckContext, collector } from './lib/report.ts';
 import { rel } from './lib/project.ts';
 
@@ -37,11 +38,21 @@ export async function astroCheck({ root }: CheckContext) {
 /**
  * build: npm run build (con il prebuild che rigenera la configurazione di Decap).
  * Nella suite qa SITE_URL punta al server di anteprima: canonical e Open Graph restano sullo stesso host.
+ * In un sito cliente il catalogo della libreria (/catalogo) non deve essere nel build.
  */
-export async function build({ root, baseUrl }: CheckContext) {
+export async function build({ root, baseUrl, isLibrary }: CheckContext) {
 	const { findings, error } = collector('build');
 	const { code, output } = await exec('npm', ['run', 'build'], root, baseUrl ? { SITE_URL: baseUrl } : {});
-	if (code === 0) return findings;
+	if (code === 0) {
+		if (!isLibrary && existsSync(join(root, 'dist/catalogo'))) {
+			error({
+				file: 'dist/catalogo',
+				message: 'il catalogo della libreria è nel build del sito',
+				hint: 'in un sito cliente SITE_STARTER_LIBRARY non va impostata, e src/library non deve esserci (npm run site:init)',
+			});
+		}
+		return findings;
+	}
 
 	// L'errore è il blocco di righe dopo l'ultima riga di log ("12:00:00 [build] ...", "> npm run ..."),
 	// fino allo stack trace.

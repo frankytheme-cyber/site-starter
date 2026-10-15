@@ -25,7 +25,9 @@
     "screenshots": "node scripts/screenshots.ts",
     "catalog": "npm run gen:catalog && npm run screenshots",
     "release": "node scripts/release.ts",
-    "lock:write": "node scripts/checks/lock.ts --write",
+    "site:init": "node scripts/site-init.ts",
+    "blocks:sync": "node scripts/blocks-sync.ts",
+    "check:template": "node scripts/template-as-site.ts",
     "cms:local": "node scripts/cms-local.ts"
   },
   "dependencies": {

@@ -11,6 +11,11 @@ export interface SiteConfig {
 		oauthBaseUrl: string;
 		/** Ramo su cui il CMS pubblica le modifiche. */
 		branch: string;
+		/**
+		 * Repository GitHub del sito ("org/nome") in cui il CMS salva le modifiche. Lo scrive
+		 * npm run site:init; senza, gen:decap lo ricava da DECAP_REPO, da Vercel o dal remote "origin".
+		 */
+		repo?: string;
 	};
 	/** Credito in fondo al footer colonne (es. chi ha realizzato il sito); senza, non compare. */
 	credit?: {

@@ -1,55 +1,103 @@
 /**
- * lock (solo se esiste blocks.lock.json): nei siti cliente le cartelle "managed" di
- * library.manifest.json sono in sola lettura. Confronta l'hash sha256 di ogni file con quello
- * registrato in blocks.lock.json quando la libreria è stata installata o aggiornata.
+ * lock (siti cliente): le cartelle e i file "managed" di library.manifest.json sono in sola lettura.
+ * Confronta l'hash sha256 di ogni file con quello registrato in blocks.lock.json, che scrivono solo
+ * npm run site:init (alla creazione del sito) e npm run blocks:sync (a ogni aggiornamento della
+ * libreria), insieme alla versione installata.
  *
  * Uso: npm run check:lock
- *      npm run lock:write   rigenera blocks.lock.json (solo quando si installa o aggiorna la libreria)
  */
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, relative } from 'node:path';
 import { type CheckContext, collector } from './lib/report.ts';
-import { readJson, rel, ROOT, walk } from './lib/project.ts';
+import { readJson, walk } from './lib/project.ts';
 
 export const LOCK_FILE = 'blocks.lock.json';
+export const MANIFEST_FILE = 'library.manifest.json';
 const IGNORED = new Set(['.DS_Store', 'Thumbs.db']);
 
-interface Manifest {
+export interface Manifest {
+	version: string;
+	/** Repository della libreria, da cui blocks:sync scarica le versioni. */
+	repository?: string;
+	/** Cartelle della libreria: nei siti cliente si cambiano solo con blocks:sync. */
 	managed: string[];
+	/** File singoli della libreria, come le cartelle. */
+	managedFiles?: string[];
+	/** Dentro le cartelle gestite, ma né controllati né copiati. */
 	exclude?: string[];
+	/** Solo nella libreria: site:init li toglie, blocks:sync non li copia. */
+	libraryOnly?: string[];
+	/** Script di package.json solo della libreria: site:init e blocks:sync non li lasciano nei siti. */
+	libraryScripts?: string[];
 }
-interface Lock {
+export interface Lock {
+	/** Versione della libreria installata (vX.Y.Z senza "v"). */
+	version?: string;
 	generatedAt: string;
 	files: Record<string, string>;
 }
 
-/** sha256 di ogni file nelle cartelle gestite (escluse quelle in manifest.exclude). */
-export function hashManaged(root: string): Record<string, string> {
-	const manifest = readJson<Manifest>(join(root, 'library.manifest.json'));
-	const excluded = manifest.exclude ?? [];
-	const files = manifest.managed.flatMap((dir) =>
-		walk(join(root, dir), (file) => !IGNORED.has(file.split(/[\\/]/).pop() ?? '')),
+export const readManifest = (root: string) => readJson<Manifest>(join(root, MANIFEST_FILE));
+
+const toPosix = (path: string) => path.split(/[\\/]/).join('/');
+const isExcluded = (file: string, manifest: Manifest) => (manifest.exclude ?? []).some((dir) => file === dir || file.startsWith(`${dir}/`));
+
+/** File gestiti (relativi alla radice, ordinati): quelli delle cartelle e i file singoli che esistono. */
+export function managedFiles(root: string, manifest: Manifest = readManifest(root)): string[] {
+	const fromDirs = manifest.managed.flatMap((dir) =>
+		walk(join(root, dir), (file) => !IGNORED.has(file.split(/[\\/]/).pop() ?? '')).map((file) => toPosix(relative(root, file))),
 	);
-	return Object.fromEntries(
-		files
-			.map((file) => rel(file))
-			.filter((file) => !excluded.some((dir) => file === dir || file.startsWith(`${dir}/`)))
-			.sort()
-			.map((file) => [file, createHash('sha256').update(readFileSync(join(root, file))).digest('hex')]),
-	);
+	const single = (manifest.managedFiles ?? []).filter((file) => existsSync(join(root, file)));
+	return [...new Set([...fromDirs, ...single])].filter((file) => !isExcluded(file, manifest)).sort();
+}
+
+const sha256 = (path: string) => createHash('sha256').update(readFileSync(path)).digest('hex');
+
+/** sha256 di ogni file gestito. */
+export function hashManaged(root: string, manifest: Manifest = readManifest(root)): Record<string, string> {
+	return Object.fromEntries(managedFiles(root, manifest).map((file) => [file, sha256(join(root, file))]));
+}
+
+export const readLock = (root: string) => readJson<Lock>(join(root, LOCK_FILE));
+
+/** Scrive blocks.lock.json con la versione installata e gli hash attuali (site:init, blocks:sync). */
+export function writeLock(root: string, version: string): Lock {
+	const lock: Lock = { version, generatedAt: new Date().toISOString(), files: hashManaged(root) };
+	writeFileSync(join(root, LOCK_FILE), `${JSON.stringify(lock, null, 2)}\n`);
+	return lock;
 }
 
 export function lock({ root }: CheckContext) {
 	const { findings, error } = collector('lock');
-	const expected = readJson<Lock>(join(root, LOCK_FILE)).files;
+	if (!existsSync(join(root, LOCK_FILE))) {
+		// Il check gira solo nei siti cliente (run.ts): un sito senza lock non è stato inizializzato.
+		const looksLikeLibrary = existsSync(join(root, 'src/library'));
+		error({
+			file: LOCK_FILE,
+			message: looksLikeLibrary
+				? 'manca: c’è src/library, quindi è la libreria senza SITE_STARTER_LIBRARY=1, o un sito appena copiato'
+				: 'manca: il sito non è stato inizializzato',
+			hint: looksLikeLibrary
+				? 'nella libreria metti SITE_STARTER_LIBRARY=1 in .env (vedi .env.example); in un sito copiato dal template esegui npm run site:init'
+				: 'esegui npm run site:init (una volta sola, alla creazione del sito)',
+		});
+		return findings;
+	}
+
+	const { files: expected, version } = readLock(root);
 	const actual = hashManaged(root);
-	const hint = 'annulla la modifica (git checkout -- <file>) e proponila nella repo site-starter';
+	const library = version ? `libreria v${version}` : 'libreria';
+	const hint = 'annulla la modifica (git checkout -- <file>) e proponila nella repo site-starter; per aggiornare la libreria: npm run blocks:sync -- vX.Y.Z';
 
 	for (const [file, hash] of Object.entries(expected)) {
-		if (!(file in actual)) error({ file, message: 'file della libreria eliminato: modifica locale vietata, va fatta in site-starter', hint });
-		else if (actual[file] !== hash) error({ file, message: 'modifica locale vietata, va fatta in site-starter', hint });
+		if (!(file in actual)) {
+			const message = existsSync(join(root, file))
+				? `file della ${library} tolto dai file gestiti (library.manifest.json modificato): vietato, va fatto in site-starter`
+				: `file della ${library} eliminato: modifica locale vietata, va fatta in site-starter`;
+			error({ file, message, hint });
+		}
+		else if (actual[file] !== hash) error({ file, message: `modifica locale a un file della ${library}: vietata, va fatta in site-starter`, hint });
 	}
 	for (const file of Object.keys(actual)) {
 		if (!(file in expected)) {
@@ -57,12 +105,4 @@ export function lock({ root }: CheckContext) {
 		}
 	}
 	return findings;
-}
-
-// Eseguito come comando con --write: registra lo stato attuale delle cartelle gestite.
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url) && process.argv.includes('--write')) {
-	const files = hashManaged(ROOT);
-	const lockFile: Lock = { generatedAt: new Date().toISOString(), files };
-	writeFileSync(join(ROOT, LOCK_FILE), `${JSON.stringify(lockFile, null, 2)}\n`);
-	console.log(`Scritto ${LOCK_FILE} (${Object.keys(files).length} file).`);
 }

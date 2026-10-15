@@ -52,7 +52,7 @@ In `src/site.config.ts` metti l'indirizzo del worker in `cms.oauthBaseUrl` (Deca
 
 1. Il repository del sito è su GitHub e collegato a Vercel.
 2. Il dominio del sito è nell'elenco dei domini autorizzati del worker.
-3. `npm run gen:decap` (o la build) genera `config.yml` con il repository giusto; commit del file.
+3. `npm run site:init` scrive il repository del sito in `src/site.config.ts` (`cms.repo`) e genera `config.yml`; commit del file. Dopo, `npm run gen:decap` (o la build) lo rigenera con lo stesso repository. Senza `cms.repo` vale `DECAP_REPO`, poi Vercel, poi il remote `origin` su GitHub; se non si trova niente il repository è `DA-COMPILARE/repo-github`, con un avviso (errore con `--strict`).
 4. Protezione del ramo `main` (consigliata): richiedi che la build di Vercel passi prima di unire, senza revisioni obbligatorie. Con le revisioni obbligatorie il cliente non riesce a pubblicare dal CMS.
 
 ### Invitare il cliente
