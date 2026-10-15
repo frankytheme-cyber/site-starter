@@ -50,6 +50,7 @@ Note:
 - **Messaggi dei contenuti.** Ricette e impostazioni si validano con l'error map italiana di `src/core/content-validation.ts`, sia in `recipes` sia nella build (i loader di `src/content.config.ts`): sezioni ed elementi si contano da 1, con il tipo del blocco.
 - **Check `blocks` incompleto.** Un blocco con un file mancante o che non si carica non ferma il controllo degli altri; il confronto con `docs/catalogo` in quel caso è saltato, con un avviso.
 - **Build della suite qa.** Usa `SITE_URL` = indirizzo dell'anteprima, così canonical e `og:url` restano sullo stesso host durante i controlli. Quella `dist/` non va pubblicata a mano: Vercel ricostruisce da sé.
+- **Font e CLS.** I font del tema arrivano con `font-display: swap`: finché non sono scaricati il testo usa un ripiego con le loro misure (`"<font> ripiego"` in `src/themes/fonts/`, generato da `scripts/font-fallbacks.ts`), così lo scambio non sposta la pagina anche dove mancano Georgia e i font di sistema di macOS (Linux, Android, il runner della CI).
 - **Avvisi del catalogo.** Nella libreria axe segnala `landmark-unique` sulle pagine del catalogo, che mostrano più header e footer uno sotto l'altro.
 - **Header e footer su ogni pagina.** Li disegna `BaseLayout` da `layout.json`: `links` segue anche le voci del menu e i link del footer, quindi devono portare a pagine e ancore che esistono (per questo il template ha `privacy.json` e `cookie.json`). `interactive` prova l'header sulla prima pagina del sito.
 - **Sottomenu.** Un sito cliente con un menu senza sottomenu riceve un avviso da `interactive`, non un errore.
@@ -67,7 +68,9 @@ Note:
 - job **qa** sulle pull request e a mano, dopo check (con cache npm e cache dei browser di Playwright);
 - job **template-as-site**, solo nella libreria, sulle pull request e a mano, dopo check: copia la repo in una cartella temporanea senza la variabile, esegue `site:init` e `qa --strict`, e passa solo se fallisce esclusivamente per i segnaposto attesi (`DA-COMPILARE`, `og-DA-COMPILARE`). È `npm run check:template`;
 - sulle pull request verso `main` check e qa con `--strict`;
-- `reports/` caricata come artifact (`reports-check`, `reports-qa`, `reports-template-as-site`) anche quando il job fallisce.
+- `reports/` caricata come artifact (`reports-check`, `reports-qa`, `reports-template-as-site`) anche quando il job fallisce;
+- quando qa o template-as-site falliscono, il passo «Motivo del fallimento» (`scripts/checks/ci-summary.ts`) stampa gli errori del report nel log e li mostra come annotazioni `::error` nella pagina della pull request, senza scaricare gli artifact; in template-as-site i segnaposto attesi restano solo nel log;
+- runner fissato a `ubuntu-24.04`, non `ubuntu-latest`: un'immagine nuova cambia pacchetti e font di sistema, e con loro le misure di Lighthouse e axe. Si passa a una versione nuova con una pull request apposta. Le azioni sono all'ultima versione maggiore, tutte su Node 24.
 
 ## Proteggere `main` su GitHub
 

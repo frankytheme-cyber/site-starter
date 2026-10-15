@@ -3,7 +3,51 @@
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/inter/wght-italic.css";
 
+/*
+ * Ripieghi con le misure dei font veri, finché non sono scaricati (font-display: swap): lo scambio
+ * non sposta il testo (CLS). Generati da scripts/font-fallbacks.ts, non scritti a mano.
+ */
+/* Manrope Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts manrope:sans). */
+@font-face {
+	font-family: "Manrope Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 102.3%;
+	ascent-override: 104.2%;
+	descent-override: 29.3%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Manrope Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 100.5%;
+	ascent-override: 106.1%;
+	descent-override: 29.8%;
+	line-gap-override: 0%;
+}
+
+/* Inter Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts inter:sans). */
+@font-face {
+	font-family: "Inter Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 106.5%;
+	ascent-override: 91.0%;
+	descent-override: 22.6%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Inter Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 102.0%;
+	ascent-override: 95.0%;
+	descent-override: 23.6%;
+	line-gap-override: 0%;
+}
+
 [data-fonts="moderno"] {
-	--heading-font: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
-	--body-font: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+	--heading-font: "Manrope Variable", "Manrope Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+	--body-font: "Inter Variable", "Inter Variable ripiego", ui-sans-serif, system-ui, sans-serif;
 }

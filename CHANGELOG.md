@@ -2,7 +2,12 @@
 
 Le modifiche della libreria site-starter, una sezione per versione. `npm run release` dà alla sezione «Non rilasciato» il titolo della versione; `npm run blocks:sync` mostra ai siti cliente le voci di «### Breaking» delle versioni che installa.
 
-Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
+Formato: `
+
+### Correzioni
+
+- CLS dei font: ogni coppia di `src/themes/fonts/` ha ripieghi con le misure dei font veri (`"<font> ripiego"`, generati da `scripts/font-fallbacks.ts`). Prima, dove mancano Georgia e i font di sistema di macOS (Linux, Android, il runner della CI), lo scambio dei font spostava i titoli: CLS 0,074 su `/privacy/` in CI, oltre il limite di 0,05 di Lighthouse.
+## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
 ## Non rilasciato
 
@@ -28,6 +33,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 - CI: il job `template-as-site` gira con `SITE_STARTER_LIBRARY` vuota, cioè da sito cliente; lo script riconosce la libreria da `src/library`. Il messaggio di `lock` spiega come creare la variabile di repository su GitHub.
 - `check:tokens` vieta le classi della palette di Tailwind (`bg-blue-600`, `text-gray-500`, `fill-*`, `stroke-*`, `ring-*`, `from-`/`via-`/`to-*`...) anche se non generano CSS, e guarda anche `src/layouts` e i file `.ts`.
 - Un link speciale senza il suo dato in `site.json` (es. `@whatsapp` senza `whatsapp`) dice pagina, sezione e campo: «pagina index.json → sezione 3 (cta) → primary.href: @whatsapp ma site.json non ha whatsapp». `check:recipes` lo dà come errore prima della build, per le ricette e per `navigation.json`; la build si ferma con lo stesso messaggio prima di disegnare la pagina o l’header.
+- CI: runner fissato a `ubuntu-24.04` (non più `ubuntu-latest`); azioni all'ultima versione maggiore su Node 24 (`checkout@v7`, `setup-node@v7`, `cache@v6`, `upload-artifact@v7`); quando qa o template-as-site falliscono, il passo «Motivo del fallimento» mostra gli errori nel log e come annotazioni `::error` (`scripts/checks/ci-summary.ts`).
 - Console di `check` e `qa`: per ogni check prima gli errori, poi tutti gli avvisi, poi i segnaposto riassunti («55 segnaposto DA-COMPILARE in 6 file — dettaglio in reports/qa.md»). Gli avvisi non sono più limitati ai primi 10; in `reports/qa.md` i segnaposto stanno in fondo a ogni check, in «Segnaposto».
 - `.github/CODEOWNERS`: con «Require review from Code Owners», le pull request che toccano `blocks.lock.json`, `.github/`, `scripts/`, `library.manifest.json` o `package.json` richiedono l’approvazione del proprietario della libreria.
 - CI con `permissions: contents: read` e una sola esecuzione per branch (`concurrency`).

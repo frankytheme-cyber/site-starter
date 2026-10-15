@@ -28,6 +28,9 @@ concurrency:
   group: ci-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
+# Versioni delle azioni: l'ultima maggiore di ognuna, tutte su Node 24 (runs.using: node24). Le
+# azioni su Node 20 sono deprecate sui runner di GitHub.
+
 env:
   # Tutti i job: 1 nella libreria, vuota nei siti cliente.
   SITE_STARTER_LIBRARY: ${{ vars.SITE_STARTER_LIBRARY }}
@@ -38,12 +41,16 @@ env:
 jobs:
   check:
     name: check
-    runs-on: ubuntu-latest
+    # Runner fissato, non ubuntu-latest: dal 19 ottobre 2026 ubuntu-latest passa a Ubuntu 26.04, e
+    # con un'altra immagine cambiano da un giorno all'altro pacchetti di sistema e font, quindi le
+    # misure di Lighthouse (CLS) e di axe. Il passaggio a una versione nuova si fa qui, su una pull
+    # request, per tutti e tre i job insieme.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -55,7 +62,7 @@ jobs:
 
       - name: Report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: reports-check
           path: reports/
@@ -65,12 +72,12 @@ jobs:
     name: qa
     if: github.event_name != 'push'
     needs: check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -83,7 +90,7 @@ jobs:
 
       - name: Cache dei browser di Playwright
         id: playwright-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
@@ -99,9 +106,15 @@ jobs:
       - name: npm run qa ${{ env.STRICT_FLAG }}
         run: npm run qa -- $STRICT_FLAG
 
+      # Il motivo del fallimento nel log e come annotazioni ::error: si legge su GitHub senza
+      # scaricare reports-qa (scripts/checks/ci-summary.ts).
+      - name: Motivo del fallimento
+        if: failure()
+        run: node scripts/checks/ci-summary.ts reports/qa.json
+
       - name: Report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: reports-qa
           path: reports/
@@ -113,14 +126,14 @@ jobs:
     # cliente: la variabile vuota dà la modalità sito anche allo script che prepara la copia.
     if: vars.SITE_STARTER_LIBRARY == '1' && github.event_name != 'push'
     needs: check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       SITE_STARTER_LIBRARY: ""
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -133,7 +146,7 @@ jobs:
 
       - name: Cache dei browser di Playwright
         id: playwright-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
@@ -151,9 +164,14 @@ jobs:
       - name: Template come sito cliente
         run: npm run check:template
 
+      # Come in qa; qui i segnaposto sono attesi e restano solo nel log.
+      - name: Motivo del fallimento
+        if: failure()
+        run: node scripts/checks/ci-summary.ts reports/template-as-site/qa.json --placeholders-expected
+
       - name: Report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: reports-template-as-site
           path: reports/template-as-site/
