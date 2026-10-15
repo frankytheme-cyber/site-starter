@@ -1,10 +1,11 @@
 /**
- * catalog (solo nella libreria): docs/catalogo corrisponde a schemi, schede e fixture.
- * - i .md generati sono uguali a quelli che scriverebbe npm run gen:catalog (la sezione «Regole di
- *   composizione» del README è scritta a mano e non conta);
- * - nessuna pagina in più in docs/catalogo/blocchi (blocco eliminato o rinominato);
- * - schede coerenti: vincoli tra campi (fieldRules) su campi che esistono e presenti se lo schema ha
- *   refine/superRefine, colori delle schede delle palette uguali al CSS, una scheda per preset;
+ * Parte del check "blocks" (solo nella libreria): docs/catalogo corrisponde a schemi, schede e fixture.
+ * Rigenera in memoria tutto quello che scriverebbe npm run gen:catalog e lo confronta coi file.
+ * - .md e catalogo.json uguali a quelli generati (la sezione «Regole di composizione» del README è
+ *   scritta a mano e non conta); nessuna pagina in più (blocco eliminato o rinominato);
+ * - schede coerenti (i problemi di gen-catalog): varianti con descrizione e «quando usarla», ogni
+ *   refine/superRefine col suo // rule: riportato in meta.rules, fieldRules su campi e varianti che
+ *   esistono, mood di 2-4 aggettivi, colori delle palette uguali al CSS, una scheda per preset;
  * - ogni screenshot citato c'è: due per variante (desktop e mobile) e uno per palette;
  * - le ricette tipo (docs/catalogo/ricette-tipo/*.json) sono valide per lo schema delle pagine, con
  *   immagini che esistono e link interni a pagine e ancore dell'insieme.
@@ -12,17 +13,18 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
-import { CATALOG_DIR, generateCatalog, staleBlockPages } from '../gen-catalog.ts';
+import { CATALOG_DIR, generateCatalog, stalePages } from '../gen-catalog.ts';
 import { eachString, fieldPath, type Json, lastKey, readJsonFile, trimSlash } from './lib/content.ts';
 import { rel } from './lib/project.ts';
-import { type CheckContext, collector } from './lib/report.ts';
+import type { collector } from './lib/report.ts';
 import { withProjectModules } from './lib/vite.ts';
 
 const HINT = 'esegui npm run gen:catalog (o npm run catalog) e fai il commit di docs/catalogo';
 const RECIPES_DIR = 'docs/catalogo/ricette-tipo';
 
-export async function catalog({ root }: CheckContext) {
-	const { findings, error, warning } = collector('catalog');
+type Report = Pick<ReturnType<typeof collector>, 'error' | 'warning'>;
+
+export async function checkCatalog(root: string, { error, warning }: Report) {
 	const { files, images, problems } = await generateCatalog();
 
 	for (const problem of problems) {
@@ -32,7 +34,7 @@ export async function catalog({ root }: CheckContext) {
 	// Senza file generati (es. manca la scheda di un preset) il confronto non avrebbe senso.
 	if (Object.keys(files).length === 0) {
 		await checkRecipes(root, error);
-		return findings;
+		return;
 	}
 
 	for (const [path, content] of Object.entries(files)) {
@@ -47,8 +49,8 @@ export async function catalog({ root }: CheckContext) {
 			hint: HINT,
 		});
 	}
-	for (const path of staleBlockPages(files)) {
-		error({ file: rel(join(CATALOG_DIR, path)), message: 'pagina di un blocco che non esiste più', hint: HINT });
+	for (const path of stalePages(files)) {
+		error({ file: rel(join(CATALOG_DIR, path)), message: 'file che il generatore non produce (scritto a mano o di un blocco che non c’è più)', hint: `${HINT}: gen:catalog lo toglie` });
 	}
 
 	const imgDir = join(CATALOG_DIR, 'img');
@@ -61,7 +63,6 @@ export async function catalog({ root }: CheckContext) {
 	}
 
 	await checkRecipes(root, error);
-	return findings;
 }
 
 /** Ricette tipo: <insieme>-<pagina>.json, dove la pagina "home" è "/" e le altre "/<pagina>". */

@@ -13,11 +13,19 @@ export const meta: BlockMeta = {
 	version: '1.1.0',
 	source: { from: 'originale' },
 	variants: {
-		banner: 'Testo centrato e 1-2 pulsanti; con tone primary diventa una fascia piena. Molto visibile: al massimo una per pagina.',
-		'split-contatto':
-			'Testo a sinistra e pulsanti a destra; con showContacts aggiunge Chiama e WhatsApp. Con tone muted è adatta a chiudere la pagina.',
+		banner: {
+			description: 'Testo centrato e uno o due pulsanti; con tone primary diventa una fascia piena.',
+			whenToUse: 'L’invito principale della pagina, verso la fine: al massimo uno per pagina.',
+		},
+		'split-contatto': {
+			description: 'Testo a sinistra e pulsanti a destra; con showContacts aggiunge Chiama e WhatsApp.',
+			whenToUse: 'Per chiudere la pagina con i recapiti, di solito con tone muted (contatti, fondo della home).',
+		},
 	},
+	rules: [
+		'Con showContacts il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp.',
+	],
 	fieldRules: {
-		showContacts: 'Il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp.',
+		showContacts: { note: 'Il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp.' },
 	},
 };

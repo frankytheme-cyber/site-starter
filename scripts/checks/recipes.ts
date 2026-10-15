@@ -10,6 +10,7 @@
  */
 import { existsSync } from 'node:fs';
 import { basename, join } from 'node:path';
+import { MAX_SECTIONS } from '../../src/core/recipe-rules.ts';
 import { type CheckContext, collector, type Finding } from './lib/report.ts';
 import {
 	eachObject,
@@ -27,7 +28,6 @@ import {
 	type Recipe,
 } from './lib/content.ts';
 
-const MAX_SECTIONS = 12;
 
 /** Chiavi che non contengono testo per chi visita: niente controlli sul contenuto. */
 const NOT_TEXT = new Set(['$schema', 'type', 'id', 'tone', 'variant', 'icon']);

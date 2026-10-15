@@ -15,12 +15,21 @@ export const meta: BlockMeta = {
 	source: { from: 'originale' },
 	interactive: true,
 	variants: {
-		semplice: 'Logo e menu; su desktop a destra c’è il telefono. Per siti con poche pagine o senza un’azione principale.',
-		'con-cta':
-			'Logo, menu e un pulsante in evidenza a destra (la cta di navigation.json), ripetuto nel menu mobile. Per spingere preventivi o prenotazioni.',
+		semplice: {
+			description: 'Logo e menu; su desktop a destra c’è il telefono.',
+			whenToUse: 'Siti con poche pagine o senza un’azione principale da spingere.',
+		},
+		'con-cta': {
+			description: 'Logo, menu e un pulsante in evidenza a destra (la cta di navigation.json), ripetuto nel menu mobile.',
+			whenToUse: 'Per spingere preventivi o prenotazioni da ogni pagina.',
+		},
 	},
+	rules: [
+		'La variante con-cta richiede la cta in navigation.json.',
+		'Il logo immagine richiede il logo in site.json.',
+	],
 	fieldRules: {
-		variant: 'con-cta richiede la cta in navigation.json.',
-		logo: 'immagine richiede il logo in site.json; vuoto: immagine se il logo c’è, altrimenti il nome.',
+		variant: { note: 'con-cta richiede la cta in navigation.json.' },
+		logo: { note: 'immagine richiede il logo in site.json.' },
 	},
 };

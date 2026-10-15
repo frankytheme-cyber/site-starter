@@ -14,7 +14,13 @@ export const meta: BlockMeta = {
 	source: { from: 'originale' },
 	interactive: true,
 	variants: {
-		faq: 'Domande e risposte centrate, con i dati strutturati FAQPage per Google. Una sola faq per pagina.',
-		contenuti: 'Titolo a sinistra e voci a destra (sotto su mobile). Per sezioni di testo da aprire.',
+		faq: {
+			description: 'Domande e risposte centrate, con i dati strutturati FAQPage per Google.',
+			whenToUse: 'Per le domande frequenti: una sola faq per pagina.',
+		},
+		contenuti: {
+			description: 'Titolo a sinistra e voci a destra (sotto su mobile).',
+			whenToUse: 'Per testi di dettaglio da aprire: condizioni, tempi, preparazione del cantiere.',
+		},
 	},
 };

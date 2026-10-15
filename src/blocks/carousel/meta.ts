@@ -14,12 +14,21 @@ export const meta: BlockMeta = {
 	source: { from: 'originale' },
 	interactive: true,
 	variants: {
-		foto: 'Foto grandi con didascalia breve, quasi una per volta (due da tablet). Per i lavori finiti.',
-		card: 'Card con foto, titolo, testo e link facoltativo; una e un pezzo su mobile, fino a tre da desktop.',
+		foto: {
+			description: 'Foto grandi con didascalia breve, quasi una per volta (due da tablet).',
+			whenToUse: 'Per mostrare i lavori finiti, quando contano le immagini.',
+		},
+		card: {
+			description: 'Card con foto, titolo, testo e link facoltativo: una e un pezzo su mobile, fino a tre da desktop.',
+			whenToUse: 'Per progetti o casi da raccontare in breve, ciascuno con il suo testo.',
+		},
 	},
+	rules: [
+		'La variante card richiede titolo e testo in ogni elemento.',
+	],
 	fieldRules: {
-		'items[].title': 'Obbligatorio per la variante card; in foto è la didascalia.',
-		'items[].text': 'Obbligatorio per la variante card.',
-		'items[].cta': 'Mostrato solo nella variante card.',
+		'items[].title': { requiredFor: ['card'], note: 'In foto è la didascalia.' },
+		'items[].text': { requiredFor: ['card'] },
+		'items[].cta': { note: 'Mostrato solo nella variante card.' },
 	},
 };

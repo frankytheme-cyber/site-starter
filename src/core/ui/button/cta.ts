@@ -9,6 +9,14 @@ import { ICON_NAMES } from '@/core/icons';
 export const SPECIAL_HREFS = ['@telefono', '@whatsapp', '@email', '@mappa'] as const;
 export type SpecialHref = (typeof SPECIAL_HREFS)[number];
 
+/** Cosa diventa ogni link speciale e da quale campo di site.json lo prende (core/links.ts): per il catalogo. */
+export const SPECIAL_HREF_TARGETS: Record<SpecialHref, { becomes: string; from: string }> = {
+	'@telefono': { becomes: '`tel:` col numero senza spazi', from: 'phone' },
+	'@whatsapp': { becomes: 'chat `https://wa.me/`', from: 'whatsapp' },
+	'@email': { becomes: '`mailto:`', from: 'email' },
+	'@mappa': { becomes: 'ricerca dell’indirizzo su Google Maps', from: 'address' },
+};
+
 export const BUTTON_STYLES = ['primary', 'secondary', 'ghost', 'link'] as const;
 export type ButtonStyle = (typeof BUTTON_STYLES)[number];
 

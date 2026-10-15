@@ -26,7 +26,8 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 - **Blocchi di layout.** `header` e `footer` hanno `scope: "layout"` in `meta.ts`: non vanno nelle ricette (la build li rifiuta) ma si scelgono in `src/content/settings/layout.json` (variante e opzioni, schema in `src/core/layout.ts`) e li disegna `BaseLayout` su ogni pagina. Tutti gli altri blocchi hanno `scope: "page"`.
 - Menu del sito: solo in `src/content/settings/navigation.json`, letto con `getNavigation()` (`@/core/navigation`): voci e pulsante dell'header, gruppo `footer` con i link secondari e quelli legali (privacy, cookie).
 - Anteprima: `/catalogo` (tutti i blocchi con le loro fixture, selettori di palette, font e forma, «Copia JSON» per ogni variante), `/catalogo/<type>` e `/catalogo/<type>/<variante>/` (una variante da sola, `?palette=&fonts=&shape=`).
-- **Catalogo in `docs/catalogo/`** (generato da `npm run gen:catalog`, gestito dalla libreria): una scheda per blocco con varianti, screenshot, tabella dei campi ed esempio JSON (`blocchi/<tipo>.md`), primitive (`ui.md`), temi (`temi.md`), icone (`icone.md`), le **regole di composizione** (`README.md`) e le **ricette tipo** da copiare (`ricette-tipo/`). Per comporre una pagina parti da lì.
+- **Catalogo in `docs/catalogo/`** (generato da `npm run gen:catalog`, gestito dalla libreria, mai scritto a mano): `README.md` con versione della libreria, regole d'oro delle ricette, regole di composizione, blocchi, opzioni di `layout.json`, link speciali, temi e icone; una scheda per blocco (`blocchi/<tipo>.md`: quando usarlo, varianti con screenshot, campi, regole, esempio pronto); `catalogo.json` con gli stessi dati per le macchine; `ui.md` (primitive); le **ricette tipo** da copiare (`ricette-tipo/`, scritte a mano). Per comporre una pagina parti da lì.
+- **Schede dei blocchi per il catalogo.** In `meta.ts` ogni variante ha `description` e `whenToUse`; `rules` descrive a parole ogni regola tra campi; ogni `refine`/`superRefine` dello schema ha sopra un commento `// rule: <testo>` con lo stesso testo di una voce di `rules`. Senza, `gen:catalog` si ferma.
 - La radice di ogni blocco è `<Section>` (`tone`: `default`, `muted`, `primary`). Dentro usa sempre `text-fg`, `text-fg-muted`, `bg-primary`...: Section ridefinisce i token per il tono, così il contrasto resta quello verificato.
 - Immagini: solo file in `src/assets/images`. Nelle ricette il percorso è relativo al JSON (`"../../assets/images/foto.jpg"`), nelle fixture il file si importa; `alt` di almeno 5 caratteri che descrive la foto.
 - Icone: solo `<Icon name="..." />` (`@/core/ui/Icon.astro`) con gli alias di `src/core/icons.ts`, mai SVG scritti a mano; negli schemi `z.enum(ICON_NAMES)`. Elenco in `/catalogo/icone`; licenze in `docs/THIRD_PARTY_LICENSES.md`.
@@ -57,10 +58,11 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run check:recipes`  | Controlla ricette e dati del sito; `-- --strict` esce con errore |
 | `npm run gen:decap`      | Genera `public/admin/config.yml` dagli schemi (anche in `prebuild`) |
 | `npm run check:decap`    | Fallisce se `config.yml` non è aggiornato                  |
-| `npm run gen:catalog`    | Genera i .md di `docs/catalogo` da schemi, meta e fixture |
+| `npm run gen:catalog`    | Genera `docs/catalogo` (README, schede, catalogo.json) da schemi, meta e fixture |
 | `npm run screenshots`    | Build, anteprima e screenshot di ogni variante in `docs/catalogo/img` |
 | `npm run catalog`        | `gen:catalog` + `screenshots`                     |
-| `npm run check:catalog`  | Fallisce se `docs/catalogo` non è aggiornato o manca uno screenshot |
+| `npm run check:blocks`   | Contratto dei blocchi; fallisce anche se `docs/catalogo` non è aggiornato o manca uno screenshot (`check:catalog` è lo stesso) |
+| `npm run release -- vX.Y.Z` | Versione in `library.manifest.json`, `gen:catalog`, `screenshots`, `check`, commit e tag (working tree pulito; push a mano) |
 | `npm run cms:local`      | `decap-server` per provare `/admin/` in locale, senza GitHub |
 
 Per gli agenti: avvia il server di sviluppo in background con `npx astro dev --background` e gestiscilo con `astro dev stop`, `astro dev status` e `astro dev logs`.

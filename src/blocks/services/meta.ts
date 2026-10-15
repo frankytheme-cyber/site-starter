@@ -13,15 +13,29 @@ export const meta: BlockMeta = {
 	version: '1.1.0',
 	source: { from: 'originale' },
 	variants: {
-		'cards-icone':
-			'Griglia di card con icona, titolo e testo, su 2 o 3 colonne. Compatta e ordinata, non richiede foto.',
-		'cards-immagine': 'Griglia di card con una foto in alto. Più concreta, richiede una foto adatta per ogni servizio.',
-		alternato:
-			'Righe con foto e testo che si alternano a destra e a sinistra. Occupa più spazio: adatta alla pagina dei servizi.',
-		schede: 'Un servizio per scheda (su mobile elenco da aprire), con testo, foto facoltativa e link. Per servizi alternativi tra cui scegliere; non per servizi che tutti devono vedere.',
+		'cards-icone': {
+			description: 'Griglia di card con icona, titolo e testo, su 2 o 3 colonne.',
+			whenToUse: 'Servizi brevi e simili tra loro, quando non c’è una foto per ognuno.',
+		},
+		'cards-immagine': {
+			description: 'Griglia di card con una foto in alto.',
+			whenToUse: 'Quando c’è una foto adatta per ogni servizio: più concreta delle icone.',
+		},
+		alternato: {
+			description: 'Righe di foto e testo che si alternano a destra e a sinistra.',
+			whenToUse: 'Da 2 a 4 servizi da raccontare con calma, di solito nella pagina dei servizi.',
+		},
+		schede: {
+			description: 'Un servizio per scheda, con testo, foto facoltativa e link; su mobile un elenco da aprire.',
+			whenToUse: 'Servizi alternativi tra cui scegliere; non per servizi che tutti devono vedere.',
+		},
 	},
+	rules: [
+		'La variante cards-icone richiede l’icona in ogni servizio.',
+		'Le varianti cards-immagine e alternato richiedono la foto in ogni servizio.',
+	],
 	fieldRules: {
-		'items[].icon': 'Obbligatoria per la variante cards-icone; le altre non la mostrano.',
-		'items[].image': 'Obbligatoria per le varianti cards-immagine e alternato; facoltativa in schede; cards-icone non la mostra.',
+		'items[].icon': { requiredFor: ['cards-icone'], note: 'Le altre varianti non la mostrano.' },
+		'items[].image': { requiredFor: ['cards-immagine', 'alternato'], note: 'Facoltativa in schede; cards-icone non la mostra.' },
 	},
 };

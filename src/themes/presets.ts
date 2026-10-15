@@ -25,8 +25,8 @@ export type Theme = z.infer<typeof themeSchema>;
 export interface PresetMeta {
 	/** Nome leggibile. */
 	name: string;
-	/** Che impressione dà, in una frase. */
-	mood: string;
+	/** Che impressione dà: da 2 a 4 aggettivi (lo verifica npm run gen:catalog). */
+	mood: string[];
 	/** Settori e attività a cui si adatta meglio. */
 	adattoA: string[];
 }
@@ -50,6 +50,6 @@ export const COLOR_TOKENS = [
 export type ColorToken = (typeof COLOR_TOKENS)[number];
 
 export interface PaletteMeta extends PresetMeta {
-	/** Colori da mostrare nel catalogo, token → valore: uguali a quelli del CSS (lo verifica il check "catalog"). */
+	/** Colori da mostrare nel catalogo, token → valore: uguali a quelli del CSS (lo verifica il check "blocks"). */
 	colors: Partial<Record<ColorToken, string>>;
 }

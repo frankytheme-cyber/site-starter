@@ -25,6 +25,7 @@ export const schema = ({ image }: SchemaContext) =>
 			/** Obbligatoria per split e full; centered non la mostra. */
 			image: imageSchema(image).optional().describe('Foto|Obbligatoria per le varianti split e full'),
 		})
+		// rule: Le varianti split e full richiedono la foto (image).
 		.refine((props) => props.variant === 'centered' || props.image, {
 			message: 'le varianti split e full richiedono image',
 			path: ['image'],

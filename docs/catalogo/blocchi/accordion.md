@@ -1,58 +1,45 @@
 <!-- Generato da scripts/gen-catalog.ts (npm run gen:catalog): non modificare a mano. -->
 
-# Accordion
+# accordion — Accordion
 
-[← Catalogo](../README.md) · dal vivo: `/catalogo/accordion/`
-
-| Tipo | Scope | Versione | Interattivo | Categoria | Disegno |
-| --- | --- | --- | --- | --- | --- |
-| `accordion` | `page`: sezione delle ricette | 1.0.0 | sì | contenuti | originale |
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.0.0 · contenuti · interattivo · disegno originale · dal vivo `/catalogo/accordion/`
 
 Domande frequenti o sezioni di testo che si aprono una per una: tanti contenuti in poco spazio.
 
-- **Quando usarlo.** Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, preparazione del cantiere.
-- **Quando evitarlo.** Per informazioni che tutti devono leggere (prezzi, garanzie principali): nascoste in una voce chiusa le legge poca gente, meglio un testo aperto. Con una voce sola o più di 12: dividi in più blocchi.
+**Quando usarlo:** Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, preparazione del cantiere.
 
-## Varianti
+**Evitare quando:** Per informazioni che tutti devono leggere (prezzi, garanzie principali): nascoste in una voce chiusa le legge poca gente, meglio un testo aperto. Con una voce sola o più di 12: dividi in più blocchi.
 
-### `faq`
+**Varianti:**
 
-Domande e risposte centrate, con i dati strutturati FAQPage per Google. Una sola faq per pagina.
+- `faq` — Domande e risposte centrate, con i dati strutturati FAQPage per Google. **Quando usarla:** Per le domande frequenti: una sola faq per pagina. Fixture «FAQ», dal vivo `/catalogo/accordion/faq/`.
 
-Da sola: `/catalogo/accordion/faq/` · fixture «FAQ».
+  ![Accordion, faq, 1280 px](../img/accordion-faq-desktop.webp)
 
-![Accordion, variante faq, a 1280 px](../img/accordion--faq--desktop.webp)
+  <img src="../img/accordion-faq-mobile.webp" alt="Accordion, faq, 375 px" width="240">
 
-<img src="../img/accordion--faq--mobile.webp" alt="Accordion, variante faq, a 375 px" width="300">
+- `contenuti` — Titolo a sinistra e voci a destra (sotto su mobile). **Quando usarla:** Per testi di dettaglio da aprire: condizioni, tempi, preparazione del cantiere. Fixture «Contenuti, una alla volta», dal vivo `/catalogo/accordion/contenuti/`.
 
-### `contenuti`
+  ![Accordion, contenuti, 1280 px](../img/accordion-contenuti-desktop.webp)
 
-Titolo a sinistra e voci a destra (sotto su mobile). Per sezioni di testo da aprire.
+  <img src="../img/accordion-contenuti-mobile.webp" alt="Accordion, contenuti, 375 px" width="240">
 
-Da sola: `/catalogo/accordion/contenuti/` · fixture «Contenuti, una alla volta».
+**Campi:**
 
-![Accordion, variante contenuti, a 1280 px](../img/accordion--contenuti--desktop.webp)
+| Campo | Tipo | Obbl. | Limiti | Note |
+| --- | --- | --- | --- | --- |
+| `variant` | scelta | sì | `faq` · `contenuti` | «Variante» |
+| `eyebrow` | testo | no |  | «Occhiello» |
+| `title` | testo | sì | max 70 | «Titolo» |
+| `intro` | testo | no | max 240 | «Introduzione» |
+| `items` | elenco | sì | 2–12 voci | «Voci» |
+| `items[].title` | testo | sì | max 120 | «Domanda o titolo» |
+| `items[].text` | testo | sì | max 1200 | «Risposta o testo» |
+| `single` | sì/no | no (predefinito `false`) |  | «Una alla volta» |
 
-<img src="../img/accordion--contenuti--mobile.webp" alt="Accordion, variante contenuti, a 375 px" width="300">
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`accordion`), `id` (ancora facoltativa, in kebab-case) e `tone` (`default`, `muted`, `primary`): vedi `src/content/pages/README.md`.
 
-## Campi
-
-| Campo | Tipo | Obbligatorio | Limiti | Etichetta e aiuto (CMS) | Vincoli |
-| --- | --- | --- | --- | --- | --- |
-| `variant` | scelta | sì | `faq` · `contenuti` | **Variante** — faq: domande e risposte, segnalate anche a Google · contenuti: sezioni di testo da aprire, accanto al titolo |  |
-| `eyebrow` | testo | no |  | **Occhiello** — Breve testo sopra il titolo |  |
-| `title` | testo | sì | max 70 caratteri | **Titolo** — Al massimo 70 caratteri |  |
-| `intro` | testo | no | max 240 caratteri | **Introduzione** — Al massimo 240 caratteri |  |
-| `items` | elenco | sì | da 2 a 12 | **Voci** — Da 2 a 12 |  |
-| `items[].title` | testo | sì | max 120 caratteri | **Domanda o titolo** — Al massimo 120 caratteri |  |
-| `items[].text` | testo | sì | max 1200 caratteri | **Risposta o testo** — Al massimo 1200 caratteri; una riga vuota separa i paragrafi |  |
-| `single` | sì/no | no (predefinito `false`) |  | **Una alla volta** — Aprendo una voce si chiudono le altre |  |
-
-Ogni sezione ha anche `type` (`accordion`), `id` (ancora facoltativa, in kebab-case) e `tone` (`default`, `muted`, `primary`): vedi `src/content/pages/README.md`.
-
-## Esempio
-
-Dalla fixture «FAQ», una sezione da mettere in `sections` di una ricetta (le immagini sono percorsi relativi a `src/content/pages`):
+**Esempio pronto** (fixture «FAQ», una sezione per `sections`; immagini relative a `src/content/pages`):
 
 ```json
 {

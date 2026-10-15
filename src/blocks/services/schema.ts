@@ -39,6 +39,8 @@ export const schema = ({ image }: SchemaContext) =>
 				.max(6)
 				.describe('Servizi|Da 2 a 6 servizi'),
 		})
+		// rule: La variante cards-icone richiede l’icona in ogni servizio.
+		// rule: Le varianti cards-immagine e alternato richiedono la foto in ogni servizio.
 		.superRefine((props, ctx) => {
 			const needsIcon = props.variant === 'cards-icone';
 			const needsImage = props.variant === 'cards-immagine' || props.variant === 'alternato';

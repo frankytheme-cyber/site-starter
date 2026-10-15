@@ -30,6 +30,7 @@ export const schema = ({ image }: SchemaContext) =>
 				.max(6)
 				.describe('Schede|Da 2 a 6'),
 		})
+		// rule: La variante testo-immagine richiede la foto in ogni scheda.
 		.superRefine((props, ctx) => {
 			if (props.variant !== 'testo-immagine') return;
 			props.items.forEach((item, index) => {

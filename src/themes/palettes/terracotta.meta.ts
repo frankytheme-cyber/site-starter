@@ -2,7 +2,7 @@ import type { PaletteMeta } from '../presets';
 
 export const meta: PaletteMeta = {
 	name: 'Terracotta',
-	mood: 'Calda e accogliente: cotto, pietra serena e oliva, con un sapore artigianale e toscano.',
+	mood: ['caldo', 'accogliente', 'artigianale'],
 	adattoA: ['imbianchini e decoratori', 'edilizia e finiture', 'ristoranti e trattorie', 'agriturismi', 'botteghe artigiane'],
 	colors: {
 		bg: '#fbf6ef',

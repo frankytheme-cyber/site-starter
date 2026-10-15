@@ -23,4 +23,4 @@ Si possono togliere, spostare o aggiungere sezioni come in qualsiasi ricetta, se
 
 ## Controlli
 
-Il check `catalog` (`npm run check`, solo nella libreria) verifica che ogni ricetta tipo sia valida per lo schema delle pagine, che le foto esistano (percorsi relativi a `src/content/pages/`) e che i link interni portino a pagine e ancore dell'insieme. Il nome di un file nuovo segue lo schema `<insieme>-<pagina>.json`: `home` è la pagina iniziale, le altre diventano `/<pagina>/`.
+Il check `blocks` (`npm run check`, solo nella libreria) verifica che ogni ricetta tipo sia valida per lo schema delle pagine, che le foto esistano (percorsi relativi a `src/content/pages/`) e che i link interni portino a pagine e ancore dell'insieme. Il nome di un file nuovo segue lo schema `<insieme>-<pagina>.json`: `home` è la pagina iniziale, le altre diventano `/<pagina>/`.

@@ -1,9 +1,10 @@
 /**
  * Screenshot del catalogo in docs/catalogo/img/: build, astro preview e Playwright (Chromium).
- * - per ogni blocco × variante, la pagina /catalogo/<tipo>/<variante>/ a 1280 e 375 px:
- *   <tipo>--<variante>--desktop.webp e <tipo>--<variante>--mobile.webp;
- * - per l'hero, uno scatto desktop della prima variante con ogni palette:
- *   hero--palette-<palette>--desktop.webp.
+ * - per ogni blocco × variante, la pagina /catalogo/<tipo>/<variante>/ (prima fixture della
+ *   variante, palette di theme.json) a 1280 e 375 px: <tipo>-<variante>-desktop.webp e -mobile.webp,
+ *   WebP qualità 75;
+ * - per l'hero, uno scatto desktop della prima variante con ogni palette (?palette=):
+ *   hero-palette-<palette>-desktop.webp.
  * Prima di ogni scatto si aspettano i font e tutte le immagini (anche quelle lazy); movimento ridotto.
  * Gli screenshot che non corrispondono più a una variante vengono tolti.
  *
@@ -16,7 +17,7 @@ import { mkdirSync, readdirSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium, type Page } from 'playwright';
 import sharp from 'sharp';
-import { paletteScreenshotName, SCREEN_WIDTHS, screenshotName } from '../src/core/catalog.ts';
+import { paletteScreenshotName, SCREEN_WIDTHS, SCREENSHOT_QUALITY, screenshotName } from '../src/core/catalog.ts';
 import { freePort, startPreview, stopPreview } from './checks/lib/preview.ts';
 import { ROOT } from './checks/lib/project.ts';
 import { CATALOG_DIR, generateCatalog } from './gen-catalog.ts';
@@ -66,7 +67,7 @@ async function shoot(page: Page, path: string, file: string) {
 	await page.goto(path, { waitUntil: 'load' });
 	await settle(page);
 	const png = await page.locator('main').screenshot({ type: 'png', animations: 'disabled' });
-	await sharp(png).webp({ quality: 82 }).toFile(join(IMG_DIR, file));
+	await sharp(png).webp({ quality: SCREENSHOT_QUALITY }).toFile(join(IMG_DIR, file));
 	console.log(`  ${file}`);
 }
 

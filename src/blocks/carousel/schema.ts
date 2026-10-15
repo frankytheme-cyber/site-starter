@@ -31,6 +31,7 @@ export const schema = ({ image }: SchemaContext) =>
 				.max(12)
 				.describe('Elementi|Da 3 a 12'),
 		})
+		// rule: La variante card richiede titolo e testo in ogni elemento.
 		.superRefine((props, ctx) => {
 			if (props.variant !== 'card') return;
 			props.items.forEach((item, index) => {

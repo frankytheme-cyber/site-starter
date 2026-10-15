@@ -1,124 +1,108 @@
 <!-- Generato da scripts/gen-catalog.ts (npm run gen:catalog): non modificare a mano. -->
 
-# Servizi
+# services — Servizi
 
-[← Catalogo](../README.md) · dal vivo: `/catalogo/services/`
-
-| Tipo | Scope | Versione | Interattivo | Categoria | Disegno |
-| --- | --- | --- | --- | --- | --- |
-| `services` | `page`: sezione delle ricette | 1.1.0 | no | contenuti | originale |
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.1.0 · contenuti · non interattivo · disegno originale · dal vivo `/catalogo/services/`
 
 Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione breve e link facoltativo.
 
-- **Quando usarlo.** Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno.
-- **Quando evitarlo.** Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei cantieri, non un elenco.
+**Quando usarlo:** Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno.
 
-## Varianti
+**Evitare quando:** Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei cantieri, non un elenco.
 
-### `cards-icone`
+**Varianti:**
 
-Griglia di card con icona, titolo e testo, su 2 o 3 colonne. Compatta e ordinata, non richiede foto.
+- `cards-icone` — Griglia di card con icona, titolo e testo, su 2 o 3 colonne. **Quando usarla:** Servizi brevi e simili tra loro, quando non c’è una foto per ognuno. Fixture «Card con icona», dal vivo `/catalogo/services/cards-icone/`.
 
-Da sola: `/catalogo/services/cards-icone/` · fixture «Card con icona».
+  ![Servizi, cards-icone, 1280 px](../img/services-cards-icone-desktop.webp)
 
-![Servizi, variante cards-icone, a 1280 px](../img/services--cards-icone--desktop.webp)
+  <img src="../img/services-cards-icone-mobile.webp" alt="Servizi, cards-icone, 375 px" width="240">
 
-<img src="../img/services--cards-icone--mobile.webp" alt="Servizi, variante cards-icone, a 375 px" width="300">
+- `cards-immagine` — Griglia di card con una foto in alto. **Quando usarla:** Quando c’è una foto adatta per ogni servizio: più concreta delle icone. Fixture «Card con immagine», dal vivo `/catalogo/services/cards-immagine/`.
 
-### `cards-immagine`
+  ![Servizi, cards-immagine, 1280 px](../img/services-cards-immagine-desktop.webp)
 
-Griglia di card con una foto in alto. Più concreta, richiede una foto adatta per ogni servizio.
+  <img src="../img/services-cards-immagine-mobile.webp" alt="Servizi, cards-immagine, 375 px" width="240">
 
-Da sola: `/catalogo/services/cards-immagine/` · fixture «Card con immagine».
+- `alternato` — Righe di foto e testo che si alternano a destra e a sinistra. **Quando usarla:** Da 2 a 4 servizi da raccontare con calma, di solito nella pagina dei servizi. Fixture «Alternato», dal vivo `/catalogo/services/alternato/`.
 
-![Servizi, variante cards-immagine, a 1280 px](../img/services--cards-immagine--desktop.webp)
+  ![Servizi, alternato, 1280 px](../img/services-alternato-desktop.webp)
 
-<img src="../img/services--cards-immagine--mobile.webp" alt="Servizi, variante cards-immagine, a 375 px" width="300">
+  <img src="../img/services-alternato-mobile.webp" alt="Servizi, alternato, 375 px" width="240">
 
-### `alternato`
+- `schede` — Un servizio per scheda, con testo, foto facoltativa e link; su mobile un elenco da aprire. **Quando usarla:** Servizi alternativi tra cui scegliere; non per servizi che tutti devono vedere. Fixture «Schede», dal vivo `/catalogo/services/schede/`.
 
-Righe con foto e testo che si alternano a destra e a sinistra. Occupa più spazio: adatta alla pagina dei servizi.
+  ![Servizi, schede, 1280 px](../img/services-schede-desktop.webp)
 
-Da sola: `/catalogo/services/alternato/` · fixture «Alternato».
+  <img src="../img/services-schede-mobile.webp" alt="Servizi, schede, 375 px" width="240">
 
-![Servizi, variante alternato, a 1280 px](../img/services--alternato--desktop.webp)
+**Campi:**
 
-<img src="../img/services--alternato--mobile.webp" alt="Servizi, variante alternato, a 375 px" width="300">
+| Campo | Tipo | Obbl. | Limiti | Note |
+| --- | --- | --- | --- | --- |
+| `variant` | scelta | sì | `cards-icone` · `cards-immagine` · `alternato` · `schede` | «Variante» |
+| `eyebrow` | testo | no |  | «Occhiello» |
+| `title` | testo | sì | max 70 | «Titolo» |
+| `intro` | testo | no | max 240 | «Introduzione» |
+| `items` | elenco | sì | 2–6 voci | «Servizi» |
+| `items[].icon` | icona | per cards-icone | [lista icone](../README.md#icone) | «Icona» · Le altre varianti non la mostrano. |
+| `items[].image` | gruppo | per cards-immagine, alternato |  | «Foto» · Facoltativa in schede; cards-icone non la mostra. |
+| `items[].image.src` | immagine | sì, se c’è `items[].image` | foto in src/assets/images | «File» |
+| `items[].image.alt` | testo | sì, se c’è `items[].image` | min 5 | «Testo alternativo» |
+| `items[].title` | testo | sì | max 50 | «Nome del servizio» |
+| `items[].text` | testo | sì | max 180 | «Descrizione» |
+| `items[].link` | gruppo | no |  | «Link» |
+| `items[].link.label` | testo | sì, se c’è `items[].link` | max 25 | «Testo del pulsante» |
+| `items[].link.href` | testo | sì, se c’è `items[].link` | un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa | «Link» |
+| `items[].link.style` | scelta | no | `primary` · `secondary` · `ghost` · `link` | «Stile» |
+| `items[].link.icon` | icona | no | [lista icone](../README.md#icone) | «Icona» |
 
-### `schede`
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`services`), `id` (ancora facoltativa, in kebab-case) e `tone` (`default`, `muted`, `primary`): vedi `src/content/pages/README.md`.
 
-Un servizio per scheda (su mobile elenco da aprire), con testo, foto facoltativa e link. Per servizi alternativi tra cui scegliere; non per servizi che tutti devono vedere.
+**Regole:**
 
-Da sola: `/catalogo/services/schede/` · fixture «Schede».
+- La variante cards-icone richiede l’icona in ogni servizio.
+- Le varianti cards-immagine e alternato richiedono la foto in ogni servizio.
 
-![Servizi, variante schede, a 1280 px](../img/services--schede--desktop.webp)
-
-<img src="../img/services--schede--mobile.webp" alt="Servizi, variante schede, a 375 px" width="300">
-
-## Campi
-
-| Campo | Tipo | Obbligatorio | Limiti | Etichetta e aiuto (CMS) | Vincoli |
-| --- | --- | --- | --- | --- | --- |
-| `variant` | scelta | sì | `cards-icone` · `cards-immagine` · `alternato` · `schede` | **Variante** — cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda |  |
-| `eyebrow` | testo | no |  | **Occhiello** — Breve testo sopra il titolo |  |
-| `title` | testo | sì | max 70 caratteri | **Titolo** — Titolo della sezione, al massimo 70 caratteri |  |
-| `intro` | testo | no | max 240 caratteri | **Introduzione** — Una frase che presenta i servizi, al massimo 240 caratteri |  |
-| `items` | elenco | sì | da 2 a 6 | **Servizi** — Da 2 a 6 servizi |  |
-| `items[].icon` | icona | no | un alias di [icone.md](../icone.md) | **Icona** — Obbligatoria per la variante cards-icone | Obbligatoria per la variante cards-icone; le altre non la mostrano. |
-| `items[].image` | gruppo | no |  | **Foto** — Obbligatoria per le varianti cards-immagine e alternato; facoltativa nelle schede | Obbligatoria per le varianti cards-immagine e alternato; facoltativa in schede; cards-icone non la mostra. |
-| `items[].image.src` | immagine | sì, se c’è `items[].image` | file in src/assets/images, percorso relativo al JSON | **File** — JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza |  |
-| `items[].image.alt` | testo | sì, se c’è `items[].image` | almeno 5 caratteri | **Testo alternativo** — Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia» |  |
-| `items[].title` | testo | sì | max 50 caratteri | **Nome del servizio** — Al massimo 50 caratteri |  |
-| `items[].text` | testo | sì | max 180 caratteri | **Descrizione** — Cosa comprende il servizio, al massimo 180 caratteri |  |
-| `items[].link` | gruppo | no |  | **Link** — Porta alla pagina o alla sezione del servizio: compila testo e link, oppure nessuno dei due |  |
-| `items[].link.label` | testo | sì, se c’è `items[].link` | max 25 caratteri | **Testo del pulsante** — Al massimo 25 caratteri |  |
-| `items[].link.href` | testo | sì, se c’è `items[].link` | un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa | **Link** — Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività» |  |
-| `items[].link.style` | scelta | no | `primary` · `secondary` · `ghost` · `link` | **Stile** — primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco |  |
-| `items[].link.icon` | icona | no | un alias di [icone.md](../icone.md) | **Icona** — Facoltativa, accanto al testo (le frecce vanno dopo il testo) |  |
-
-Ogni sezione ha anche `type` (`services`), `id` (ancora facoltativa, in kebab-case) e `tone` (`default`, `muted`, `primary`): vedi `src/content/pages/README.md`.
-
-## Esempio
-
-Dalla fixture «Schede», una sezione da mettere in `sections` di una ricetta (le immagini sono percorsi relativi a `src/content/pages`):
+**Esempio pronto** (fixture «Card con icona», una sezione per `sections`; immagini relative a `src/content/pages`):
 
 ```json
 {
 	"type": "services",
-	"variant": "schede",
-	"eyebrow": "Servizi",
-	"title": "Scegli il lavoro che ti serve",
-	"intro": "Ogni servizio ha la sua squadra e i suoi tempi: qui trovi cosa comprende.",
+	"variant": "cards-icone",
+	"eyebrow": "Cosa facciamo",
+	"title": "Tutto quello che serve alle tue pareti",
+	"intro": "Dalla singola stanza al condominio intero: un’unica squadra per preparare, tinteggiare e rifinire, con tempi concordati prima di iniziare.",
 	"items": [
 		{
-			"image": {
-				"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
-				"alt": "Parete tinteggiata a metà in verde salvia, con un rullo appoggiato"
-			},
+			"icon": "rullo",
 			"title": "Tinteggiature interne",
-			"text": "Pareti e soffitti con pitture traspiranti o lavabili. Copriamo mobili e pavimenti, stucchiamo le crepe e lasciamo tutto pulito.",
-			"link": {
-				"label": "Chiedi un preventivo",
-				"href": "#preventivo"
-			}
+			"text": "Pareti e soffitti con pitture traspiranti o lavabili. Copriamo mobili e pavimenti, stucchiamo le crepe e lasciamo tutto pulito."
 		},
 		{
-			"image": {
-				"src": "../../assets/images/fixtures/imbianchino-facciata.jpg",
-				"alt": "Facciata di una casa color ocra con persiane verdi"
-			},
+			"icon": "edificio",
 			"title": "Facciate esterne",
 			"text": "Pulizia, ripristino degli intonaci e pitture ai silossani che resistono a pioggia, sole e smog per molti anni."
 		},
 		{
+			"icon": "pennello",
+			"title": "Decorazioni e velature",
+			"text": "Stucco veneziano, velature e spatolati per dare carattere all’ingresso o a una parete del soggiorno."
+		},
+		{
+			"icon": "goccia",
 			"title": "Trattamenti antimuffa",
-			"text": "Eliminiamo muffa e condensa alla radice con prodotti risananti e pitture termiche anticondensa.",
-			"link": {
-				"label": "Scrivici su WhatsApp",
-				"href": "@whatsapp",
-				"icon": "whatsapp",
-				"style": "secondary"
-			}
+			"text": "Eliminiamo muffa e condensa alla radice con prodotti risananti e pitture termiche anticondensa."
+		},
+		{
+			"icon": "muro",
+			"title": "Cartongesso",
+			"text": "Contropareti, controsoffitti e nicchie su misura, montati, stuccati e tinteggiati dalla stessa squadra."
+		},
+		{
+			"icon": "scala",
+			"title": "Vani scala condominiali",
+			"text": "Lavori programmati con l’amministratore e divisi a fasce orarie, per disturbare il meno possibile chi ci abita."
 		}
 	]
 }

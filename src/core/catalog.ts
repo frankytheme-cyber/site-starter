@@ -20,21 +20,23 @@ interface FixtureLike {
 export function catalogVariants<F extends FixtureLike>(meta: BlockMeta, fixtures: F[]) {
 	const variants = Object.entries(meta.variants);
 	if (variants.length === 0) {
-		return fixtures.length > 0 ? [{ name: NO_VARIANT, description: meta.description, fixture: fixtures[0] }] : [];
+		return fixtures.length > 0 ? [{ name: NO_VARIANT, description: meta.description, whenToUse: meta.whenToUse, fixture: fixtures[0] }] : [];
 	}
-	return variants.flatMap(([name, description]) => {
+	return variants.flatMap(([name, { description, whenToUse }]) => {
 		const fixture = fixtures.find((item) => item.props.variant === name);
-		return fixture ? [{ name, description, fixture }] : [];
+		return fixture ? [{ name, description, whenToUse, fixture }] : [];
 	});
 }
 
 export type ScreenSize = 'desktop' | 'mobile';
 export const SCREEN_WIDTHS: Record<ScreenSize, number> = { desktop: 1280, mobile: 375 };
 
-/** Screenshot di una variante, in docs/catalogo/img/. */
-export const screenshotName = (type: string, variant: string, size: ScreenSize) => `${type}--${variant}--${size}.webp`;
+/** Screenshot di una variante, in docs/catalogo/img/: <tipo>-<variante>-desktop.webp e -mobile.webp. */
+export const screenshotName = (type: string, variant: string, size: ScreenSize) => `${type}-${variant}-${size}.webp`;
 /** Screenshot desktop dell'hero con una palette, in docs/catalogo/img/. */
-export const paletteScreenshotName = (palette: string) => `hero--palette-${palette}--desktop.webp`;
+export const paletteScreenshotName = (palette: string) => `hero-palette-${palette}-desktop.webp`;
+/** Qualità WebP degli screenshot. */
+export const SCREENSHOT_QUALITY = 75;
 
 /** Percorso di un file di src/assets/images ("/src/assets/images/foto.jpg") visto da una ricetta in src/content/pages. */
 export const recipeImagePath = (sourcePath: string) => `../..${sourcePath.replace(/^\/?src(?=\/)/, '')}`;

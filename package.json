@@ -19,11 +19,12 @@
     "check:tokens": "node scripts/checks/run.ts tokens",
     "check:blocks": "node scripts/checks/run.ts blocks",
     "check:lock": "node scripts/checks/run.ts lock",
-    "check:catalog": "node scripts/checks/run.ts catalog",
+    "check:catalog": "node scripts/checks/run.ts blocks",
     "gen:decap": "node scripts/gen-decap-config.ts",
     "gen:catalog": "node scripts/gen-catalog.ts",
     "screenshots": "node scripts/screenshots.ts",
     "catalog": "npm run gen:catalog && npm run screenshots",
+    "release": "node scripts/release.ts",
     "lock:write": "node scripts/checks/lock.ts --write",
     "cms:local": "node scripts/cms-local.ts"
   },

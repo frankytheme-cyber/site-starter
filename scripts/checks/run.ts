@@ -13,7 +13,6 @@ import { join } from 'node:path';
 import { a11y } from './a11y.ts';
 import { blocks } from './blocks.ts';
 import { buttons } from './buttons.ts';
-import { catalog } from './catalog.ts';
 import { astroCheck, build } from './commands.ts';
 import { contrast } from './contrast.ts';
 import { decap } from './decap.ts';
@@ -61,10 +60,6 @@ const CHECKS: Record<string, CheckDefinition> = {
 		run: blocks,
 		skip: ({ isLibrary: library }) => (library ? undefined : 'solo nella libreria (manca src/pages/catalogo)'),
 	},
-	catalog: {
-		run: catalog,
-		skip: ({ isLibrary: library }) => (library ? undefined : 'solo nella libreria (manca src/pages/catalogo)'),
-	},
 	lock: {
 		run: lock,
 		skip: ({ root }) => (existsSync(join(root, LOCK_FILE)) ? undefined : `nessun ${LOCK_FILE}`),
@@ -88,7 +83,7 @@ const CHECKS: Record<string, CheckDefinition> = {
 };
 
 const SUITES: Record<string, string[]> = {
-	check: ['astro-check', 'decap', 'tokens', 'contrast', 'blocks', 'catalog', 'lock', 'recipes', 'build', 'release'],
+	check: ['astro-check', 'decap', 'tokens', 'contrast', 'blocks', 'lock', 'recipes', 'build', 'release'],
 };
 SUITES.qa = [...SUITES.check, 'links', 'a11y', 'interactive', 'buttons', 'lighthouse'];
 

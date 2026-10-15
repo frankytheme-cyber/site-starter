@@ -1,6 +1,6 @@
 /**
  * blocks (solo nella libreria): ogni cartella di src/blocks rispetta il contratto di
- * src/blocks/README.md. Quattro file, meta completo con source e scope, licenza riportata se il
+ * src/blocks/README.md, e docs/catalogo è aggiornato (scripts/checks/catalog.ts). Quattro file, meta completo con source e scope, licenza riportata se il
  * disegno è esterno, fixture valide contro lo schema (e i dati `site` di prova contro lo schema
  * di site.json), almeno una fixture per variante, ogni blocco di layout con la sua chiave in
  * layout.json.
@@ -9,6 +9,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'astro/zod';
 import { CATEGORIES } from '../../src/core/block-types.ts';
+import { checkCatalog } from './catalog.ts';
 import { type CheckContext, collector } from './lib/report.ts';
 import { withProjectModules } from './lib/vite.ts';
 
@@ -26,7 +27,7 @@ const SCOPES = ['page', 'layout'];
 const fixtureContext = { image: () => z.union([z.string(), z.looseObject({ src: z.string() })]) };
 
 export async function blocks({ root }: CheckContext) {
-	const { findings, error } = collector('blocks');
+	const { findings, error, warning } = collector('blocks');
 	const blocksDir = join(root, 'src/blocks');
 	const licensesFile = join(root, 'docs/THIRD_PARTY_LICENSES.md');
 	const licenses = existsSync(licensesFile) ? readFileSync(licensesFile, 'utf8').toLowerCase() : '';
@@ -151,5 +152,7 @@ export async function blocks({ root }: CheckContext) {
 			}
 		}
 	});
+	// docs/catalogo rigenerato in memoria e confrontato coi file (scripts/checks/catalog.ts).
+	await checkCatalog(root, { error, warning });
 	return findings;
 }

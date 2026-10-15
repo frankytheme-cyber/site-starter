@@ -14,11 +14,20 @@ export const meta: BlockMeta = {
 	version: '1.0.0',
 	source: { from: 'originale' },
 	variants: {
-		colonne:
-			'Logo e descrizione, link del footer, contatti con indirizzo e «Apri in Maps», orari e social; sotto, la riga legale con i link a privacy e cookie e il credito. Per la maggior parte dei siti.',
-		minimale: 'Una riga sola: nome, P.IVA (con REA e capitale per le società), link legali e social. Per siti di una o due pagine.',
+		colonne: {
+			description: 'Logo e descrizione, link, contatti con «Apri in Maps», orari e social; sotto, la riga legale con privacy, cookie e credito.',
+			whenToUse: 'Per la maggior parte dei siti.',
+		},
+		minimale: {
+			description: 'Una riga sola: nome, P.IVA (con REA e capitale per le società), link legali e social.',
+			whenToUse: 'Siti di una o due pagine, o quando contatti e orari sono già nelle pagine.',
+		},
 	},
+	rules: [
+		'Il titolo della fascia (ctaBandTitle) conta solo con ctaBand attivo.',
+		'Il pulsante WhatsApp della fascia compare solo se site.json ha il numero WhatsApp.',
+	],
 	fieldRules: {
-		ctaBandTitle: 'Usato solo con ctaBand attivo.',
+		ctaBandTitle: { note: 'Usato solo con ctaBand attivo.' },
 	},
 };

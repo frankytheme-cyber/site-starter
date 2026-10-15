@@ -1,0 +1,2045 @@
+{
+	"library": "site-starter",
+	"version": "0.0.1",
+	"recipeRules": [
+		{
+			"rule": "Un solo hero per pagina, come prima sezione: contiene l’unico h1.",
+			"check": "recipes"
+		},
+		{
+			"rule": "Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande).",
+			"check": "recipes"
+		},
+		{
+			"rule": "Due sezioni vicine non hanno lo stesso tone (default, muted, primary).",
+			"check": "recipes"
+		},
+		{
+			"rule": "Al massimo 12 sezioni: oltre, meglio dividere la pagina.",
+			"check": "recipes"
+		},
+		{
+			"rule": "Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json.",
+			"check": "build"
+		},
+		{
+			"rule": "Recapiti mai nei testi: nei pulsanti i link speciali (@telefono, @whatsapp, @email, @mappa), nelle cta showContacts.",
+			"check": "recipes"
+		},
+		{
+			"rule": "Link interni solo a pagine e ancore che esistono; ogni id di sezione è in kebab-case e unico nella pagina.",
+			"check": "recipes"
+		},
+		{
+			"rule": "Ogni foto ha un alt che dice cosa mostra, non il nome del file.",
+			"check": "recipes"
+		},
+		{
+			"rule": "Testi entro i limiti dei campi (titoli 70 caratteri, pulsanti 25...): sono nelle schede dei blocchi.",
+			"check": "build"
+		},
+		{
+			"rule": "Niente segnaposto (DA-COMPILARE, lorem, TODO) in una pagina pubblicata.",
+			"check": "release"
+		}
+	],
+	"specialLinks": [
+		{
+			"href": "@telefono",
+			"becomes": "`tel:` col numero senza spazi",
+			"from": "phone"
+		},
+		{
+			"href": "@whatsapp",
+			"becomes": "chat `https://wa.me/`",
+			"from": "whatsapp"
+		},
+		{
+			"href": "@email",
+			"becomes": "`mailto:`",
+			"from": "email"
+		},
+		{
+			"href": "@mappa",
+			"becomes": "ricerca dell’indirizzo su Google Maps",
+			"from": "address"
+		}
+	],
+	"icons": [
+		{
+			"alias": "pennello",
+			"icon": "lucide:paintbrush"
+		},
+		{
+			"alias": "rullo",
+			"icon": "lucide:paint-roller"
+		},
+		{
+			"alias": "secchio-vernice",
+			"icon": "lucide:paint-bucket"
+		},
+		{
+			"alias": "casa",
+			"icon": "lucide:house"
+		},
+		{
+			"alias": "edificio",
+			"icon": "lucide:building"
+		},
+		{
+			"alias": "scala",
+			"icon": "lucide:door-stairwell",
+			"note": "Vano scala: Lucide non ha una scala a pioli."
+		},
+		{
+			"alias": "muro",
+			"icon": "lucide:brick-wall"
+		},
+		{
+			"alias": "goccia",
+			"icon": "lucide:droplet",
+			"note": "Impermeabilizzazione."
+		},
+		{
+			"alias": "scudo",
+			"icon": "lucide:shield-check",
+			"note": "Garanzia."
+		},
+		{
+			"alias": "check",
+			"icon": "lucide:check"
+		},
+		{
+			"alias": "stella",
+			"icon": "lucide:star"
+		},
+		{
+			"alias": "orologio",
+			"icon": "lucide:clock"
+		},
+		{
+			"alias": "calendario",
+			"icon": "lucide:calendar"
+		},
+		{
+			"alias": "telefono",
+			"icon": "lucide:phone"
+		},
+		{
+			"alias": "email",
+			"icon": "lucide:mail"
+		},
+		{
+			"alias": "mappa-pin",
+			"icon": "lucide:map-pin"
+		},
+		{
+			"alias": "freccia-destra",
+			"icon": "lucide:arrow-right"
+		},
+		{
+			"alias": "freccia-sinistra",
+			"icon": "lucide:arrow-left"
+		},
+		{
+			"alias": "menu",
+			"icon": "lucide:menu"
+		},
+		{
+			"alias": "chiudi",
+			"icon": "lucide:x"
+		},
+		{
+			"alias": "chevron-giu",
+			"icon": "lucide:chevron-down"
+		},
+		{
+			"alias": "citazione",
+			"icon": "lucide:quote"
+		},
+		{
+			"alias": "preventivo",
+			"icon": "lucide:file-text"
+		},
+		{
+			"alias": "euro",
+			"icon": "lucide:euro"
+		},
+		{
+			"alias": "utenti",
+			"icon": "lucide:users"
+		},
+		{
+			"alias": "foto",
+			"icon": "lucide:image"
+		},
+		{
+			"alias": "whatsapp",
+			"icon": "simple-icons:whatsapp"
+		},
+		{
+			"alias": "facebook",
+			"icon": "simple-icons:facebook"
+		},
+		{
+			"alias": "instagram",
+			"icon": "simple-icons:instagram"
+		},
+		{
+			"alias": "google",
+			"icon": "simple-icons:google"
+		},
+		{
+			"alias": "youtube",
+			"icon": "simple-icons:youtube"
+		},
+		{
+			"alias": "tiktok",
+			"icon": "simple-icons:tiktok"
+		},
+		{
+			"alias": "tripadvisor",
+			"icon": "simple-icons:tripadvisor"
+		}
+	],
+	"themes": {
+		"palettes": [
+			{
+				"key": "terracotta",
+				"name": "Terracotta",
+				"mood": [
+					"caldo",
+					"accogliente",
+					"artigianale"
+				],
+				"adattoA": [
+					"imbianchini e decoratori",
+					"edilizia e finiture",
+					"ristoranti e trattorie",
+					"agriturismi",
+					"botteghe artigiane"
+				],
+				"colors": {
+					"bg": "#fbf6ef",
+					"surface": "#f2e6d7",
+					"fg": "#2e1f17",
+					"primary": "#a5452a",
+					"accent": "#56652b"
+				},
+				"screenshot": "img/hero-palette-terracotta-desktop.webp"
+			},
+			{
+				"key": "ardesia",
+				"name": "Ardesia",
+				"mood": [
+					"sobrio",
+					"moderno",
+					"professionale"
+				],
+				"adattoA": [
+					"impiantisti ed elettricisti",
+					"studi tecnici e professionali",
+					"officine e carrozzerie",
+					"pulizie e manutenzioni",
+					"servizi alle imprese"
+				],
+				"colors": {
+					"bg": "#f8fafb",
+					"surface": "#eaeef1",
+					"fg": "#1b2228",
+					"primary": "#2d4a5e",
+					"accent": "#e5a13a"
+				},
+				"screenshot": "img/hero-palette-ardesia-desktop.webp"
+			}
+		],
+		"fonts": [
+			{
+				"key": "moderno",
+				"name": "Moderno",
+				"mood": [
+					"pulito",
+					"tecnico",
+					"contemporaneo"
+				],
+				"adattoA": [
+					"impiantisti e servizi tecnici",
+					"studi professionali",
+					"officine",
+					"attività giovani"
+				],
+				"heading": "Manrope",
+				"body": "Inter"
+			},
+			{
+				"key": "classico",
+				"name": "Classico",
+				"mood": [
+					"caldo",
+					"tradizionale",
+					"leggibile"
+				],
+				"adattoA": [
+					"artigiani e botteghe",
+					"ristorazione",
+					"turismo e ospitalità",
+					"attività di tradizione"
+				],
+				"heading": "Fraunces",
+				"body": "Source Sans 3"
+			}
+		],
+		"shapes": [
+			{
+				"key": "squadrato",
+				"name": "Squadrato",
+				"mood": [
+					"rigoroso",
+					"tecnico",
+					"essenziale"
+				],
+				"adattoA": [
+					"studi tecnici e professionali",
+					"edilizia e impianti",
+					"officine e carrozzerie"
+				],
+				"boxRadius": "0",
+				"buttonRadius": "0"
+			},
+			{
+				"key": "morbido",
+				"name": "Morbido",
+				"mood": [
+					"equilibrato",
+					"cordiale"
+				],
+				"adattoA": [
+					"artigiani e imprese di servizi",
+					"negozi e botteghe",
+					"la maggior parte delle attività"
+				],
+				"boxRadius": "0.75rem",
+				"buttonRadius": "0.5rem"
+			},
+			{
+				"key": "arrotondato",
+				"name": "Arrotondato",
+				"mood": [
+					"amichevole",
+					"informale",
+					"giocoso"
+				],
+				"adattoA": [
+					"bar e pasticcerie",
+					"servizi alla persona (parrucchieri, estetica)",
+					"attività per famiglie e bambini"
+				],
+				"boxRadius": "1.5rem",
+				"buttonRadius": "9999px"
+			}
+		]
+	},
+	"blocks": [
+		{
+			"type": "header",
+			"name": "Header",
+			"scope": "layout",
+			"category": "intestazione",
+			"version": "2.0.0",
+			"interactive": true,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Intestazione del sito: logo o nome, menu con sottomenu e, su mobile, un pannello a tutta altezza. Voci e recapiti arrivano da navigation.json e site.json.",
+			"whenToUse": "Sempre: è l’intestazione di tutte le pagine. Non è una sezione delle ricette: variante, sticky e logo si scelgono in src/content/settings/layout.json (chiave header) e BaseLayout la disegna in cima a ogni pagina.",
+			"avoidWhen": "Nelle sezioni di una ricetta (la build lo rifiuta). Per un invito all’azione a metà pagina usa cta.",
+			"rules": [
+				"La variante con-cta richiede la cta in navigation.json.",
+				"Il logo immagine richiede il logo in site.json."
+			],
+			"variants": [
+				{
+					"name": "semplice",
+					"description": "Logo e menu; su desktop a destra c’è il telefono.",
+					"whenToUse": "Siti con poche pagine o senza un’azione principale da spingere.",
+					"fixture": "Semplice, logo testo",
+					"preview": "/catalogo/header/semplice/",
+					"screenshots": {
+						"desktop": "img/header-semplice-desktop.webp",
+						"mobile": "img/header-semplice-mobile.webp"
+					}
+				},
+				{
+					"name": "con-cta",
+					"description": "Logo, menu e un pulsante in evidenza a destra (la cta di navigation.json), ripetuto nel menu mobile.",
+					"whenToUse": "Per spingere preventivi o prenotazioni da ogni pagina.",
+					"fixture": "Con CTA, logo immagine",
+					"preview": "/catalogo/header/con-cta/",
+					"screenshots": {
+						"desktop": "img/header-con-cta-desktop.webp",
+						"mobile": "img/header-con-cta-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`semplice` · `con-cta`",
+					"constraints": {
+						"values": [
+							"semplice",
+							"con-cta"
+						]
+					},
+					"label": "Variante",
+					"hint": "semplice: logo e menu · con-cta: aggiunge il pulsante in evidenza del «Menu»",
+					"note": "con-cta richiede la cta in navigation.json."
+				},
+				{
+					"path": "sticky",
+					"type": "sì/no",
+					"required": true,
+					"limits": "",
+					"constraints": {},
+					"label": "Resta in cima",
+					"hint": "L’intestazione resta visibile mentre si scorre la pagina"
+				},
+				{
+					"path": "logo",
+					"type": "scelta",
+					"required": false,
+					"limits": "`testo` · `immagine`",
+					"constraints": {
+						"values": [
+							"testo",
+							"immagine"
+						]
+					},
+					"label": "Logo",
+					"hint": "testo: il nome dell’attività · immagine: il logo caricato in «Dati attività». Vuoto: il logo se c’è, altrimenti il nome",
+					"note": "immagine richiede il logo in site.json."
+				}
+			],
+			"example": {
+				"fixture": "Semplice, logo testo",
+				"target": "layout.json",
+				"json": {
+					"header": {
+						"variant": "semplice",
+						"sticky": false,
+						"logo": "testo"
+					}
+				}
+			}
+		},
+		{
+			"type": "hero",
+			"name": "Hero",
+			"scope": "page",
+			"category": "apertura",
+			"version": "1.1.1",
+			"interactive": false,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Apertura della pagina: titolo principale, sottotitolo e invito all’azione.",
+			"whenToUse": "Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare).",
+			"avoidWhen": "A metà pagina o più di una volta nella stessa pagina: contiene l’unico h1. Per inviti all’azione intermedi serve un blocco dedicato.",
+			"rules": [
+				"Le varianti split e full richiedono la foto (image)."
+			],
+			"variants": [
+				{
+					"name": "split",
+					"description": "Testo a sinistra e foto a destra (sotto su mobile).",
+					"whenToUse": "Quasi sempre: equilibrata, va bene per la home di qualsiasi attività che ha una buona foto.",
+					"fixture": "Split",
+					"preview": "/catalogo/hero/split/",
+					"screenshots": {
+						"desktop": "img/hero-split-desktop.webp",
+						"mobile": "img/hero-split-mobile.webp"
+					}
+				},
+				{
+					"name": "full",
+					"description": "Foto a tutta larghezza con velatura scura e testo chiaro sopra.",
+					"whenToUse": "Quando c’è una foto di grande qualità e si vuole impatto; non con foto piccole o confuse.",
+					"fixture": "Full",
+					"preview": "/catalogo/hero/full/",
+					"screenshots": {
+						"desktop": "img/hero-full-desktop.webp",
+						"mobile": "img/hero-full-mobile.webp"
+					}
+				},
+				{
+					"name": "centered",
+					"description": "Solo testo, centrato, senza foto.",
+					"whenToUse": "Pagine interne (servizi, contatti, note legali) o quando manca una foto adatta.",
+					"fixture": "Centered",
+					"preview": "/catalogo/hero/centered/",
+					"screenshots": {
+						"desktop": "img/hero-centered-desktop.webp",
+						"mobile": "img/hero-centered-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`split` · `full` · `centered`",
+					"constraints": {
+						"values": [
+							"split",
+							"full",
+							"centered"
+						]
+					},
+					"label": "Variante",
+					"hint": "split: testo e foto affiancati · full: foto a tutta larghezza · centered: solo testo"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo, es. il settore"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Il titolo principale della pagina, al massimo 70 caratteri"
+				},
+				{
+					"path": "subtitle",
+					"type": "testo",
+					"required": false,
+					"limits": "max 200",
+					"constraints": {
+						"maxLength": 200
+					},
+					"label": "Sottotitolo",
+					"hint": "Una o due frasi su cosa offri, al massimo 200 caratteri"
+				},
+				{
+					"path": "primaryCta",
+					"type": "gruppo",
+					"required": true,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante principale",
+					"hint": "L’azione più importante, es. «Chiedi un preventivo»"
+				},
+				{
+					"path": "primaryCta.label",
+					"type": "testo",
+					"required": true,
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "primaryCta.href",
+					"type": "testo",
+					"required": true,
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "primaryCta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "primaryCta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				},
+				{
+					"path": "secondaryCta",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante secondario",
+					"hint": "Un’alternativa meno importante: compila testo e link, oppure nessuno dei due"
+				},
+				{
+					"path": "secondaryCta.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "secondaryCta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "secondaryCta.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "secondaryCta",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "secondaryCta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "secondaryCta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				},
+				{
+					"path": "image",
+					"type": "gruppo",
+					"required": false,
+					"requiredFor": [
+						"split",
+						"full"
+					],
+					"limits": "",
+					"constraints": {},
+					"label": "Foto",
+					"hint": "Obbligatoria per le varianti split e full",
+					"note": "centered non la mostra."
+				},
+				{
+					"path": "image.src",
+					"type": "immagine",
+					"required": true,
+					"requiredWith": "image",
+					"limits": "foto in src/assets/images",
+					"constraints": {
+						"format": "image"
+					},
+					"label": "File",
+					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
+				},
+				{
+					"path": "image.alt",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "image",
+					"limits": "min 5",
+					"constraints": {
+						"minLength": 5
+					},
+					"label": "Testo alternativo",
+					"hint": "Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»"
+				}
+			],
+			"example": {
+				"fixture": "Split",
+				"target": "sections",
+				"json": {
+					"type": "hero",
+					"variant": "split",
+					"eyebrow": "Tinteggiature e decorazioni",
+					"title": "Pareti come nuove, senza pensieri",
+					"subtitle": "Tinteggiamo case, uffici e condomini con pitture traspiranti e lavabili. Proteggiamo mobili e pavimenti e a fine lavoro lasciamo tutto pulito.",
+					"primaryCta": {
+						"label": "Chiedi un preventivo",
+						"href": "#preventivo"
+					},
+					"secondaryCta": {
+						"label": "Guarda i lavori",
+						"href": "#lavori"
+					},
+					"image": {
+						"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
+						"alt": "Parete tinteggiata a metà in verde salvia, con un rullo appoggiato"
+					}
+				}
+			}
+		},
+		{
+			"type": "accordion",
+			"name": "Accordion",
+			"scope": "page",
+			"category": "contenuti",
+			"version": "1.0.0",
+			"interactive": true,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Domande frequenti o sezioni di testo che si aprono una per una: tanti contenuti in poco spazio.",
+			"whenToUse": "Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, preparazione del cantiere.",
+			"avoidWhen": "Per informazioni che tutti devono leggere (prezzi, garanzie principali): nascoste in una voce chiusa le legge poca gente, meglio un testo aperto. Con una voce sola o più di 12: dividi in più blocchi.",
+			"rules": [],
+			"variants": [
+				{
+					"name": "faq",
+					"description": "Domande e risposte centrate, con i dati strutturati FAQPage per Google.",
+					"whenToUse": "Per le domande frequenti: una sola faq per pagina.",
+					"fixture": "FAQ",
+					"preview": "/catalogo/accordion/faq/",
+					"screenshots": {
+						"desktop": "img/accordion-faq-desktop.webp",
+						"mobile": "img/accordion-faq-mobile.webp"
+					}
+				},
+				{
+					"name": "contenuti",
+					"description": "Titolo a sinistra e voci a destra (sotto su mobile).",
+					"whenToUse": "Per testi di dettaglio da aprire: condizioni, tempi, preparazione del cantiere.",
+					"fixture": "Contenuti, una alla volta",
+					"preview": "/catalogo/accordion/contenuti/",
+					"screenshots": {
+						"desktop": "img/accordion-contenuti-desktop.webp",
+						"mobile": "img/accordion-contenuti-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`faq` · `contenuti`",
+					"constraints": {
+						"values": [
+							"faq",
+							"contenuti"
+						]
+					},
+					"label": "Variante",
+					"hint": "faq: domande e risposte, segnalate anche a Google · contenuti: sezioni di testo da aprire, accanto al titolo"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Al massimo 70 caratteri"
+				},
+				{
+					"path": "intro",
+					"type": "testo",
+					"required": false,
+					"limits": "max 240",
+					"constraints": {
+						"maxLength": 240
+					},
+					"label": "Introduzione",
+					"hint": "Al massimo 240 caratteri"
+				},
+				{
+					"path": "items",
+					"type": "elenco",
+					"required": true,
+					"limits": "2–12 voci",
+					"constraints": {
+						"minItems": 2,
+						"maxItems": 12
+					},
+					"label": "Voci",
+					"hint": "Da 2 a 12"
+				},
+				{
+					"path": "items[].title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 120",
+					"constraints": {
+						"maxLength": 120
+					},
+					"label": "Domanda o titolo",
+					"hint": "Al massimo 120 caratteri"
+				},
+				{
+					"path": "items[].text",
+					"type": "testo",
+					"required": true,
+					"limits": "max 1200",
+					"constraints": {
+						"maxLength": 1200
+					},
+					"label": "Risposta o testo",
+					"hint": "Al massimo 1200 caratteri; una riga vuota separa i paragrafi"
+				},
+				{
+					"path": "single",
+					"type": "sì/no",
+					"required": false,
+					"default": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Una alla volta",
+					"hint": "Aprendo una voce si chiudono le altre"
+				}
+			],
+			"example": {
+				"fixture": "FAQ",
+				"target": "sections",
+				"json": {
+					"type": "accordion",
+					"variant": "faq",
+					"eyebrow": "Domande frequenti",
+					"title": "Prima di iniziare i lavori",
+					"intro": "Le risposte alle domande che ci fate più spesso al primo sopralluogo.",
+					"items": [
+						{
+							"title": "Il sopralluogo e il preventivo sono gratuiti?",
+							"text": "Sì. Veniamo a vedere le pareti, prendiamo le misure e ti lasciamo un preventivo scritto, senza costi e senza impegno."
+						},
+						{
+							"title": "Quanto tempo serve per tinteggiare un appartamento?",
+							"text": "Per un trilocale di solito bastano tre o quattro giorni lavorativi, compresa la stuccatura delle crepe.\n\nI tempi esatti sono scritti nel preventivo: se finiamo in ritardo per colpa nostra, ogni giorno in più è scalato dal totale."
+						},
+						{
+							"title": "Devo spostare io i mobili?",
+							"text": "No. Spostiamo noi i mobili al centro delle stanze e li copriamo con teli; proteggiamo anche pavimenti, porte e prese."
+						},
+						{
+							"title": "Che pitture usate?",
+							"text": "Pitture traspiranti o lavabili a basse emissioni, scelte in base alla stanza: antimuffa per bagni e cucine, lavabili per corridoi e camere dei bambini."
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "carousel",
+			"name": "Carosello",
+			"scope": "page",
+			"category": "contenuti",
+			"version": "1.0.0",
+			"interactive": true,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Una fila di foto o di card che si scorre in orizzontale, col dito o con le frecce. Non scorre mai da sola.",
+			"whenToUse": "Per una serie di elementi dello stesso tipo che si sfogliano: foto dei lavori finiti, prima e dopo, progetti, recensioni con foto.",
+			"avoidWhen": "Per contenuti importanti: le slide dopo la prima le guarda poca gente, quindi un messaggio da far leggere a tutti va in un hero o in un testo aperto. Con meno di 3 elementi (usa una griglia, come services) o con testi lunghi. Mai come apertura della pagina al posto dell’hero, e mai a scorrimento automatico (non è previsto).",
+			"rules": [
+				"La variante card richiede titolo e testo in ogni elemento."
+			],
+			"variants": [
+				{
+					"name": "foto",
+					"description": "Foto grandi con didascalia breve, quasi una per volta (due da tablet).",
+					"whenToUse": "Per mostrare i lavori finiti, quando contano le immagini.",
+					"fixture": "Foto",
+					"preview": "/catalogo/carousel/foto/",
+					"screenshots": {
+						"desktop": "img/carousel-foto-desktop.webp",
+						"mobile": "img/carousel-foto-mobile.webp"
+					}
+				},
+				{
+					"name": "card",
+					"description": "Card con foto, titolo, testo e link facoltativo: una e un pezzo su mobile, fino a tre da desktop.",
+					"whenToUse": "Per progetti o casi da raccontare in breve, ciascuno con il suo testo.",
+					"fixture": "Card",
+					"preview": "/catalogo/carousel/card/",
+					"screenshots": {
+						"desktop": "img/carousel-card-desktop.webp",
+						"mobile": "img/carousel-card-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`foto` · `card`",
+					"constraints": {
+						"values": [
+							"foto",
+							"card"
+						]
+					},
+					"label": "Variante",
+					"hint": "foto: foto grandi con didascalia · card: foto, titolo, testo e link per ogni elemento"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Al massimo 70 caratteri"
+				},
+				{
+					"path": "intro",
+					"type": "testo",
+					"required": false,
+					"limits": "max 240",
+					"constraints": {
+						"maxLength": 240
+					},
+					"label": "Introduzione",
+					"hint": "Al massimo 240 caratteri"
+				},
+				{
+					"path": "items",
+					"type": "elenco",
+					"required": true,
+					"limits": "3–12 voci",
+					"constraints": {
+						"minItems": 3,
+						"maxItems": 12
+					},
+					"label": "Elementi",
+					"hint": "Da 3 a 12"
+				},
+				{
+					"path": "items[].image",
+					"type": "gruppo",
+					"required": true,
+					"limits": "",
+					"constraints": {},
+					"label": "Foto",
+					"hint": "JPG, PNG o WebP"
+				},
+				{
+					"path": "items[].image.src",
+					"type": "immagine",
+					"required": true,
+					"limits": "foto in src/assets/images",
+					"constraints": {
+						"format": "image"
+					},
+					"label": "File",
+					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
+				},
+				{
+					"path": "items[].image.alt",
+					"type": "testo",
+					"required": true,
+					"limits": "min 5",
+					"constraints": {
+						"minLength": 5
+					},
+					"label": "Testo alternativo",
+					"hint": "Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»"
+				},
+				{
+					"path": "items[].title",
+					"type": "testo",
+					"required": false,
+					"requiredFor": [
+						"card"
+					],
+					"limits": "max 60",
+					"constraints": {
+						"maxLength": 60
+					},
+					"label": "Titolo",
+					"hint": "Obbligatorio per la variante card; nelle foto è la didascalia",
+					"note": "In foto è la didascalia."
+				},
+				{
+					"path": "items[].text",
+					"type": "testo",
+					"required": false,
+					"requiredFor": [
+						"card"
+					],
+					"limits": "max 200",
+					"constraints": {
+						"maxLength": 200
+					},
+					"label": "Testo",
+					"hint": "Obbligatorio per la variante card, al massimo 200 caratteri"
+				},
+				{
+					"path": "items[].cta",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Link",
+					"hint": "Facoltativo, solo nella variante card",
+					"note": "Mostrato solo nella variante card."
+				},
+				{
+					"path": "items[].cta.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "items[].cta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "items[].cta.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "items[].cta",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "items[].cta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "items[].cta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				}
+			],
+			"example": {
+				"fixture": "Foto",
+				"target": "sections",
+				"json": {
+					"type": "carousel",
+					"variant": "foto",
+					"eyebrow": "Lavori finiti",
+					"title": "Gli ultimi cantieri",
+					"items": [
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
+								"alt": "Parete tinteggiata a metà in verde salvia, con un rullo appoggiato"
+							},
+							"title": "Soggiorno in verde salvia, Firenze centro"
+						},
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/imbianchino-facciata.jpg",
+								"alt": "Facciata di una casa color ocra con persiane verdi"
+							},
+							"title": "Facciata ai silossani, Sesto Fiorentino"
+						},
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/imbianchino-decorazioni.jpg",
+								"alt": "Parete a stucco veneziano color ocra con una spatola appoggiata"
+							},
+							"title": "Stucco veneziano in un ingresso"
+						},
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/imbianchino-cartongesso.jpg",
+								"alt": "Lastre di cartongesso montate su una parete, con i giunti stuccati"
+							},
+							"title": "Controsoffitto con faretti in cucina"
+						},
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/imbianchino-antimuffa.jpg",
+								"alt": "Angolo di una stanza con macchie di muffa a sinistra e parete risanata a destra"
+							},
+							"title": "Bagno risanato dalla muffa"
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "tabs",
+			"name": "Schede",
+			"scope": "page",
+			"category": "contenuti",
+			"version": "1.0.0",
+			"interactive": true,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Contenuti alternativi in schede: se ne vede uno alla volta, da desktop con le linguette, su mobile come elenco da aprire.",
+			"whenToUse": "Quando chi visita sceglie una strada tra poche alternative parallele dello stesso tipo: interni o esterni, privati o condomini, tipi di finitura.",
+			"avoidWhen": "Per informazioni che tutti devono leggere (prezzi, condizioni, garanzie): nelle schede chiuse non le vede quasi nessuno, meglio un testo aperto o services. Per più di 6 voci o etichette lunghe, per confrontare elementi fianco a fianco (servono card o una tabella) e per passaggi in sequenza (meglio accordion o un elenco numerato).",
+			"rules": [
+				"La variante testo-immagine richiede la foto in ogni scheda."
+			],
+			"variants": [
+				{
+					"name": "testo",
+					"description": "Solo testo in ogni scheda, eventualmente con un pulsante.",
+					"whenToUse": "Per informazioni parallele e brevi, senza foto: fasi del lavoro, tipi di intervento.",
+					"fixture": "Testo",
+					"preview": "/catalogo/tabs/testo/",
+					"screenshots": {
+						"desktop": "img/tabs-testo-desktop.webp",
+						"mobile": "img/tabs-testo-mobile.webp"
+					}
+				},
+				{
+					"name": "testo-immagine",
+					"description": "Testo e foto affiancati in ogni scheda (foto sopra su mobile).",
+					"whenToUse": "Quando ogni scheda ha una sua foto: storia, metodo, squadra.",
+					"fixture": "Testo e immagine",
+					"preview": "/catalogo/tabs/testo-immagine/",
+					"screenshots": {
+						"desktop": "img/tabs-testo-immagine-desktop.webp",
+						"mobile": "img/tabs-testo-immagine-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`testo` · `testo-immagine`",
+					"constraints": {
+						"values": [
+							"testo",
+							"testo-immagine"
+						]
+					},
+					"label": "Variante",
+					"hint": "testo: solo testo nelle schede · testo-immagine: testo e foto affiancati in ogni scheda"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Al massimo 70 caratteri"
+				},
+				{
+					"path": "intro",
+					"type": "testo",
+					"required": false,
+					"limits": "max 240",
+					"constraints": {
+						"maxLength": 240
+					},
+					"label": "Introduzione",
+					"hint": "Al massimo 240 caratteri"
+				},
+				{
+					"path": "items",
+					"type": "elenco",
+					"required": true,
+					"limits": "2–6 voci",
+					"constraints": {
+						"minItems": 2,
+						"maxItems": 6
+					},
+					"label": "Schede",
+					"hint": "Da 2 a 6"
+				},
+				{
+					"path": "items[].label",
+					"type": "testo",
+					"required": true,
+					"limits": "max 30",
+					"constraints": {
+						"maxLength": 30
+					},
+					"label": "Nome della scheda",
+					"hint": "Corto, al massimo 30 caratteri"
+				},
+				{
+					"path": "items[].text",
+					"type": "testo",
+					"required": true,
+					"limits": "max 600",
+					"constraints": {
+						"maxLength": 600
+					},
+					"label": "Testo",
+					"hint": "Al massimo 600 caratteri; una riga vuota separa i paragrafi"
+				},
+				{
+					"path": "items[].image",
+					"type": "gruppo",
+					"required": false,
+					"requiredFor": [
+						"testo-immagine"
+					],
+					"limits": "",
+					"constraints": {},
+					"label": "Foto",
+					"hint": "Obbligatoria per la variante testo-immagine",
+					"note": "testo non la mostra."
+				},
+				{
+					"path": "items[].image.src",
+					"type": "immagine",
+					"required": true,
+					"requiredWith": "items[].image",
+					"limits": "foto in src/assets/images",
+					"constraints": {
+						"format": "image"
+					},
+					"label": "File",
+					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
+				},
+				{
+					"path": "items[].image.alt",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "items[].image",
+					"limits": "min 5",
+					"constraints": {
+						"minLength": 5
+					},
+					"label": "Testo alternativo",
+					"hint": "Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»"
+				},
+				{
+					"path": "items[].cta",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante",
+					"hint": "Facoltativo, sotto il testo"
+				},
+				{
+					"path": "items[].cta.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "items[].cta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "items[].cta.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "items[].cta",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "items[].cta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "items[].cta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				}
+			],
+			"example": {
+				"fixture": "Testo",
+				"target": "sections",
+				"json": {
+					"type": "tabs",
+					"variant": "testo",
+					"eyebrow": "Per chi lavoriamo",
+					"title": "Ogni cliente ha esigenze diverse",
+					"items": [
+						{
+							"label": "Privati",
+							"text": "Lavoriamo una stanza alla volta, così puoi continuare a vivere in casa. Copriamo mobili e pavimenti e a fine giornata puliamo.\n\nTi aiutiamo a scegliere colori e finiture provando i campioni sulle tue pareti.",
+							"cta": {
+								"label": "Chiedi un preventivo",
+								"href": "#preventivo"
+							}
+						},
+						{
+							"label": "Condomini",
+							"text": "Concordiamo i lavori con l’amministratore e li dividiamo a fasce orarie, per disturbare il meno possibile chi ci abita. Vani scala, androni e facciate con un unico referente."
+						},
+						{
+							"label": "Negozi e uffici",
+							"text": "Interveniamo la sera o nel fine settimana, per non fermare la tua attività. Pitture lavabili e resistenti, adatte agli ambienti di passaggio."
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "services",
+			"name": "Servizi",
+			"scope": "page",
+			"category": "contenuti",
+			"version": "1.1.0",
+			"interactive": false,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione breve e link facoltativo.",
+			"whenToUse": "Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno.",
+			"avoidWhen": "Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei cantieri, non un elenco.",
+			"rules": [
+				"La variante cards-icone richiede l’icona in ogni servizio.",
+				"Le varianti cards-immagine e alternato richiedono la foto in ogni servizio."
+			],
+			"variants": [
+				{
+					"name": "cards-icone",
+					"description": "Griglia di card con icona, titolo e testo, su 2 o 3 colonne.",
+					"whenToUse": "Servizi brevi e simili tra loro, quando non c’è una foto per ognuno.",
+					"fixture": "Card con icona",
+					"preview": "/catalogo/services/cards-icone/",
+					"screenshots": {
+						"desktop": "img/services-cards-icone-desktop.webp",
+						"mobile": "img/services-cards-icone-mobile.webp"
+					}
+				},
+				{
+					"name": "cards-immagine",
+					"description": "Griglia di card con una foto in alto.",
+					"whenToUse": "Quando c’è una foto adatta per ogni servizio: più concreta delle icone.",
+					"fixture": "Card con immagine",
+					"preview": "/catalogo/services/cards-immagine/",
+					"screenshots": {
+						"desktop": "img/services-cards-immagine-desktop.webp",
+						"mobile": "img/services-cards-immagine-mobile.webp"
+					}
+				},
+				{
+					"name": "alternato",
+					"description": "Righe di foto e testo che si alternano a destra e a sinistra.",
+					"whenToUse": "Da 2 a 4 servizi da raccontare con calma, di solito nella pagina dei servizi.",
+					"fixture": "Alternato",
+					"preview": "/catalogo/services/alternato/",
+					"screenshots": {
+						"desktop": "img/services-alternato-desktop.webp",
+						"mobile": "img/services-alternato-mobile.webp"
+					}
+				},
+				{
+					"name": "schede",
+					"description": "Un servizio per scheda, con testo, foto facoltativa e link; su mobile un elenco da aprire.",
+					"whenToUse": "Servizi alternativi tra cui scegliere; non per servizi che tutti devono vedere.",
+					"fixture": "Schede",
+					"preview": "/catalogo/services/schede/",
+					"screenshots": {
+						"desktop": "img/services-schede-desktop.webp",
+						"mobile": "img/services-schede-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`cards-icone` · `cards-immagine` · `alternato` · `schede`",
+					"constraints": {
+						"values": [
+							"cards-icone",
+							"cards-immagine",
+							"alternato",
+							"schede"
+						]
+					},
+					"label": "Variante",
+					"hint": "cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Titolo della sezione, al massimo 70 caratteri"
+				},
+				{
+					"path": "intro",
+					"type": "testo",
+					"required": false,
+					"limits": "max 240",
+					"constraints": {
+						"maxLength": 240
+					},
+					"label": "Introduzione",
+					"hint": "Una frase che presenta i servizi, al massimo 240 caratteri"
+				},
+				{
+					"path": "items",
+					"type": "elenco",
+					"required": true,
+					"limits": "2–6 voci",
+					"constraints": {
+						"minItems": 2,
+						"maxItems": 6
+					},
+					"label": "Servizi",
+					"hint": "Da 2 a 6 servizi"
+				},
+				{
+					"path": "items[].icon",
+					"type": "icona",
+					"required": false,
+					"requiredFor": [
+						"cards-icone"
+					],
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Obbligatoria per la variante cards-icone",
+					"note": "Le altre varianti non la mostrano."
+				},
+				{
+					"path": "items[].image",
+					"type": "gruppo",
+					"required": false,
+					"requiredFor": [
+						"cards-immagine",
+						"alternato"
+					],
+					"limits": "",
+					"constraints": {},
+					"label": "Foto",
+					"hint": "Obbligatoria per le varianti cards-immagine e alternato; facoltativa nelle schede",
+					"note": "Facoltativa in schede; cards-icone non la mostra."
+				},
+				{
+					"path": "items[].image.src",
+					"type": "immagine",
+					"required": true,
+					"requiredWith": "items[].image",
+					"limits": "foto in src/assets/images",
+					"constraints": {
+						"format": "image"
+					},
+					"label": "File",
+					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
+				},
+				{
+					"path": "items[].image.alt",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "items[].image",
+					"limits": "min 5",
+					"constraints": {
+						"minLength": 5
+					},
+					"label": "Testo alternativo",
+					"hint": "Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»"
+				},
+				{
+					"path": "items[].title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 50",
+					"constraints": {
+						"maxLength": 50
+					},
+					"label": "Nome del servizio",
+					"hint": "Al massimo 50 caratteri"
+				},
+				{
+					"path": "items[].text",
+					"type": "testo",
+					"required": true,
+					"limits": "max 180",
+					"constraints": {
+						"maxLength": 180
+					},
+					"label": "Descrizione",
+					"hint": "Cosa comprende il servizio, al massimo 180 caratteri"
+				},
+				{
+					"path": "items[].link",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Link",
+					"hint": "Porta alla pagina o alla sezione del servizio: compila testo e link, oppure nessuno dei due"
+				},
+				{
+					"path": "items[].link.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "items[].link",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "items[].link.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "items[].link",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "items[].link.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "items[].link.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				}
+			],
+			"example": {
+				"fixture": "Card con icona",
+				"target": "sections",
+				"json": {
+					"type": "services",
+					"variant": "cards-icone",
+					"eyebrow": "Cosa facciamo",
+					"title": "Tutto quello che serve alle tue pareti",
+					"intro": "Dalla singola stanza al condominio intero: un’unica squadra per preparare, tinteggiare e rifinire, con tempi concordati prima di iniziare.",
+					"items": [
+						{
+							"icon": "rullo",
+							"title": "Tinteggiature interne",
+							"text": "Pareti e soffitti con pitture traspiranti o lavabili. Copriamo mobili e pavimenti, stucchiamo le crepe e lasciamo tutto pulito."
+						},
+						{
+							"icon": "edificio",
+							"title": "Facciate esterne",
+							"text": "Pulizia, ripristino degli intonaci e pitture ai silossani che resistono a pioggia, sole e smog per molti anni."
+						},
+						{
+							"icon": "pennello",
+							"title": "Decorazioni e velature",
+							"text": "Stucco veneziano, velature e spatolati per dare carattere all’ingresso o a una parete del soggiorno."
+						},
+						{
+							"icon": "goccia",
+							"title": "Trattamenti antimuffa",
+							"text": "Eliminiamo muffa e condensa alla radice con prodotti risananti e pitture termiche anticondensa."
+						},
+						{
+							"icon": "muro",
+							"title": "Cartongesso",
+							"text": "Contropareti, controsoffitti e nicchie su misura, montati, stuccati e tinteggiati dalla stessa squadra."
+						},
+						{
+							"icon": "scala",
+							"title": "Vani scala condominiali",
+							"text": "Lavori programmati con l’amministratore e divisi a fasce orarie, per disturbare il meno possibile chi ci abita."
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "cta",
+			"name": "Invito all’azione",
+			"scope": "page",
+			"category": "contatti",
+			"version": "1.1.0",
+			"interactive": false,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Fascia che chiede a chi visita di fare il passo successivo: chiedere un preventivo, chiamare, scrivere.",
+			"whenToUse": "Dopo i blocchi che convincono (servizi, lavori, recensioni) e in fondo alla pagina, prima del footer. Con showContacts mostra telefono e WhatsApp dell’attività presi da site.json.",
+			"avoidWhen": "In apertura di pagina (lì va l’hero) o più di due volte nella stessa pagina: troppi inviti si annullano a vicenda.",
+			"rules": [
+				"Con showContacts il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp."
+			],
+			"variants": [
+				{
+					"name": "banner",
+					"description": "Testo centrato e uno o due pulsanti; con tone primary diventa una fascia piena.",
+					"whenToUse": "L’invito principale della pagina, verso la fine: al massimo uno per pagina.",
+					"fixture": "Banner",
+					"preview": "/catalogo/cta/banner/",
+					"screenshots": {
+						"desktop": "img/cta-banner-desktop.webp",
+						"mobile": "img/cta-banner-mobile.webp"
+					}
+				},
+				{
+					"name": "split-contatto",
+					"description": "Testo a sinistra e pulsanti a destra; con showContacts aggiunge Chiama e WhatsApp.",
+					"whenToUse": "Per chiudere la pagina con i recapiti, di solito con tone muted (contatti, fondo della home).",
+					"fixture": "Split con recapiti",
+					"preview": "/catalogo/cta/split-contatto/",
+					"screenshots": {
+						"desktop": "img/cta-split-contatto-desktop.webp",
+						"mobile": "img/cta-split-contatto-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`banner` · `split-contatto`",
+					"constraints": {
+						"values": [
+							"banner",
+							"split-contatto"
+						]
+					},
+					"label": "Variante",
+					"hint": "banner: testo centrato e pulsanti · split-contatto: testo a sinistra, pulsanti a destra"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Al massimo 70 caratteri"
+				},
+				{
+					"path": "text",
+					"type": "testo",
+					"required": false,
+					"limits": "max 200",
+					"constraints": {
+						"maxLength": 200
+					},
+					"label": "Testo",
+					"hint": "Una o due frasi, al massimo 200 caratteri"
+				},
+				{
+					"path": "primary",
+					"type": "gruppo",
+					"required": true,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante principale",
+					"hint": "L’azione che chiedi di fare"
+				},
+				{
+					"path": "primary.label",
+					"type": "testo",
+					"required": true,
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "primary.href",
+					"type": "testo",
+					"required": true,
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "primary.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "primary.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				},
+				{
+					"path": "secondary",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante secondario",
+					"hint": "Un’alternativa: compila testo e link, oppure nessuno dei due"
+				},
+				{
+					"path": "secondary.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "secondary",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "secondary.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "secondary",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "secondary.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "secondary.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				},
+				{
+					"path": "showContacts",
+					"type": "sì/no",
+					"required": true,
+					"limits": "",
+					"constraints": {},
+					"label": "Mostra telefono e WhatsApp",
+					"hint": "Aggiunge i pulsanti con i recapiti presi da «Dati attività»",
+					"note": "Il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp."
+				}
+			],
+			"example": {
+				"fixture": "Banner",
+				"target": "sections",
+				"json": {
+					"type": "cta",
+					"tone": "primary",
+					"variant": "banner",
+					"title": "Pareti nuove prima delle feste?",
+					"text": "Sopralluogo e preventivo gratuiti, senza impegno. Ti diciamo subito quanto costa e quanto dura il lavoro, e lo mettiamo per iscritto.",
+					"primary": {
+						"label": "Chiedi un preventivo",
+						"href": "#preventivo"
+					},
+					"secondary": {
+						"label": "Guarda i lavori",
+						"href": "#lavori"
+					},
+					"showContacts": false
+				}
+			}
+		},
+		{
+			"type": "footer",
+			"name": "Footer",
+			"scope": "layout",
+			"category": "piè di pagina",
+			"version": "1.0.0",
+			"interactive": false,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Piede del sito: recapiti cliccabili, orari, social e i dati legali obbligatori (ragione sociale, sede, P.IVA, REA e capitale per le società), con i link a privacy e cookie. Tutto da site.json e navigation.json.",
+			"whenToUse": "Sempre: è il piede di tutte le pagine. Non è una sezione delle ricette: variante e fascia di contatto si scelgono in src/content/settings/layout.json (chiave footer) e BaseLayout lo disegna in fondo a ogni pagina.",
+			"avoidWhen": "Nelle sezioni di una ricetta (la build lo rifiuta). Per chiudere una pagina con un invito diverso da chiamare o scrivere usa cta, e lascia ctaBand spento per non ripeterlo.",
+			"rules": [
+				"Il titolo della fascia (ctaBandTitle) conta solo con ctaBand attivo.",
+				"Il pulsante WhatsApp della fascia compare solo se site.json ha il numero WhatsApp."
+			],
+			"variants": [
+				{
+					"name": "colonne",
+					"description": "Logo e descrizione, link, contatti con «Apri in Maps», orari e social; sotto, la riga legale con privacy, cookie e credito.",
+					"whenToUse": "Per la maggior parte dei siti.",
+					"fixture": "Colonne, ditta individuale",
+					"preview": "/catalogo/footer/colonne/",
+					"screenshots": {
+						"desktop": "img/footer-colonne-desktop.webp",
+						"mobile": "img/footer-colonne-mobile.webp"
+					}
+				},
+				{
+					"name": "minimale",
+					"description": "Una riga sola: nome, P.IVA (con REA e capitale per le società), link legali e social.",
+					"whenToUse": "Siti di una o due pagine, o quando contatti e orari sono già nelle pagine.",
+					"fixture": "Minimale, ditta individuale, con fascia (titolo predefinito, anche WhatsApp)",
+					"preview": "/catalogo/footer/minimale/",
+					"screenshots": {
+						"desktop": "img/footer-minimale-desktop.webp",
+						"mobile": "img/footer-minimale-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`colonne` · `minimale`",
+					"constraints": {
+						"values": [
+							"colonne",
+							"minimale"
+						]
+					},
+					"label": "Variante",
+					"hint": "colonne: logo, link, contatti, orari e social · minimale: una riga con nome, P.IVA, link legali e social"
+				},
+				{
+					"path": "ctaBand",
+					"type": "sì/no",
+					"required": true,
+					"limits": "",
+					"constraints": {},
+					"label": "Fascia di contatto",
+					"hint": "Sopra il footer, un titolo con i pulsanti per chiamare e scrivere su WhatsApp"
+				},
+				{
+					"path": "ctaBandTitle",
+					"type": "testo",
+					"required": false,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo della fascia",
+					"hint": "Al massimo 70 caratteri; vuoto: «Parliamo del tuo progetto»",
+					"note": "Usato solo con ctaBand attivo."
+				}
+			],
+			"example": {
+				"fixture": "Colonne, ditta individuale",
+				"target": "layout.json",
+				"json": {
+					"footer": {
+						"variant": "colonne",
+						"ctaBand": false
+					}
+				}
+			}
+		}
+	]
+}

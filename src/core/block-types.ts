@@ -77,15 +77,36 @@ export interface BlockMeta {
 		  };
 	/** true se il blocco ha un comportamento in JS: deve seguire docs/blocchi-interattivi.md. */
 	interactive?: boolean;
-	/** Varianti: nome → descrizione. I nomi sono i valori ammessi dalla prop `variant` dello schema. */
-	variants: Record<string, string>;
+	/** Varianti: nome → com'è e quando usarla. I nomi sono i valori ammessi dalla prop `variant` dello schema. */
+	variants: Record<string, VariantMeta>;
+	/**
+	 * Le regole del blocco a parole: ogni refine/superRefine dello schema (lo stesso testo del suo
+	 * commento `// rule:`, obbligatorio) e i vincoli sui dati di site.json e navigation.json.
+	 */
+	rules?: string[];
 	/**
 	 * Vincoli tra campi che lo schema non dice da solo: quelli di refine/superRefine (es. foto
 	 * obbligatoria solo per alcune varianti) o che dipendono da site.json e navigation.json.
-	 * Percorso del campo come nella tabella del catalogo ("image", "items[].icon") → regola.
-	 * Obbligatorio se lo schema ha refine o superRefine (check "blocks").
+	 * Percorso del campo come nella tabella del catalogo ("image", "items[].icon") → FieldRule.
+	 * Obbligatorio se lo schema ha refine o superRefine (check "blocks", con gen:catalog).
 	 */
-	fieldRules?: Record<string, string>;
+	fieldRules?: Record<string, FieldRule>;
+}
+
+/** Una variante di un blocco (BlockMeta.variants). */
+export interface VariantMeta {
+	/** Com'è fatta, in una frase. */
+	description: string;
+	/** Quando sceglierla rispetto alle altre. */
+	whenToUse: string;
+}
+
+/** Vincolo di un campo (BlockMeta.fieldRules): colonne «Obbl.» e «Note» della scheda del catalogo. */
+export interface FieldRule {
+	/** Varianti per cui il campo è obbligatorio anche se lo schema lo ha facoltativo (lo verifica refine/superRefine). */
+	requiredFor?: string[];
+	/** Il resto della regola, in una frase: cosa fanno le altre varianti, da quali dati dipende. */
+	note?: string;
 }
 
 /** Dati di esempio di un blocco (fixtures.ts), validati con lo schema del blocco. */

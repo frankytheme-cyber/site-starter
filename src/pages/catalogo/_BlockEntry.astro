@@ -58,6 +58,9 @@ const SubHeading = href ? 'h3' : 'h2';
 							</dt>
 							<dd class="min-w-0 flex-1">
 								<p class="text-fg-muted">{variant.description}</p>
+								<p class="mt-1 text-sm">
+									<span class="font-semibold">Quando usarla:</span> {variant.whenToUse}
+								</p>
 								<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
 									<a href={`/catalogo/${meta.type}/${variant.name}/`} class="inline-flex min-h-9 items-center text-primary underline underline-offset-4">
 										Apri da sola

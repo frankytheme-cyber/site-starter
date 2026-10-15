@@ -13,11 +13,23 @@ export const meta: BlockMeta = {
 	version: '1.1.1',
 	source: { from: 'originale' },
 	variants: {
-		split: 'Testo a sinistra e immagine a destra (sotto su mobile). Equilibrata, va bene per quasi tutte le attività.',
-		full: 'Immagine a tutta larghezza con velatura scura e testo chiaro sopra. Di grande impatto, richiede una foto di qualità.',
-		centered: 'Solo testo, centrato, senza immagine. Per pagine interne o quando manca una foto adatta.',
+		split: {
+			description: 'Testo a sinistra e foto a destra (sotto su mobile).',
+			whenToUse: 'Quasi sempre: equilibrata, va bene per la home di qualsiasi attività che ha una buona foto.',
+		},
+		full: {
+			description: 'Foto a tutta larghezza con velatura scura e testo chiaro sopra.',
+			whenToUse: 'Quando c’è una foto di grande qualità e si vuole impatto; non con foto piccole o confuse.',
+		},
+		centered: {
+			description: 'Solo testo, centrato, senza foto.',
+			whenToUse: 'Pagine interne (servizi, contatti, note legali) o quando manca una foto adatta.',
+		},
 	},
+	rules: [
+		'Le varianti split e full richiedono la foto (image).',
+	],
 	fieldRules: {
-		image: 'Obbligatoria per le varianti split e full; centered non la mostra.',
+		image: { requiredFor: ['split', 'full'], note: 'centered non la mostra.' },
 	},
 };

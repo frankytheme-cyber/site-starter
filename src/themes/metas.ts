@@ -2,7 +2,7 @@ import { fonts, palettes, type PaletteMeta, type PresetMeta, shapes } from './pr
 
 /*
  * Schede dei preset (<nome>.meta.ts accanto al CSS), per nome. Un preset senza scheda, o una
- * scheda senza preset in presets.ts, ferma chi le carica (catalogo e check "catalog").
+ * scheda senza preset in presets.ts, ferma chi le carica (catalogo e check "blocks").
  */
 
 const nameOf = (path: string) => path.split('/').pop()!.replace(/\.meta\.ts$/, '');

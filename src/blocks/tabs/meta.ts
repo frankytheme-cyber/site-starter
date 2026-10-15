@@ -14,10 +14,19 @@ export const meta: BlockMeta = {
 	source: { from: 'originale' },
 	interactive: true,
 	variants: {
-		testo: 'Solo testo, eventualmente con un pulsante. Compatta.',
-		'testo-immagine': 'Testo e foto affiancati in ogni scheda (foto sopra su mobile). Richiede una foto per scheda.',
+		testo: {
+			description: 'Solo testo in ogni scheda, eventualmente con un pulsante.',
+			whenToUse: 'Per informazioni parallele e brevi, senza foto: fasi del lavoro, tipi di intervento.',
+		},
+		'testo-immagine': {
+			description: 'Testo e foto affiancati in ogni scheda (foto sopra su mobile).',
+			whenToUse: 'Quando ogni scheda ha una sua foto: storia, metodo, squadra.',
+		},
 	},
+	rules: [
+		'La variante testo-immagine richiede la foto in ogni scheda.',
+	],
 	fieldRules: {
-		'items[].image': 'Obbligatoria per la variante testo-immagine; testo non la mostra.',
+		'items[].image': { requiredFor: ['testo-immagine'], note: 'testo non la mostra.' },
 	},
 };
