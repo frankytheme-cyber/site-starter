@@ -5,12 +5,35 @@ Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, u
 ## Regole
 
 - **Solo classi semantiche nei blocchi.** Usa `bg-primary`, `text-fg-muted`, `font-heading`, `rounded-box`... MAI colori Tailwind fissi (`bg-blue-600`, `text-gray-500`...) né valori arbitrari di colore (`bg-[#1e40af]`, `text-[rgb(...)]`...). Non contare sul fatto che, con la palette di Tailwind disattivata, una classe come `bg-blue-600` «non genera CSS»: `check:tokens` vieta come errore le classi della palette (anche `fill-*`, `stroke-*`, `ring-*`, `from-`/`via-`/`to-*`) e i valori arbitrari di colore in `src/blocks`, `src/core` e `src/layouts`.
-- **Libreria o sito: lo dice `SITE_STARTER_LIBRARY`.** La repo site-starter è la libreria solo con `SITE_STARTER_LIBRARY=1` (in `.env`, vedi `.env.example`; in CI e su Vercel nelle variabili del progetto); senza, ogni progetto è un sito cliente, anche la libreria (e i controlli falliscono sul lock). Modalità in `src/core/mode.ts`, guida in `docs/siti-cliente.md`.
-- **Cartelle e file gestiti in sola lettura nei siti cliente.** Cartelle e file elencati in `library.manifest.json` (`managed`, `managedFiles`) si modificano SOLO nella repo site-starter; nei siti cliente sono in sola lettura (check `lock`) e si aggiornano con `npm run blocks:sync -- vX.Y.Z`. Note ed eccezioni del singolo sito vanno in `docs/sito.md`.
-- **Dati dell'attività in un solo posto.** Nome, descrizione, indirizzo, telefono, email, dati legali (ragione sociale, forma giuridica, P.IVA, REA, capitale), orari e immagine per i social di ripiego (`defaultOgImage`) stanno solo in `src/content/settings/site.json`; mai scritti nei testi delle pagine né negli schemi dei blocchi, che li leggono con `getSiteSettings()` (`@/core/settings`).
+- **Libreria o sito: lo dice `SITE_STARTER_LIBRARY`.** La repo site-starter è la libreria solo con `SITE_STARTER_LIBRARY=1` (in `.env`, vedi `.env.example`; in CI e su Vercel nelle variabili del progetto); senza, ogni progetto è un sito cliente, anche la libreria (e i controlli falliscono sul lock). Cosa cambia tra le due: «Libreria e siti cliente» qui sotto.
+- **Cartelle e file gestiti in sola lettura nei siti cliente.** Quelli di `library.manifest.json` (`managed`, `managedFiles`: elenco qui sotto) si modificano SOLO nella repo site-starter; nei siti cliente il check `lock` ferma ogni modifica e si aggiornano con `npm run blocks:sync -- vX.Y.Z`. Note ed eccezioni del singolo sito vanno in `docs/sito.md`, mai in `AGENTS.md` o `CLAUDE.md` (gestiti).
+- **Dati dell'attività in un solo posto.** Nome, descrizione, indirizzo, telefono, email, dati legali (ragione sociale, forma giuridica, P.IVA, REA, capitale), orari e immagine per i social di ripiego (`defaultOgImage`) stanno solo in `src/content/settings/site.json`; mai scritti nei testi delle pagine né negli schemi dei blocchi, che li leggono con `getSiteSettings()` (`@/core/settings`). Unica eccezione, le fixture: i dati `site` di prova del footer (`src/blocks/footer/fixtures.ts`) servono al catalogo e hanno recapiti palesemente finti (`055 000 0000`, `info@esempio.it`); `check:recipes` non legge le fixture.
 - **Si compone con blocchi esistenti.** Il sito si costruisce con i blocchi già presenti: un blocco nuovo nasce solo in site-starter, su task approvato.
-- **Ogni campo ha etichetta e aiuto.** Ogni campo degli schemi di blocchi, pagine e impostazioni ha `.describe("Etichetta|Aiuto")` in italiano: da lì nascono il CMS e la documentazione del catalogo. Dopo aver cambiato uno schema, `npm run gen:decap` e commit di `public/admin/config.yml`; nella libreria, dopo aver cambiato un blocco (schema, meta, fixture, aspetto), un preset del tema o le icone, `npm run catalog` e commit di `docs/catalogo`.
+- **Ogni campo ha etichetta e aiuto.** Ogni campo degli schemi di blocchi, pagine e impostazioni (anche `themeSchema` e `layoutSchema`, che il CMS non mostra) ha `.describe("Etichetta|Aiuto")` in italiano: da lì nascono il CMS e la documentazione del catalogo, e `gen:decap` e `gen:catalog` si fermano su un campo senza. Dopo aver cambiato uno schema, `npm run gen:decap` e commit di `public/admin/config.yml`; nella libreria, dopo aver cambiato un blocco (schema, meta, fixture, aspetto), un preset del tema o le icone, `npm run catalog` e commit di `docs/catalogo`.
 - **Controlli verdi prima di chiudere.** Prima di dichiarare finito un lavoro, `npm run check` deve passare (comprende la build); per blocchi, layout e pagine anche `npm run qa`. Elenco dei controlli in `docs/controlli.md`.
+
+## Libreria e siti cliente
+
+La stessa repo vive in due modi, e la modalità la decide solo `SITE_STARTER_LIBRARY` (`src/core/mode.ts`; guida completa in `docs/siti-cliente.md`):
+
+| | Libreria (la repo site-starter) | Sito cliente (il default) |
+| --- | --- | --- |
+| Quando | `SITE_STARTER_LIBRARY=1` in `.env`, nella variabile del repository GitHub e nel progetto Vercel della libreria | la variabile manca, è vuota o vale altro |
+| `/catalogo`, `gen:catalog`, `screenshots`, `release`, `check:template` | sì | `/catalogo` non c'è nel build, i comandi si fermano |
+| `site:init`, `blocks:sync` | si fermano | sì |
+| check `blocks` / `lock` | sì / saltato | saltato / sì: senza `blocks.lock.json` è un errore |
+| `--strict` | regole strutturali delle ricette come errori; segnaposto del template (`DA-COMPILARE`, `og-DA-COMPILARE`) ad avviso; `release` saltato | tutto errore: ricette, segnaposto, `release`, repository del CMS |
+
+- **Creare un sito:** «Use this template» su GitHub, clone, `npm install`, poi una volta `npm run site:init` (working tree pulito): toglie la parte della libreria, scrive il repository del CMS in `src/site.config.ts` e rigenera `config.yml`, scrive `blocks.lock.json` e crea `docs/sito.md`. Prima di pubblicare: `npm run qa -- --strict` senza errori.
+- **Aggiornare un sito:** `npm run blocks:sync -- vX.Y.Z` (working tree pulito), poi `npm install`, `npm run gen:decap`, `npm run qa -- --strict` e commit. Sostituisce cartelle e file gestiti con quelli del tag, unisce script e dipendenze in `package.json`, aggiorna il lock e mostra i breaking change di `CHANGELOG.md`.
+- **Cosa è gestito** (`library.manifest.json`, elenco completo lì):
+  - `managed`, cartelle: `src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`, `.github/workflows`;
+  - `managedFiles`: `AGENTS.md`, `CLAUDE.md`, `.github/CODEOWNERS`, `library.manifest.json`, `astro.config.mjs`, `src/content.config.ts`, `src/pages/[...slug].astro`, `src/pages/robots.txt.ts`, `tsconfig.json`, `.env.example`, `public/admin/index.html` e i documenti comuni di `docs/` (`controlli.md`, `decap.md`, `siti-cliente.md`, `blocchi-interattivi.md`, `THIRD_PARTY_LICENSES.md`);
+  - `exclude`: percorsi né controllati né copiati da `blocks:sync` (`src/library`);
+  - `libraryOnly` (`src/library` con il catalogo, `docs/README.md`, `CHANGELOG.md`) e `libraryScripts`: solo nella libreria, `site:init` li toglie e `blocks:sync` non li porta;
+  - del sito, liberi: `src/content/**`, `src/assets/images/**`, `src/site.config.ts`, le altre pagine di `src/pages`, `public/` (tranne `admin/index.html`), `docs/sito.md`, `README.md`, `name` e `version` di `package.json`.
+- **Il lock.** `blocks.lock.json` registra la versione della libreria e l'hash sha256 di ogni file gestito; lo scrivono solo `site:init` e `blocks:sync`, mai a mano. `.github/CODEOWNERS` chiede la revisione del proprietario sulle pull request che toccano il lock o chi lo controlla (`.github/`, `scripts/`, `library.manifest.json`, `package.json`).
+- **Note del sito.** `CLAUDE.md` importa `AGENTS.md` (le regole comuni) e `docs/sito.md` (note ed eccezioni del sito: l'unico dei tre che il sito scrive). Con un altro agente, in un sito cliente leggi `docs/sito.md` prima di iniziare.
 
 ## Tema
 
@@ -28,7 +51,7 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 - Menu del sito: solo in `src/content/settings/navigation.json`, letto con `getNavigation()` (`@/core/navigation`): voci e pulsante dell'header, gruppo `footer` con i link secondari e quelli legali (privacy, cookie).
 - Anteprima, solo in modalità libreria (pagine in `src/library/catalogo`, registrate da `src/core/integrations/library.ts`): `/catalogo` (tutti i blocchi con le loro fixture, selettori di palette, font e forma, «Copia JSON» per ogni variante), `/catalogo/<type>` e `/catalogo/<type>/<variante>/` (una variante da sola, `?palette=&fonts=&shape=`).
 - **Catalogo in `docs/catalogo/`** (generato da `npm run gen:catalog`, gestito dalla libreria, mai scritto a mano): `README.md` con versione della libreria, regole d'oro delle ricette, regole di composizione, blocchi, opzioni di `layout.json`, link speciali, temi e icone; una scheda per blocco (`blocchi/<tipo>.md`: quando usarlo, varianti con screenshot, campi, regole, esempio pronto); `catalogo.json` con gli stessi dati per le macchine; `ui.md` (primitive); le **ricette tipo** da copiare (`ricette-tipo/`, scritte a mano). Per comporre una pagina parti da lì.
-- **Schede dei blocchi per il catalogo.** In `meta.ts` ogni variante ha `description` e `whenToUse`; `rules` descrive a parole ogni regola tra campi; ogni `refine`/`superRefine` dello schema ha sopra un commento `// rule: <testo>` con lo stesso testo di una voce di `rules`. Senza, `gen:catalog` si ferma.
+- **Schede dei blocchi per il catalogo.** In `meta.ts` ogni variante ha `description` e `whenToUse`; `rules` descrive a parole ogni regola tra campi e ogni vincolo sulla pagina (es. un solo accordion `faq`); ogni `refine`/`superRefine` dello schema ha sopra un commento `// rule: <testo>` con lo stesso testo di una voce di `rules`. Senza, `gen:catalog` si ferma.
 - La radice di ogni blocco è `<Section>` (`tone`: `default`, `muted`, `primary`). Dentro usa sempre `text-fg`, `text-fg-muted`, `bg-primary`...: Section ridefinisce i token per il tono, così il contrasto resta quello verificato.
 - Immagini: solo file in `src/assets/images`. Nelle ricette il percorso è relativo al JSON (`"../../assets/images/foto.jpg"`), nelle fixture il file si importa; `alt` di almeno 5 caratteri che descrive la foto.
 - Icone: solo `<Icon name="..." />` (`@/core/ui/Icon.astro`) con gli alias di `src/core/icons.ts`, mai SVG scritti a mano; negli schemi `z.enum(ICON_NAMES)`. Elenco in `/catalogo/icone`; licenze in `docs/THIRD_PARTY_LICENSES.md`.
@@ -58,7 +81,7 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run check:contrast` | Verifica il contrasto WCAG AA di tutte le palette |
 | `npm run check:recipes`  | Schema e immagini di ricette e impostazioni (prima della build, con pagina, sezione e campo), poi regole di contenuto; `-- --strict` esce con errore |
 | `npm run check:tokens`   | Niente classi della palette Tailwind, colori fissi né `!important` in `src/blocks`, `src/core` e `src/layouts` |
-| `npm run check:lock`     | Sito cliente: niente modifiche locali a cartelle e file gestiti (`blocks.lock.json`) |
+| `npm run check:lock`     | Sito cliente: niente modifiche locali a cartelle e file gestiti (`blocks.lock.json`, con versione e hash) |
 | `npm run gen:decap`      | Genera `public/admin/config.yml` dagli schemi (anche in `prebuild`); senza repository GitHub usa un segnaposto con un avviso |
 | `npm run check:decap`    | Fallisce se `config.yml` non è aggiornato                  |
 | `npm run site:init`      | Sito cliente, una volta: toglie la parte della libreria, repository del CMS, `blocks.lock.json`, `docs/sito.md` |
@@ -70,6 +93,8 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run check:template` | Libreria: il template inizializzato come sito deve fallire `qa --strict` solo per i segnaposto (job CI `template-as-site`) |
 | `npm run release -- vX.Y.Z` | Libreria: versione in `library.manifest.json` e `CHANGELOG.md`, `gen:catalog`, `screenshots`, `check`, commit e tag (working tree pulito; push a mano) |
 | `npm run cms:local`      | `decap-server` per provare `/admin/` in locale, senza GitHub |
+
+In CI (`.github/workflows/ci.yml`, gestito): `check` sulle pull request, sui push su `main` e a mano; `qa` (e nella libreria `template-as-site`) sulle pull request; `--strict` sulle pull request verso `main`. Dettagli e protezione di `main` in `docs/controlli.md`.
 
 Per gli agenti: avvia il server di sviluppo in background con `npx astro dev --background` e gestiscilo con `astro dev stop`, `astro dev status` e `astro dev logs`.
 

@@ -12,6 +12,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 - Il catalogo si sposta da `src/pages/catalogo` a `src/library/catalogo` e si registra con l’integrazione `src/core/integrations/library.ts`, solo in modalità libreria.
 - `blocks.lock.json` registra la versione della libreria e copre anche i file gestiti (`managedFiles` del manifest). Lo scrivono solo `npm run site:init` e `npm run blocks:sync`: `npm run lock:write` non c’è più.
 - Nei siti cliente un `blocks.lock.json` mancante è un errore del check `lock`.
+- Sono gestiti anche `.github/workflows/` (tutta la cartella: un workflow aggiunto nel sito è una modifica vietata), `CLAUDE.md` e `.github/CODEOWNERS`. `CLAUDE.md` non è più un link ad `AGENTS.md`: importa `AGENTS.md` e `docs/sito.md`, dove vanno le note del sito.
+- CI: i push partono solo su `main`; gli altri branch girano come pull request (una volta sola per commit) o a mano (`workflow_dispatch`).
 
 ### Novità
 
@@ -25,8 +27,15 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 - Campo `kind` delle pagine: `"legale"` per privacy, cookie e note legali. Su queste pagine e su quelle con `noindex`, `recipes` non avvisa più «nessuna cta»; il template lo imposta su `privacy.json` e `cookie.json`.
 - CI: il job `template-as-site` gira con `SITE_STARTER_LIBRARY` vuota, cioè da sito cliente; lo script riconosce la libreria da `src/library`. Il messaggio di `lock` spiega come creare la variabile di repository su GitHub.
 - `check:tokens` vieta le classi della palette di Tailwind (`bg-blue-600`, `text-gray-500`, `fill-*`, `stroke-*`, `ring-*`, `from-`/`via-`/`to-*`...) anche se non generano CSS, e guarda anche `src/layouts` e i file `.ts`.
+- `.github/CODEOWNERS`: con «Require review from Code Owners», le pull request che toccano `blocks.lock.json`, `.github/`, `scripts/`, `library.manifest.json` o `package.json` richiedono l’approvazione del proprietario della libreria.
+- CI con `permissions: contents: read` e una sola esecuzione per branch (`concurrency`).
+- `check:recipes` avvisa se una pagina ha più di un accordion `faq` (nuova regola d’oro); `accordion` ha le sue `rules`.
+- `gen:catalog` (e quindi il check `blocks`) si ferma su un campo senza `.describe()` negli schemi dei blocchi, in `themeSchema` e nelle chiavi di `layoutSchema`; `themeSchema` ha le sue descrizioni e il README del catalogo le chiavi di `theme.json`.
+- `site:init` scrive in `docs/sito.md` una traccia per le note del sito.
+- `README.md` con le istruzioni per la libreria e per i siti cliente.
 
 ### Correzioni
 
 - `check:blocks` raccoglie tutti i problemi: un file mancante in un blocco non interrompe più il controllo degli altri.
 - `check:recipes` segnala tutti i recapiti scritti in uno stesso testo, non solo il primo.
+- Le fixture del footer usano recapiti palesemente finti (`055 000 0000`, `info@esempio.it`).
