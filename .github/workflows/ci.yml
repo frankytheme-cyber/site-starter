@@ -1,20 +1,31 @@
 # Controlli automatici: docs/controlli.md.
-# - check: su ogni push (e sulle pull request), suite "check": statici + build.
-# - qa: solo sulle pull request, dopo check: link, accessibilità, interattivi, Lighthouse.
-# - template-as-site: solo nella libreria e sulle pull request, dopo check: il template, copiato e
-#   inizializzato come sito cliente, deve fallire qa --strict solo per i segnaposto attesi.
+# - check: suite "check" (statici + build) sulle pull request, sui push su main e a mano.
+# - qa: sulle pull request (e a mano), dopo check: link, accessibilità, interattivi, Lighthouse.
+# - template-as-site: solo nella libreria, sulle pull request (e a mano), dopo check: il template,
+#   copiato e inizializzato come sito cliente, deve fallire qa --strict solo per i segnaposto attesi.
 # Sulle pull request verso main check e qa usano --strict (regole di pubblicazione).
 # Modalità (src/core/mode.ts): la variabile del repository SITE_STARTER_LIBRARY vale 1 solo nella
 # libreria site-starter (Settings → Secrets and variables → Actions → Variables); nei siti cliente
 # non c'è e arriva vuota, cioè modalità sito (docs/siti-cliente.md). template-as-site la svuota.
 name: CI
 
+# Push solo su main: un branch con una pull request aperta gira una volta sola, come pull request,
+# e non anche per il push dello stesso commit. Un branch senza pull request si prova a mano
+# (Actions → CI → Run workflow) o aprendo una pull request in bozza.
 on:
   push:
+    branches: [main]
   pull_request:
+  workflow_dispatch:
 
+# Il token del workflow legge soltanto: nessun job scrive nel repository.
+permissions:
+  contents: read
+
+# Una sola esecuzione per branch: un push nuovo annulla quella in corso (pull request comprese,
+# raggruppate per il branch di partenza).
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 env:
@@ -52,7 +63,7 @@ jobs:
 
   qa:
     name: qa
-    if: github.event_name == 'pull_request'
+    if: github.event_name != 'push'
     needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -100,7 +111,7 @@ jobs:
     name: template-as-site
     # Parte solo nella libreria (la condizione legge vars, non l'ambiente del job), ma gira da sito
     # cliente: la variabile vuota dà la modalità sito anche allo script che prepara la copia.
-    if: vars.SITE_STARTER_LIBRARY == '1' && github.event_name == 'pull_request'
+    if: vars.SITE_STARTER_LIBRARY == '1' && github.event_name != 'push'
     needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 30
