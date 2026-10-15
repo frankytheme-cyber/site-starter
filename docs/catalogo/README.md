@@ -12,12 +12,13 @@ Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma 
 2. Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande); non nelle pagine legali ("kind": "legale"). *(controllo recipes)*
 3. Due sezioni vicine non hanno lo stesso tone (default, muted, primary). *(controllo recipes)*
 4. Al massimo 12 sezioni: oltre, meglio dividere la pagina. *(controllo recipes)*
-5. Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json. *(build)*
-6. Recapiti mai nei testi: nei pulsanti i link speciali (@telefono, @whatsapp, @email, @mappa), nelle cta showContacts. *(controllo recipes)*
-7. Link interni solo a pagine e ancore che esistono; ogni id di sezione è in kebab-case e unico nella pagina. *(controllo recipes)*
-8. Ogni foto ha un alt che dice cosa mostra, non il nome del file. *(controllo recipes)*
-9. Testi entro i limiti dei campi (titoli 70 caratteri, pulsanti 25...): sono nelle schede dei blocchi. *(build)*
-10. Niente segnaposto (DA-COMPILARE, lorem, TODO) in una pagina pubblicata. *(controllo release)*
+5. Al massimo un accordion faq per pagina: i dati strutturati FAQPage per Google sono uno solo. *(controllo recipes)*
+6. Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json. *(build)*
+7. Recapiti mai nei testi: nei pulsanti i link speciali (@telefono, @whatsapp, @email, @mappa), nelle cta showContacts. *(controllo recipes)*
+8. Link interni solo a pagine e ancore che esistono; ogni id di sezione è in kebab-case e unico nella pagina. *(controllo recipes)*
+9. Ogni foto ha un alt che dice cosa mostra, non il nome del file. *(controllo recipes)*
+10. Testi entro i limiti dei campi (titoli 70 caratteri, pulsanti 25...): sono nelle schede dei blocchi. *(build)*
+11. Niente segnaposto (DA-COMPILARE, lorem, TODO) in una pagina pubblicata. *(controllo release)*
 
 <!-- regole-di-composizione:inizio -->
 ## Regole di composizione
@@ -27,10 +28,9 @@ Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma 
 Oltre alle regole d'oro, che i controlli verificano, le scelte di composizione:
 
 1. **Varianti con foto solo se le foto ci sono.** hero `split`/`full`, servizi `cards-immagine`/`alternato`, schede `testo-immagine` e carosello vogliono foto vere dell'attività; senza, si usa la variante senza foto (hero `centered`, servizi `cards-icone`, schede `testo`).
-2. **Una sola faq per pagina.** L'accordion `faq` dà a Google i dati strutturati delle domande frequenti; per altre sezioni da aprire si usa `contenuti`.
-3. **Informazioni importanti in vista.** Prezzi, garanzie e ciò che tutti devono leggere non vanno dentro voci chiuse (accordion, schede): meglio un testo aperto.
-4. **Il tono più forte con misura.** `primary` una o due volte per pagina, di solito per la cta; se la pagina chiude con una cta, nel footer la fascia di contatto (`ctaBand`) resta spenta.
-5. **Un invito alla volta.** Mai più di due cta per pagina, e al massimo una `banner`.
+2. **Informazioni importanti in vista.** Prezzi, garanzie e ciò che tutti devono leggere non vanno dentro voci chiuse (accordion, schede): meglio un testo aperto.
+3. **Il tono più forte con misura.** `primary` una o due volte per pagina, di solito per la cta; se la pagina chiude con una cta, nel footer la fascia di contatto (`ctaBand`) resta spenta.
+4. **Un invito alla volta.** Mai più di due cta per pagina, e al massimo una `banner`.
 <!-- regole-di-composizione:fine -->
 
 ## Blocchi
@@ -96,6 +96,12 @@ Nei link dei pulsanti (`href` delle cta e del menu) i recapiti non si scrivono: 
 ## Temi
 
 L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`palette`, `fonts`, `shape`), ciascuno con la sua scheda `<nome>.meta.ts` accanto al CSS in `src/themes/`. Una variante da sola accetta `?palette=…&fonts=…&shape=…`.
+
+| Chiave | Valori | Note |
+| --- | --- | --- |
+| `palette` | `terracotta` · `ardesia` | «Palette» I colori del sito: ogni palette ha il contrasto AA verificato (check contrast) |
+| `fonts` | `moderno` · `classico` | «Caratteri» La coppia di font per titoli (font-heading) e testo (font-body) |
+| `shape` | `squadrato` · `morbido` · `arrotondato` | «Forma» Il raggio degli angoli di card e riquadri (rounded-box) e dei pulsanti (rounded-button) |
 
 ### Palette
 

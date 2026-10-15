@@ -13,6 +13,9 @@ export const meta: BlockMeta = {
 	version: '1.0.0',
 	source: { from: 'originale' },
 	interactive: true,
+	rules: [
+		'Al massimo un accordion faq per pagina: ognuno scrive i dati strutturati FAQPage, che Google vuole uno solo (il check recipes avvisa). Per altre sezioni da aprire si usa contenuti.',
+	],
 	variants: {
 		faq: {
 			description: 'Domande e risposte centrate, con i dati strutturati FAQPage per Google.',

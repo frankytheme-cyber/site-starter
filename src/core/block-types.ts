@@ -81,7 +81,8 @@ export interface BlockMeta {
 	variants: Record<string, VariantMeta>;
 	/**
 	 * Le regole del blocco a parole: ogni refine/superRefine dello schema (lo stesso testo del suo
-	 * commento `// rule:`, obbligatorio) e i vincoli sui dati di site.json e navigation.json.
+	 * commento `// rule:`, obbligatorio), i vincoli sui dati di site.json e navigation.json e quelli
+	 * sulla pagina che lo contiene (es. un solo accordion faq, verificato dal check recipes).
 	 */
 	rules?: string[];
 	/**

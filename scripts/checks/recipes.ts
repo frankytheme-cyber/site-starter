@@ -12,7 +12,12 @@
  * - segnaposto (DA-COMPILARE, og-DA-COMPILARE, lorem, TODO, […]): errori nei siti cliente, avvisi
  *   nella libreria, dove il template li contiene per scelta.
  * Sempre avvisi: due sezioni consecutive con lo stesso tone; più di 12 sezioni; prima sezione che
- * non è un hero; nessuna cta (non nelle pagine legali, "kind": "legale", né in quelle con noindex).
+ * non è un hero; più di un accordion faq (i dati strutturati FAQPage sarebbero più di uno); nessuna
+ * cta (non nelle pagine legali, "kind": "legale", né in quelle con noindex).
+ *
+ * Non legge le fixture dei blocchi (src/blocks/<tipo>/fixtures.ts) né le ricette tipo di
+ * docs/catalogo: le fixture hanno recapiti di prova palesemente finti, le ricette tipo le valida il
+ * check blocks.
  */
 import { existsSync } from 'node:fs';
 import { basename, join } from 'node:path';
@@ -196,6 +201,17 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 				where: heroes.map((index) => `sezione ${index + 1}`).join(', '),
 				message: `${heroes.length} hero nella pagina`,
 				hint: 'ne va uno solo, in apertura: per le altre sezioni usa services o cta',
+			});
+		}
+
+		// Ogni accordion faq scrive il suo FAQPage: Google ne vuole uno per pagina.
+		const faqs = sections.flatMap((section, index) => (section.type === 'accordion' && section.variant === 'faq' ? [index] : []));
+		if (faqs.length > 1) {
+			warning({
+				file,
+				where: faqs.map((index) => `sezione ${index + 1}`).join(', '),
+				message: `${faqs.length} accordion faq nella pagina: i dati strutturati FAQPage sarebbero ${faqs.length}`,
+				hint: 'riunisci le domande in una sola faq; per le altre sezioni da aprire usa la variante contenuti',
 			});
 		}
 

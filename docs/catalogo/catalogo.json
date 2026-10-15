@@ -19,6 +19,10 @@
 			"check": "recipes"
 		},
 		{
+			"rule": "Al massimo un accordion faq per pagina: i dati strutturati FAQPage per Google sono uno solo.",
+			"check": "recipes"
+		},
+		{
 			"rule": "Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json.",
 			"check": "build"
 		},
@@ -203,6 +207,51 @@
 		}
 	],
 	"themes": {
+		"fields": [
+			{
+				"path": "palette",
+				"type": "scelta",
+				"required": true,
+				"limits": "`terracotta` · `ardesia`",
+				"constraints": {
+					"values": [
+						"terracotta",
+						"ardesia"
+					]
+				},
+				"label": "Palette",
+				"hint": "I colori del sito: ogni palette ha il contrasto AA verificato (check contrast)"
+			},
+			{
+				"path": "fonts",
+				"type": "scelta",
+				"required": true,
+				"limits": "`moderno` · `classico`",
+				"constraints": {
+					"values": [
+						"moderno",
+						"classico"
+					]
+				},
+				"label": "Caratteri",
+				"hint": "La coppia di font per titoli (font-heading) e testo (font-body)"
+			},
+			{
+				"path": "shape",
+				"type": "scelta",
+				"required": true,
+				"limits": "`squadrato` · `morbido` · `arrotondato`",
+				"constraints": {
+					"values": [
+						"squadrato",
+						"morbido",
+						"arrotondato"
+					]
+				},
+				"label": "Forma",
+				"hint": "Il raggio degli angoli di card e riquadri (rounded-box) e dei pulsanti (rounded-button)"
+			}
+		],
 		"palettes": [
 			{
 				"key": "terracotta",
@@ -736,7 +785,9 @@
 			"description": "Domande frequenti o sezioni di testo che si aprono una per una: tanti contenuti in poco spazio.",
 			"whenToUse": "Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, preparazione del cantiere.",
 			"avoidWhen": "Per informazioni che tutti devono leggere (prezzi, garanzie principali): nascoste in una voce chiusa le legge poca gente, meglio un testo aperto. Con una voce sola o più di 12: dividi in più blocchi.",
-			"rules": [],
+			"rules": [
+				"Al massimo un accordion faq per pagina: ognuno scrive i dati strutturati FAQPage, che Google vuole uno solo (il check recipes avvisa). Per altre sezioni da aprire si usa contenuti."
+			],
 			"variants": [
 				{
 					"name": "faq",

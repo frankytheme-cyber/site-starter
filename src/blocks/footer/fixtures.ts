@@ -6,6 +6,8 @@ import type { schema } from './schema';
  * Il footer mostra i dati di site.json: qui ogni fixture ne porta di prova (`site`), così il
  * catalogo fa vedere una ditta individuale e una SRL (con REA e capitale). Link legali e
  * colonna «Link» vengono da navigation.json, il credito da site.config.ts.
+ * Recapiti palesemente finti (055 000 0000, @esempio.it): sono l'unica eccezione alla regola dei
+ * dati solo in site.json, e il check recipes non legge le fixture.
  */
 
 type Site = NonNullable<BlockFixture['site']>;
@@ -15,8 +17,8 @@ const dittaIndividuale: Site = {
 	description: 'Tinteggiature, cartongesso e decorazioni per case e uffici a Firenze e provincia, con sopralluogo e preventivo gratuiti.',
 	url: 'https://www.esempio.it',
 	logo,
-	phone: '055 123 4567',
-	whatsapp: '+39 333 123 4567',
+	phone: '055 000 0000',
+	whatsapp: '+39 333 000 0000',
 	email: 'info@esempio.it',
 	address: { street: 'Via dei Pittori 12', postalCode: '50121', city: 'Firenze', province: 'FI' },
 	legalName: 'Imbiancature Rossi di Mario Rossi',
@@ -43,7 +45,7 @@ const srl: Site = {
 	businessName: 'Colorificio Bianchi',
 	description: 'Pitture, vernici e accessori per professionisti e privati a Prato dal 1987, con tintometro e consegna in cantiere.',
 	url: 'https://www.esempio.it',
-	phone: '0574 765 432',
+	phone: '0574 000 000',
 	email: 'negozio@esempio.it',
 	address: { street: 'Viale della Repubblica 45', postalCode: '59100', city: 'Prato', province: 'PO' },
 	legalName: 'Colorificio Bianchi S.r.l.',

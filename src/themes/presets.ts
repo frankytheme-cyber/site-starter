@@ -14,9 +14,9 @@ export type Shape = (typeof shapes)[number];
 
 /** Aspetto del sito (src/content/settings/theme.json): i valori ammessi sono i preset qui sopra. */
 export const themeSchema = z.object({
-	palette: z.enum(palettes),
-	fonts: z.enum(fonts),
-	shape: z.enum(shapes),
+	palette: z.enum(palettes).describe('Palette|I colori del sito: ogni palette ha il contrasto AA verificato (check contrast)'),
+	fonts: z.enum(fonts).describe('Caratteri|La coppia di font per titoli (font-heading) e testo (font-body)'),
+	shape: z.enum(shapes).describe('Forma|Il raggio degli angoli di card e riquadri (rounded-box) e dei pulsanti (rounded-button)'),
 });
 
 export type Theme = z.infer<typeof themeSchema>;

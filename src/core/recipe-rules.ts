@@ -17,6 +17,7 @@ export const RECIPE_RULES: RecipeRule[] = [
 	{ rule: 'Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande); non nelle pagine legali ("kind": "legale").', check: 'recipes' },
 	{ rule: 'Due sezioni vicine non hanno lo stesso tone (default, muted, primary).', check: 'recipes' },
 	{ rule: `Al massimo ${MAX_SECTIONS} sezioni: oltre, meglio dividere la pagina.`, check: 'recipes' },
+	{ rule: 'Al massimo un accordion faq per pagina: i dati strutturati FAQPage per Google sono uno solo.', check: 'recipes' },
 	{ rule: 'Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json.', check: 'build' },
 	{ rule: 'Recapiti mai nei testi: nei pulsanti i link speciali (@telefono, @whatsapp, @email, @mappa), nelle cta showContacts.', check: 'recipes' },
 	{ rule: 'Link interni solo a pagine e ancore che esistono; ogni id di sezione è in kebab-case e unico nella pagina.', check: 'recipes' },

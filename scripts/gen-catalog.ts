@@ -11,9 +11,11 @@
  * Nel README la sezione «Regole di composizione» sta tra i marcatori RULES_START e RULES_END: si
  * scrive a mano e il generatore la ricopia com'è.
  *
- * Si ferma (e non scrive niente) se una variante non ha descrizione o «quando usarla», se un
- * refine/superRefine dello schema non ha il suo commento `// rule:` o la sua regola non è in
- * meta.rules, se un mood non ha da 2 a 4 aggettivi, se una scheda cita campi o varianti che non ci sono.
+ * Si ferma (e non scrive niente) se un campo degli schemi dei blocchi, di themeSchema o di
+ * layoutSchema non ha .describe("Etichetta|Aiuto"), se una variante non ha descrizione o «quando
+ * usarla», se un refine/superRefine dello schema non ha il suo commento `// rule:` o la sua regola
+ * non è in meta.rules, se un mood non ha da 2 a 4 aggettivi, se una scheda cita campi o varianti
+ * che non ci sono.
  *
  * Uso: npm run gen:catalog   scrive docs/catalogo/
  *      npm run catalog       gen:catalog + screenshots
@@ -101,6 +103,8 @@ export interface CatalogData {
 	specialLinks: { href: string; becomes: string; from: string }[];
 	icons: { alias: string; icon: string; note?: string }[];
 	themes: {
+		/** Le chiavi di theme.json (themeSchema). */
+		fields: FieldInfo[];
 		palettes: (PresetMeta & { key: string; colors: Record<string, string>; screenshot: string })[];
 		fonts: (PresetMeta & { key: string; heading: string; body: string })[];
 		shapes: (PresetMeta & { key: string; boxRadius: string; buttonRadius: string })[];
@@ -208,6 +212,10 @@ function schemaFields(schema: ZodLike, iconNames: string[], fieldRules: BlockMet
 	for (const [key, child] of Object.entries(schema._zod.def.shape as Record<string, ZodLike>)) visit(key, child, undefined);
 	return fields;
 }
+
+/** Un problema per ogni campo senza .describe("Etichetta|Aiuto"): senza, scheda e CMS non saprebbero come chiamarlo. */
+const undescribed = (fields: FieldInfo[], where: string) =>
+	fields.filter((field) => !field.label).map((field) => `${where} › ${field.path}: manca .describe("Etichetta|Aiuto")`);
 
 /** Le regole dei refine/superRefine di uno schema: i commenti `// rule:` subito sopra ognuno. */
 function schemaRules(file: string, problems: string[]): string[] {
@@ -338,6 +346,10 @@ function readmePage(data: CatalogData, rules: string) {
 		table(['Link', 'Diventa', 'Dato di site.json'], data.specialLinks.map((link) => [code(link.href), link.becomes, code(link.from)])),
 		'## Temi',
 		'L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`palette`, `fonts`, `shape`), ciascuno con la sua scheda `<nome>.meta.ts` accanto al CSS in `src/themes/`. Una variante da sola accetta `?palette=…&fonts=…&shape=…`.',
+		table(
+			['Chiave', 'Valori', 'Note'],
+			data.themes.fields.map((field) => [code(field.path), field.limits, [field.label && `«${field.label}»`, field.hint].filter(Boolean).join(' ')]),
+		),
 		'### Palette',
 		table(
 			['Preset', 'Nome', 'Mood', 'Adatta a', 'Colori'],
@@ -430,7 +442,7 @@ function cssPresets(dir: string, attribute: string) {
 
 const firstFamily = (value: string | undefined) => value?.split(',')[0].replace(/["']/g, '').replace(/ Variable$/, '').trim() ?? '?';
 
-function themesData(metas: PresetMetas, problems: string[]): CatalogData['themes'] {
+function themesData(metas: PresetMetas, problems: string[]): Omit<CatalogData['themes'], 'fields'> {
 	const palettesCss = cssPresets(join(ROOT, 'src/themes/palettes'), 'palette');
 	const fontsCss = cssPresets(join(ROOT, 'src/themes/fonts'), 'fonts');
 	const shapesCss = cssPresets(join(ROOT, 'src/themes/shapes'), 'shape');
@@ -525,6 +537,7 @@ export async function generateCatalog() {
 				continue;
 			}
 			const fields = schemaFields(schema, icons.ICON_NAMES as string[], meta.fieldRules);
+			problems.push(...undescribed(fields, `src/blocks/${type}/schema.ts`));
 
 			for (const [name, variant] of Object.entries(meta.variants)) {
 				if (!variant?.description?.trim()) problems.push(`${metaFile} › variants.${name}: manca la descrizione`);
@@ -574,7 +587,14 @@ export async function generateCatalog() {
 
 		const iconsSource = readFileSync(join(ROOT, 'src/core/icons.ts'), 'utf8');
 		const iconNotes = new Map([...iconsSource.matchAll(/\/\*\*\s*(.*?)\s*\*\/\s*\n\s*'?([\w-]+)'?:/g)].map(([, note, alias]) => [alias, note]));
-		const themes = themesData(metas, problems);
+		// theme.json e layout.json non sono nel CMS, ma i loro campi si documentano come gli altri.
+		const [{ themeSchema }, { layoutSchema }] = await Promise.all([load('/src/themes/presets.ts'), load('/src/core/layout.ts')]);
+		const themeFields = schemaFields(themeSchema as ZodLike, icons.ICON_NAMES as string[]);
+		problems.push(...undescribed(themeFields, 'src/themes/presets.ts › themeSchema'));
+		// Solo le chiavi di layout.json: i campi di header e footer li controlla la scheda del blocco.
+		const layoutKeys = schemaFields(layoutSchema as ZodLike, icons.ICON_NAMES as string[]).filter((field) => !/[.[]/.test(field.path));
+		problems.push(...undescribed(layoutKeys, 'src/core/layout.ts › layoutSchema'));
+		const themes = { fields: themeFields, ...themesData(metas, problems) };
 		palettes.push(...themes.palettes.map((palette) => palette.key));
 		images.push(...themes.palettes.map((palette) => basename(palette.screenshot)));
 

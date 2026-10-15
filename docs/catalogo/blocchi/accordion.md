@@ -39,6 +39,10 @@ Domande frequenti o sezioni di testo che si aprono una per una: tanti contenuti 
 
 Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`accordion`), `id` (ancora facoltativa, in kebab-case) e `tone` (`default`, `muted`, `primary`): vedi `src/content/pages/README.md`.
 
+**Regole:**
+
+- Al massimo un accordion faq per pagina: ognuno scrive i dati strutturati FAQPage, che Google vuole uno solo (il check recipes avvisa). Per altre sezioni da aprire si usa contenuti.
+
 **Esempio pronto** (fixture «FAQ», una sezione per `sections`; immagini relative a `src/content/pages`):
 
 ```json
