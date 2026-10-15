@@ -56,8 +56,8 @@ Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `ty
 	"type": "cta",
 	"tone": "primary",
 	"variant": "banner",
-	"title": "Pareti nuove prima delle feste?",
-	"text": "Sopralluogo e preventivo gratuiti, senza impegno. Ti diciamo subito quanto costa e quanto dura il lavoro, e lo mettiamo per iscritto.",
+	"title": "Un mobile nuovo prima delle feste?",
+	"text": "Sopralluogo e preventivo gratuiti, senza impegno. Ti diciamo subito quanto costa e quanto tempo serve, e lo mettiamo per iscritto.",
 	"primary": {
 		"label": "Chiedi un preventivo",
 		"href": "#preventivo"

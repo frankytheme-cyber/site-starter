@@ -4,7 +4,7 @@ Risorse di terzi incluse nel sito pubblicato. Le icone ammesse sono elencate in 
 
 ## Lucide
 
-Icone dei simboli (pennello, casa, telefono...), dal pacchetto `@iconify-json/lucide`.
+Icone dei simboli (casa, telefono, posate...), dal pacchetto `@iconify-json/lucide`.
 
 - Progetto: https://lucide.dev · https://github.com/lucide-icons/lucide
 - Licenza: ISC. Alcune icone derivano da Feather e sono sotto licenza MIT; tra quelle in uso: `arrow-left`, `arrow-right`, `calendar`, `check`, `chevron-down`, `clock`, `x`.

@@ -1,6 +1,6 @@
-# site-starter
+# site-starter — libreria di blocchi per siti vetrina
 
-Libreria di blocchi Astro + Tailwind v4 per i siti vetrina di piccole attività, e template GitHub da cui nasce ogni sito cliente. Le pagine sono ricette JSON composte con i blocchi del catalogo; il cliente le modifica con Decap CMS su `/admin/`.
+Libreria di blocchi Astro + Tailwind v4 per i siti vetrina di piccole attività di ogni settore (artigiani, negozi, ristoranti, studi professionali...), e template GitHub da cui nasce ogni sito cliente. Le pagine sono ricette JSON composte con i blocchi del catalogo; il cliente le modifica con Decap CMS su `/admin/`.
 
 La stessa base di codice funziona in due modi, e la modalità la decide la variabile `SITE_STARTER_LIBRARY` (`src/core/mode.ts`):
 

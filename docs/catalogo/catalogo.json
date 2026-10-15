@@ -71,139 +71,830 @@
 	],
 	"icons": [
 		{
-			"alias": "pennello",
-			"icon": "lucide:paintbrush"
-		},
-		{
-			"alias": "rullo",
-			"icon": "lucide:paint-roller"
-		},
-		{
-			"alias": "secchio-vernice",
-			"icon": "lucide:paint-bucket"
-		},
-		{
 			"alias": "casa",
-			"icon": "lucide:house"
+			"icon": "lucide:house",
+			"category": "Casa e cantiere"
 		},
 		{
 			"alias": "edificio",
-			"icon": "lucide:building"
+			"icon": "lucide:building",
+			"category": "Casa e cantiere"
 		},
 		{
-			"alias": "scala",
+			"alias": "fabbrica",
+			"icon": "lucide:factory",
+			"category": "Casa e cantiere"
+		},
+		{
+			"alias": "scale",
 			"icon": "lucide:door-stairwell",
-			"note": "Vano scala: Lucide non ha una scala a pioli."
+			"category": "Casa e cantiere",
+			"note": "Scale di casa o vano scala. Lucide non ha una scala a pioli."
 		},
 		{
 			"alias": "muro",
-			"icon": "lucide:brick-wall"
+			"icon": "lucide:brick-wall",
+			"category": "Casa e cantiere"
+		},
+		{
+			"alias": "porta",
+			"icon": "lucide:door-open",
+			"category": "Casa e cantiere"
+		},
+		{
+			"alias": "chiavi",
+			"icon": "lucide:key-round",
+			"category": "Casa e cantiere"
+		},
+		{
+			"alias": "cantiere",
+			"icon": "lucide:construction",
+			"category": "Casa e cantiere"
+		},
+		{
+			"alias": "pennello",
+			"icon": "lucide:paintbrush",
+			"category": "Casa e cantiere"
+		},
+		{
+			"alias": "rullo",
+			"icon": "lucide:paint-roller",
+			"category": "Casa e cantiere"
+		},
+		{
+			"alias": "bagno",
+			"icon": "lucide:bath",
+			"category": "Casa e cantiere"
+		},
+		{
+			"alias": "pulizie",
+			"icon": "lucide:brush-cleaning",
+			"category": "Casa e cantiere"
+		},
+		{
+			"alias": "martello",
+			"icon": "lucide:hammer",
+			"category": "Attrezzi"
+		},
+		{
+			"alias": "chiave-inglese",
+			"icon": "lucide:wrench",
+			"category": "Attrezzi"
+		},
+		{
+			"alias": "trapano",
+			"icon": "lucide:drill",
+			"category": "Attrezzi"
+		},
+		{
+			"alias": "cassetta-attrezzi",
+			"icon": "lucide:toolbox",
+			"category": "Attrezzi"
+		},
+		{
+			"alias": "pala",
+			"icon": "lucide:shovel",
+			"category": "Attrezzi"
+		},
+		{
+			"alias": "righello",
+			"icon": "lucide:ruler",
+			"category": "Attrezzi"
 		},
 		{
 			"alias": "goccia",
 			"icon": "lucide:droplet",
-			"note": "Impermeabilizzazione."
+			"category": "Impianti: acqua, luce, gas, clima",
+			"note": "Acqua, impermeabilizzazione."
 		},
 		{
-			"alias": "scudo",
-			"icon": "lucide:shield-check",
-			"note": "Garanzia."
+			"alias": "rubinetto",
+			"icon": "lucide:faucet",
+			"category": "Impianti: acqua, luce, gas, clima"
 		},
 		{
-			"alias": "check",
-			"icon": "lucide:check"
+			"alias": "lampadina",
+			"icon": "lucide:lightbulb",
+			"category": "Impianti: acqua, luce, gas, clima"
 		},
 		{
-			"alias": "stella",
-			"icon": "lucide:star"
+			"alias": "fulmine",
+			"icon": "lucide:zap",
+			"category": "Impianti: acqua, luce, gas, clima",
+			"note": "Elettricità."
 		},
 		{
-			"alias": "orologio",
-			"icon": "lucide:clock"
+			"alias": "spina",
+			"icon": "lucide:plug",
+			"category": "Impianti: acqua, luce, gas, clima"
 		},
 		{
-			"alias": "calendario",
-			"icon": "lucide:calendar"
+			"alias": "fiamma",
+			"icon": "lucide:flame",
+			"category": "Impianti: acqua, luce, gas, clima",
+			"note": "Gas, caldaie, camini."
 		},
 		{
-			"alias": "telefono",
-			"icon": "lucide:phone"
+			"alias": "stufa",
+			"icon": "lucide:heater",
+			"category": "Impianti: acqua, luce, gas, clima"
 		},
 		{
-			"alias": "email",
-			"icon": "lucide:mail"
+			"alias": "aria-condizionata",
+			"icon": "lucide:air-vent",
+			"category": "Impianti: acqua, luce, gas, clima"
 		},
 		{
-			"alias": "mappa-pin",
-			"icon": "lucide:map-pin"
+			"alias": "pannello-solare",
+			"icon": "lucide:solar-panel",
+			"category": "Impianti: acqua, luce, gas, clima"
 		},
 		{
-			"alias": "freccia-destra",
-			"icon": "lucide:arrow-right"
+			"alias": "foglia",
+			"icon": "lucide:leaf",
+			"category": "Giardino e natura"
 		},
 		{
-			"alias": "freccia-sinistra",
-			"icon": "lucide:arrow-left"
+			"alias": "albero",
+			"icon": "lucide:tree-deciduous",
+			"category": "Giardino e natura"
 		},
 		{
-			"alias": "menu",
-			"icon": "lucide:menu"
+			"alias": "fiore",
+			"icon": "lucide:flower-2",
+			"category": "Giardino e natura"
 		},
 		{
-			"alias": "chiudi",
-			"icon": "lucide:x"
+			"alias": "germoglio",
+			"icon": "lucide:sprout",
+			"category": "Giardino e natura"
 		},
 		{
-			"alias": "chevron-giu",
-			"icon": "lucide:chevron-down"
+			"alias": "recinto",
+			"icon": "lucide:fence",
+			"category": "Giardino e natura"
 		},
 		{
-			"alias": "citazione",
-			"icon": "lucide:quote"
+			"alias": "riciclo",
+			"icon": "lucide:recycle",
+			"category": "Giardino e natura"
 		},
 		{
-			"alias": "preventivo",
-			"icon": "lucide:file-text"
+			"alias": "posate",
+			"icon": "lucide:utensils",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "cuoco",
+			"icon": "lucide:chef-hat",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "caffe",
+			"icon": "lucide:coffee",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "vino",
+			"icon": "lucide:wine",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "birra",
+			"icon": "lucide:beer",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "pizza",
+			"icon": "lucide:pizza",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "torta",
+			"icon": "lucide:cake-slice",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "gelato",
+			"icon": "lucide:ice-cream-cone",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "cornetto",
+			"icon": "lucide:croissant",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "grano",
+			"icon": "lucide:wheat",
+			"category": "Cibo e bevande"
+		},
+		{
+			"alias": "cuore",
+			"icon": "lucide:heart",
+			"category": "Salute e benessere"
+		},
+		{
+			"alias": "battito",
+			"icon": "lucide:heart-pulse",
+			"category": "Salute e benessere"
+		},
+		{
+			"alias": "stetoscopio",
+			"icon": "lucide:stethoscope",
+			"category": "Salute e benessere"
+		},
+		{
+			"alias": "farmaco",
+			"icon": "lucide:pill",
+			"category": "Salute e benessere"
+		},
+		{
+			"alias": "dentista",
+			"icon": "lucide:toothbrush",
+			"category": "Salute e benessere"
+		},
+		{
+			"alias": "occhiali",
+			"icon": "lucide:glasses",
+			"category": "Salute e benessere"
+		},
+		{
+			"alias": "forbici",
+			"icon": "lucide:scissors",
+			"category": "Bellezza"
+		},
+		{
+			"alias": "brillantini",
+			"icon": "lucide:sparkles",
+			"category": "Bellezza"
+		},
+		{
+			"alias": "profumo",
+			"icon": "lucide:perfume-bottle",
+			"category": "Bellezza"
+		},
+		{
+			"alias": "gioiello",
+			"icon": "lucide:gem",
+			"category": "Bellezza"
+		},
+		{
+			"alias": "auto",
+			"icon": "lucide:car",
+			"category": "Auto e trasporti"
+		},
+		{
+			"alias": "furgone",
+			"icon": "lucide:van",
+			"category": "Auto e trasporti"
+		},
+		{
+			"alias": "camion",
+			"icon": "lucide:truck",
+			"category": "Auto e trasporti"
+		},
+		{
+			"alias": "moto",
+			"icon": "lucide:motorbike",
+			"category": "Auto e trasporti"
+		},
+		{
+			"alias": "bici",
+			"icon": "lucide:bike",
+			"category": "Auto e trasporti"
+		},
+		{
+			"alias": "parcheggio",
+			"icon": "lucide:square-parking",
+			"category": "Auto e trasporti"
+		},
+		{
+			"alias": "carburante",
+			"icon": "lucide:fuel",
+			"category": "Auto e trasporti"
+		},
+		{
+			"alias": "ricarica",
+			"icon": "lucide:plug-zap",
+			"category": "Auto e trasporti",
+			"note": "Ricarica dei veicoli elettrici."
+		},
+		{
+			"alias": "negozio",
+			"icon": "lucide:store",
+			"category": "Negozio e pagamenti"
+		},
+		{
+			"alias": "carrello",
+			"icon": "lucide:shopping-cart",
+			"category": "Negozio e pagamenti"
+		},
+		{
+			"alias": "borsa",
+			"icon": "lucide:shopping-bag",
+			"category": "Negozio e pagamenti"
+		},
+		{
+			"alias": "etichetta",
+			"icon": "lucide:tag",
+			"category": "Negozio e pagamenti"
+		},
+		{
+			"alias": "sconto",
+			"icon": "lucide:badge-percent",
+			"category": "Negozio e pagamenti"
+		},
+		{
+			"alias": "regalo",
+			"icon": "lucide:gift",
+			"category": "Negozio e pagamenti"
+		},
+		{
+			"alias": "pacco",
+			"icon": "lucide:package",
+			"category": "Negozio e pagamenti"
+		},
+		{
+			"alias": "carta-di-credito",
+			"icon": "lucide:credit-card",
+			"category": "Negozio e pagamenti"
+		},
+		{
+			"alias": "contanti",
+			"icon": "lucide:banknote",
+			"category": "Negozio e pagamenti"
 		},
 		{
 			"alias": "euro",
-			"icon": "lucide:euro"
+			"icon": "lucide:euro",
+			"category": "Negozio e pagamenti"
+		},
+		{
+			"alias": "valigetta",
+			"icon": "lucide:briefcase",
+			"category": "Ufficio e servizi professionali"
+		},
+		{
+			"alias": "computer",
+			"icon": "lucide:laptop",
+			"category": "Ufficio e servizi professionali"
+		},
+		{
+			"alias": "calcolatrice",
+			"icon": "lucide:calculator",
+			"category": "Ufficio e servizi professionali"
+		},
+		{
+			"alias": "grafico",
+			"icon": "lucide:chart-column",
+			"category": "Ufficio e servizi professionali"
+		},
+		{
+			"alias": "bilancia",
+			"icon": "lucide:scale",
+			"category": "Ufficio e servizi professionali",
+			"note": "Studi legali, giustizia."
+		},
+		{
+			"alias": "penna",
+			"icon": "lucide:pen-line",
+			"category": "Ufficio e servizi professionali"
+		},
+		{
+			"alias": "laurea",
+			"icon": "lucide:graduation-cap",
+			"category": "Ufficio e servizi professionali"
+		},
+		{
+			"alias": "stretta-di-mano",
+			"icon": "lucide:handshake",
+			"category": "Ufficio e servizi professionali"
+		},
+		{
+			"alias": "wifi",
+			"icon": "lucide:wifi",
+			"category": "Ufficio e servizi professionali"
+		},
+		{
+			"alias": "utente",
+			"icon": "lucide:user",
+			"category": "Persone e famiglia"
 		},
 		{
 			"alias": "utenti",
-			"icon": "lucide:users"
+			"icon": "lucide:users",
+			"category": "Persone e famiglia"
+		},
+		{
+			"alias": "bambino",
+			"icon": "lucide:baby",
+			"category": "Persone e famiglia"
+		},
+		{
+			"alias": "accessibilita",
+			"icon": "lucide:accessibility",
+			"category": "Persone e famiglia"
+		},
+		{
+			"alias": "sorriso",
+			"icon": "lucide:smile",
+			"category": "Persone e famiglia"
+		},
+		{
+			"alias": "orologio",
+			"icon": "lucide:clock",
+			"category": "Tempo e calendario"
+		},
+		{
+			"alias": "calendario",
+			"icon": "lucide:calendar",
+			"category": "Tempo e calendario"
+		},
+		{
+			"alias": "prenotazione",
+			"icon": "lucide:calendar-check",
+			"category": "Tempo e calendario"
+		},
+		{
+			"alias": "clessidra",
+			"icon": "lucide:hourglass",
+			"category": "Tempo e calendario"
+		},
+		{
+			"alias": "cronometro",
+			"icon": "lucide:timer",
+			"category": "Tempo e calendario"
+		},
+		{
+			"alias": "telefono",
+			"icon": "lucide:phone",
+			"category": "Contatti e luoghi"
+		},
+		{
+			"alias": "cellulare",
+			"icon": "lucide:smartphone",
+			"category": "Contatti e luoghi"
+		},
+		{
+			"alias": "email",
+			"icon": "lucide:mail",
+			"category": "Contatti e luoghi"
+		},
+		{
+			"alias": "mappa-pin",
+			"icon": "lucide:map-pin",
+			"category": "Contatti e luoghi"
+		},
+		{
+			"alias": "mappa",
+			"icon": "lucide:map",
+			"category": "Contatti e luoghi"
+		},
+		{
+			"alias": "indicazioni",
+			"icon": "lucide:signpost",
+			"category": "Contatti e luoghi"
+		},
+		{
+			"alias": "sito-web",
+			"icon": "lucide:globe",
+			"category": "Contatti e luoghi"
+		},
+		{
+			"alias": "premio",
+			"icon": "lucide:award",
+			"category": "Fiducia e qualità"
+		},
+		{
+			"alias": "trofeo",
+			"icon": "lucide:trophy",
+			"category": "Fiducia e qualità"
+		},
+		{
+			"alias": "garanzia",
+			"icon": "lucide:shield-check",
+			"category": "Fiducia e qualità"
+		},
+		{
+			"alias": "certificato",
+			"icon": "lucide:badge-check",
+			"category": "Fiducia e qualità"
+		},
+		{
+			"alias": "pollice",
+			"icon": "lucide:thumbs-up",
+			"category": "Fiducia e qualità"
+		},
+		{
+			"alias": "stella",
+			"icon": "lucide:star",
+			"category": "Fiducia e qualità"
+		},
+		{
+			"alias": "check",
+			"icon": "lucide:check",
+			"category": "Fiducia e qualità"
+		},
+		{
+			"alias": "lucchetto",
+			"icon": "lucide:lock",
+			"category": "Fiducia e qualità"
+		},
+		{
+			"alias": "chat",
+			"icon": "lucide:message-circle",
+			"category": "Comunicazione"
+		},
+		{
+			"alias": "messaggi",
+			"icon": "lucide:messages-square",
+			"category": "Comunicazione"
+		},
+		{
+			"alias": "invia",
+			"icon": "lucide:send",
+			"category": "Comunicazione"
+		},
+		{
+			"alias": "megafono",
+			"icon": "lucide:megaphone",
+			"category": "Comunicazione"
+		},
+		{
+			"alias": "campanella",
+			"icon": "lucide:bell",
+			"category": "Comunicazione"
+		},
+		{
+			"alias": "citazione",
+			"icon": "lucide:quote",
+			"category": "Comunicazione"
+		},
+		{
+			"alias": "cuffie",
+			"icon": "lucide:headset",
+			"category": "Comunicazione"
+		},
+		{
+			"alias": "freccia-destra",
+			"icon": "lucide:arrow-right",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "freccia-sinistra",
+			"icon": "lucide:arrow-left",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "freccia-su",
+			"icon": "lucide:arrow-up",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "freccia-giu",
+			"icon": "lucide:arrow-down",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "chevron-giu",
+			"icon": "lucide:chevron-down",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "chevron-destra",
+			"icon": "lucide:chevron-right",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "menu",
+			"icon": "lucide:menu",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "chiudi",
+			"icon": "lucide:x",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "cerca",
+			"icon": "lucide:search",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "piu",
+			"icon": "lucide:plus",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "info",
+			"icon": "lucide:info",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "link-esterno",
+			"icon": "lucide:external-link",
+			"category": "Frecce e interfaccia"
+		},
+		{
+			"alias": "preventivo",
+			"icon": "lucide:file-text",
+			"category": "File e documenti"
+		},
+		{
+			"alias": "contratto",
+			"icon": "lucide:file-pen-line",
+			"category": "File e documenti"
+		},
+		{
+			"alias": "cartella",
+			"icon": "lucide:folder",
+			"category": "File e documenti"
+		},
+		{
+			"alias": "lista-controllo",
+			"icon": "lucide:clipboard-check",
+			"category": "File e documenti"
+		},
+		{
+			"alias": "libro",
+			"icon": "lucide:book-open",
+			"category": "File e documenti"
 		},
 		{
 			"alias": "foto",
-			"icon": "lucide:image"
+			"icon": "lucide:image",
+			"category": "File e documenti"
+		},
+		{
+			"alias": "fotocamera",
+			"icon": "lucide:camera",
+			"category": "File e documenti"
+		},
+		{
+			"alias": "sole",
+			"icon": "lucide:sun",
+			"category": "Meteo e stagioni"
+		},
+		{
+			"alias": "nuvola",
+			"icon": "lucide:cloud",
+			"category": "Meteo e stagioni"
+		},
+		{
+			"alias": "pioggia",
+			"icon": "lucide:cloud-rain",
+			"category": "Meteo e stagioni"
+		},
+		{
+			"alias": "neve",
+			"icon": "lucide:snowflake",
+			"category": "Meteo e stagioni"
+		},
+		{
+			"alias": "vento",
+			"icon": "lucide:wind",
+			"category": "Meteo e stagioni"
+		},
+		{
+			"alias": "termometro",
+			"icon": "lucide:thermometer",
+			"category": "Meteo e stagioni"
+		},
+		{
+			"alias": "cane",
+			"icon": "lucide:dog",
+			"category": "Animali"
+		},
+		{
+			"alias": "gatto",
+			"icon": "lucide:cat",
+			"category": "Animali"
+		},
+		{
+			"alias": "zampa",
+			"icon": "lucide:paw-print",
+			"category": "Animali"
+		},
+		{
+			"alias": "uccello",
+			"icon": "lucide:bird",
+			"category": "Animali"
+		},
+		{
+			"alias": "pesce",
+			"icon": "lucide:fish",
+			"category": "Animali"
+		},
+		{
+			"alias": "palestra",
+			"icon": "lucide:dumbbell",
+			"category": "Sport e tempo libero"
+		},
+		{
+			"alias": "pallone",
+			"icon": "lucide:volleyball",
+			"category": "Sport e tempo libero"
+		},
+		{
+			"alias": "nuoto",
+			"icon": "lucide:waves",
+			"category": "Sport e tempo libero"
+		},
+		{
+			"alias": "tenda",
+			"icon": "lucide:tent",
+			"category": "Sport e tempo libero"
+		},
+		{
+			"alias": "valigia",
+			"icon": "lucide:luggage",
+			"category": "Sport e tempo libero"
+		},
+		{
+			"alias": "musica",
+			"icon": "lucide:music",
+			"category": "Sport e tempo libero"
+		},
+		{
+			"alias": "biglietto",
+			"icon": "lucide:ticket",
+			"category": "Sport e tempo libero"
+		},
+		{
+			"alias": "arte",
+			"icon": "lucide:palette",
+			"category": "Sport e tempo libero"
 		},
 		{
 			"alias": "whatsapp",
-			"icon": "simple-icons:whatsapp"
+			"icon": "simple-icons:whatsapp",
+			"category": "Marchi"
 		},
 		{
 			"alias": "facebook",
-			"icon": "simple-icons:facebook"
+			"icon": "simple-icons:facebook",
+			"category": "Marchi"
 		},
 		{
 			"alias": "instagram",
-			"icon": "simple-icons:instagram"
+			"icon": "simple-icons:instagram",
+			"category": "Marchi"
 		},
 		{
 			"alias": "google",
-			"icon": "simple-icons:google"
+			"icon": "simple-icons:google",
+			"category": "Marchi"
 		},
 		{
 			"alias": "youtube",
-			"icon": "simple-icons:youtube"
+			"icon": "simple-icons:youtube",
+			"category": "Marchi"
 		},
 		{
 			"alias": "tiktok",
-			"icon": "simple-icons:tiktok"
+			"icon": "simple-icons:tiktok",
+			"category": "Marchi"
 		},
 		{
 			"alias": "tripadvisor",
-			"icon": "simple-icons:tripadvisor"
+			"icon": "simple-icons:tripadvisor",
+			"category": "Marchi"
+		},
+		{
+			"alias": "linkedin",
+			"icon": "simple-icons:linkedin",
+			"category": "Marchi"
+		},
+		{
+			"alias": "pinterest",
+			"icon": "simple-icons:pinterest",
+			"category": "Marchi"
+		},
+		{
+			"alias": "threads",
+			"icon": "simple-icons:threads",
+			"category": "Marchi"
+		},
+		{
+			"alias": "x",
+			"icon": "simple-icons:x",
+			"category": "Marchi"
+		},
+		{
+			"alias": "telegram",
+			"icon": "simple-icons:telegram",
+			"category": "Marchi"
+		},
+		{
+			"alias": "booking",
+			"icon": "simple-icons:bookingdotcom",
+			"category": "Marchi"
+		},
+		{
+			"alias": "airbnb",
+			"icon": "simple-icons:airbnb",
+			"category": "Marchi"
 		}
 	],
 	"themes": {
@@ -262,11 +953,11 @@
 					"artigianale"
 				],
 				"adattoA": [
-					"imbianchini e decoratori",
-					"edilizia e finiture",
 					"ristoranti e trattorie",
 					"agriturismi",
-					"botteghe artigiane"
+					"botteghe artigiane",
+					"negozi di prodotti tipici",
+					"artigiani della casa e delle finiture"
 				],
 				"colors": {
 					"bg": "#fbf6ef",
@@ -349,8 +1040,9 @@
 				],
 				"adattoA": [
 					"studi tecnici e professionali",
-					"edilizia e impianti",
-					"officine e carrozzerie"
+					"imprese edili e impiantisti",
+					"officine e carrozzerie",
+					"negozi di elettronica e ferramenta"
 				],
 				"boxRadius": "0",
 				"buttonRadius": "0"
@@ -745,7 +1437,7 @@
 						"minLength": 5
 					},
 					"label": "Testo alternativo",
-					"hint": "Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»"
+					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
 				}
 			],
 			"example": {
@@ -754,9 +1446,9 @@
 				"json": {
 					"type": "hero",
 					"variant": "split",
-					"eyebrow": "Tinteggiature e decorazioni",
-					"title": "Pareti come nuove, senza pensieri",
-					"subtitle": "Tinteggiamo case, uffici e condomini con pitture traspiranti e lavabili. Proteggiamo mobili e pavimenti e a fine lavoro lasciamo tutto pulito.",
+					"eyebrow": "Falegnameria su misura",
+					"title": "Mobili fatti a mano, pensati per casa tua",
+					"subtitle": "Progettiamo e costruiamo mobili su misura e restauriamo quelli di famiglia. Prendiamo le misure a casa tua e ti seguiamo fino al montaggio.",
 					"primaryCta": {
 						"label": "Chiedi un preventivo",
 						"href": "#preventivo"
@@ -766,8 +1458,8 @@
 						"href": "#lavori"
 					},
 					"image": {
-						"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
-						"alt": "Parete tinteggiata a metà in verde salvia, con un rullo appoggiato"
+						"src": "../../assets/images/fixtures/artigiano-laboratorio.jpg",
+						"alt": "Banco da lavoro in legno con martello, scalpello e sega appesi a un pannello forato"
 					}
 				}
 			}
@@ -783,7 +1475,7 @@
 				"from": "originale"
 			},
 			"description": "Domande frequenti o sezioni di testo che si aprono una per una: tanti contenuti in poco spazio.",
-			"whenToUse": "Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, preparazione del cantiere.",
+			"whenToUse": "Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, cosa preparare prima di un appuntamento.",
 			"avoidWhen": "Per informazioni che tutti devono leggere (prezzi, garanzie principali): nascoste in una voce chiusa le legge poca gente, meglio un testo aperto. Con una voce sola o più di 12: dividi in più blocchi.",
 			"rules": [
 				"Al massimo un accordion faq per pagina: ognuno scrive i dati strutturati FAQPage, che Google vuole uno solo (il check recipes avvisa). Per altre sezioni da aprire si usa contenuti."
@@ -803,7 +1495,7 @@
 				{
 					"name": "contenuti",
 					"description": "Titolo a sinistra e voci a destra (sotto su mobile).",
-					"whenToUse": "Per testi di dettaglio da aprire: condizioni, tempi, preparazione del cantiere.",
+					"whenToUse": "Per testi di dettaglio da aprire: condizioni, tempi, fasi del lavoro.",
 					"fixture": "Contenuti, una alla volta",
 					"preview": "/catalogo/accordion/contenuti/",
 					"screenshots": {
@@ -910,24 +1602,24 @@
 					"type": "accordion",
 					"variant": "faq",
 					"eyebrow": "Domande frequenti",
-					"title": "Prima di iniziare i lavori",
-					"intro": "Le risposte alle domande che ci fate più spesso al primo sopralluogo.",
+					"title": "Prima di prenotare",
+					"intro": "Le risposte alle domande che ci fate più spesso al telefono.",
 					"items": [
 						{
-							"title": "Il sopralluogo e il preventivo sono gratuiti?",
-							"text": "Sì. Veniamo a vedere le pareti, prendiamo le misure e ti lasciamo un preventivo scritto, senza costi e senza impegno."
+							"title": "Serve prenotare?",
+							"text": "A pranzo di solito no. A cena, il venerdì e il sabato, conviene prenotare: chiamaci o scrivici su WhatsApp."
 						},
 						{
-							"title": "Quanto tempo serve per tinteggiare un appartamento?",
-							"text": "Per un trilocale di solito bastano tre o quattro giorni lavorativi, compresa la stuccatura delle crepe.\n\nI tempi esatti sono scritti nel preventivo: se finiamo in ritardo per colpa nostra, ogni giorno in più è scalato dal totale."
+							"title": "Avete piatti senza glutine o vegetariani?",
+							"text": "Sì: ogni giorno in carta ci sono almeno due piatti vegetariani e la pasta senza glutine, cotta a parte.\n\nSe hai un’allergia, dillo quando prenoti: la cucina prepara il tuo piatto separatamente."
 						},
 						{
-							"title": "Devo spostare io i mobili?",
-							"text": "No. Spostiamo noi i mobili al centro delle stanze e li copriamo con teli; proteggiamo anche pavimenti, porte e prese."
+							"title": "Si può portare il cane?",
+							"text": "Sì, i cani di piccola e media taglia sono i benvenuti in sala e in giardino. Una ciotola d’acqua la portiamo noi."
 						},
 						{
-							"title": "Che pitture usate?",
-							"text": "Pitture traspiranti o lavabili a basse emissioni, scelte in base alla stanza: antimuffa per bagni e cucine, lavabili per corridoi e camere dei bambini."
+							"title": "Organizzate cene per gruppi?",
+							"text": "Fino a quaranta persone, con un menu fisso concordato prima. Per le feste private possiamo riservare tutta la sala."
 						}
 					]
 				}
@@ -1060,7 +1752,7 @@
 						"minLength": 5
 					},
 					"label": "Testo alternativo",
-					"hint": "Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»"
+					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
 				},
 				{
 					"path": "items[].title",
@@ -1164,43 +1856,43 @@
 				"json": {
 					"type": "carousel",
 					"variant": "foto",
-					"eyebrow": "Lavori finiti",
-					"title": "Gli ultimi cantieri",
+					"eyebrow": "La bottega",
+					"title": "Vieni a trovarci",
 					"items": [
 						{
 							"image": {
-								"src": "../../assets/images/fixtures/imbianchino-interno.jpg",
-								"alt": "Parete tinteggiata a metà in verde salvia, con un rullo appoggiato"
+								"src": "../../assets/images/fixtures/negozio-vetrina.jpg",
+								"alt": "Vetrina di una bottega con la tenda a righe bianche e rosse e la porta verde"
 							},
-							"title": "Soggiorno in verde salvia, Firenze centro"
+							"title": "La vetrina, rinnovata ogni stagione"
 						},
 						{
 							"image": {
-								"src": "../../assets/images/fixtures/imbianchino-facciata.jpg",
-								"alt": "Facciata di una casa color ocra con persiane verdi"
+								"src": "../../assets/images/fixtures/negozio-scaffali.jpg",
+								"alt": "Scaffali di legno con barattoli e scatole colorate in fila"
 							},
-							"title": "Facciata ai silossani, Sesto Fiorentino"
+							"title": "Barattoli e dispensa dei produttori locali"
 						},
 						{
 							"image": {
-								"src": "../../assets/images/fixtures/imbianchino-decorazioni.jpg",
-								"alt": "Parete a stucco veneziano color ocra con una spatola appoggiata"
+								"src": "../../assets/images/fixtures/negozio-regalo.jpg",
+								"alt": "Pacco regalo rosso con il fiocco giallo appoggiato sul banco"
 							},
-							"title": "Stucco veneziano in un ingresso"
+							"title": "Confezioni regalo preparate al banco"
 						},
 						{
 							"image": {
-								"src": "../../assets/images/fixtures/imbianchino-cartongesso.jpg",
-								"alt": "Lastre di cartongesso montate su una parete, con i giunti stuccati"
+								"src": "../../assets/images/fixtures/artigiano-mobile.jpg",
+								"alt": "Credenza in legno a due ante con maniglie dorate, in una stanza chiara"
 							},
-							"title": "Controsoffitto con faretti in cucina"
+							"title": "Gli arredi del negozio, fatti su misura"
 						},
 						{
 							"image": {
-								"src": "../../assets/images/fixtures/imbianchino-antimuffa.jpg",
-								"alt": "Angolo di una stanza con macchie di muffa a sinistra e parete risanata a destra"
+								"src": "../../assets/images/fixtures/artigiano-attrezzi.jpg",
+								"alt": "Martello, cacciavite e metro giallo appoggiati su un piano di legno"
 							},
-							"title": "Bagno risanato dalla muffa"
+							"title": "L’angolo della ferramenta"
 						}
 					]
 				}
@@ -1217,7 +1909,7 @@
 				"from": "originale"
 			},
 			"description": "Contenuti alternativi in schede: se ne vede uno alla volta, da desktop con le linguette, su mobile come elenco da aprire.",
-			"whenToUse": "Quando chi visita sceglie una strada tra poche alternative parallele dello stesso tipo: interni o esterni, privati o condomini, tipi di finitura.",
+			"whenToUse": "Quando chi visita sceglie una strada tra poche alternative parallele dello stesso tipo: pranzo o cena, privati o imprese, servizi di base o completi.",
 			"avoidWhen": "Per informazioni che tutti devono leggere (prezzi, condizioni, garanzie): nelle schede chiuse non le vede quasi nessuno, meglio un testo aperto o services. Per più di 6 voci o etichette lunghe, per confrontare elementi fianco a fianco (servono card o una tabella) e per passaggi in sequenza (meglio accordion o un elenco numerato).",
 			"rules": [
 				"La variante testo-immagine richiede la foto in ogni scheda."
@@ -1361,7 +2053,7 @@
 						"minLength": 5
 					},
 					"label": "Testo alternativo",
-					"hint": "Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»"
+					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
 				},
 				{
 					"path": "items[].cta",
@@ -1439,20 +2131,20 @@
 					"title": "Ogni cliente ha esigenze diverse",
 					"items": [
 						{
-							"label": "Privati",
-							"text": "Lavoriamo una stanza alla volta, così puoi continuare a vivere in casa. Copriamo mobili e pavimenti e a fine giornata puliamo.\n\nTi aiutiamo a scegliere colori e finiture provando i campioni sulle tue pareti.",
+							"label": "Famiglie",
+							"text": "Dichiarazione dei redditi, successioni e pratiche per la casa: raccogliamo noi i documenti e ti spieghiamo ogni voce.\n\nIl primo incontro per capire cosa ti serve è gratuito.",
 							"cta": {
-								"label": "Chiedi un preventivo",
-								"href": "#preventivo"
+								"label": "Fissa un appuntamento",
+								"href": "#appuntamento"
 							}
 						},
 						{
-							"label": "Condomini",
-							"text": "Concordiamo i lavori con l’amministratore e li dividiamo a fasce orarie, per disturbare il meno possibile chi ci abita. Vani scala, androni e facciate con un unico referente."
+							"label": "Professionisti",
+							"text": "Partita IVA, regime forfettario o ordinario, fatture elettroniche e contributi: ti diciamo quanto mettere da parte ogni mese per le tasse."
 						},
 						{
-							"label": "Negozi e uffici",
-							"text": "Interveniamo la sera o nel fine settimana, per non fermare la tua attività. Pitture lavabili e resistenti, adatte agli ambienti di passaggio."
+							"label": "Imprese",
+							"text": "Contabilità, bilanci, buste paga e rapporti con la banca, con un referente fisso che conosce la tua attività."
 						}
 					]
 				}
@@ -1470,7 +2162,7 @@
 			},
 			"description": "Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione breve e link facoltativo.",
 			"whenToUse": "Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno.",
-			"avoidWhen": "Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei cantieri, non un elenco.",
+			"avoidWhen": "Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei lavori, non un elenco.",
 			"rules": [
 				"La variante cards-icone richiede l’icona in ogni servizio.",
 				"Le varianti cards-immagine e alternato richiedono la foto in ogni servizio."
@@ -1632,7 +2324,7 @@
 						"minLength": 5
 					},
 					"label": "Testo alternativo",
-					"hint": "Descrive la foto a chi non la vede, es. «Soggiorno con pareti verde salvia»"
+					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
 				},
 				{
 					"path": "items[].title",
@@ -1729,38 +2421,38 @@
 					"type": "services",
 					"variant": "cards-icone",
 					"eyebrow": "Cosa facciamo",
-					"title": "Tutto quello che serve alle tue pareti",
-					"intro": "Dalla singola stanza al condominio intero: un’unica squadra per preparare, tinteggiare e rifinire, con tempi concordati prima di iniziare.",
+					"title": "Manutenzioni e impianti per la casa",
+					"intro": "Dal rubinetto che perde al nuovo condizionatore: un’unica squadra di tecnici per gli impianti di casa, con appuntamenti in giornata per le urgenze.",
 					"items": [
 						{
-							"icon": "rullo",
-							"title": "Tinteggiature interne",
-							"text": "Pareti e soffitti con pitture traspiranti o lavabili. Copriamo mobili e pavimenti, stucchiamo le crepe e lasciamo tutto pulito."
+							"icon": "rubinetto",
+							"title": "Impianti idraulici",
+							"text": "Riparazioni, sostituzione di sanitari e rubinetti, ricerca delle perdite senza rompere i muri."
 						},
 						{
-							"icon": "edificio",
-							"title": "Facciate esterne",
-							"text": "Pulizia, ripristino degli intonaci e pitture ai silossani che resistono a pioggia, sole e smog per molti anni."
+							"icon": "lampadina",
+							"title": "Impianti elettrici",
+							"text": "Nuove prese e punti luce, quadri elettrici a norma e certificazione degli impianti."
 						},
 						{
-							"icon": "pennello",
-							"title": "Decorazioni e velature",
-							"text": "Stucco veneziano, velature e spatolati per dare carattere all’ingresso o a una parete del soggiorno."
+							"icon": "aria-condizionata",
+							"title": "Clima e riscaldamento",
+							"text": "Installazione e pulizia di condizionatori, manutenzione delle caldaie e dei termosifoni."
 						},
 						{
-							"icon": "goccia",
-							"title": "Trattamenti antimuffa",
-							"text": "Eliminiamo muffa e condensa alla radice con prodotti risananti e pitture termiche anticondensa."
+							"icon": "fiamma",
+							"title": "Impianti a gas",
+							"text": "Allacci, prove di tenuta e controlli periodici fatti da tecnici abilitati."
 						},
 						{
-							"icon": "muro",
-							"title": "Cartongesso",
-							"text": "Contropareti, controsoffitti e nicchie su misura, montati, stuccati e tinteggiati dalla stessa squadra."
+							"icon": "porta",
+							"title": "Porte e serramenti",
+							"text": "Regolazione di porte e finestre, sostituzione di serrature e maniglie."
 						},
 						{
-							"icon": "scala",
-							"title": "Vani scala condominiali",
-							"text": "Lavori programmati con l’amministratore e divisi a fasce orarie, per disturbare il meno possibile chi ci abita."
+							"icon": "scale",
+							"title": "Parti comuni dei condomini",
+							"text": "Manutenzioni programmate con l’amministratore, a fasce orarie per disturbare il meno possibile."
 						}
 					]
 				}
@@ -1989,8 +2681,8 @@
 					"type": "cta",
 					"tone": "primary",
 					"variant": "banner",
-					"title": "Pareti nuove prima delle feste?",
-					"text": "Sopralluogo e preventivo gratuiti, senza impegno. Ti diciamo subito quanto costa e quanto dura il lavoro, e lo mettiamo per iscritto.",
+					"title": "Un mobile nuovo prima delle feste?",
+					"text": "Sopralluogo e preventivo gratuiti, senza impegno. Ti diciamo subito quanto costa e quanto tempo serve, e lo mettiamo per iscritto.",
 					"primary": {
 						"label": "Chiedi un preventivo",
 						"href": "#preventivo"

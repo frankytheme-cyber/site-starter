@@ -19,6 +19,6 @@ Motore della libreria:
 - `opening-hours.ts`: giorni della settimana, testo degli orari (`formatDays`, `formatSlots`) e `openingHoursSpecification` per il JSON-LD.
 - `navigation.ts`: schema del menu (`src/content/settings/navigation.json`), `getNavigation()` e `isCurrentPage()`.
 - `ids.ts`: `nextId()`, id univoci nella pagina per i blocchi usati più volte.
-- `icons.ts`: lista chiusa delle icone ammesse, alias italiano → icona Iconify (`ICON_NAMES`, `IconName`).
+- `icons.ts`: lista chiusa delle icone ammesse, alias italiano → icona Iconify, raggruppati per categoria (`iconGroups`, `ICON_NAMES`, `IconName`, `iconSchema()` per gli schemi).
 - `ui/`: primitive condivise dai blocchi.
 

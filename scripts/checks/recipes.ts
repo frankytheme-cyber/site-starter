@@ -204,7 +204,7 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 					file,
 					where: where([...path, 'alt']),
 					message: `alt uguale al nome del file (${basename(object.src)})`,
-					hint: 'descrivi cosa mostra la foto, es. «Soggiorno con pareti verde salvia»',
+					hint: 'descrivi cosa mostra la foto, es. «Banco da lavoro con gli attrezzi appesi alla parete»',
 				});
 			}
 		});

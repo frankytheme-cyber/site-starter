@@ -2,7 +2,7 @@
 
 # Catalogo dei blocchi
 
-Libreria **site-starter v0.0.1** (`library.manifest.json`). Tutto quello che segue è generato da `npm run gen:catalog` a partire da schemi, schede e fixture; gli screenshot da `npm run screenshots`; gli stessi dati per le macchine sono in [`catalogo.json`](catalogo.json). `npm run check` fallisce se questa cartella non corrisponde agli schemi.
+**site-starter — libreria di blocchi per siti vetrina**, versione **v0.0.1** (`library.manifest.json`). Le fixture usano attività di esempio di settori diversi (artigiano, negozio, ristorante, studio professionale) con recapiti finti. Tutto quello che segue è generato da `npm run gen:catalog` a partire da schemi, schede e fixture; gli screenshot da `npm run screenshots`; gli stessi dati per le macchine sono in [`catalogo.json`](catalogo.json). `npm run check` fallisce se questa cartella non corrisponde agli schemi.
 
 Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.
 
@@ -40,9 +40,9 @@ Sezioni delle ricette di pagina (`scope: "page"`), nell’ordine in cui compaion
 | Blocco | Categoria | Varianti | Quando usarlo |
 | --- | --- | --- | --- |
 | [hero — Hero](blocchi/hero.md) | apertura | `split`, `full`, `centered` | Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare). |
-| [accordion — Accordion](blocchi/accordion.md) | contenuti | `faq`, `contenuti` | Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, preparazione del cantiere. |
+| [accordion — Accordion](blocchi/accordion.md) | contenuti | `faq`, `contenuti` | Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, cosa preparare prima di un appuntamento. |
 | [carousel — Carosello](blocchi/carousel.md) | contenuti | `foto`, `card` | Per una serie di elementi dello stesso tipo che si sfogliano: foto dei lavori finiti, prima e dopo, progetti, recensioni con foto. |
-| [tabs — Schede](blocchi/tabs.md) | contenuti | `testo`, `testo-immagine` | Quando chi visita sceglie una strada tra poche alternative parallele dello stesso tipo: interni o esterni, privati o condomini, tipi di finitura. |
+| [tabs — Schede](blocchi/tabs.md) | contenuti | `testo`, `testo-immagine` | Quando chi visita sceglie una strada tra poche alternative parallele dello stesso tipo: pranzo o cena, privati o imprese, servizi di base o completi. |
 | [services — Servizi](blocchi/services.md) | contenuti | `cards-icone`, `cards-immagine`, `alternato`, `schede` | Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno. |
 | [cta — Invito all’azione](blocchi/cta.md) | contatti | `banner`, `split-contatto` | Dopo i blocchi che convincono (servizi, lavori, recensioni) e in fondo alla pagina, prima del footer. Con showContacts mostra telefono e WhatsApp dell’attività presi da site.json. |
 
@@ -107,7 +107,7 @@ L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`pal
 
 | Preset | Nome | Mood | Adatta a | Colori |
 | --- | --- | --- | --- | --- |
-| `terracotta` | Terracotta | caldo, accogliente, artigianale | imbianchini e decoratori, edilizia e finiture, ristoranti e trattorie, agriturismi, botteghe artigiane | bg `#fbf6ef` · surface `#f2e6d7` · fg `#2e1f17` · primary `#a5452a` · accent `#56652b` |
+| `terracotta` | Terracotta | caldo, accogliente, artigianale | ristoranti e trattorie, agriturismi, botteghe artigiane, negozi di prodotti tipici, artigiani della casa e delle finiture | bg `#fbf6ef` · surface `#f2e6d7` · fg `#2e1f17` · primary `#a5452a` · accent `#56652b` |
 | `ardesia` | Ardesia | sobrio, moderno, professionale | impiantisti ed elettricisti, studi tecnici e professionali, officine e carrozzerie, pulizie e manutenzioni, servizi alle imprese | bg `#f8fafb` · surface `#eaeef1` · fg `#1b2228` · primary `#2d4a5e` · accent `#e5a13a` |
 
 ![Hero con la palette Terracotta](img/hero-palette-terracotta-desktop.webp)
@@ -124,46 +124,289 @@ L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`pal
 
 | Preset | Nome | Mood | Adatta a | Raggi |
 | --- | --- | --- | --- | --- |
-| `squadrato` | Squadrato | rigoroso, tecnico, essenziale | studi tecnici e professionali, edilizia e impianti, officine e carrozzerie | card `0` · pulsanti `0` |
+| `squadrato` | Squadrato | rigoroso, tecnico, essenziale | studi tecnici e professionali, imprese edili e impiantisti, officine e carrozzerie, negozi di elettronica e ferramenta | card `0` · pulsanti `0` |
 | `morbido` | Morbido | equilibrato, cordiale | artigiani e imprese di servizi, negozi e botteghe, la maggior parte delle attività | card `0.75rem` · pulsanti `0.5rem` |
 | `arrotondato` | Arrotondato | amichevole, informale, giocoso | bar e pasticcerie, servizi alla persona (parrucchieri, estetica), attività per famiglie e bambini | card `1.5rem` · pulsanti `9999px` |
 
 ## Icone
 
-33 alias in `src/core/icons.ts`: nei componenti `<Icon name="pennello" />`, negli schemi `z.enum(ICON_NAMES)`. Il colore è quello del testo intorno. Licenze in `docs/THIRD_PARTY_LICENSES.md`.
+164 alias in 21 categorie, in `src/core/icons.ts`: nei componenti `<Icon name="casa" />`, negli schemi `iconSchema()`. Il colore è quello del testo intorno. Dal vivo, con la ricerca, su `/catalogo/icone`. Licenze in `docs/THIRD_PARTY_LICENSES.md`.
 
-**Simboli (Lucide)**
+| Categoria | Icone |
+| --- | --- |
+| Casa e cantiere | 12 |
+| Attrezzi | 6 |
+| Impianti: acqua, luce, gas, clima | 9 |
+| Giardino e natura | 6 |
+| Cibo e bevande | 10 |
+| Salute e benessere | 6 |
+| Bellezza | 4 |
+| Auto e trasporti | 8 |
+| Negozio e pagamenti | 10 |
+| Ufficio e servizi professionali | 9 |
+| Persone e famiglia | 5 |
+| Tempo e calendario | 5 |
+| Contatti e luoghi | 7 |
+| Fiducia e qualità | 8 |
+| Comunicazione | 7 |
+| Frecce e interfaccia | 12 |
+| File e documenti | 7 |
+| Meteo e stagioni | 6 |
+| Animali | 5 |
+| Sport e tempo libero | 8 |
+| Marchi | 14 |
+
+**Casa e cantiere** (12, Lucide)
 
 | Alias | Icona | Note |
 | --- | --- | --- |
-| `pennello` | `lucide:paintbrush` |  |
-| `rullo` | `lucide:paint-roller` |  |
-| `secchio-vernice` | `lucide:paint-bucket` |  |
 | `casa` | `lucide:house` |  |
 | `edificio` | `lucide:building` |  |
-| `scala` | `lucide:door-stairwell` | Vano scala: Lucide non ha una scala a pioli. |
+| `fabbrica` | `lucide:factory` |  |
+| `scale` | `lucide:door-stairwell` | Scale di casa o vano scala. Lucide non ha una scala a pioli. |
 | `muro` | `lucide:brick-wall` |  |
-| `goccia` | `lucide:droplet` | Impermeabilizzazione. |
-| `scudo` | `lucide:shield-check` | Garanzia. |
-| `check` | `lucide:check` |  |
-| `stella` | `lucide:star` |  |
+| `porta` | `lucide:door-open` |  |
+| `chiavi` | `lucide:key-round` |  |
+| `cantiere` | `lucide:construction` |  |
+| `pennello` | `lucide:paintbrush` |  |
+| `rullo` | `lucide:paint-roller` |  |
+| `bagno` | `lucide:bath` |  |
+| `pulizie` | `lucide:brush-cleaning` |  |
+
+**Attrezzi** (6, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `martello` | `lucide:hammer` |  |
+| `chiave-inglese` | `lucide:wrench` |  |
+| `trapano` | `lucide:drill` |  |
+| `cassetta-attrezzi` | `lucide:toolbox` |  |
+| `pala` | `lucide:shovel` |  |
+| `righello` | `lucide:ruler` |  |
+
+**Impianti: acqua, luce, gas, clima** (9, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `goccia` | `lucide:droplet` | Acqua, impermeabilizzazione. |
+| `rubinetto` | `lucide:faucet` |  |
+| `lampadina` | `lucide:lightbulb` |  |
+| `fulmine` | `lucide:zap` | Elettricità. |
+| `spina` | `lucide:plug` |  |
+| `fiamma` | `lucide:flame` | Gas, caldaie, camini. |
+| `stufa` | `lucide:heater` |  |
+| `aria-condizionata` | `lucide:air-vent` |  |
+| `pannello-solare` | `lucide:solar-panel` |  |
+
+**Giardino e natura** (6, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `foglia` | `lucide:leaf` |  |
+| `albero` | `lucide:tree-deciduous` |  |
+| `fiore` | `lucide:flower-2` |  |
+| `germoglio` | `lucide:sprout` |  |
+| `recinto` | `lucide:fence` |  |
+| `riciclo` | `lucide:recycle` |  |
+
+**Cibo e bevande** (10, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `posate` | `lucide:utensils` |  |
+| `cuoco` | `lucide:chef-hat` |  |
+| `caffe` | `lucide:coffee` |  |
+| `vino` | `lucide:wine` |  |
+| `birra` | `lucide:beer` |  |
+| `pizza` | `lucide:pizza` |  |
+| `torta` | `lucide:cake-slice` |  |
+| `gelato` | `lucide:ice-cream-cone` |  |
+| `cornetto` | `lucide:croissant` |  |
+| `grano` | `lucide:wheat` |  |
+
+**Salute e benessere** (6, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `cuore` | `lucide:heart` |  |
+| `battito` | `lucide:heart-pulse` |  |
+| `stetoscopio` | `lucide:stethoscope` |  |
+| `farmaco` | `lucide:pill` |  |
+| `dentista` | `lucide:toothbrush` |  |
+| `occhiali` | `lucide:glasses` |  |
+
+**Bellezza** (4, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `forbici` | `lucide:scissors` |  |
+| `brillantini` | `lucide:sparkles` |  |
+| `profumo` | `lucide:perfume-bottle` |  |
+| `gioiello` | `lucide:gem` |  |
+
+**Auto e trasporti** (8, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `auto` | `lucide:car` |  |
+| `furgone` | `lucide:van` |  |
+| `camion` | `lucide:truck` |  |
+| `moto` | `lucide:motorbike` |  |
+| `bici` | `lucide:bike` |  |
+| `parcheggio` | `lucide:square-parking` |  |
+| `carburante` | `lucide:fuel` |  |
+| `ricarica` | `lucide:plug-zap` | Ricarica dei veicoli elettrici. |
+
+**Negozio e pagamenti** (10, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `negozio` | `lucide:store` |  |
+| `carrello` | `lucide:shopping-cart` |  |
+| `borsa` | `lucide:shopping-bag` |  |
+| `etichetta` | `lucide:tag` |  |
+| `sconto` | `lucide:badge-percent` |  |
+| `regalo` | `lucide:gift` |  |
+| `pacco` | `lucide:package` |  |
+| `carta-di-credito` | `lucide:credit-card` |  |
+| `contanti` | `lucide:banknote` |  |
+| `euro` | `lucide:euro` |  |
+
+**Ufficio e servizi professionali** (9, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `valigetta` | `lucide:briefcase` |  |
+| `computer` | `lucide:laptop` |  |
+| `calcolatrice` | `lucide:calculator` |  |
+| `grafico` | `lucide:chart-column` |  |
+| `bilancia` | `lucide:scale` | Studi legali, giustizia. |
+| `penna` | `lucide:pen-line` |  |
+| `laurea` | `lucide:graduation-cap` |  |
+| `stretta-di-mano` | `lucide:handshake` |  |
+| `wifi` | `lucide:wifi` |  |
+
+**Persone e famiglia** (5, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `utente` | `lucide:user` |  |
+| `utenti` | `lucide:users` |  |
+| `bambino` | `lucide:baby` |  |
+| `accessibilita` | `lucide:accessibility` |  |
+| `sorriso` | `lucide:smile` |  |
+
+**Tempo e calendario** (5, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
 | `orologio` | `lucide:clock` |  |
 | `calendario` | `lucide:calendar` |  |
+| `prenotazione` | `lucide:calendar-check` |  |
+| `clessidra` | `lucide:hourglass` |  |
+| `cronometro` | `lucide:timer` |  |
+
+**Contatti e luoghi** (7, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
 | `telefono` | `lucide:phone` |  |
+| `cellulare` | `lucide:smartphone` |  |
 | `email` | `lucide:mail` |  |
 | `mappa-pin` | `lucide:map-pin` |  |
+| `mappa` | `lucide:map` |  |
+| `indicazioni` | `lucide:signpost` |  |
+| `sito-web` | `lucide:globe` |  |
+
+**Fiducia e qualità** (8, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `premio` | `lucide:award` |  |
+| `trofeo` | `lucide:trophy` |  |
+| `garanzia` | `lucide:shield-check` |  |
+| `certificato` | `lucide:badge-check` |  |
+| `pollice` | `lucide:thumbs-up` |  |
+| `stella` | `lucide:star` |  |
+| `check` | `lucide:check` |  |
+| `lucchetto` | `lucide:lock` |  |
+
+**Comunicazione** (7, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `chat` | `lucide:message-circle` |  |
+| `messaggi` | `lucide:messages-square` |  |
+| `invia` | `lucide:send` |  |
+| `megafono` | `lucide:megaphone` |  |
+| `campanella` | `lucide:bell` |  |
+| `citazione` | `lucide:quote` |  |
+| `cuffie` | `lucide:headset` |  |
+
+**Frecce e interfaccia** (12, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
 | `freccia-destra` | `lucide:arrow-right` |  |
 | `freccia-sinistra` | `lucide:arrow-left` |  |
+| `freccia-su` | `lucide:arrow-up` |  |
+| `freccia-giu` | `lucide:arrow-down` |  |
+| `chevron-giu` | `lucide:chevron-down` |  |
+| `chevron-destra` | `lucide:chevron-right` |  |
 | `menu` | `lucide:menu` |  |
 | `chiudi` | `lucide:x` |  |
-| `chevron-giu` | `lucide:chevron-down` |  |
-| `citazione` | `lucide:quote` |  |
-| `preventivo` | `lucide:file-text` |  |
-| `euro` | `lucide:euro` |  |
-| `utenti` | `lucide:users` |  |
-| `foto` | `lucide:image` |  |
+| `cerca` | `lucide:search` |  |
+| `piu` | `lucide:plus` |  |
+| `info` | `lucide:info` |  |
+| `link-esterno` | `lucide:external-link` |  |
 
-**Marchi (Simple Icons)**: solo per i link ai profili dell’attività, sono marchi registrati dei rispettivi titolari.
+**File e documenti** (7, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `preventivo` | `lucide:file-text` |  |
+| `contratto` | `lucide:file-pen-line` |  |
+| `cartella` | `lucide:folder` |  |
+| `lista-controllo` | `lucide:clipboard-check` |  |
+| `libro` | `lucide:book-open` |  |
+| `foto` | `lucide:image` |  |
+| `fotocamera` | `lucide:camera` |  |
+
+**Meteo e stagioni** (6, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `sole` | `lucide:sun` |  |
+| `nuvola` | `lucide:cloud` |  |
+| `pioggia` | `lucide:cloud-rain` |  |
+| `neve` | `lucide:snowflake` |  |
+| `vento` | `lucide:wind` |  |
+| `termometro` | `lucide:thermometer` |  |
+
+**Animali** (5, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `cane` | `lucide:dog` |  |
+| `gatto` | `lucide:cat` |  |
+| `zampa` | `lucide:paw-print` |  |
+| `uccello` | `lucide:bird` |  |
+| `pesce` | `lucide:fish` |  |
+
+**Sport e tempo libero** (8, Lucide)
+
+| Alias | Icona | Note |
+| --- | --- | --- |
+| `palestra` | `lucide:dumbbell` |  |
+| `pallone` | `lucide:volleyball` |  |
+| `nuoto` | `lucide:waves` |  |
+| `tenda` | `lucide:tent` |  |
+| `valigia` | `lucide:luggage` |  |
+| `musica` | `lucide:music` |  |
+| `biglietto` | `lucide:ticket` |  |
+| `arte` | `lucide:palette` |  |
+
+**Marchi** (14, Simple Icons): solo per i link ai profili dell’attività, sono marchi registrati dei rispettivi titolari.
 
 | Alias | Icona | Note |
 | --- | --- | --- |
@@ -174,6 +417,13 @@ L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`pal
 | `youtube` | `simple-icons:youtube` |  |
 | `tiktok` | `simple-icons:tiktok` |  |
 | `tripadvisor` | `simple-icons:tripadvisor` |  |
+| `linkedin` | `simple-icons:linkedin` |  |
+| `pinterest` | `simple-icons:pinterest` |  |
+| `threads` | `simple-icons:threads` |  |
+| `x` | `simple-icons:x` |  |
+| `telegram` | `simple-icons:telegram` |  |
+| `booking` | `simple-icons:bookingdotcom` |  |
+| `airbnb` | `simple-icons:airbnb` |  |
 
 ## Altro
 

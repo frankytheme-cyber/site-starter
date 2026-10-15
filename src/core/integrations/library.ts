@@ -6,6 +6,8 @@ import { isLibraryMode, LIBRARY_ENV } from '../mode.ts';
  * Catalogo dei blocchi (/catalogo): le pagine stanno in src/library/catalogo e si registrano con
  * injectRoute solo in modalità libreria (core/mode.ts). In un sito cliente non c'è nessuna route,
  * e site:init toglie anche la cartella: /catalogo non esiste nel build.
+ * La modalità arriva ai componenti come import.meta.env.LIBRARY_MODE (true/false, fissato nel
+ * build): BaseLayout la usa per la voce «Catalogo» del menu (CATALOG_NAV_ITEM, core/navigation.ts).
  */
 const CATALOG = new URL('../../library/catalogo/', import.meta.url);
 
@@ -22,8 +24,10 @@ export default function library(): AstroIntegration {
 	return {
 		name: 'site-starter-libreria',
 		hooks: {
-			'astro:config:setup': ({ injectRoute, logger }) => {
-				if (!isLibraryMode()) return;
+			'astro:config:setup': ({ injectRoute, logger, updateConfig }) => {
+				const libraryMode = isLibraryMode();
+				updateConfig({ vite: { define: { 'import.meta.env.LIBRARY_MODE': JSON.stringify(libraryMode) } } });
+				if (!libraryMode) return;
 				if (!existsSync(CATALOG)) {
 					throw new Error(
 						`${LIBRARY_ENV}=1 ma src/library/catalogo non c'è: è un sito cliente? Togli la variabile (.env o ambiente).`,

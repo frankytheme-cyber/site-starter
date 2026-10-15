@@ -2,12 +2,7 @@
 
 Le modifiche della libreria site-starter, una sezione per versione. `npm run release` dà alla sezione «Non rilasciato» il titolo della versione; `npm run blocks:sync` mostra ai siti cliente le voci di «### Breaking» delle versioni che installa.
 
-Formato: `
-
-### Correzioni
-
-- CLS dei font: ogni coppia di `src/themes/fonts/` ha ripieghi con le misure dei font veri (`"<font> ripiego"`, generati da `scripts/font-fallbacks.ts`). Prima, dove mancano Georgia e i font di sistema di macOS (Linux, Android, il runner della CI), lo scambio dei font spostava i titoli: CLS 0,074 su `/privacy/` in CI, oltre il limite di 0,05 di Lighthouse.
-## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
+Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
 ## Non rilasciato
 
@@ -19,6 +14,7 @@ Formato: `
 - Nei siti cliente un `blocks.lock.json` mancante è un errore del check `lock`.
 - Sono gestiti anche `.github/workflows/` (tutta la cartella: un workflow aggiunto nel sito è una modifica vietata), `CLAUDE.md` e `.github/CODEOWNERS`. `CLAUDE.md` non è più un link ad `AGENTS.md`: importa `AGENTS.md` e `docs/sito.md`, dove vanno le note del sito.
 - CI: i push partono solo su `main`; gli altri branch girano come pull request (una volta sola per commit) o a mano (`workflow_dispatch`).
+- Icone: `scala` diventa `scale` (scale di casa, vano scala; Lucide non ha una scala a pioli), `scudo` diventa `garanzia`, `secchio-vernice` non c’è più. Nelle ricette va cambiato l’alias, altrimenti la build si ferma.
 
 ### Novità
 
@@ -41,9 +37,13 @@ Formato: `
 - `gen:catalog` (e quindi il check `blocks`) si ferma su un campo senza `.describe()` negli schemi dei blocchi, in `themeSchema` e nelle chiavi di `layoutSchema`; `themeSchema` ha le sue descrizioni e il README del catalogo le chiavi di `theme.json`.
 - `site:init` scrive in `docs/sito.md` una traccia per le note del sito.
 - `README.md` con le istruzioni per la libreria e per i siti cliente.
+- Icone: lista curata di 164 alias in 21 categorie (20 di simboli più i marchi) (`iconGroups` in `src/core/icons.ts`: casa e cantiere, attrezzi, impianti, cibo, salute, negozio, ufficio, marchi...), con i marchi linkedin, pinterest, threads, x, telegram, booking e airbnb. `/catalogo/icone` le mostra per categoria con la ricerca per alias o nome; nel CMS la select mostra la categoria accanto all’alias (`iconSchema()`); `check:blocks` verifica che ogni nome esista in Lucide o Simple Icons.
+- Nella libreria il menu ha la voce «Catalogo» (Blocchi, Bottoni, Icone, UI), aggiunta da `BaseLayout` senza toccare `navigation.json`; nei siti cliente non esiste. La barra del catalogo ha il link «← Sito» e lo sfondo pieno.
+- Fixture neutre: un’attività di esempio, «Bottega Esempio», e settori diversi tra i blocchi (artigiano, negozio, ristorante, studio professionale), con foto segnaposto nuove e recapiti finti; palette e forme senza settori unici nell’«adatto a».
 
 ### Correzioni
 
 - `check:blocks` raccoglie tutti i problemi: un file mancante in un blocco non interrompe più il controllo degli altri.
 - `check:recipes` segnala tutti i recapiti scritti in uno stesso testo, non solo il primo.
 - Le fixture del footer usano recapiti palesemente finti (`055 000 0000`, `info@esempio.it`).
+- CLS dei font: ogni coppia di `src/themes/fonts/` ha ripieghi con le misure dei font veri (`"<font> ripiego"`, generati da `scripts/font-fallbacks.ts`). Prima, dove mancano Georgia e i font di sistema di macOS (Linux, Android, il runner della CI), lo scambio dei font spostava i titoli: CLS 0,074 su `/privacy/` in CI, oltre il limite di 0,05 di Lighthouse.

@@ -1,14 +1,15 @@
 import type { BlockFixture } from '@/core/block-types';
 import type { schema } from './schema';
 
+// Attività di esempio: un artigiano (banner), un negozio e uno studio professionale (split).
 export const fixtures: BlockFixture<typeof schema>[] = [
 	{
 		name: 'Banner',
 		tone: 'primary',
 		props: {
 			variant: 'banner',
-			title: 'Pareti nuove prima delle feste?',
-			text: 'Sopralluogo e preventivo gratuiti, senza impegno. Ti diciamo subito quanto costa e quanto dura il lavoro, e lo mettiamo per iscritto.',
+			title: 'Un mobile nuovo prima delle feste?',
+			text: 'Sopralluogo e preventivo gratuiti, senza impegno. Ti diciamo subito quanto costa e quanto tempo serve, e lo mettiamo per iscritto.',
 			primary: { label: 'Chiedi un preventivo', href: '#preventivo' },
 			secondary: { label: 'Guarda i lavori', href: '#lavori' },
 			showContacts: false,
@@ -19,8 +20,8 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		tone: 'primary',
 		props: {
 			variant: 'banner',
-			title: 'Hai una parete da sistemare?',
-			text: 'Mandaci due foto su WhatsApp o chiamaci: per i lavori più piccoli ti diamo una prima stima già al telefono.',
+			title: 'Hai un mobile da sistemare?',
+			text: 'Mandaci due foto su WhatsApp o chiamaci: per le riparazioni più piccole ti diamo una prima stima già al telefono.',
 			primary: { label: 'Prenota un sopralluogo', href: '#sopralluogo' },
 			showContacts: true,
 		},
@@ -30,9 +31,9 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		tone: 'muted',
 		props: {
 			variant: 'split-contatto',
-			title: 'Parliamo del tuo lavoro',
-			text: 'Raccontaci cosa vuoi rinnovare: veniamo a vedere di persona, prendiamo le misure e in pochi giorni ricevi un preventivo scritto e dettagliato.',
-			primary: { label: 'Chiedi un preventivo', href: '#preventivo' },
+			title: 'Cerchi un regalo su misura?',
+			text: 'Dicci per chi è e quanto vuoi spendere: prepariamo la confezione in negozio e la puoi ritirare quando vuoi, anche il giorno dopo.',
+			primary: { label: 'Ordina una confezione', href: '#regali' },
 			showContacts: true,
 		},
 	},
@@ -41,9 +42,9 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		tone: 'muted',
 		props: {
 			variant: 'split-contatto',
-			title: 'Vuoi vedere come lavoriamo?',
-			text: 'Nella galleria trovi le foto prima e dopo di case, uffici e condomini che abbiamo tinteggiato negli ultimi anni.',
-			primary: { label: 'Guarda i lavori', href: '#lavori' },
+			title: 'Vuoi conoscere lo studio?',
+			text: 'Nella pagina dello studio trovi chi siamo, di cosa si occupa ognuno di noi e cosa dicono i clienti che seguiamo da anni.',
+			primary: { label: 'Chi siamo', href: '#studio' },
 			secondary: { label: 'Leggi le recensioni', href: '#recensioni' },
 			showContacts: false,
 		},
@@ -53,8 +54,8 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		tone: 'muted',
 		props: {
 			variant: 'split-contatto',
-			title: 'Rinnoviamo casa tua in pochi giorni, con un preventivo chiaro e fisso',
-			text: 'Veniamo a vedere le pareti, ti consigliamo i prodotti più adatti a ogni stanza e ti lasciamo un preventivo scritto con le date di inizio e di fine. Il prezzo concordato è quello che paghi alla fine.',
+			title: 'Mobili su misura in poche settimane, con un preventivo chiaro e fisso',
+			text: 'Veniamo a vedere gli spazi, ti consigliamo il legno e le finiture più adatti e ti lasciamo un preventivo scritto con la data di consegna. Il prezzo concordato è quello che paghi alla fine.',
 			primary: { label: 'Chiedi un preventivo oggi', href: '#preventivo' },
 			secondary: { label: 'Guarda i lavori terminati', href: '#lavori' },
 			showContacts: true,

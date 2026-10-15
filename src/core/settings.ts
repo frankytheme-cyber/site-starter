@@ -116,9 +116,9 @@ export const siteSettingsSchema = ({ image }: SchemaContext) =>
 				),
 			phone: z
 				.string()
-				.regex(/^\+?\d[\d\s./-]{4,18}\d$/, 'numero di telefono non valido (es. "055 123 4567")')
+				.regex(/^\+?\d[\d\s./-]{4,18}\d$/, 'numero di telefono non valido (es. "051 123 4567")')
 				.or(placeholder)
-				.describe('Telefono|Come va mostrato, es. 055 123 4567'),
+				.describe('Telefono|Come va mostrato, es. 051 123 4567'),
 			whatsapp: z
 				.string()
 				.regex(/^\+\d[\d\s]{6,18}\d$/, 'numero WhatsApp con prefisso internazionale (es. "+39 333 123 4567")')
@@ -130,13 +130,13 @@ export const siteSettingsSchema = ({ image }: SchemaContext) =>
 			address: z
 				.object({
 					street: z.string().min(1).describe('Via e numero civico|Es. Via Roma 12'),
-					postalCode: z.string().regex(/^\d{5}$/, 'CAP di 5 cifre').or(placeholder).describe('CAP|5 cifre, es. 50121'),
-					city: z.string().min(1).describe('Comune|Es. Firenze'),
+					postalCode: z.string().regex(/^\d{5}$/, 'CAP di 5 cifre').or(placeholder).describe('CAP|5 cifre, es. 40121'),
+					city: z.string().min(1).describe('Comune|Es. Bologna'),
 					province: z
 						.string()
-						.regex(/^[A-Z]{2}$/, 'sigla della provincia in maiuscolo (es. "FI")')
+						.regex(/^[A-Z]{2}$/, 'sigla della provincia in maiuscolo (es. "BO")')
 						.or(placeholder)
-						.describe('Provincia|Sigla in maiuscolo, es. FI'),
+						.describe('Provincia|Sigla in maiuscolo, es. BO'),
 				})
 				.describe('Indirizzo|Sede dell’attività'),
 			legalName: z
@@ -144,7 +144,7 @@ export const siteSettingsSchema = ({ image }: SchemaContext) =>
 				.min(1)
 				.max(120)
 				.describe(
-					'Ragione sociale|Il nome registrato in Camera di commercio, forma giuridica compresa: es. «Rossi Imbiancature S.r.l.» o «Imbiancature Rossi di Mario Rossi»',
+					'Ragione sociale|Il nome registrato in Camera di commercio, forma giuridica compresa: es. «Bottega Esempio S.r.l.» o «Bottega Esempio di Mario Rossi»',
 				),
 			legalForm: z
 				.enum(LEGAL_FORMS)
@@ -163,10 +163,10 @@ export const siteSettingsSchema = ({ image }: SchemaContext) =>
 			/** Obbligatorio per le società (superRefine sotto). */
 			rea: z
 				.string()
-				.regex(/^[A-Z]{2}[- ]?\d{1,7}$/, 'sigla della provincia e numero, es. FI-123456')
+				.regex(/^[A-Z]{2}[- ]?\d{1,7}$/, 'sigla della provincia e numero, es. BO-123456')
 				.or(placeholder)
 				.optional()
-				.describe('Numero REA|Sigla della provincia e numero, es. FI-123456; obbligatorio per le società'),
+				.describe('Numero REA|Sigla della provincia e numero, es. BO-123456; obbligatorio per le società'),
 			/** Obbligatorio per le società (superRefine sotto). Testo libero: l'importo versato, come va mostrato. */
 			shareCapital: z
 				.string()

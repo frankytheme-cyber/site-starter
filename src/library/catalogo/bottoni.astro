@@ -10,6 +10,7 @@ import { BUTTON_STYLES, SPECIAL_HREFS } from '@/core/ui/button/cta';
 import Container from '@/core/ui/Container.astro';
 import Section from '@/core/ui/Section.astro';
 import CatalogLayout from './_CatalogLayout.astro';
+import { catalogTitle } from './_library';
 
 const STATES = [
 	{ label: 'normale', state: undefined },
@@ -25,7 +26,7 @@ const COLUMNS = SIZES.flatMap((size) => [
 ]);
 ---
 
-<CatalogLayout title="Bottoni · Catalogo blocchi">
+<CatalogLayout title={catalogTitle('Bottoni')}>
 	<main id="bottoni">
 		<Container>
 			<div class="py-10">

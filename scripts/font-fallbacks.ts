@@ -39,9 +39,9 @@ const FACES = [
 ] as const;
 
 const SAMPLE =
-	'Imbiancature e decorazioni a Firenze dal 1987: preventivo gratuito, sopralluogo in 48 ore. ' +
-	'Pitture lavabili, cartongesso, restauro di persiane e facciate. Chiamaci o scrivici su WhatsApp, ' +
-	'ti rispondiamo entro un giorno lavorativo. Qualità, puntualità e cantiere pulito a fine lavori.';
+	'Bottega artigiana in centro dal 1987: preventivo gratuito, appuntamento in 48 ore. ' +
+	'Mobili su misura, riparazioni, pranzi di lavoro e consulenze per famiglie e imprese. Chiamaci o scrivici su WhatsApp, ' +
+	'ti rispondiamo entro un giorno lavorativo. Qualità, puntualità e prezzi chiari fin dal primo incontro.';
 
 const args = process.argv.slice(2);
 const fonts = args.map((arg) => {

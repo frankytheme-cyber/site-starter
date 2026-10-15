@@ -11,7 +11,7 @@
  * Non fa commit: le modifiche restano nel working tree (git restore . per annullarle).
  *
  * Uso: npm run site:init
- *      npm run site:init -- --repo=agenzia/rossi-imbianchino --yes   (senza domande, es. in CI)
+ *      npm run site:init -- --repo=agenzia/bottega-esempio --yes   (senza domande, es. in CI)
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -105,6 +105,8 @@ const packageFile = join(ROOT, 'package.json');
 const pkg = JSON.parse(readFileSync(packageFile, 'utf8'));
 const removedScripts = (manifest.libraryScripts ?? []).filter((name) => pkg.scripts && name in pkg.scripts);
 for (const name of removedScripts) delete pkg.scripts[name];
+// La descrizione è quella della libreria («site-starter — libreria di blocchi...»): il sito non la eredita.
+delete pkg.description;
 writeFileSync(packageFile, `${JSON.stringify(pkg, null, 2)}\n`);
 
 // ---------------------------------------------------------------------------- CMS

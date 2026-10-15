@@ -12,8 +12,8 @@
 	font-family: "Manrope Variable ripiego";
 	font-weight: 100 549;
 	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
-	size-adjust: 102.3%;
-	ascent-override: 104.2%;
+	size-adjust: 102.2%;
+	ascent-override: 104.3%;
 	descent-override: 29.3%;
 	line-gap-override: 0%;
 }
@@ -21,9 +21,9 @@
 	font-family: "Manrope Variable ripiego";
 	font-weight: 550 900;
 	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
-	size-adjust: 100.5%;
-	ascent-override: 106.1%;
-	descent-override: 29.8%;
+	size-adjust: 100.3%;
+	ascent-override: 106.3%;
+	descent-override: 29.9%;
 	line-gap-override: 0%;
 }
 
@@ -32,8 +32,8 @@
 	font-family: "Inter Variable ripiego";
 	font-weight: 100 549;
 	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
-	size-adjust: 106.5%;
-	ascent-override: 91.0%;
+	size-adjust: 106.6%;
+	ascent-override: 90.9%;
 	descent-override: 22.6%;
 	line-gap-override: 0%;
 }
@@ -41,8 +41,8 @@
 	font-family: "Inter Variable ripiego";
 	font-weight: 550 900;
 	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
-	size-adjust: 102.0%;
-	ascent-override: 95.0%;
+	size-adjust: 101.9%;
+	ascent-override: 95.1%;
 	descent-override: 23.6%;
 	line-gap-override: 0%;
 }

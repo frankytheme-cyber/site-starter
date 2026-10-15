@@ -3,15 +3,18 @@
  * src/blocks/README.md, e docs/catalogo è aggiornato (scripts/checks/catalog.ts). Quattro file, meta completo con source e scope, licenza riportata se il
  * disegno è esterno, fixture valide contro lo schema (e i dati `site` di prova contro lo schema
  * di site.json), almeno una fixture per variante, ogni blocco di layout con la sua chiave in
- * layout.json.
+ * layout.json, ogni icona di src/core/icons.ts presente nel suo pacchetto Iconify (un nome
+ * sbagliato o diventato alias darebbe un'icona vuota).
  * Raccoglie tutti i problemi: un blocco con un file mancante o che non si carica non ferma gli
  * altri, e in quel caso il confronto con docs/catalogo si salta (il catalogo non si può generare).
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { z } from 'astro/zod';
 import { CATEGORIES } from '../../src/core/block-types.ts';
 import { fieldPath } from '../../src/core/content-validation.ts';
+import { icons } from '../../src/core/icons.ts';
 import { checkCatalog } from './catalog.ts';
 import { type CheckContext, collector } from './lib/report.ts';
 import { withProjectModules } from './lib/vite.ts';
@@ -183,6 +186,22 @@ export async function blocks({ root }: CheckContext) {
 			}
 		}
 	});
+	// Icone: il nome deve esistere nel set (non solo come alias, che i pacchetti possono togliere).
+	const require = createRequire(join(root, 'package.json'));
+	const iconSets: Record<string, { icons: Record<string, unknown> }> = {};
+	for (const [alias, id] of Object.entries(icons)) {
+		const [set, name] = id.split(':');
+		try {
+			iconSets[set] ??= require(`@iconify-json/${set}/icons.json`);
+		} catch {
+			error({ file: 'src/core/icons.ts', where: alias, message: `pacchetto @iconify-json/${set} non installato` });
+			continue;
+		}
+		if (!iconSets[set].icons[name]) {
+			error({ file: 'src/core/icons.ts', where: alias, message: `"${id}" non esiste in @iconify-json/${set}`, hint: 'cerca il nome esatto su icones.js.org o nel file icons.json del pacchetto' });
+		}
+	}
+
 	// docs/catalogo rigenerato in memoria e confrontato coi file (scripts/checks/catalog.ts).
 	if (broken.length > 0) {
 		warning({

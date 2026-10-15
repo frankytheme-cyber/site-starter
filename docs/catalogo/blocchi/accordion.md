@@ -6,7 +6,7 @@
 
 Domande frequenti o sezioni di testo che si aprono una per una: tanti contenuti in poco spazio.
 
-**Quando usarlo:** Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, preparazione del cantiere.
+**Quando usarlo:** Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, cosa preparare prima di un appuntamento.
 
 **Evitare quando:** Per informazioni che tutti devono leggere (prezzi, garanzie principali): nascoste in una voce chiusa le legge poca gente, meglio un testo aperto. Con una voce sola o più di 12: dividi in più blocchi.
 
@@ -18,7 +18,7 @@ Domande frequenti o sezioni di testo che si aprono una per una: tanti contenuti 
 
   <img src="../img/accordion-faq-mobile.webp" alt="Accordion, faq, 375 px" width="240">
 
-- `contenuti` — Titolo a sinistra e voci a destra (sotto su mobile). **Quando usarla:** Per testi di dettaglio da aprire: condizioni, tempi, preparazione del cantiere. Fixture «Contenuti, una alla volta», dal vivo `/catalogo/accordion/contenuti/`.
+- `contenuti` — Titolo a sinistra e voci a destra (sotto su mobile). **Quando usarla:** Per testi di dettaglio da aprire: condizioni, tempi, fasi del lavoro. Fixture «Contenuti, una alla volta», dal vivo `/catalogo/accordion/contenuti/`.
 
   ![Accordion, contenuti, 1280 px](../img/accordion-contenuti-desktop.webp)
 
@@ -50,24 +50,24 @@ Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `ty
 	"type": "accordion",
 	"variant": "faq",
 	"eyebrow": "Domande frequenti",
-	"title": "Prima di iniziare i lavori",
-	"intro": "Le risposte alle domande che ci fate più spesso al primo sopralluogo.",
+	"title": "Prima di prenotare",
+	"intro": "Le risposte alle domande che ci fate più spesso al telefono.",
 	"items": [
 		{
-			"title": "Il sopralluogo e il preventivo sono gratuiti?",
-			"text": "Sì. Veniamo a vedere le pareti, prendiamo le misure e ti lasciamo un preventivo scritto, senza costi e senza impegno."
+			"title": "Serve prenotare?",
+			"text": "A pranzo di solito no. A cena, il venerdì e il sabato, conviene prenotare: chiamaci o scrivici su WhatsApp."
 		},
 		{
-			"title": "Quanto tempo serve per tinteggiare un appartamento?",
-			"text": "Per un trilocale di solito bastano tre o quattro giorni lavorativi, compresa la stuccatura delle crepe.\n\nI tempi esatti sono scritti nel preventivo: se finiamo in ritardo per colpa nostra, ogni giorno in più è scalato dal totale."
+			"title": "Avete piatti senza glutine o vegetariani?",
+			"text": "Sì: ogni giorno in carta ci sono almeno due piatti vegetariani e la pasta senza glutine, cotta a parte.\n\nSe hai un’allergia, dillo quando prenoti: la cucina prepara il tuo piatto separatamente."
 		},
 		{
-			"title": "Devo spostare io i mobili?",
-			"text": "No. Spostiamo noi i mobili al centro delle stanze e li copriamo con teli; proteggiamo anche pavimenti, porte e prese."
+			"title": "Si può portare il cane?",
+			"text": "Sì, i cani di piccola e media taglia sono i benvenuti in sala e in giardino. Una ciotola d’acqua la portiamo noi."
 		},
 		{
-			"title": "Che pitture usate?",
-			"text": "Pitture traspiranti o lavabili a basse emissioni, scelte in base alla stanza: antimuffa per bagni e cucine, lavabili per corridoi e camere dei bambini."
+			"title": "Organizzate cene per gruppi?",
+			"text": "Fino a quaranta persone, con un menu fisso concordato prima. Per le feste private possiamo riservare tutta la sala."
 		}
 	]
 }

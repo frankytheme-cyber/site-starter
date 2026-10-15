@@ -101,7 +101,7 @@ export interface CatalogData {
 	version: string;
 	recipeRules: typeof RECIPE_RULES;
 	specialLinks: { href: string; becomes: string; from: string }[];
-	icons: { alias: string; icon: string; note?: string }[];
+	icons: { alias: string; icon: string; category: string; note?: string }[];
 	themes: {
 		/** Le chiavi di theme.json (themeSchema). */
 		fields: FieldInfo[];
@@ -307,18 +307,24 @@ function readmePage(data: CatalogData, rules: string) {
 	const pageBlocks = data.blocks.filter((block) => block.scope === 'page');
 	const layoutBlocks = data.blocks.filter((block) => block.scope === 'layout');
 	const checkLabel = { build: 'build', recipes: 'controllo recipes', release: 'controllo release' } as const;
-	const iconGroup = (set: string) =>
-		table(
-			['Alias', 'Icona', 'Note'],
-			data.icons.filter((icon) => icon.icon.startsWith(`${set}:`)).map((icon) => [code(icon.alias), code(icon.icon), icon.note ?? '']),
-		);
+	const iconCategories = [...new Set(data.icons.map((icon) => icon.category))];
+	const iconGroup = (category: string) => {
+		const group = data.icons.filter((icon) => icon.category === category);
+		const brands = group.every((icon) => icon.icon.startsWith('simple-icons:'));
+		return [
+			brands
+				? `**${category}** (${group.length}, Simple Icons): solo per i link ai profili dell’attività, sono marchi registrati dei rispettivi titolari.`
+				: `**${category}** (${group.length}, Lucide)`,
+			table(['Alias', 'Icona', 'Note'], group.map((icon) => [code(icon.alias), code(icon.icon), icon.note ?? ''])),
+		].join('\n\n');
+	};
 	const presetCells = (preset: PresetMeta & { key: string }) => [code(preset.key), preset.name, preset.mood.join(', '), preset.adattoA.join(', ')];
 	const layoutExample = Object.fromEntries(layoutBlocks.map((block) => [block.type, (block.example.json as Record<string, unknown>)[block.type]]));
 
 	return page(
 		GENERATED,
 		'# Catalogo dei blocchi',
-		`Libreria **${data.library} v${data.version}** (\`library.manifest.json\`). Tutto quello che segue è generato da \`npm run gen:catalog\` a partire da schemi, schede e fixture; gli screenshot da \`npm run screenshots\`; gli stessi dati per le macchine sono in [\`catalogo.json\`](catalogo.json). \`npm run check\` fallisce se questa cartella non corrisponde agli schemi.`,
+		`**${data.library} — libreria di blocchi per siti vetrina**, versione **v${data.version}** (\`library.manifest.json\`). Le fixture usano attività di esempio di settori diversi (artigiano, negozio, ristorante, studio professionale) con recapiti finti. Tutto quello che segue è generato da \`npm run gen:catalog\` a partire da schemi, schede e fixture; gli screenshot da \`npm run screenshots\`; gli stessi dati per le macchine sono in [\`catalogo.json\`](catalogo.json). \`npm run check\` fallisce se questa cartella non corrisponde agli schemi.`,
 		'Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.',
 		'## Regole d’oro delle ricette',
 		data.recipeRules.map((rule, index) => `${index + 1}. ${rule.rule}${rule.check ? ` *(${checkLabel[rule.check]})*` : ''}`).join('\n'),
@@ -364,11 +370,9 @@ function readmePage(data: CatalogData, rules: string) {
 			data.themes.shapes.map((shape) => [...presetCells(shape), `card ${code(shape.boxRadius)} · pulsanti ${code(shape.buttonRadius)}`]),
 		),
 		'## Icone',
-		`${data.icons.length} alias in \`src/core/icons.ts\`: nei componenti \`<Icon name="pennello" />\`, negli schemi \`z.enum(ICON_NAMES)\`. Il colore è quello del testo intorno. Licenze in \`docs/THIRD_PARTY_LICENSES.md\`.`,
-		'**Simboli (Lucide)**',
-		iconGroup('lucide'),
-		'**Marchi (Simple Icons)**: solo per i link ai profili dell’attività, sono marchi registrati dei rispettivi titolari.',
-		iconGroup('simple-icons'),
+		`${data.icons.length} alias in ${iconCategories.length} categorie, in \`src/core/icons.ts\`: nei componenti \`<Icon name="casa" />\`, negli schemi \`iconSchema()\`. Il colore è quello del testo intorno. Dal vivo, con la ricerca, su \`/catalogo/icone\`. Licenze in \`docs/THIRD_PARTY_LICENSES.md\`.`,
+		table(['Categoria', 'Icone'], iconCategories.map((category) => [category, String(data.icons.filter((icon) => icon.category === category).length)])),
+		...iconCategories.map(iconGroup),
 		'## Altro',
 		[
 			'- [Primitive UI](ui.md): i componenti di `src/core/ui` con cui sono fatti i blocchi.',
@@ -603,7 +607,9 @@ export async function generateCatalog() {
 			version: String(manifest.version ?? '0.0.0'),
 			recipeRules: RECIPE_RULES,
 			specialLinks: Object.entries(cta.SPECIAL_HREF_TARGETS as Record<string, { becomes: string; from: string }>).map(([href, target]) => ({ href, ...target })),
-			icons: Object.entries(icons.icons as Record<string, string>).map(([alias, icon]) => ({ alias, icon, ...(iconNotes.has(alias) && { note: iconNotes.get(alias) }) })),
+			icons: Object.values(icons.iconGroups as Record<string, { label: string; icons: Record<string, string> }>).flatMap(({ label, icons: group }) =>
+				Object.entries(group).map(([alias, icon]) => ({ alias, icon, category: label, ...(iconNotes.has(alias) && { note: iconNotes.get(alias) }) })),
+			),
 			themes,
 			blocks,
 		};

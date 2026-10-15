@@ -3,8 +3,10 @@ import Container from '@/core/ui/Container.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getTheme } from '@/core/settings';
 import { fonts, palettes, shapes } from '@/themes/presets';
+import { LIBRARY_DESCRIPTION } from './_library';
 
 interface Props {
+	/** Titolo completo della pagina: catalogTitle() di _library.ts. */
 	title: string;
 }
 
@@ -18,11 +20,12 @@ const controls = [
 ];
 ---
 
-<BaseLayout title={title} noindex allFonts siteLayout={false}>
-	<header data-catalog-bar class="sticky top-0 z-50 border-b border-border bg-bg/95 backdrop-blur">
+<BaseLayout title={title} description={LIBRARY_DESCRIPTION} noindex allFonts siteLayout={false}>
+	<header data-catalog-bar class="sticky top-0 z-50 border-b border-border bg-bg">
 		<Container>
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
-				<nav aria-label="Catalogo" class="mr-auto flex items-baseline gap-6">
+				<nav aria-label="Catalogo" class="mr-auto flex flex-wrap items-baseline gap-x-6 gap-y-2">
+					<a href="/" class="text-sm text-primary underline underline-offset-4">← Sito</a>
 					<a href="/catalogo/" class="font-heading text-lg font-bold">Catalogo blocchi</a>
 					<a href="/catalogo/bottoni/" class="text-sm text-primary underline underline-offset-4">Bottoni</a>
 					<a href="/catalogo/icone/" class="text-sm text-primary underline underline-offset-4">Icone</a>

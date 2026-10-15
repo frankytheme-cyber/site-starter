@@ -1,30 +1,31 @@
 import type { BlockFixture } from '@/core/block-types';
 import type { schema } from './schema';
 
+// Attività di esempio: un ristorante (faq) e un artigiano (contenuti).
 export const fixtures: BlockFixture<typeof schema>[] = [
 	{
 		name: 'FAQ',
 		props: {
 			variant: 'faq',
 			eyebrow: 'Domande frequenti',
-			title: 'Prima di iniziare i lavori',
-			intro: 'Le risposte alle domande che ci fate più spesso al primo sopralluogo.',
+			title: 'Prima di prenotare',
+			intro: 'Le risposte alle domande che ci fate più spesso al telefono.',
 			items: [
 				{
-					title: 'Il sopralluogo e il preventivo sono gratuiti?',
-					text: 'Sì. Veniamo a vedere le pareti, prendiamo le misure e ti lasciamo un preventivo scritto, senza costi e senza impegno.',
+					title: 'Serve prenotare?',
+					text: 'A pranzo di solito no. A cena, il venerdì e il sabato, conviene prenotare: chiamaci o scrivici su WhatsApp.',
 				},
 				{
-					title: 'Quanto tempo serve per tinteggiare un appartamento?',
-					text: 'Per un trilocale di solito bastano tre o quattro giorni lavorativi, compresa la stuccatura delle crepe.\n\nI tempi esatti sono scritti nel preventivo: se finiamo in ritardo per colpa nostra, ogni giorno in più è scalato dal totale.',
+					title: 'Avete piatti senza glutine o vegetariani?',
+					text: 'Sì: ogni giorno in carta ci sono almeno due piatti vegetariani e la pasta senza glutine, cotta a parte.\n\nSe hai un’allergia, dillo quando prenoti: la cucina prepara il tuo piatto separatamente.',
 				},
 				{
-					title: 'Devo spostare io i mobili?',
-					text: 'No. Spostiamo noi i mobili al centro delle stanze e li copriamo con teli; proteggiamo anche pavimenti, porte e prese.',
+					title: 'Si può portare il cane?',
+					text: 'Sì, i cani di piccola e media taglia sono i benvenuti in sala e in giardino. Una ciotola d’acqua la portiamo noi.',
 				},
 				{
-					title: 'Che pitture usate?',
-					text: 'Pitture traspiranti o lavabili a basse emissioni, scelte in base alla stanza: antimuffa per bagni e cucine, lavabili per corridoi e camere dei bambini.',
+					title: 'Organizzate cene per gruppi?',
+					text: 'Fino a quaranta persone, con un menu fisso concordato prima. Per le feste private possiamo riservare tutta la sala.',
 				},
 			],
 		},
@@ -35,13 +36,13 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		props: {
 			variant: 'contenuti',
 			title: 'Come lavoriamo',
-			intro: 'Dal primo contatto alla pulizia finale, ogni fase ha tempi e responsabilità chiari.',
+			intro: 'Dal primo contatto al montaggio, ogni fase ha tempi e responsabilità chiari.',
 			single: true,
 			items: [
-				{ title: 'Sopralluogo', text: 'Guardiamo le pareti, valutiamo umidità e crepe e ascoltiamo cosa ti serve.' },
-				{ title: 'Preventivo scritto', text: 'Riceviamo le tue scelte su colori e finiture e ti mandiamo il preventivo entro tre giorni lavorativi.' },
-				{ title: 'Preparazione', text: 'Copriamo mobili e pavimenti, stucchiamo le crepe e carteggiamo le superfici.' },
-				{ title: 'Tinteggiatura e pulizia', text: 'Diamo le mani di colore previste e a fine lavoro lasciamo le stanze pulite e in ordine.' },
+				{ title: 'Sopralluogo', text: 'Veniamo a vedere gli spazi, prendiamo le misure e ascoltiamo cosa ti serve.' },
+				{ title: 'Progetto e preventivo', text: 'Ti mandiamo il disegno del mobile e un preventivo scritto entro tre giorni lavorativi.' },
+				{ title: 'Lavorazione', text: 'Scegliamo insieme legno e finiture, poi costruiamo il mobile nel nostro laboratorio.' },
+				{ title: 'Consegna e montaggio', text: 'Portiamo il mobile a casa, lo montiamo e a fine lavoro lasciamo tutto pulito e in ordine.' },
 			],
 		},
 	},
