@@ -13,6 +13,7 @@
     "docs/controlli.md",
     "docs/decap.md",
     "docs/siti-cliente.md",
+    "docs/specifica.md",
     "library.manifest.json",
     "public/admin/index.html",
     "src/content.config.ts",

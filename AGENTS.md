@@ -2,6 +2,8 @@
 
 Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, usata anche come template GitHub per i siti cliente.
 
+La specifica completa del sistema è in `docs/specifica.md`; in caso di dubbio prevale la specifica, poi chiedi al PM.
+
 ## Regole
 
 - **Solo classi semantiche nei blocchi.** Usa `bg-primary`, `text-fg-muted`, `font-heading`, `rounded-box`... MAI colori Tailwind fissi (`bg-blue-600`, `text-gray-500`...) né valori arbitrari di colore (`bg-[#1e40af]`, `text-[rgb(...)]`...). Non contare sul fatto che, con la palette di Tailwind disattivata, una classe come `bg-blue-600` «non genera CSS»: `check:tokens` vieta come errore le classi della palette (anche `fill-*`, `stroke-*`, `ring-*`, `from-`/`via-`/`to-*`) e i valori arbitrari di colore in `src/blocks`, `src/core` e `src/layouts`.
@@ -28,7 +30,7 @@ La stessa repo vive in due modi, e la modalità la decide solo `SITE_STARTER_LIB
 - **Aggiornare un sito:** `npm run blocks:sync -- vX.Y.Z` (working tree pulito), poi `npm install`, `npm run gen:decap`, `npm run qa -- --strict` e commit. Sostituisce cartelle e file gestiti con quelli del tag, unisce script e dipendenze in `package.json`, aggiorna il lock e mostra i breaking change di `CHANGELOG.md`.
 - **Cosa è gestito** (`library.manifest.json`, elenco completo lì):
   - `managed`, cartelle: `src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`, `.github/workflows`;
-  - `managedFiles`: `AGENTS.md`, `CLAUDE.md`, `.github/CODEOWNERS`, `library.manifest.json`, `astro.config.mjs`, `src/content.config.ts`, `src/pages/[...slug].astro`, `src/pages/robots.txt.ts`, `tsconfig.json`, `.env.example`, `public/admin/index.html` e i documenti comuni di `docs/` (`controlli.md`, `decap.md`, `siti-cliente.md`, `blocchi-interattivi.md`, `THIRD_PARTY_LICENSES.md`);
+  - `managedFiles`: `AGENTS.md`, `CLAUDE.md`, `.github/CODEOWNERS`, `library.manifest.json`, `astro.config.mjs`, `src/content.config.ts`, `src/pages/[...slug].astro`, `src/pages/robots.txt.ts`, `tsconfig.json`, `.env.example`, `public/admin/index.html` e i documenti comuni di `docs/` (`controlli.md`, `decap.md`, `siti-cliente.md`, `blocchi-interattivi.md`, `specifica.md`, `THIRD_PARTY_LICENSES.md`);
   - `exclude`: percorsi né controllati né copiati da `blocks:sync` (`src/library`);
   - `libraryOnly` (`src/library` con il catalogo, `docs/README.md`, `CHANGELOG.md`) e `libraryScripts`: solo nella libreria, `site:init` li toglie e `blocks:sync` non li porta;
   - del sito, liberi: `src/content/**`, `src/assets/images/**`, `src/site.config.ts`, le altre pagine di `src/pages`, `public/` (tranne `admin/index.html`), `docs/sito.md`, `README.md`, `name` e `version` di `package.json`.
@@ -91,7 +93,7 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run catalog`        | Libreria: `gen:catalog` + `screenshots`           |
 | `npm run check:blocks`   | Libreria: contratto dei blocchi; fallisce anche se `docs/catalogo` non è aggiornato o manca uno screenshot (`check:catalog` è lo stesso) |
 | `npm run check:template` | Libreria: il template inizializzato come sito deve fallire `qa --strict` solo per i segnaposto (job CI `template-as-site`) |
-| `npm run release -- vX.Y.Z` | Libreria: versione in `library.manifest.json` e `CHANGELOG.md`, `gen:catalog`, `screenshots`, `check`, commit e tag (working tree pulito; push a mano) |
+| `npm run release -- vX.Y.Z` | Libreria: versione in `library.manifest.json`, `CHANGELOG.md` e `docs/specifica.md`, `gen:catalog`, `screenshots`, `check`, commit e tag (working tree pulito; push a mano) |
 | `npm run cms:local`      | `decap-server` per provare `/admin/` in locale, senza GitHub |
 
 In CI (`.github/workflows/ci.yml`, gestito): `check` sulle pull request, sui push su `main` e a mano; `qa` (e nella libreria `template-as-site`) sulle pull request; `--strict` sulle pull request verso `main`. Dettagli e protezione di `main` in `docs/controlli.md`.

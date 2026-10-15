@@ -3,7 +3,8 @@
  * 1. controlla la versione (vX.Y.Z, maggiore di quella in library.manifest.json), che il tag non
  *    esista e che il working tree sia pulito: nel commit di rilascio entra solo quello che produce;
  * 2. scrive la versione in library.manifest.json e package.json, e in CHANGELOG.md dà alla sezione
- *    «## Non rilasciato» il titolo «## vX.Y.Z (data)» (blocks:sync ne legge i breaking change);
+ *    «## Non rilasciato» il titolo «## vX.Y.Z (data)» (blocks:sync ne legge i breaking change), e in
+ *    docs/specifica.md la riga «Versione: allineata alla libreria vX.Y.Z»;
  * 3. npm run gen:catalog, npm run screenshots (build compresa), npm run check;
  * 4. commit «Rilascio vX.Y.Z» e tag annotato vX.Y.Z.
  * Il push resta a mano (git push --follow-tags). Se un passo fallisce si ferma senza commit: le
@@ -20,6 +21,8 @@ requireLibraryMode('npm run release');
 const MANIFEST = join(ROOT, 'library.manifest.json');
 const CHANGELOG = join(ROOT, 'CHANGELOG.md');
 const UNRELEASED = /^## Non rilasciato\s*$/m;
+const SPEC = join(ROOT, 'docs/specifica.md');
+const SPEC_VERSION = /^Versione: allineata alla libreria v\S+$/m;
 
 function fail(message: string): never {
 	console.error(`✗ ${message}`);
@@ -52,6 +55,7 @@ const current = String(manifest.version ?? '0.0.0');
 if (!newer(version, current)) fail(`${tag} non è maggiore della versione attuale v${current}`);
 if (run('git', ['tag', '--list', tag], { capture: true })) fail(`il tag ${tag} esiste già`);
 if (run('git', ['status', '--porcelain'], { capture: true })) fail('ci sono modifiche non committate: fai il commit o accantonale prima del rilascio');
+if (!existsSync(SPEC) || !SPEC_VERSION.test(readFileSync(SPEC, 'utf8'))) fail('docs/specifica.md senza la riga «Versione: allineata alla libreria vX.Y.Z» sotto il titolo');
 
 console.log(`Rilascio ${tag} (da v${current})\n`);
 writeFileSync(MANIFEST, readFileSync(MANIFEST, 'utf8').replace(/"version":\s*"[^"]*"/, `"version": "${version}"`));
@@ -62,6 +66,7 @@ if (existsSync(CHANGELOG) && UNRELEASED.test(readFileSync(CHANGELOG, 'utf8'))) {
 } else {
 	console.warn('! CHANGELOG.md senza sezione «## Non rilasciato»: i siti non vedranno note per questa versione.');
 }
+writeFileSync(SPEC, readFileSync(SPEC, 'utf8').replace(SPEC_VERSION, `Versione: allineata alla libreria ${tag}`));
 run('npm', ['run', 'gen:catalog']);
 run('npm', ['run', 'screenshots']);
 run('npm', ['run', 'check']);
