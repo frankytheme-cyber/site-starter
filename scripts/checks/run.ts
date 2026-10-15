@@ -30,6 +30,8 @@ import {
 	type CheckResult,
 	countLevel,
 	formatFinding,
+	orderFindings,
+	placeholderSummary,
 	statusOf,
 	summaryLine,
 	writeReports,
@@ -47,8 +49,6 @@ interface CheckDefinition {
 	/** Ha bisogno del server di anteprima. */
 	needsServer?: boolean;
 }
-
-const MAX_WARNINGS_SHOWN = 10;
 
 /** La build di questa esecuzione non c'è: fallita o saltata. Senza build nella selezione vale la dist/ che c'è. */
 const buildMissing = (results: CheckResult[]) => results.some((result) => result.name === 'build' && (result.status === 'failed' || result.status === 'skipped'));
@@ -168,10 +168,10 @@ try {
 		const result: CheckResult = { name, status: statusOf(findings), durationMs: Date.now() - started, findings };
 		results.push(result);
 		console.log(summaryLine(result));
-		// In console tutti gli errori e i primi avvisi; l'elenco completo è nei report.
-		const shown = [...findings.filter((finding) => finding.level === 'error'), ...findings.filter((finding) => finding.level === 'warning').slice(0, MAX_WARNINGS_SHOWN)];
-		for (const finding of shown) console.log(formatFinding(finding));
-		if (shown.length < findings.length) console.log(`  … e altri ${findings.length - shown.length} avvisi in reports/qa.md`);
+		// Tutti gli errori, poi tutti gli avvisi, poi i segnaposto riassunti: l'elenco completo è nei report.
+		const { errors, warnings, placeholders } = orderFindings(findings);
+		for (const finding of [...errors, ...warnings]) console.log(formatFinding(finding));
+		for (const line of placeholderSummary(placeholders)) console.log(line);
 	}
 } finally {
 	if (preview) stopPreview(preview);

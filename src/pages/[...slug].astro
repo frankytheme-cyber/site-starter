@@ -5,7 +5,9 @@
  */
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { getCollection } from 'astro:content';
+import { assertSpecialHrefs } from '@/core/links';
 import RenderSections from '@/core/RenderSections.astro';
+import { getSiteSettings } from '@/core/settings';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
 export const getStaticPaths = (async () => {
@@ -21,6 +23,9 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { page } = Astro.props;
 const { title, description, draft, ogImage, noindex, sections } = page.data;
+
+// Prima di disegnare: un @whatsapp senza numero in site.json si legge con sezione e campo.
+assertSpecialHrefs(`pagina ${page.id}.json`, page.data, await getSiteSettings());
 ---
 
 {/* Header e footer li mette BaseLayout da layout.json: le sezioni della ricetta sono il contenuto di <main>. */}

@@ -2,8 +2,9 @@
  * recipes: ricette di pagina (src/content/pages/*.json) e impostazioni (src/content/settings/*.json).
  *
  * Sempre errori, prima della build: dati non validi per lo schema (gli stessi controlli e messaggi
- * della build, src/core/content-validation.ts) e immagini che non esistono, con file, sezione e
- * campo. Con questi errori run.ts salta astro-check e build, che fallirebbero allo stesso modo.
+ * della build, src/core/content-validation.ts), immagini che non esistono e link speciali
+ * (@whatsapp...) senza il dato in site.json (src/core/links.ts), con file, sezione e campo. Con
+ * questi errori run.ts salta astro-check e build, che fallirebbero allo stesso modo.
  *
  * Il resto sono regole di contenuto. Senza --strict sono tutti avvisi. Con --strict:
  * - regole strutturali, errori ovunque: telefoni, email o P.IVA scritti nei testi delle sezioni;
@@ -29,6 +30,7 @@ import {
 	eachString,
 	excerpt,
 	fieldPath,
+	isObject,
 	type Json,
 	type JsonObject,
 	lastKey,
@@ -119,9 +121,14 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 	checkSettings();
 	return findings;
 
-	/** Schema e immagini di ricette e impostazioni: gli stessi controlli della build, prima della build. */
+	/** Schema, immagini e link speciali di ricette e impostazioni: gli stessi controlli della build, prima della build. */
 	async function checkSchemas() {
 		const settingsDir = join(root, 'src/content/settings');
+		// Un JSON non valido lo segnala già checkSettings.
+		const readSetting = (name: string) => {
+			const path = join(settingsDir, name);
+			return existsSync(path) ? readJsonFile(path, () => {}) : undefined;
+		};
 		const report = (file: string, data: Json, schema: ContentSchema) => {
 			for (const { where, message } of contentProblems(schema, data, join(root, file), root)) {
 				asError({ file, where: where || undefined, message, hint: CONTENT_HINT, breaksBuild: true });
@@ -131,14 +138,22 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 			await withProjectModules(async (load) => {
 				const { withoutEmpty } = await load('/src/core/clean-data.ts');
 				const { pageSchema } = await load('/src/core/page-schema.ts');
+				const { specialHrefProblems } = await load('/src/core/links.ts');
 				for (const { file, data } of all) report(file, withoutEmpty(data), pageSchema);
 				for (const { name, module, schema, clean } of SETTINGS) {
-					const path = join(settingsDir, name);
-					if (!existsSync(path)) continue;
-					const file = `src/content/settings/${name}`;
-					// Un JSON non valido lo segnala già checkSettings.
-					const data = readJsonFile(path, () => {});
-					if (data !== undefined) report(file, clean ? withoutEmpty(data) : data, (await load(module))[schema]);
+					const data = readSetting(name);
+					if (data !== undefined) report(`src/content/settings/${name}`, clean ? withoutEmpty(data) : data, (await load(module))[schema]);
+				}
+
+				// @whatsapp, @telefono... senza il dato in site.json: la pagina non si disegnerebbe.
+				const site = readSetting('site.json');
+				if (!isObject(site)) return;
+				const navigation = readSetting('navigation.json');
+				const linked = [...all, ...(navigation === undefined ? [] : [{ file: 'src/content/settings/navigation.json', data: navigation }])];
+				for (const { file, data } of linked) {
+					for (const { where, message, hint } of specialHrefProblems(withoutEmpty(data), withoutEmpty(site))) {
+						asError({ file, where, message, hint, breaksBuild: true });
+					}
 				}
 			});
 		} catch (cause) {

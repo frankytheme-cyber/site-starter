@@ -24,8 +24,8 @@ export interface Finding {
 	 */
 	placeholder?: string;
 	/**
-	 * Dati che non passano lo schema (recipes): la build fallirebbe con lo stesso errore, quindi
-	 * run.ts salta astro-check e build.
+	 * Dati che non passano lo schema, o link speciali senza il dato in site.json (recipes): la
+	 * build fallirebbe con lo stesso errore, quindi run.ts salta astro-check e build.
 	 */
 	breaksBuild?: boolean;
 }
@@ -82,9 +82,38 @@ const ICONS: Record<CheckResult['status'], string> = { passed: '✓', warnings: 
 /** "src/content/pages/index.json → sezione 3 (services) → items[2].title". */
 const location = (finding: Finding) => [finding.file, finding.where].filter(Boolean).join(' → ');
 
+const levelIcon = (level: Level) => (level === 'error' ? '✗' : '!');
+
 export function formatFinding(finding: Finding): string {
-	const head = `  ${finding.level === 'error' ? '✗' : '!'} ${location(finding) ? `${location(finding)}: ` : ''}${finding.message}`;
+	const head = `  ${levelIcon(finding.level)} ${location(finding) ? `${location(finding)}: ` : ''}${finding.message}`;
 	return finding.hint ? `${head}\n      → ${finding.hint}` : head;
+}
+
+/**
+ * L'ordine di console e qa.md: prima gli errori, poi gli avvisi, poi i segnaposto (DA-COMPILARE...,
+ * di qualunque livello), così un avviso di struttura non finisce in mezzo a decine di segnaposto.
+ */
+export function orderFindings(findings: Finding[]) {
+	const others = findings.filter((finding) => !finding.placeholder);
+	return {
+		errors: others.filter((finding) => finding.level === 'error'),
+		warnings: others.filter((finding) => finding.level === 'warning'),
+		placeholders: findings.filter((finding) => finding.placeholder).sort((a, b) => (a.level === b.level ? 0 : a.level === 'error' ? -1 : 1)),
+	};
+}
+
+/** I segnaposto riassunti, una riga per segnaposto e livello: «! 57 segnaposto DA-COMPILARE in 6 file — dettaglio in reports/qa.md». */
+export function placeholderSummary(placeholders: Finding[]): string[] {
+	const groups = new Map<string, Finding[]>();
+	for (const finding of placeholders) {
+		const key = `${finding.level} ${finding.placeholder}`;
+		groups.set(key, [...(groups.get(key) ?? []), finding]);
+	}
+	return [...groups.values()].map((group) => {
+		const { level, placeholder } = group[0];
+		const files = new Set(group.map((finding) => finding.file)).size;
+		return `  ${levelIcon(level)} ${group.length} segnaposto ${placeholder} in ${files} file — dettaglio in reports/qa.md`;
+	});
 }
 
 export function summaryLine(result: CheckResult): string {
@@ -120,15 +149,18 @@ function toMarkdown(results: CheckResult[], meta: RunMeta): string {
 			].join(' | ').trim(),
 		),
 	];
-	for (const result of results.filter((item) => item.findings.length > 0)) {
-		lines.push('', `## ${result.name}`, '');
-		for (const finding of result.findings) {
-			const where = location(finding);
-			lines.push(
-				`- ${finding.level === 'error' ? '❌' : '⚠️'} ${where ? `\`${escapeCell(where)}\`: ` : ''}${escapeCell(finding.message)}` +
-					(finding.hint ? `  \n  → ${escapeCell(finding.hint)}` : ''),
-			);
-		}
+	const item = (finding: Finding) => {
+		const where = location(finding);
+		return (
+			`- ${finding.level === 'error' ? '❌' : '⚠️'} ${where ? `\`${escapeCell(where)}\`: ` : ''}${escapeCell(finding.message)}` +
+			(finding.hint ? `  \n  → ${escapeCell(finding.hint)}` : '')
+		);
+	};
+	for (const result of results.filter((check) => check.findings.length > 0)) {
+		const { errors, warnings, placeholders } = orderFindings(result.findings);
+		lines.push('', `## ${result.name}`);
+		if (errors.length + warnings.length > 0) lines.push('', ...[...errors, ...warnings].map(item));
+		if (placeholders.length > 0) lines.push('', `### Segnaposto (${placeholders.length})`, '', ...placeholders.map(item));
 	}
 	return `${lines.join('\n')}\n`;
 }
