@@ -256,7 +256,7 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 4. Un dato mancante non si inventa: si chiede al PM, che lo chiede a te.
 5. Un blocco mancante non si improvvisa: richiesta di nuovo blocco nel Project Libreria.
 6. Nessun agente fa merge su `main`, pubblica, cambia impostazioni della repo o di Vercel.
-7. Identità GitHub: account `simone-agenti`, token in `GH_TOKEN` del Project.
+7. Identità GitHub: account `simone-agenti`, token e identità git nell'env del Project (tabella nella checklist).
 
 **Redirect di un sito esistente**: il Builder prepara una proposta in `docs/redirects.md` e non applica nulla. Il PM la porta al cancello 2. Si applicano in `vercel.json` solo le righe approvate; se respinta, nessun redirect. Il SEO può segnalare rischi.
 
@@ -353,6 +353,9 @@ NELLA LIBRERIA (Project "Libreria blocchi")
 
 SEMPRE
 - Branch + PR in bozza subito; npm run qa senza errori prima di chiudere.
+- PR con l'API GitHub via curl (gh non e' disponibile): POST /repos/<owner>/<repo>/pulls
+  con "draft": true e il token SOLO nell'header (Authorization: Bearer $GITHUB_TOKEN).
+  Mai il token nell'URL, ne' della richiesta ne' del remote.
 - Non cambi testi, tema o scelte del Designer. Non fai merge. Non tocchi impostazioni
   di GitHub o Vercel.
 ```
@@ -506,13 +509,30 @@ Stato: bozza | approvato il <data>
 
 ## Checklist: messa in servizio e nuovo sito
 
+**Env di ogni Project Paperclip (libreria e siti)**
+
+| Variabile | Valore |
+| --- | --- |
+| `GH_TOKEN`, `GITHUB_TOKEN` | Token classic di `simone-agenti` (segreti) |
+| `GIT_AUTHOR_NAME`, `GIT_COMMITTER_NAME` | `simone-agenti` |
+| `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_EMAIL` | `frankytheme+agenti@gmail.com` |
+| `GIT_CONFIG_COUNT` | `2` |
+| `GIT_CONFIG_KEY_0` | `credential.helper` |
+| `GIT_CONFIG_VALUE_0` | *(vuoto)* |
+| `GIT_CONFIG_KEY_1` | `credential.helper` |
+| `GIT_CONFIG_VALUE_1` | `!f() { echo username=x-access-token; echo "password=$GITHUB_TOKEN"; }; f` |
+| `SITE_STARTER_LIBRARY` | `1` SOLO nel Project della libreria |
+
+- Nessuna connessione GitHub nei Connectors assegnata agli agenti: verso GitHub passano solo da queste variabili.
+- Il token si rinnova ogni 90 giorni, e va aggiornato in tutti i Project.
+
 **Messa in servizio della squadra (una volta)**
 
 - [ ] Prompt Q eseguito (catalogo nel menu, testi neutri, icone) e `npm run release -- v1.0.0` (o v1.1.0)
 - [ ] Spuntato "Template repository" su GitHub
 - [ ] `.env` locale con `SITE_STARTER_LIBRARY=1`; stessa variabile nella repo GitHub (Variables) e su Vercel
-- [ ] Account GitHub `simone-agenti`, invitato con permesso *Write*; token fine-grained limitato alle repo
-- [ ] Paperclip, Project "Libreria blocchi": repo, cartella locale, env `SITE_STARTER_LIBRARY=1` e `GH_TOKEN` (segreto)
+- [ ] Account GitHub `simone-agenti`, invitato con permesso *Write*; token classic con scadenza a 90 giorni
+- [ ] Paperclip, Project "Libreria blocchi": repo, cartella locale, env come nella tabella sopra (con `SITE_STARTER_LIBRARY=1`)
 - [ ] Istruzioni di ruolo dei 5 agenti incollate; skill create e assegnate
 - [ ] Agenti attivi solo su assegnazione; PM con controllo giornaliero; budget per Project
 - [ ] Skill in `docs/skill/` scritte con Claude Code e rilasciate
@@ -523,7 +543,7 @@ Stato: bozza | approvato il <data>
 - [ ] GitHub: Use this template, repo privata, invito a `simone-agenti`
 - [ ] Ruleset importato da `docs/github-ruleset-sito.json` (se hai Pro)
 - [ ] Clone in locale (GitHub Desktop) nella cartella dei siti
-- [ ] Paperclip: Add Project, Configuration → repo e cartella locale, env `GH_TOKEN`
+- [ ] Paperclip: Add Project, Configuration → repo e cartella locale, env come nella tabella sopra (senza `SITE_STARTER_LIBRARY`)
 - [ ] Vercel: Import della repo
 - [ ] Task "Avvio sito" al Builder (`site:init`)
 - [ ] Brief con il PM → cancello 1
