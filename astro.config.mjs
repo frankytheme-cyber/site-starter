@@ -28,6 +28,13 @@ export default defineConfig({
   site,
   integrations: [
     icon({ include: iconInclude }),
+    // astro-icon legge l'elenco solo all'avvio: un'icona nuova in icons.ts riavvia il server di sviluppo.
+    {
+      name: 'icone',
+      hooks: {
+        'astro:config:setup': ({ addWatchFile }) => addWatchFile(new URL('./src/core/icons.ts', import.meta.url)),
+      },
+    },
     decapBundle(),
     sitemap({
       filter: (page) => {
