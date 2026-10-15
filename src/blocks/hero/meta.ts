@@ -17,4 +17,7 @@ export const meta: BlockMeta = {
 		full: 'Immagine a tutta larghezza con velatura scura e testo chiaro sopra. Di grande impatto, richiede una foto di qualità.',
 		centered: 'Solo testo, centrato, senza immagine. Per pagine interne o quando manca una foto adatta.',
 	},
+	fieldRules: {
+		image: 'Obbligatoria per le varianti split e full; centered non la mostra.',
+	},
 };

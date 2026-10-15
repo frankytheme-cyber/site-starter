@@ -20,4 +20,8 @@ export const meta: BlockMeta = {
 			'Righe con foto e testo che si alternano a destra e a sinistra. Occupa più spazio: adatta alla pagina dei servizi.',
 		schede: 'Un servizio per scheda (su mobile elenco da aprire), con testo, foto facoltativa e link. Per servizi alternativi tra cui scegliere; non per servizi che tutti devono vedere.',
 	},
+	fieldRules: {
+		'items[].icon': 'Obbligatoria per la variante cards-icone; le altre non la mostrano.',
+		'items[].image': 'Obbligatoria per le varianti cards-immagine e alternato; facoltativa in schede; cards-icone non la mostra.',
+	},
 };

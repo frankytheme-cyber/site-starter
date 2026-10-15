@@ -18,4 +18,7 @@ export const meta: BlockMeta = {
 			'Logo e descrizione, link del footer, contatti con indirizzo e «Apri in Maps», orari e social; sotto, la riga legale con i link a privacy e cookie e il credito. Per la maggior parte dei siti.',
 		minimale: 'Una riga sola: nome, P.IVA (con REA e capitale per le società), link legali e social. Per siti di una o due pagine.',
 	},
+	fieldRules: {
+		ctaBandTitle: 'Usato solo con ctaBand attivo.',
+	},
 };

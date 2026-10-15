@@ -33,8 +33,11 @@ export interface Block {
 	meta: BlockMeta;
 	schema: BlockSchema;
 	Component: AstroComponentFactory;
-	/** Fixture già validate: props pronte per il componente, e i dati dell'attività di prova se ci sono. */
-	fixtures: { name: string; tone?: Tone; props: Record<string, unknown>; site?: SiteSettings }[];
+	/**
+	 * Fixture già validate: props pronte per il componente, e i dati dell'attività di prova se ci sono.
+	 * input: le props come sono scritte in fixtures.ts, per l'esempio JSON del catalogo.
+	 */
+	fixtures: { name: string; tone?: Tone; props: Record<string, unknown>; input: Record<string, unknown>; site?: SiteSettings }[];
 }
 
 /** Campi che la ricetta aggiunge a ogni sezione (core/page-schema.ts): uno schema di blocco non li può usare. */
@@ -101,7 +104,13 @@ function loadBlock(type: string): Block {
 				`Dati site non validi per il blocco "${type}" (fixture "${fixture.name}"):\n${z.prettifyError(site.error)}`,
 			);
 		}
-		return { name: fixture.name, tone: fixture.tone, props: result.data as Record<string, unknown>, site: site?.data };
+		return {
+			name: fixture.name,
+			tone: fixture.tone,
+			props: result.data as Record<string, unknown>,
+			input: fixture.props as Record<string, unknown>,
+			site: site?.data,
+		};
 	});
 
 	const variants = Object.keys(meta.variants);

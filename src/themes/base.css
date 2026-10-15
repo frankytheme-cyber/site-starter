@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "./palettes/terracotta.css";
 @import "./palettes/ardesia.css";
+@import "./shapes/squadrato.css";
+@import "./shapes/morbido.css";
+@import "./shapes/arrotondato.css";
 
 /* La documentazione cita classi vietate come esempi: non deve generare CSS. */
 @source not "../../AGENTS.md";
@@ -10,7 +13,7 @@
 /*
  * Token semantici: i blocchi usano solo queste classi (bg-primary, text-fg-muted,
  * font-heading, rounded-box...). I valori arrivano dalle variabili impostate dai
- * preset su <html>: data-palette (palettes/), data-fonts (fonts/), data-shape (sotto).
+ * preset su <html>: data-palette (palettes/), data-fonts (fonts/), data-shape (shapes/).
  *
  * "inline" fa scrivere alle utility direttamente var(--bg) & co.: un preset messo su
  * qualsiasi elemento cambia l'aspetto di tutto ciò che contiene.
@@ -39,22 +42,6 @@
 
 	--radius-box: var(--box-radius);
 	--radius-button: var(--button-radius);
-}
-
-/* Forme: raggi di card/riquadri (rounded-box) e pulsanti (rounded-button). */
-[data-shape="squadrato"] {
-	--box-radius: 0;
-	--button-radius: 0;
-}
-
-[data-shape="morbido"] {
-	--box-radius: 0.75rem;
-	--button-radius: 0.5rem;
-}
-
-[data-shape="arrotondato"] {
-	--box-radius: 1.5rem;
-	--button-radius: 9999px;
 }
 
 /*

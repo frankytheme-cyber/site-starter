@@ -4,19 +4,19 @@ Due comandi, un solo formato di report:
 
 | Comando                     | Cosa esegue                                                                          | Quando                             |
 | --------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------- |
-| `npm run check`             | astro-check, decap, tokens, contrast, blocks, lock, recipes, build (+ release)       | prima di ogni commit; CI su ogni push |
+| `npm run check`             | astro-check, decap, tokens, contrast, blocks, catalog, lock, recipes, build (+ release) | prima di ogni commit; CI su ogni push |
 | `npm run qa`                | tutto `check`, poi su `astro preview`: links, a11y, interactive, lighthouse          | prima di una PR; CI sulle PR       |
 | `npm run check -- --strict` | come sopra con le regole di pubblicazione: recipes come errori, release attivo       | CI sulle PR verso `main`           |
 
 Entrambi scrivono `reports/qa.md` (leggibile) e `reports/qa.json` (per strumenti), più i report HTML di Lighthouse in `reports/lighthouse/`; in CI `reports/` è un artifact del job. Escono con codice 1 se c'è almeno un **errore**; gli **avvisi** si leggono ma non bloccano.
 
-Un check singolo: `node scripts/checks/run.ts tokens` (anche più nomi). Scorciatoie: `npm run check:tokens`, `check:contrast`, `check:blocks`, `check:decap`, `check:lock`, `check:recipes`.
+Un check singolo: `node scripts/checks/run.ts tokens` (anche più nomi). Scorciatoie: `npm run check:tokens`, `check:contrast`, `check:blocks`, `check:catalog`, `check:decap`, `check:lock`, `check:recipes`.
 
 ## Libreria e siti cliente
 
 Gli stessi script girano nella repo site-starter (la **libreria**, riconosciuta dalla cartella `src/pages/catalogo`) e nei **siti cliente**. Cambia questo:
 
-- `blocks` gira solo nella libreria;
+- `blocks` e `catalog` girano solo nella libreria;
 - `lock` gira solo dove esiste `blocks.lock.json` (i siti cliente);
 - nella libreria `recipes` resta un report di avvisi e `release` è saltato anche con `--strict`: il template contiene segnaposto per scelta.
 
@@ -29,6 +29,7 @@ Gli stessi script girano nella repo site-starter (la **libreria**, riconosciuta 
 | `tokens`      | check | errore                          | In `src/blocks` e `src/core` (`.astro`, `.css`): niente `bg-[#..]`, colori letterali, `style` con color/background, `!important` | Usa i token semantici (`bg-primary`, `text-fg-muted`...) o una variabile della palette.                          |
 | `contrast`    | check | errore                          | Contrasto WCAG AA delle coppie di ogni palette (4.5:1 testi, 3:1 anello di focus)                                    | Cambia i colori della palette in `src/themes/palettes/` finché il rapporto basta.                               |
 | `blocks`      | check | errore                          | Libreria: 4 file per blocco, `meta` completo con `source` e `scope`, licenza in `THIRD_PARTY_LICENSES.md` se esterno, fixture valide (e i dati `site` di prova contro lo schema di `site.json`), una per variante; ogni blocco di layout ha la sua chiave in `layoutSchema` | Segui il contratto di `src/blocks/README.md`; il messaggio dice blocco, fixture e campo.                         |
+| `catalog`     | check | errore (screenshot in più = avviso) | Libreria: `docs/catalogo` uguale a quello che scrive `npm run gen:catalog` (la sezione «Regole di composizione» del README esclusa); due screenshot per variante e uno per palette; `fieldRules` su campi esistenti e presenti se lo schema ha refine/superRefine; colori delle schede delle palette uguali al CSS; ricette tipo valide, con foto esistenti e link interni all'insieme | `npm run catalog` (genera i .md e rifà gli screenshot) e commit di `docs/catalogo`; per le schede, il messaggio dice file e campo. |
 | `lock`        | check | errore                          | Siti cliente: hash sha256 dei file delle cartelle gestite uguali a `blocks.lock.json`                               | «Modifica locale vietata, va fatta in site-starter»: annulla la modifica e proponila nella libreria.              |
 | `recipes`     | check | avviso; errore con `--strict`   | Segnaposto, recapiti scritti nei testi, più di un hero, id duplicati, link o ancore rotti, alt uguale al nome file; avvisi di struttura | Il messaggio dice file, sezione e campo; vedi `src/content/pages/README.md`.                                     |
 | `build`       | check | errore                          | `npm run build` (schemi delle ricette, fixture, configurazione di Decap)                                            | Il messaggio riporta l'errore di Astro con file e campo.                                                         |

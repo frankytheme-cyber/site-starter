@@ -17,4 +17,7 @@ export const meta: BlockMeta = {
 		testo: 'Solo testo, eventualmente con un pulsante. Compatta.',
 		'testo-immagine': 'Testo e foto affiancati in ogni scheda (foto sopra su mobile). Richiede una foto per scheda.',
 	},
+	fieldRules: {
+		'items[].image': 'Obbligatoria per la variante testo-immagine; testo non la mostra.',
+	},
 };

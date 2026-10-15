@@ -19,4 +19,8 @@ export const meta: BlockMeta = {
 		'con-cta':
 			'Logo, menu e un pulsante in evidenza a destra (la cta di navigation.json), ripetuto nel menu mobile. Per spingere preventivi o prenotazioni.',
 	},
+	fieldRules: {
+		variant: 'con-cta richiede la cta in navigation.json.',
+		logo: 'immagine richiede il logo in site.json; vuoto: immagine se il logo c’è, altrimenti il nome.',
+	},
 };

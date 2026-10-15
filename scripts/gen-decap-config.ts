@@ -25,8 +25,8 @@ const MEDIA_FROM_CONTENT = '../../assets/images';
 const PAGES_SCHEMA = '../../../.astro/collections/pages.schema.json';
 const IMAGE_MARKER = 'image';
 
-// Tipi minimi per leggere gli schemi di Zod 4 senza dipendere dalle sue classi.
-interface ZodLike {
+// Tipi minimi per leggere gli schemi di Zod 4 senza dipendere dalle sue classi (li usa anche gen-catalog.ts).
+export interface ZodLike {
 	description?: string;
 	meta(): Record<string, unknown> | undefined;
 	_zod: { def: Record<string, any> & { type: string } };
@@ -67,7 +67,7 @@ function resolveRepo(): string {
 // ---------------------------------------------------------------------------- Zod → Decap
 
 /** Toglie optional/nullable/default e raccoglie cosa dicono; la descrizione può stare sul wrapper o dentro. */
-function unwrap(schema: ZodLike) {
+export function unwrap(schema: ZodLike) {
 	let current = schema;
 	let optional = false;
 	let hasDefault = false;

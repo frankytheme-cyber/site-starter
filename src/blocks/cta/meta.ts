@@ -17,4 +17,7 @@ export const meta: BlockMeta = {
 		'split-contatto':
 			'Testo a sinistra e pulsanti a destra; con showContacts aggiunge Chiama e WhatsApp. Con tone muted è adatta a chiudere la pagina.',
 	},
+	fieldRules: {
+		showContacts: 'Il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp.',
+	},
 };

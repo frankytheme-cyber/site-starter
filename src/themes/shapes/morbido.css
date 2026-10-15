@@ -1,0 +1,5 @@
+/* Morbido: angoli appena arrotondati. */
+[data-shape="morbido"] {
+	--box-radius: 0.75rem;
+	--button-radius: 0.5rem;
+}

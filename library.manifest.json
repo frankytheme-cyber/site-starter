@@ -1,4 +1,4 @@
 {
-  "managed": ["src/blocks", "src/core", "src/themes", "src/layouts", "scripts"],
+  "managed": ["src/blocks", "src/core", "src/themes", "src/layouts", "scripts", "docs/catalogo"],
   "exclude": ["src/pages/catalogo"]
 }

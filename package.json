@@ -19,7 +19,11 @@
     "check:tokens": "node scripts/checks/run.ts tokens",
     "check:blocks": "node scripts/checks/run.ts blocks",
     "check:lock": "node scripts/checks/run.ts lock",
+    "check:catalog": "node scripts/checks/run.ts catalog",
     "gen:decap": "node scripts/gen-decap-config.ts",
+    "gen:catalog": "node scripts/gen-catalog.ts",
+    "screenshots": "node scripts/screenshots.ts",
+    "catalog": "npm run gen:catalog && npm run screenshots",
     "lock:write": "node scripts/checks/lock.ts --write",
     "cms:local": "node scripts/cms-local.ts"
   },
@@ -45,6 +49,7 @@
     "lighthouse": "^13.5.0",
     "linkinator": "^8.1.0",
     "playwright": "^1.64.1",
+    "sharp": "^0.35.5",
     "typescript": "^6.0.3",
     "yaml": "^2.9.1"
   }

@@ -1,6 +1,8 @@
 ---
+import { catalogVariants } from '@/core/catalog';
 import type { Block } from '@/core/registry';
 import Container from '@/core/ui/Container.astro';
+import { fixtureJson } from './_example';
 
 interface Props {
 	block: Block;
@@ -10,7 +12,13 @@ interface Props {
 
 const { block, href } = Astro.props;
 const { meta, Component, fixtures } = block;
-const variants = Object.entries(meta.variants);
+// Per ogni variante: la pagina da sola e il JSON della prima fixture, da incollare in una ricetta o in layout.json.
+const variants = catalogVariants(meta, fixtures).map((variant) => ({
+	...variant,
+	jsonId: `json-${meta.type}-${variant.name}`,
+	json: fixtureJson(block, variant.fixture),
+}));
+const jsonTarget = meta.scope === 'layout' ? 'src/content/settings/layout.json' : 'le sezioni di una ricetta';
 const Heading = href ? 'h2' : 'h1';
 const SubHeading = href ? 'h3' : 'h2';
 ---
@@ -40,23 +48,41 @@ const SubHeading = href ? 'h3' : 'h2';
 				</div>
 			</dl>
 
-			{
-				variants.length > 0 && (
-					<>
-						<SubHeading class="mt-8 font-semibold">Varianti</SubHeading>
-						<dl class="mt-2 grid gap-3">
-							{variants.map(([name, description]) => (
-								<div class="sm:flex sm:gap-3">
-									<dt class="shrink-0 sm:w-28">
-										<code>{name}</code>
-									</dt>
-									<dd class="text-fg-muted">{description}</dd>
+			<SubHeading class="mt-8 font-semibold">Varianti</SubHeading>
+			<dl class="mt-2 grid gap-5">
+				{
+					variants.map((variant) => (
+						<div class="sm:flex sm:gap-3">
+							<dt class="shrink-0 sm:w-28">
+								<code>{variant.name}</code>
+							</dt>
+							<dd class="min-w-0 flex-1">
+								<p class="text-fg-muted">{variant.description}</p>
+								<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+									<a href={`/catalogo/${meta.type}/${variant.name}/`} class="inline-flex min-h-9 items-center text-primary underline underline-offset-4">
+										Apri da sola
+									</a>
+									<button
+										type="button"
+										hidden
+										data-copy-json={variant.jsonId}
+										class="min-h-9 rounded-button border border-border px-3 font-semibold hover:bg-current/10"
+									>
+										Copia JSON
+									</button>
+									<span data-copy-status={variant.jsonId} role="status" class="text-fg-muted" />
 								</div>
-							))}
-						</dl>
-					</>
-				)
-			}
+								<details class="mt-1 text-sm">
+									<summary class="min-h-9 cursor-pointer py-1.5">
+										JSON della fixture «{variant.fixture.name}», per {jsonTarget}
+									</summary>
+									<pre id={variant.jsonId} class="mt-2 overflow-x-auto rounded-box bg-surface p-4 text-xs text-surface-fg"><code>{variant.json}</code></pre>
+								</details>
+							</dd>
+						</div>
+					))
+				}
+			</dl>
 		</div>
 	</Container>
 
@@ -94,3 +120,25 @@ const SubHeading = href ? 'h3' : 'h2';
 		))
 	}
 </article>
+
+<script>
+	// Copia JSON: senza JS il pulsante resta nascosto e il JSON si apre e si copia a mano.
+	for (const button of document.querySelectorAll<HTMLButtonElement>('[data-copy-json]')) {
+		const id = button.dataset.copyJson!;
+		const source = document.getElementById(id);
+		const status = document.querySelector(`[data-copy-status="${id}"]`);
+		if (!source || !status || !navigator.clipboard) continue;
+		button.hidden = false;
+		let timer: ReturnType<typeof setTimeout>;
+		button.addEventListener('click', async () => {
+			try {
+				await navigator.clipboard.writeText(source.textContent ?? '');
+				status.textContent = 'Copiato';
+			} catch {
+				status.textContent = 'Copia non riuscita: apri il JSON e copialo a mano';
+			}
+			clearTimeout(timer);
+			timer = setTimeout(() => (status.textContent = ''), 2500);
+		});
+	}
+</script>

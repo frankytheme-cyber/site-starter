@@ -1,0 +1,5 @@
+/* Squadrato: angoli vivi per card, riquadri e pulsanti. */
+[data-shape="squadrato"] {
+	--box-radius: 0;
+	--button-radius: 0;
+}

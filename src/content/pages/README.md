@@ -25,5 +25,6 @@ Schema in `src/core/page-schema.ts`; `"$schema"` in testa al file dà completame
 - **Bozze:** `"draft": true` pubblica la pagina in sviluppo e nelle anteprime, non nella produzione su Vercel, ed esclude la pagina dai motori di ricerca.
 - **Recapiti:** mai nei testi. Nei link dei pulsanti usa `"@telefono"`, `"@whatsapp"`, `"@email"` o `"@mappa"` (risolti da site.json); la cta ha anche `"showContacts": true`.
 - **Prima di pubblicare:** `npm run check -- --strict` (controlli in `docs/controlli.md`).
+- **Da dove partire:** le regole di composizione e le schede dei blocchi sono in `docs/catalogo/README.md`; pagine già composte da copiare in `docs/catalogo/ricette-tipo/`; nel catalogo dal vivo «Copia JSON» dà la sezione pronta di ogni variante.
 
 `index.json` e `contatti.json` del template sono esempi con testi `DA-COMPILARE`; `privacy.json` e `cookie.json` sono le pagine legali linkate dal footer (`navigation.json` → `footer.legal`), con la struttura dell'informativa da riempire. In un sito cliente `npm run check -- --strict` li segnala finché non vengono riscritti; se privacy e cookie stanno su un servizio esterno (es. un'informativa generata online), togli le due ricette e metti in `footer.legal` gli indirizzi https.

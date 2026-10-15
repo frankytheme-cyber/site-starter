@@ -1,0 +1,79 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "Chi siamo · DA-COMPILARE nome dell’attività",
+	"description": "DA-COMPILARE: chi c’è dietro l’attività, da quanto lavora e come, in una frase.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "split",
+			"eyebrow": "Chi siamo",
+			"title": "DA-COMPILARE: chi siamo, detto in una riga",
+			"subtitle": "DA-COMPILARE: da quanti anni lavori, dove, e cosa ti sta a cuore nel lavoro.",
+			"primaryCta": { "label": "Contattaci", "href": "/contatti/" },
+			"secondaryCta": { "label": "I nostri servizi", "href": "/servizi/" },
+			"image": {
+				"src": "../../assets/images/fixtures/imbianchino-decorazioni.jpg",
+				"alt": "DA-COMPILARE: foto del titolare o della squadra al lavoro"
+			}
+		},
+		{
+			"type": "tabs",
+			"id": "storia",
+			"tone": "muted",
+			"variant": "testo-immagine",
+			"eyebrow": "La nostra storia",
+			"title": "DA-COMPILARE: titolo della storia dell’attività",
+			"items": [
+				{
+					"label": "Come è nata",
+					"text": "DA-COMPILARE: quando e come è nata l’attività.",
+					"image": { "src": "../../assets/images/fixtures/imbianchino-interno.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" }
+				},
+				{
+					"label": "Il metodo",
+					"text": "DA-COMPILARE: come lavori e cosa ti distingue.",
+					"image": { "src": "../../assets/images/fixtures/imbianchino-cartongesso.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" }
+				},
+				{
+					"label": "La squadra",
+					"text": "DA-COMPILARE: chi lavora con te e cosa sa fare.",
+					"image": { "src": "../../assets/images/fixtures/imbianchino-facciata.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" }
+				}
+			]
+		},
+		{
+			"type": "carousel",
+			"id": "lavori",
+			"variant": "card",
+			"eyebrow": "Lavori",
+			"title": "DA-COMPILARE: alcuni lavori di cui andiamo fieri",
+			"items": [
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-facciata.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE: lavoro e luogo",
+					"text": "DA-COMPILARE: cosa chiedeva il cliente e cosa avete fatto."
+				},
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-decorazioni.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE: lavoro e luogo",
+					"text": "DA-COMPILARE: cosa chiedeva il cliente e cosa avete fatto."
+				},
+				{
+					"image": { "src": "../../assets/images/fixtures/imbianchino-antimuffa.jpg", "alt": "DA-COMPILARE: cosa mostra la foto" },
+					"title": "DA-COMPILARE: lavoro e luogo",
+					"text": "DA-COMPILARE: cosa chiedeva il cliente e cosa avete fatto."
+				}
+			]
+		},
+		{
+			"type": "cta",
+			"id": "contatto",
+			"tone": "primary",
+			"variant": "banner",
+			"title": "DA-COMPILARE: invito a conoscersi o a chiedere un preventivo",
+			"primary": { "label": "Chiedi un preventivo", "href": "/contatti/" },
+			"secondary": { "label": "I nostri servizi", "href": "/servizi/" },
+			"showContacts": false
+		}
+	]
+}

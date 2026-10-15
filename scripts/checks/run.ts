@@ -7,12 +7,12 @@
  *      npm run check -- --strict          regole di pubblicazione: recipes come errori, release attivo
  *      node scripts/checks/run.ts tokens  solo i check indicati
  */
-import { spawn, type ChildProcess } from 'node:child_process';
+import type { ChildProcess } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { createServer } from 'node:net';
 import { join } from 'node:path';
 import { a11y } from './a11y.ts';
 import { blocks } from './blocks.ts';
+import { catalog } from './catalog.ts';
 import { astroCheck, build } from './commands.ts';
 import { contrast } from './contrast.ts';
 import { decap } from './decap.ts';
@@ -20,6 +20,7 @@ import { interactive } from './interactive.ts';
 import { lighthouse } from './lighthouse.ts';
 import { links } from './links.ts';
 import { lock, LOCK_FILE } from './lock.ts';
+import { freePort, startPreview, stopPreview } from './lib/preview.ts';
 import { DIST, isLibrary, ROOT } from './lib/project.ts';
 import {
 	type CheckContext,
@@ -59,6 +60,10 @@ const CHECKS: Record<string, CheckDefinition> = {
 		run: blocks,
 		skip: ({ isLibrary: library }) => (library ? undefined : 'solo nella libreria (manca src/pages/catalogo)'),
 	},
+	catalog: {
+		run: catalog,
+		skip: ({ isLibrary: library }) => (library ? undefined : 'solo nella libreria (manca src/pages/catalogo)'),
+	},
 	lock: {
 		run: lock,
 		skip: ({ root }) => (existsSync(join(root, LOCK_FILE)) ? undefined : `nessun ${LOCK_FILE}`),
@@ -81,7 +86,7 @@ const CHECKS: Record<string, CheckDefinition> = {
 };
 
 const SUITES: Record<string, string[]> = {
-	check: ['astro-check', 'decap', 'tokens', 'contrast', 'blocks', 'lock', 'recipes', 'build', 'release'],
+	check: ['astro-check', 'decap', 'tokens', 'contrast', 'blocks', 'catalog', 'lock', 'recipes', 'build', 'release'],
 };
 SUITES.qa = [...SUITES.check, 'links', 'a11y', 'interactive', 'lighthouse'];
 
@@ -98,47 +103,6 @@ if (unknown.length > 0) {
 }
 const suite = suiteArg ?? (named.length > 0 ? 'personalizzata' : 'check');
 const selected = named.length > 0 ? named : SUITES[suite];
-
-// ---------------------------------------------------------------------------- server di anteprima
-
-function freePort(): Promise<number> {
-	return new Promise((resolve, reject) => {
-		const server = createServer();
-		server.unref();
-		server.on('error', reject);
-		server.listen(0, '127.0.0.1', () => {
-			const { port } = server.address() as { port: number };
-			server.close(() => resolve(port));
-		});
-	});
-}
-
-function stopPreview(child: ChildProcess) {
-	try {
-		if (child.pid && process.platform !== 'win32') process.kill(-child.pid, 'SIGTERM');
-		else child.kill();
-	} catch {}
-}
-
-async function startPreview(port: number): Promise<ChildProcess> {
-	const astro = join(ROOT, 'node_modules', '.bin', process.platform === 'win32' ? 'astro.cmd' : 'astro');
-	// --ignore-lock: un'anteprima tutta sua, anche se il progetto ha già un server di preview aperto.
-	// Gruppo di processi a parte, così alla fine si chiude tutto quello che astro ha avviato.
-	const child = spawn(astro, ['preview', '--port', String(port), '--host', '127.0.0.1', '--ignore-lock'], {
-		cwd: ROOT,
-		stdio: 'ignore',
-		detached: process.platform !== 'win32',
-	});
-	const url = `http://127.0.0.1:${port}/`;
-	for (let attempt = 0; attempt < 60; attempt++) {
-		try {
-			if ((await fetch(url)).ok) return child;
-		} catch {}
-		await new Promise((resolve) => setTimeout(resolve, 500));
-	}
-	stopPreview(child);
-	throw new Error(`astro preview non risponde su ${url}`);
-}
 
 // ---------------------------------------------------------------------------- esecuzione
 

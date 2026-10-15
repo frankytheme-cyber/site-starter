@@ -1,0 +1,37 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "Contatti · DA-COMPILARE nome dell’attività",
+	"description": "DA-COMPILARE: come contattare l’attività, dove si trova e in quanto tempo risponde.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "centered",
+			"eyebrow": "Contatti",
+			"title": "DA-COMPILARE: titolo della pagina contatti",
+			"subtitle": "DA-COMPILARE: come preferisci essere contattato e in quanto tempo rispondi.",
+			"primaryCta": { "label": "Chiamaci", "href": "@telefono", "icon": "telefono" },
+			"secondaryCta": { "label": "Come arrivare", "href": "@mappa", "icon": "mappa-pin" }
+		},
+		{
+			"type": "cta",
+			"id": "recapiti",
+			"tone": "muted",
+			"variant": "split-contatto",
+			"title": "DA-COMPILARE: invito a chiamare o scrivere",
+			"text": "DA-COMPILARE: orari in cui rispondi e cosa conviene dire già al primo contatto.",
+			"primary": { "label": "Scrivici una email", "href": "@email", "icon": "email" },
+			"showContacts": true
+		},
+		{
+			"type": "accordion",
+			"id": "domande",
+			"variant": "faq",
+			"eyebrow": "Prima di contattarci",
+			"title": "DA-COMPILARE: domande sul primo contatto",
+			"items": [
+				{ "title": "DA-COMPILARE: cosa serve per un preventivo?", "text": "DA-COMPILARE: foto, misure, indirizzo del lavoro..." },
+				{ "title": "DA-COMPILARE: in che zona lavorate?", "text": "DA-COMPILARE: comuni o province in cui lavori." }
+			]
+		}
+	]
+}

@@ -8,7 +8,7 @@ Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, u
 - **Cartelle gestite in sola lettura nei siti cliente.** Le cartelle elencate in `library.manifest.json` → `managed` si modificano SOLO nella repo site-starter; nei siti cliente sono in sola lettura.
 - **Dati dell'attività in un solo posto.** Nome, descrizione, indirizzo, telefono, email, dati legali (ragione sociale, forma giuridica, P.IVA, REA, capitale) e orari stanno solo in `src/content/settings/site.json`; mai scritti nei testi delle pagine né negli schemi dei blocchi, che li leggono con `getSiteSettings()` (`@/core/settings`).
 - **Si compone con blocchi esistenti.** Il sito si costruisce con i blocchi già presenti: un blocco nuovo nasce solo in site-starter, su task approvato.
-- **Ogni campo ha etichetta e aiuto.** Ogni campo degli schemi di blocchi, pagine e impostazioni ha `.describe("Etichetta|Aiuto")` in italiano: da lì nasce il CMS. Dopo aver cambiato uno schema, `npm run gen:decap` e commit di `public/admin/config.yml`.
+- **Ogni campo ha etichetta e aiuto.** Ogni campo degli schemi di blocchi, pagine e impostazioni ha `.describe("Etichetta|Aiuto")` in italiano: da lì nascono il CMS e la documentazione del catalogo. Dopo aver cambiato uno schema, `npm run gen:decap` e commit di `public/admin/config.yml`; nella libreria, dopo aver cambiato un blocco (schema, meta, fixture, aspetto), un preset del tema o le icone, `npm run catalog` e commit di `docs/catalogo`.
 - **Controlli verdi prima di chiudere.** Prima di dichiarare finito un lavoro, `npm run check` deve passare (comprende la build); per blocchi, layout e pagine anche `npm run qa`. Elenco dei controlli in `docs/controlli.md`.
 
 ## Tema
@@ -25,7 +25,8 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 - Blocchi interattivi (`interactive: true` in `meta.ts`): JS vanilla nel componente, progressive enhancement, tastiera, focus, movimento ridotto, niente autoplay. Regole in `docs/blocchi-interattivi.md`.
 - **Blocchi di layout.** `header` e `footer` hanno `scope: "layout"` in `meta.ts`: non vanno nelle ricette (la build li rifiuta) ma si scelgono in `src/content/settings/layout.json` (variante e opzioni, schema in `src/core/layout.ts`) e li disegna `BaseLayout` su ogni pagina. Tutti gli altri blocchi hanno `scope: "page"`.
 - Menu del sito: solo in `src/content/settings/navigation.json`, letto con `getNavigation()` (`@/core/navigation`): voci e pulsante dell'header, gruppo `footer` con i link secondari e quelli legali (privacy, cookie).
-- Anteprima: `/catalogo` (tutti i blocchi con le loro fixture, selettori di palette, font e forma) e `/catalogo/<type>`.
+- Anteprima: `/catalogo` (tutti i blocchi con le loro fixture, selettori di palette, font e forma, «Copia JSON» per ogni variante), `/catalogo/<type>` e `/catalogo/<type>/<variante>/` (una variante da sola, `?palette=&fonts=&shape=`).
+- **Catalogo in `docs/catalogo/`** (generato da `npm run gen:catalog`, gestito dalla libreria): una scheda per blocco con varianti, screenshot, tabella dei campi ed esempio JSON (`blocchi/<tipo>.md`), primitive (`ui.md`), temi (`temi.md`), icone (`icone.md`), le **regole di composizione** (`README.md`) e le **ricette tipo** da copiare (`ricette-tipo/`). Per comporre una pagina parti da lì.
 - La radice di ogni blocco è `<Section>` (`tone`: `default`, `muted`, `primary`). Dentro usa sempre `text-fg`, `text-fg-muted`, `bg-primary`...: Section ridefinisce i token per il tono, così il contrasto resta quello verificato.
 - Immagini: solo file in `src/assets/images`. Nelle ricette il percorso è relativo al JSON (`"../../assets/images/foto.jpg"`), nelle fixture il file si importa; `alt` di almeno 5 caratteri che descrive la foto.
 - Icone: solo `<Icon name="..." />` (`@/core/ui/Icon.astro`) con gli alias di `src/core/icons.ts`, mai SVG scritti a mano; negli schemi `z.enum(ICON_NAMES)`. Elenco in `/catalogo/icone`; licenze in `docs/THIRD_PARTY_LICENSES.md`.
@@ -56,6 +57,10 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run check:recipes`  | Controlla ricette e dati del sito; `-- --strict` esce con errore |
 | `npm run gen:decap`      | Genera `public/admin/config.yml` dagli schemi (anche in `prebuild`) |
 | `npm run check:decap`    | Fallisce se `config.yml` non è aggiornato                  |
+| `npm run gen:catalog`    | Genera i .md di `docs/catalogo` da schemi, meta e fixture |
+| `npm run screenshots`    | Build, anteprima e screenshot di ogni variante in `docs/catalogo/img` |
+| `npm run catalog`        | `gen:catalog` + `screenshots`                     |
+| `npm run check:catalog`  | Fallisce se `docs/catalogo` non è aggiornato o manca uno screenshot |
 | `npm run cms:local`      | `decap-server` per provare `/admin/` in locale, senza GitHub |
 
 Per gli agenti: avvia il server di sviluppo in background con `npx astro dev --background` e gestiscilo con `astro dev stop`, `astro dev status` e `astro dev logs`.

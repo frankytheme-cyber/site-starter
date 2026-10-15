@@ -5,8 +5,8 @@
 Ogni check è un file che esporta una funzione `(context) => Finding[]` (formato in `lib/report.ts`):
 
 - `commands.ts`: `astroCheck` e `build` (comandi del progetto).
-- `decap.ts`, `tokens.ts`, `contrast.ts`, `blocks.ts`, `lock.ts`, `recipes.ts`, `release.ts`: statici.
+- `decap.ts`, `tokens.ts`, `contrast.ts`, `blocks.ts`, `catalog.ts`, `lock.ts`, `recipes.ts`, `release.ts`: statici.
 - `links.ts`, `a11y.ts`, `interactive.ts`, `lighthouse.ts`: sul sito servito da `astro preview` (suite qa).
 
-`lib/`: formato dei report, percorsi del progetto, lettura di ricette e link (`content.ts`), caricamento dei moduli con Vite (`vite.ts`).
+`lib/`: formato dei report, percorsi del progetto, lettura di ricette e link (`content.ts`), caricamento dei moduli con Vite (`vite.ts`), server di anteprima (`preview.ts`, usato anche da `scripts/screenshots.ts`).
 `lock.ts --write` (`npm run lock:write`) registra gli hash delle cartelle gestite in `blocks.lock.json`, quando si installa o aggiorna la libreria in un sito cliente.

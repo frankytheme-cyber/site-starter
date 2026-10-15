@@ -67,6 +67,13 @@ export interface BlockMeta {
 	interactive?: boolean;
 	/** Varianti: nome → descrizione. I nomi sono i valori ammessi dalla prop `variant` dello schema. */
 	variants: Record<string, string>;
+	/**
+	 * Vincoli tra campi che lo schema non dice da solo: quelli di refine/superRefine (es. foto
+	 * obbligatoria solo per alcune varianti) o che dipendono da site.json e navigation.json.
+	 * Percorso del campo come nella tabella del catalogo ("image", "items[].icon") → regola.
+	 * Obbligatorio se lo schema ha refine o superRefine (check "blocks").
+	 */
+	fieldRules?: Record<string, string>;
 }
 
 /** Dati di esempio di un blocco (fixtures.ts), validati con lo schema del blocco. */
