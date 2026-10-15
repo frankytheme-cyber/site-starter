@@ -38,7 +38,7 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 - Ogni pagina è una ricetta JSON in `src/content/pages/` (`index.json` → `/`, `chi-siamo.json` → `/chi-siamo/`), con `"$schema"` per il completamento nell'editor. Formato in `src/content/pages/README.md`, schema in `src/core/page-schema.ts`.
 - Le sezioni sono piatte: `type` (il blocco), `id` facoltativo (ancora in kebab-case), `tone` (`default`, `muted`, `primary`) e accanto le props del blocco. Alterna i toni tra sezioni vicine.
 - Nei link dei pulsanti i recapiti si scrivono `@telefono`, `@whatsapp`, `@email`, `@mappa`: la build li risolve da `site.json`, mai `tel:` o numeri scritti a mano.
-- Una pagina ha un solo `hero`, in apertura, e di norma una `cta`. Header e footer non sono sezioni. Link interni solo a pagine e ancore che esistono.
+- Una pagina ha un solo `hero`, in apertura, e di norma una `cta`; le pagine legali (privacy, cookie) hanno `"kind": "legale"` e la cta non serve. Header e footer non sono sezioni. Link interni solo a pagine e ancore che esistono.
 - Prima di pubblicare un sito: `npm run qa -- --strict` (recipes come errori e release: segnaposto `DA-COMPILARE` e `og-DA-COMPILARE`, recapiti scritti a mano, link rotti, bozze linkate, dati legali e link a privacy e cookie nel footer, Open Graph...). Nella libreria `--strict` ferma le regole strutturali e lascia ad avviso i segnaposto del template.
 
 ## CMS

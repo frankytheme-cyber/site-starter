@@ -12,7 +12,7 @@
  * - segnaposto (DA-COMPILARE, og-DA-COMPILARE, lorem, TODO, […]): errori nei siti cliente, avvisi
  *   nella libreria, dove il template li contiene per scelta.
  * Sempre avvisi: due sezioni consecutive con lo stesso tone; più di 12 sezioni; prima sezione che
- * non è un hero; nessuna cta.
+ * non è un hero; nessuna cta (non nelle pagine legali, "kind": "legale", né in quelle con noindex).
  */
 import { existsSync } from 'node:fs';
 import { basename, join } from 'node:path';
@@ -231,7 +231,9 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 				});
 			}
 		}
-		if (!sections.some((section) => section.type === 'cta')) {
+		// Le pagine legali e quelle fuori dai motori di ricerca non chiedono un'azione a chi visita.
+		const needsCta = data.kind !== 'legale' && data.noindex !== true;
+		if (needsCta && !sections.some((section) => section.type === 'cta')) {
 			warning({ file, where: 'sections', message: 'nessuna cta', hint: 'aggiungi un invito all’azione: la pagina non chiede a chi visita di fare un passo' });
 		}
 	}

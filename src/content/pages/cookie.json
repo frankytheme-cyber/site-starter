@@ -2,6 +2,7 @@
 	"$schema": "../../../.astro/collections/pages.schema.json",
 	"title": "Cookie · DA-COMPILARE nome dell’attività",
 	"description": "DA-COMPILARE: quali cookie usa il sito, a cosa servono e come gestirli.",
+	"kind": "legale",
 	"sections": [
 		{
 			"type": "hero",

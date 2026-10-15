@@ -7,7 +7,9 @@
  *   con --strict applica tutte le regole di pubblicazione.
  *
  * La variabile si imposta nell'ambiente: in locale nel file .env (vedi .env.example) o con export,
- * nelle variabili del repository GitHub della libreria (CI) e nel suo progetto Vercel.
+ * nelle variabili del repository GitHub della libreria (CI) e nel suo progetto Vercel. Qualsiasi
+ * valore diverso da "1", anche vuoto, è un sito cliente: in CI una variabile del repository che non
+ * esiste arriva come "". Un valore vuoto nell'ambiente vince anche su .env.
  * Dettagli in docs/siti-cliente.md. Solo Node: lo usano gli script e astro.config.mjs, non i componenti.
  */
 import { existsSync, readFileSync } from 'node:fs';

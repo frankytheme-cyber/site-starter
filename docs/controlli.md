@@ -51,7 +51,7 @@ Note:
 - **Avvisi del catalogo.** Nella libreria axe segnala `landmark-unique` sulle pagine del catalogo, che mostrano più header e footer uno sotto l'altro.
 - **Header e footer su ogni pagina.** Li disegna `BaseLayout` da `layout.json`: `links` segue anche le voci del menu e i link del footer, quindi devono portare a pagine e ancore che esistono (per questo il template ha `privacy.json` e `cookie.json`). `interactive` prova l'header sulla prima pagina del sito.
 - **Sottomenu.** Un sito cliente con un menu senza sottomenu riceve un avviso da `interactive`, non un errore.
-- **Pagine legali.** `recipes` avvisa «nessuna cta» anche su privacy e cookie: per quelle pagine si può ignorare.
+- **Pagine legali.** «Nessuna cta» non vale per le pagine con `"kind": "legale"` (privacy e cookie del template) né per quelle con `noindex`.
 
 ## In CI
 

@@ -76,6 +76,16 @@ collections:
         hint: Solo per pagine che non devono comparire su Google
         required: false
         widget: boolean
+      - name: kind
+        label: Tipo di pagina
+        hint: «Pagina legale» per privacy, cookie e note legali, che non hanno un invito all’azione; vuoto = pagina normale
+        required: false
+        widget: select
+        options:
+          - label: Pagina
+            value: pagina
+          - label: Pagina legale
+            value: legale
       - name: sections
         label: Sezioni
         hint: I blocchi della pagina, dall’alto in basso

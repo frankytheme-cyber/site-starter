@@ -32,6 +32,10 @@ function sectionSchemas(context: SchemaContext) {
 	return sections as [(typeof sections)[number], ...typeof sections];
 }
 
+/** Tipi di pagina: le pagine legali (privacy, cookie...) non chiedono un'azione, quindi recipes non vuole una cta. */
+export const PAGE_KINDS = ['pagina', 'legale'] as const;
+const PAGE_KIND_NAMES: Record<(typeof PAGE_KINDS)[number], string> = { pagina: 'Pagina', legale: 'Pagina legale' };
+
 /** Un blocco di layout (header, footer) messo tra le sezioni: messaggio che dice dove va. */
 function layoutBlockError(issue: { code?: string; input?: unknown }) {
 	const type = (issue.input as { type?: unknown } | undefined)?.type;
@@ -64,6 +68,11 @@ export const pageSchema = (context: SchemaContext) =>
 			.boolean()
 			.optional()
 			.describe('Nascondi ai motori di ricerca|Solo per pagine che non devono comparire su Google'),
+		kind: z
+			.enum(PAGE_KINDS)
+			.meta({ optionLabels: PAGE_KIND_NAMES })
+			.optional()
+			.describe('Tipo di pagina|«Pagina legale» per privacy, cookie e note legali, che non hanno un invito all’azione; vuoto = pagina normale'),
 		sections: z
 			.array(z.discriminatedUnion('type', sectionSchemas(context), { error: layoutBlockError }))
 			.min(1)

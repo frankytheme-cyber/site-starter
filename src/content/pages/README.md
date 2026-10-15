@@ -23,6 +23,7 @@ Schema in `src/core/page-schema.ts`; `"$schema"` in testa al file dà completame
 - **Header e footer non sono sezioni:** sono blocchi di layout, uguali su tutte le pagine; si scelgono in `src/content/settings/layout.json` e li aggiunge `BaseLayout`. La ricetta contiene solo il contenuto della pagina (dentro `<main>`).
 - **Immagini:** percorso relativo a questo file, quindi `../../assets/images/...`; `alt` di almeno 5 caratteri che descrive la foto. `npm run check:recipes` e la build dicono pagina, sezione e campo di un'immagine che non c'è.
 - **Immagine per i social:** `ogImage` è facoltativa; senza, la pagina usa `defaultOgImage` di `site.json` («Dati attività»). Il template ha `og-DA-COMPILARE.jpg`: con `--strict` un nome che contiene `DA-COMPILARE` è un errore.
+- **Pagine legali:** `"kind": "legale"` per privacy, cookie e note legali: `recipes` non chiede una cta (nemmeno sulle pagine con `"noindex": true`).
 - **Bozze:** `"draft": true` pubblica la pagina in sviluppo e nelle anteprime, non nella produzione su Vercel, ed esclude la pagina dai motori di ricerca.
 - **Recapiti:** mai nei testi. Nei link dei pulsanti usa `"@telefono"`, `"@whatsapp"`, `"@email"` o `"@mappa"` (risolti da site.json); la cta ha anche `"showContacts": true`.
 - **Prima di pubblicare:** `npm run check -- --strict` (controlli in `docs/controlli.md`).

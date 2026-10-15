@@ -22,6 +22,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 - Messaggi di validazione di ricette e impostazioni in italiano, con percorsi come «pagina index.json → sezione 3 (services) → items[2].title» (indici da 1), sia nella build sia in `check:recipes`: i loader di `src/content.config.ts` validano con `checkedLoader` (`src/core/content-validation.ts`).
 - `check:recipes` valida schema e immagini prima della build e gira per primo in `npm run check`; con dati non validi `astro-check` e `build` sono saltati.
 - Job CI `template-as-site` (`npm run check:template`): il template, inizializzato come sito, deve fallire solo per i segnaposto.
+- Campo `kind` delle pagine: `"legale"` per privacy, cookie e note legali. Su queste pagine e su quelle con `noindex`, `recipes` non avvisa più «nessuna cta»; il template lo imposta su `privacy.json` e `cookie.json`.
+- CI: il job `template-as-site` gira con `SITE_STARTER_LIBRARY` vuota, cioè da sito cliente; lo script riconosce la libreria da `src/library`. Il messaggio di `lock` spiega come creare la variabile di repository su GitHub.
 - `check:tokens` vieta le classi della palette di Tailwind (`bg-blue-600`, `text-gray-500`, `fill-*`, `stroke-*`, `ring-*`, `from-`/`via-`/`to-*`...) anche se non generano CSS, e guarda anche `src/layouts` e i file `.ts`.
 
 ### Correzioni

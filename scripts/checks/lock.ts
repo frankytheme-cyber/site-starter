@@ -79,7 +79,7 @@ export function lock({ root }: CheckContext) {
 				? 'manca: c’è src/library, quindi è la libreria senza SITE_STARTER_LIBRARY=1, o un sito appena copiato'
 				: 'manca: il sito non è stato inizializzato',
 			hint: looksLikeLibrary
-				? 'nella libreria metti SITE_STARTER_LIBRARY=1 in .env (vedi .env.example); in un sito copiato dal template esegui npm run site:init'
+				? 'nella libreria metti SITE_STARTER_LIBRARY=1 in .env (vedi .env.example); in CI su GitHub crea la variabile di repository SITE_STARTER_LIBRARY=1 (Settings → Secrets and variables → Actions → Variables); in un sito copiato dal template esegui npm run site:init'
 				: 'esegui npm run site:init (una volta sola, alla creazione del sito)',
 		});
 		return findings;

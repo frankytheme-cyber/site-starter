@@ -1,6 +1,7 @@
 /**
  * Prova il template come lo riceve un sito cliente: job "template-as-site" della CI, in locale
- * npm run check:template. Solo nella libreria.
+ * npm run check:template. Solo nella repo della libreria, riconosciuta da src/library: non da
+ * SITE_STARTER_LIBRARY, che il job della CI lascia vuota apposta (gira tutto da sito cliente).
  * 1. copia la repo (file tracciati e nuovi non ignorati, modifiche comprese) in una cartella
  *    temporanea, con un commit iniziale e senza remote, poi npm ci;
  * 2. senza SITE_STARTER_LIBRARY né DECAP_REPO (modalità sito): npm run site:init -- --yes
@@ -16,11 +17,15 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { copyFileSync, cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readlinkSync, rmSync, symlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { LIBRARY_ENV, requireLibraryMode } from '../src/core/mode.ts';
+import { LIBRARY_ENV } from '../src/core/mode.ts';
 import { ROOT } from './checks/lib/project.ts';
 import { type Finding, formatFinding } from './checks/lib/report.ts';
 
-requireLibraryMode('npm run check:template');
+// site:init toglie src/library: senza, questo è già un sito cliente e non c'è un template da provare.
+if (!existsSync(join(ROOT, 'src/library'))) {
+	console.error('✗ npm run check:template si usa nella repo della libreria site-starter: qui manca src/library.');
+	process.exit(1);
+}
 
 /** I soli errori ammessi: i segnaposto del template (Finding.placeholder). */
 const EXPECTED = new Set(['DA-COMPILARE', 'og-DA-COMPILARE']);

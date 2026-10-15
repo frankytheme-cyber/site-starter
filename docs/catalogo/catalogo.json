@@ -7,7 +7,7 @@
 			"check": "recipes"
 		},
 		{
-			"rule": "Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande).",
+			"rule": "Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande); non nelle pagine legali (\"kind\": \"legale\").",
 			"check": "recipes"
 		},
 		{

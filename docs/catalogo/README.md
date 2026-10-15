@@ -9,7 +9,7 @@ Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma 
 ## Regole d’oro delle ricette
 
 1. Un solo hero per pagina, come prima sezione: contiene l’unico h1. *(controllo recipes)*
-2. Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande). *(controllo recipes)*
+2. Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande); non nelle pagine legali ("kind": "legale"). *(controllo recipes)*
 3. Due sezioni vicine non hanno lo stesso tone (default, muted, primary). *(controllo recipes)*
 4. Al massimo 12 sezioni: oltre, meglio dividere la pagina. *(controllo recipes)*
 5. Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json. *(build)*

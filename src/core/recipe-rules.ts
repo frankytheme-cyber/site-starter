@@ -14,7 +14,7 @@ export interface RecipeRule {
 
 export const RECIPE_RULES: RecipeRule[] = [
 	{ rule: 'Un solo hero per pagina, come prima sezione: contiene l’unico h1.', check: 'recipes' },
-	{ rule: 'Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande).', check: 'recipes' },
+	{ rule: 'Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande); non nelle pagine legali ("kind": "legale").', check: 'recipes' },
 	{ rule: 'Due sezioni vicine non hanno lo stesso tone (default, muted, primary).', check: 'recipes' },
 	{ rule: `Al massimo ${MAX_SECTIONS} sezioni: oltre, meglio dividere la pagina.`, check: 'recipes' },
 	{ rule: 'Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json.', check: 'build' },
