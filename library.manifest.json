@@ -1,11 +1,12 @@
 {
   "version": "0.0.1",
   "repository": "https://github.com/frankytheme-cyber/site-starter.git",
-  "managed": ["src/blocks", "src/core", "src/themes", "src/layouts", "scripts", "docs/catalogo"],
+  "managed": ["src/blocks", "src/core", "src/themes", "src/layouts", "scripts", "docs/catalogo", ".github/workflows"],
   "managedFiles": [
     ".env.example",
-    ".github/workflows/ci.yml",
+    ".github/CODEOWNERS",
     "AGENTS.md",
+    "CLAUDE.md",
     "astro.config.mjs",
     "docs/THIRD_PARTY_LICENSES.md",
     "docs/blocchi-interattivi.md",

@@ -35,7 +35,7 @@ Nei siti cliente non va mai impostata: né in `.env`, né su GitHub, né su Verc
    - toglie quello che serve solo alla libreria (`library.manifest.json` → `libraryOnly`: `src/library` con il catalogo, `docs/README.md`, `CHANGELOG.md`) e i suoi script di `package.json` (`libraryScripts`);
    - prende il repository GitHub del CMS da `--repo=org/nome`, da `DECAP_REPO` o dal remote `origin` (se manca lo chiede), lo scrive in `src/site.config.ts` (`cms.repo`) e rigenera `public/admin/config.yml`;
    - scrive `blocks.lock.json` con la versione della libreria e gli hash dei file gestiti;
-   - crea `docs/sito.md`, per le note di questo sito, e stampa i passi successivi.
+   - crea `docs/sito.md`, per le note e le eccezioni di questo sito (lo importa `CLAUDE.md`), e stampa i passi successivi.
 4. Commit, poi i passi della checklist: dati in `site.json`, menu, tema, pagine dalle ricette tipo, immagine per i social vera (`defaultOgImage` in `site.json`) al posto di `og-DA-COMPILARE.jpg`, worker OAuth (`docs/decap.md`), progetto Vercel senza `SITE_STARTER_LIBRARY`, protezione di `main` (`docs/controlli.md`).
 5. Prima di pubblicare: `npm run qa -- --strict` senza errori.
 
@@ -64,9 +64,21 @@ Verso una versione precedente serve `--force`.
 
 `library.manifest.json`:
 
-- `managed`: cartelle della libreria (`src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`);
-- `managedFiles`: file singoli (configurazione di Astro e delle collezioni, route delle pagine, CI, documentazione comune, `AGENTS.md`, il manifest stesso...);
-- `exclude`: dentro le cartelle gestite ma né controllati né copiati;
+- `managed`: cartelle della libreria (`src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`, `.github/workflows`): anche un file aggiunto lì è una modifica vietata;
+- `managedFiles`: file singoli: `AGENTS.md` e `CLAUDE.md` (istruzioni per gli agenti), `.github/CODEOWNERS`, il manifest stesso, `astro.config.mjs`, `src/content.config.ts`, le route `src/pages/[...slug].astro` e `src/pages/robots.txt.ts`, `tsconfig.json`, `.env.example`, `public/admin/index.html` e la documentazione comune di `docs/`;
+- `exclude`: dentro le cartelle gestite ma né controllati né copiati (`src/library`);
 - `libraryOnly` e `libraryScripts`: solo nella libreria, tolti da `site:init` e mai copiati da `blocks:sync`.
 
-Nei siti cliente cartelle e file gestiti sono in sola lettura: il check `lock` confronta i loro hash con `blocks.lock.json` e ferma ogni modifica locale. Una correzione si fa in site-starter, si rilascia (`npm run release -- vX.Y.Z`) e arriva ai siti con `blocks:sync`. Le note e le eccezioni del singolo sito vanno in `docs/sito.md`.
+Del sito, e mai toccati da `blocks:sync`: `src/content/**`, `src/assets/images/**`, `src/site.config.ts`, le altre pagine di `src/pages`, `public/` (tranne `admin/index.html`), `docs/sito.md`, `README.md`, `name` e `version` di `package.json`.
+
+Nei siti cliente cartelle e file gestiti sono in sola lettura: il check `lock` confronta i loro hash con `blocks.lock.json` (che registra anche la versione della libreria) e ferma ogni modifica locale. Una correzione si fa in site-starter, si rilascia (`npm run release -- vX.Y.Z`) e arriva ai siti con `blocks:sync`.
+
+### Note del sito: `docs/sito.md`
+
+`AGENTS.md` e `CLAUDE.md` sono gestiti, quindi uguali in tutti i siti. Le note e le eccezioni del singolo sito («il cliente non usa WhatsApp», «la pagina offerte è stagionale») vanno in `docs/sito.md`, che crea `site:init` e che il sito modifica liberamente. `CLAUDE.md` lo importa (`@docs/sito.md`) insieme ad `AGENTS.md`, così Claude Code lo legge a ogni sessione; agli altri agenti lo indica `AGENTS.md`.
+
+### Chi può cambiare il lock
+
+Chi riscrive `blocks.lock.json` può far passare qualsiasi modifica ai file gestiti, e chi cambia `scripts/`, `.github/`, `library.manifest.json` o `package.json` può spegnere il controllo. Per questo `.github/CODEOWNERS` (gestito) assegna questi percorsi al proprietario della libreria: con **Require review from Code Owners** nella protezione di `main` (`docs/controlli.md`), una pull request che li tocca si unisce solo con la sua approvazione. Le pull request del CMS toccano solo contenuti e immagini e non ne hanno bisogno.
+
+GitHub non lascia approvare la propria pull request: quando il proprietario stesso aggiorna un sito con `blocks:sync`, la pull request la approva un altro membro dell'agenzia, oppure il proprietario la unisce con il bypass della regola (nella **Bypass list**), dopo aver visto verdi `check` e `qa`.

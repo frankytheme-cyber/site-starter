@@ -29,6 +29,15 @@ const yes = args.includes('--yes');
 const repoArg = args.find((arg) => arg.startsWith('--repo='))?.slice('--repo='.length);
 const interactive = Boolean(process.stdin.isTTY && process.stdout.isTTY);
 
+/** docs/sito.md iniziale: CLAUDE.md (gestito) lo importa, così gli agenti leggono le note del sito. */
+const SITE_NOTES = `# Note di questo sito
+
+Eccezioni e decisioni che valgono solo per questo sito, rispetto alle regole comuni di \`AGENTS.md\`
+(gestito dalla libreria come \`CLAUDE.md\`: qui non si modificano). \`CLAUDE.md\` importa questo file,
+quindi gli agenti lo leggono a ogni sessione. Esempi: «il cliente non usa WhatsApp», «la pagina
+offerte è stagionale, va tolta dal menu a settembre».
+`;
+
 function fail(message: string, hint?: string): never {
 	console.error(`✗ ${message}`);
 	if (hint) console.error(`  → ${hint}`);
@@ -123,7 +132,7 @@ writeFileSync(DECAP_CONFIG, decap.output);
 const version = String(pkg.version);
 const lock = writeLock(ROOT, version);
 const notes = join(ROOT, 'docs/sito.md');
-if (!existsSync(notes)) writeFileSync(notes, '');
+if (!existsSync(notes)) writeFileSync(notes, SITE_NOTES);
 
 console.log(`✓ Sito inizializzato con la libreria v${version}: ${Object.keys(lock.files).length} file gestiti in ${LOCK_FILE}.`);
 if (remove.length > 0) console.log(`  Tolti: ${remove.join(', ')}.`);

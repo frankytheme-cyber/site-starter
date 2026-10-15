@@ -9,6 +9,7 @@
 /* La documentazione cita classi vietate come esempi: non deve generare CSS. */
 @source not "../../AGENTS.md";
 @source not "../../CLAUDE.md";
+@source not "../../README.md";
 @source not "../../docs";
 
 /*
