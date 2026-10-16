@@ -15,12 +15,12 @@ Per il PM. I modelli sono in `docs/modelli/task.md`: la forma comune, la tabella
    - TITOLO: verbo + oggetto («Pagina Servizi: ricetta e testi»);
    - AGENTE e PROJECT: uno solo per task;
    - OBIETTIVO: una frase;
-   - INPUT: file, link, brief, richieste, e il branch di partenza se il lavoro dipende da una PR non ancora unita (per le correzioni, il branch della PR in QA);
+   - INPUT: file, link, brief, richieste e il branch: nel sito sempre `lancio`; nella libreria il branch di partenza se il lavoro dipende da una PR non ancora unita (per le correzioni, il branch della PR in QA);
    - OUTPUT ATTESO: file e PR (per QA e SEO, il rapporto);
    - CRITERI DI FINE: sempre `npm run qa` senza errori (nel sito, prima del cancello 3, `npm run qa -- --strict`), più quelli del modello;
    - VINCOLI: cosa non toccare;
    - PASSA A, ed eventuale CANCELLO.
-4. **Piccolo e verificabile:** un task, un agente, una PR; nella libreria 2-3 blocchi per task. Se un criterio non si può verificare, riscrivilo o dividi il task.
+4. **Piccolo e verificabile:** un task, un agente; nel sito tutti i task sulla PR di `lancio`, nella libreria una PR per task e 2-3 blocchi per task. Se un criterio non si può verificare, riscrivilo o dividi il task.
 5. **Crea e assegna** il task nel Project giusto («Libreria blocchi» o il sito) e aggiorna il registro dello stato.
 
 ## Criterio di fine

@@ -9,7 +9,7 @@ Per il PM, nella repo del sito già avviata (task «Avvio sito» fatto). Il brie
 
 ## Passi
 
-1. **Branch** `pm/brief` e PR in bozza al primo commit (skill `github-pr`).
+1. **Branch `lancio`** (skill `github-pr`): la PR del sito c'è già, l'ha aperta il Builder all'avvio.
 2. **Copia il modello**; se `docs/brief.md` c'è già, riprendi da lì:
 
    ```sh
@@ -31,8 +31,8 @@ Per il PM, nella repo del sito già avviata (task «Avvio sito» fatto). Il brie
    grep -n -i "da chiedere" docs/brief.md
    ```
 
-6. **Commit e push** di `docs/brief.md` (messaggio «Brief: <nome attività>»), link della PR nel task.
-7. **Approval in Paperclip (cancello 1)** con il link al file nella PR (`https://github.com/<owner>/<repo>/blob/pm/brief/docs/brief.md`), un riassunto in 5 righe e i «Da chiedere» rimasti.
+6. **Commit e push** del solo `docs/brief.md` (messaggio «Brief: <nome attività>»), link della PR nel task.
+7. **Approval in Paperclip (cancello 1)** con il link al file nella PR (`https://github.com/<owner>/<repo>/blob/lancio/docs/brief.md`), un riassunto in 5 righe e i «Da chiedere» rimasti.
 8. **Dopo la risposta di Simone:**
    - approvato: `Stato: approvato il <gg/mm/aaaa>`, commit e push, poi i task di Design, Dati e immagini ed eventualmente Redirect (skill `modelli-task`);
    - modifiche richieste: correggi, commit e push, nuova Approval.

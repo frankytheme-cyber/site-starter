@@ -18,9 +18,16 @@ Per il Builder, nella repo del sito, mai nella libreria. Prima di te Simone ha c
    test -e blocks.lock.json && echo "STOP: sito già inizializzato"
    test -d src/library || echo "STOP: manca src/library, non è il template"
    git status --porcelain                                  # vuoto
+   git ls-remote --exit-code --heads origin lancio && echo "STOP: lancio esiste già"
    ```
 
-2. **Branch** `builder/avvio-sito` da `main` (skill `github-pr`, passi 1-2).
+2. **Branch `lancio`** da `main` (skill `github-pr`, passo 1): l'unico branch del sito, su cui lavoreranno tutti i task fino alla messa online.
+
+   ```sh
+   git fetch origin
+   git switch --no-track -c lancio origin/main
+   ```
+
 3. **Dipendenze** senza toccare `package-lock.json` (`site:init` vuole il working tree pulito):
 
    ```sh
@@ -45,7 +52,8 @@ Per il Builder, nella repo del sito, mai nella libreria. Prima di te Simone ha c
 
    `npm run check` senza errori; gli avvisi `DA-COMPILARE` sono attesi, i dati arrivano dopo il brief.
 
-6. **Commit, push e PR in bozza** (skill `github-pr`):
+6. **Commit, push e PR in bozza** verso `main` (skill `github-pr`, passi 3-6), con il titolo «Lancio: <nome della repo>». È l'unica PR del sito: la useranno tutti i task e Simone la unirà al cancello 3.
+
 
    ```sh
    git add -A
@@ -58,7 +66,7 @@ Per il Builder, nella repo del sito, mai nella libreria. Prima di te Simone ha c
 
 ## Criterio di fine
 
-`blocks.lock.json` scritto da `site:init` e committato, `npm run check` e `npm run qa` senza errori, PR in bozza con il link nel task.
+`blocks.lock.json` scritto da `site:init` e committato, `npm run check` e `npm run qa` senza errori, PR in bozza da `lancio` verso `main` con il link nel task.
 
 ## Non fare
 

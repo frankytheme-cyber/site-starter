@@ -22,17 +22,25 @@ Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si a
    git remote set-url origin https://github.com/<owner>/<repo>.git
    ```
 
-2. **Branch** `<agente>/<argomento>` in kebab-case (`builder/avvio-sito`, `designer/pagina-servizi`), da `main` o dal branch di partenza indicato nel task:
+2. **Branch.**
+
+   **Sito cliente: sempre `lancio`**, l'unico branch del sito, con l'unica PR in bozza verso `main`. Lo crea il Builder nel task «Avvio sito» (skill `avvio-sito`); tutti gli altri task, di ogni agente, lavorano lì. Niente branch né PR nuovi: salta il passo 5.
+
+   ```sh
+   git fetch origin && git switch lancio && git pull --rebase
+   ```
+
+   **Libreria: un branch per task**, `<agente>/<argomento>` in kebab-case (`builder/blocchi-lotto-1`), da `main` o dal branch di partenza indicato nel task:
 
    ```sh
    git fetch origin
-   git switch --no-track -c designer/pagina-servizi origin/main
+   git switch --no-track -c builder/blocchi-lotto-1 origin/main
    ```
 
    Correzione su una PR già aperta (il task indica il branch): niente branch né PR nuovi, salta il passo 5.
 
    ```sh
-   git fetch origin && git switch <branch> && git pull --ff-only
+   git fetch origin && git switch <branch> && git pull --rebase
    ```
 
 3. **Commit** dei soli file del task, con un messaggio che dice cosa cambia (di solito il titolo del task):
@@ -43,11 +51,14 @@ Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si a
    git commit -m "Pagina Servizi: ricetta e testi"
    ```
 
-4. **Push.** Il token lo passa il credential helper: non va mai nel comando né nel remote.
+4. **Push.** Il token lo passa il credential helper: non va mai nel comando né nel remote. Prima riprendi i commit degli altri (su `lancio` lavorano più agenti):
 
    ```sh
+   git pull --rebase
    git push -u origin HEAD
    ```
+
+   Se il rebase si ferma per un conflitto su file che non sono del tuo task: `git rebase --abort` e avvisa il PM, senza risolverlo tu.
 
 5. **PR in bozza al primo push**, non a fine lavoro: la CI gira solo sui branch con una PR. Prima guarda se c'è già:
 

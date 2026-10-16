@@ -43,6 +43,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 - Nella libreria il menu ha la voce «Catalogo» (Blocchi, Bottoni, Icone, UI), aggiunta da `BaseLayout` senza toccare `navigation.json`; nei siti cliente non esiste. La barra del catalogo ha il link «← Sito» e lo sfondo pieno.
 - Fixture neutre: un’attività di esempio, «Bottega Esempio», e settori diversi tra i blocchi (artigiano, negozio, ristorante, studio professionale), con foto segnaposto nuove e recapiti finti; palette e forme senza settori unici nell’«adatto a».
 - Skill degli agenti Paperclip in `docs/skill/<nome>/SKILL.md`, dalla specifica: `brief`, `modelli-task`, `avvio-sito`, `ricetta-pagina`, `nuovo-blocco`, `richiesta-blocco`, `qa`, `seo-prelancio`, `redirect` e `github-pr` (branch, push senza token nell’URL, PR in bozza con l’API GitHub via curl, mai merge). Modelli del brief e dei task in `docs/modelli/`.
+- Siti cliente: un solo branch, `lancio`, con una sola PR in bozza verso `main` aperta dal task «Avvio sito»; tutti i task del sito ci lavorano (`git pull --rebase` prima del push) e i cancelli usano la stessa anteprima Vercel. Nella libreria resta un branch e una PR per task.
 
 ### Correzioni
 

@@ -9,7 +9,7 @@ Per il Designer, nei siti cliente, dopo il cancello 1. Il sito si completa, non 
 
 ## Passi
 
-1. **Branch** `designer/<argomento>` e PR in bozza al primo commit (skill `github-pr`).
+1. **Branch `lancio`** (skill `github-pr`): la PR del sito c'è già. Committi solo i tuoi file (impostazioni di tema, layout e menu, pagine, nota di design).
 2. **Leggi prima di scegliere:** `docs/brief.md` (con `Stato: approvato il …`), `docs/sito.md`, `docs/catalogo/README.md` (regole d'oro e di composizione, temi, link speciali, icone) e `docs/catalogo/ricette-tipo/README.md`; poi, per ogni blocco che pensi di usare, la scheda `docs/catalogo/blocchi/<tipo>.md` e gli screenshot `docs/catalogo/img/<tipo>-<variante>-desktop.webp` e `-mobile.webp`.
 3. **Tema** in `src/content/settings/theme.json`: `palette`, `fonts` e `shape` per affinità tra tono e settore del brief e `mood`/`adattoA` dei preset (tabelle «Temi» del catalogo).
 4. **Layout** in `src/content/settings/layout.json`: header (`variant`, `sticky`, `logo`) e footer (`variant`, `ctaBand`, spento se le pagine chiudono con una cta).

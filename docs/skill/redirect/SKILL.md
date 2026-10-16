@@ -11,7 +11,7 @@ Per il Builder, che prepara la mappa e poi applica le righe approvate, e per il 
 
 **Builder: proposta**
 
-1. **Branch** `builder/redirect` e PR in bozza al primo commit (skill `github-pr`).
+1. **Branch `lancio`** (skill `github-pr`): la PR del sito c'è già.
 2. **Raccogli i vecchi URL** dalla sitemap, se c'è (con un indice di sitemap, ripeti per ognuna):
 
    ```sh
@@ -50,7 +50,7 @@ Per il Builder, che prepara la mappa e poi applica le righe approvate, e per il 
 
 6. Segnala al PM, senza toccare la mappa: pagine con traffico o link da altri siti che resterebbero senza redirect, destinazioni non pertinenti o tutte verso la home, catene di redirect, URL scritti male.
 
-**Builder: dopo la decisione** (sul branch della proposta se la PR è aperta, altrimenti su uno nuovo)
+**Builder: dopo la decisione** (sempre su `lancio`)
 
 7. **Approvata, tutta o in parte:** in `vercel.json`, accanto a `headers`, solo le righe con decisione sì; in `docs/redirects.md`, `Stato: approvata il <gg/mm/aaaa>` e la decisione di ogni riga.
 

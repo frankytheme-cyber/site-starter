@@ -194,7 +194,7 @@ Gli stessi comandi servono a CI, QA e Builder; tutti scrivono `reports/qa.json` 
 
 **Controlli di rilascio** (sito, `--strict`): nessun `DA-COMPILARE` e nessun `og-DA-COMPILARE`; nessuna bozza linkata; sitemap, robots, favicon, immagine OG; P.IVA, e REA e capitale se società; privacy e cookie linkate nel footer; `fonte` compilata; se il brief indica un sito esistente, mappa dei redirect decisa e in `vercel.json` solo le righe approvate.
 
-**Workflow**: runner fissato a `ubuntu-24.04`, azioni aggiornate per Node 24, `permissions: contents: read`, `concurrency` per branch, variabile `SITE_STARTER_LIBRARY` passata da `vars`, errori riassunti come annotazioni. Un branch senza PR non fa girare la CI: ogni task apre subito una PR in bozza.
+**Workflow**: runner fissato a `ubuntu-24.04`, azioni aggiornate per Node 24, `permissions: contents: read`, `concurrency` per branch, variabile `SITE_STARTER_LIBRARY` passata da `vars`, errori riassunti come annotazioni. Un branch senza PR non fa girare la CI: in un sito la PR in bozza di `lancio` si apre all'avvio, nella libreria ogni task apre subito la sua.
 
 **Protezione di `main`**: sulle repo private richiede GitHub Pro. Rimandata; da attivare prima del lavoro degli agenti sui siti (vedi Checklist).
 
@@ -250,7 +250,7 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 
 **Regole comuni a tutti gli agenti**
 
-1. Ogni task lavora su un branch proprio e apre subito una **PR in bozza** (skill `github-pr`).
+1. **Branch e PR** (skill `github-pr`). In un sito un solo branch, `lancio`, con una sola **PR in bozza** verso `main` aperta all'avvio: tutti i task ci lavorano (solo i propri file, `git pull --rebase` prima del push) e i cancelli usano la stessa anteprima Vercel. Nella libreria ogni task lavora su un branch proprio e apre subito la sua PR in bozza.
 2. Prima di chiudere un task: `npm run qa`; nel sito, prima del cancello 3: `npm run qa -- --strict`.
 3. Si legge `AGENTS.md` (tramite `CLAUDE.md`) e la scheda del catalogo prima di usare un blocco.
 4. Un dato mancante non si inventa: si chiede al PM, che lo chiede a te.
@@ -322,8 +322,8 @@ REGOLE
 - Un solo hero per pagina; titoli entro i limiti dello schema.
 - Se ti serve un blocco o una variante che non esiste: NON improvvisare. Scrivi una
   richiesta di nuovo blocco al PM (cosa serve, perche', esempio di contenuto).
-- Lavori su branch con PR in bozza (skill "github-pr"); prima di passare al cancello:
-  npm run qa senza errori.
+- Lavori sul branch lancio del sito, con la sua PR in bozza (skill "github-pr"); prima di
+  passare al cancello: npm run qa senza errori.
 
 NON FAI
 Non scrivi codice, non modifichi blocchi o file gestiti, non fai merge.
@@ -353,7 +353,8 @@ NELLA LIBRERIA (Project "Libreria blocchi")
 - Blocchi interattivi secondo docs/blocchi-interattivi.md.
 
 SEMPRE
-- Branch + PR in bozza subito (skill "github-pr"); npm run qa senza errori prima di chiudere.
+- Nei siti il branch lancio e la sua PR in bozza, aperti all'avvio; nella libreria un branch e
+  una PR in bozza per task (skill "github-pr"). npm run qa senza errori prima di chiudere.
 - PR con l'API GitHub via curl (gh non e' disponibile): POST /repos/<owner>/<repo>/pulls
   con "draft": true e il token SOLO nell'header (Authorization: Bearer $GH_TOKEN).
   Mai il token nell'URL, ne' della richiesta ne' del remote.
@@ -411,14 +412,14 @@ Le procedure riusabili diventano company skill di Paperclip, assegnate solo agli
 | --- | --- | --- | --- |
 | `brief` | PM | Compila `docs/brief.md` sezione per sezione con Simone; segna "da chiedere" ogni dato mancante | Nessun campo obbligatorio vuoto; Approval inviata |
 | `modelli-task` | PM | Sceglie il modello, compila obiettivo, input, output, criteri, consegna | Task assegnato con tutti i campi |
-| `avvio-sito` | Builder | Verifica repo e cartella, `site:init`, `npm run check`, commit, PR in bozza | Lock scritto, check verde |
+| `avvio-sito` | Builder | Verifica repo e cartella, `site:init`, `npm run check`, commit, branch `lancio` e PR in bozza | Lock scritto, check verde |
 | `ricetta-pagina` | Designer | Legge brief e catalogo, sceglie blocchi, scrive JSON e testi, `check:recipes`, nota di design | `npm run qa` senza errori, nota completa |
 | `nuovo-blocco` | Builder | Cartella, schema con `describe` e `// rule:`, meta, fixture per variante, componente, `gen:catalog`, screenshot | `npm run qa` verde, blocco nel catalogo con tutti i preset |
 | `richiesta-blocco` | Designer, PM | Cosa serve, perché nessun blocco basta, contenuto d'esempio, varianti | Richiesta approvata o respinta da Simone |
 | `qa` | QA | Procedura delle istruzioni QA, formato delle richieste | Rapporto al PM |
 | `seo-prelancio` | SEO | Checklist delle istruzioni SEO | Rapporto al PM |
 | `redirect` | Builder, SEO | Raccolta dei vecchi URL dalla sitemap o da una scansione, mappa, stato della decisione | Mappa decisa da Simone |
-| `github-pr` | PM, Designer, Builder | Branch, commit, push senza token nell'URL, PR in bozza con l'API GitHub via curl (`$GH_TOKEN`), link nel task; mai merge | PR in bozza aperta e linkata nel task |
+| `github-pr` | PM, Designer, Builder | Branch (`lancio` nei siti, uno per task nella libreria), commit, push senza token nell'URL, PR in bozza con l'API GitHub via curl (`$GH_TOKEN`), link nel task; mai merge | PR in bozza aperta e linkata nel task |
 
 Ogni skill si scrive con Claude Code in `docs/skill/<nome>/SKILL.md` nella libreria (frontmatter `name` e `description`, poi passi con i comandi, criterio di fine e cosa non fare), così resta versionata e arriva nei siti. I modelli di brief e di task sono in `docs/modelli/`.
 
@@ -460,7 +461,7 @@ PASSA A: Designer (revisione visiva sul catalogo) -> CANCELLO: approvazione di S
 
 **Sequenza dei lotti della libreria**: 1) contact; 2) features, about, process; 3) gallery, testimonials, carousel; 4) areas. Un lotto parte solo dopo il merge del precedente, così ogni lotto riusa quello che il precedente ha stabilito.
 
-**Sequenza dei task di un sito**: Avvio (Builder) → Brief (PM) → cancello 1 → Design (Designer) e Dati, immagini, redirect (Builder) in parallelo → cancello 2 → QA → correzioni → SEO pre-lancio → cancello 3.
+**Sequenza dei task di un sito**: Avvio (Builder) → Brief (PM) → cancello 1 → Design (Designer) e Dati, immagini, redirect (Builder) in parallelo → cancello 2 → QA → correzioni → SEO pre-lancio → cancello 3. Tutti i task lavorano sul branch `lancio` e sulla sua PR, che al cancello 3 Simone unisce a `main`.
 
 ## Modello di brief
 
