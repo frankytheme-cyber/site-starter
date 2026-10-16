@@ -3994,6 +3994,156 @@
 			}
 		},
 		{
+			"type": "areas",
+			"name": "Zone servite",
+			"scope": "page",
+			"category": "contatti",
+			"version": "1.0.0",
+			"interactive": false,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Elenco delle zone coperte dal servizio, con un eventuale link alla mappa della sede.",
+			"whenToUse": "Per rendere chiara la copertura locale di un servizio a domicilio o di un’attività. Usa nomi di comuni e quartieri realmente serviti.",
+			"avoidWhen": "Per recapiti e orari completi (usa contact), oppure per elencare servizi (usa services). Non aggiungere zone solo per posizionarsi sui motori di ricerca.",
+			"rules": [
+				"Nella variante mappa-link l’indirizzo e il link Maps della sede arrivano da site.json; la mappa non rappresenta i confini delle zone servite."
+			],
+			"variants": [
+				{
+					"name": "elenco-zone",
+					"description": "Titolo e introduzione seguiti da una lista di zone su una, due o tre colonne in base allo spazio disponibile.",
+					"whenToUse": "Quando conta la copertura del servizio e non serve mostrare la sede.",
+					"fixture": "Zone servite con dettagli",
+					"preview": "/catalogo/areas/elenco-zone/",
+					"screenshots": {
+						"desktop": "img/areas-elenco-zone-desktop.webp",
+						"mobile": "img/areas-elenco-zone-mobile.webp"
+					}
+				},
+				{
+					"name": "mappa-link",
+					"description": "Elenco delle zone affiancato all’indirizzo della sede e al pulsante «Apri in Maps», senza mappe incorporate.",
+					"whenToUse": "Quando vuoi indicare sia le zone servite sia la sede da raggiungere. La mappa mostra la sede, non i confini della copertura.",
+					"fixture": "Zone servite e sede",
+					"preview": "/catalogo/areas/mappa-link/",
+					"screenshots": {
+						"desktop": "img/areas-mappa-link-desktop.webp",
+						"mobile": "img/areas-mappa-link-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`elenco-zone` · `mappa-link`",
+					"constraints": {
+						"values": [
+							"elenco-zone",
+							"mappa-link"
+						]
+					},
+					"label": "Variante",
+					"hint": "elenco-zone: lista delle zone servite · mappa-link: lista con indirizzo e link alla mappa della sede",
+					"note": "mappa-link legge l’indirizzo della sede da site.json; elenco-zone non mostra dati della sede. Nessuna richiesta a Google prima di aprire il link."
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Titolo della sezione, al massimo 70 caratteri"
+				},
+				{
+					"path": "intro",
+					"type": "testo",
+					"required": false,
+					"limits": "max 240",
+					"constraints": {
+						"maxLength": 240
+					},
+					"label": "Introduzione",
+					"hint": "Spiega dove è disponibile il servizio, al massimo 240 caratteri"
+				},
+				{
+					"path": "items",
+					"type": "elenco",
+					"required": true,
+					"limits": "1–18 voci",
+					"constraints": {
+						"minItems": 1,
+						"maxItems": 18
+					},
+					"label": "Zone servite",
+					"hint": "Da 1 a 18 zone; indica solo territori realmente coperti, senza ripetere i recapiti dell’attività"
+				},
+				{
+					"path": "items[].name",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Zona",
+					"hint": "Comune, quartiere o territorio realmente servito, al massimo 70 caratteri"
+				},
+				{
+					"path": "items[].text",
+					"type": "testo",
+					"required": false,
+					"limits": "max 160",
+					"constraints": {
+						"maxLength": 160
+					},
+					"label": "Dettaglio",
+					"hint": "Eventuali condizioni del servizio nella zona, al massimo 160 caratteri"
+				}
+			],
+			"example": {
+				"fixture": "Zone servite con dettagli",
+				"target": "sections",
+				"json": {
+					"type": "areas",
+					"variant": "elenco-zone",
+					"title": "Un servizio vicino a te",
+					"intro": "Lavoriamo a domicilio nelle zone elencate. Ogni intervento parte da un appuntamento concordato insieme.",
+					"items": [
+						{
+							"name": "Centro di Esempio",
+							"text": "Interventi su appuntamento per case e negozi."
+						},
+						{
+							"name": "Quartiere del Parco",
+							"text": "Sopralluoghi e consegne concordati insieme."
+						},
+						{
+							"name": "Borgo Dimostrativo",
+							"text": "Servizio a domicilio per piccoli e grandi progetti."
+						},
+						{
+							"name": "Zona del Mercato",
+							"text": "Appuntamenti in base alle esigenze del lavoro."
+						},
+						{
+							"name": "Colline di Esempio",
+							"text": "Contattaci per concordare il sopralluogo."
+						},
+						{
+							"name": "Quartiere della Stazione",
+							"text": "Consegne e montaggio su appuntamento."
+						}
+					]
+				}
+			}
+		},
+		{
 			"type": "footer",
 			"name": "Footer",
 			"scope": "layout",

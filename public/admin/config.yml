@@ -5439,6 +5439,75 @@ collections:
                   - default
                   - muted
                   - primary
+          - name: areas
+            label: Zone servite
+            widget: object
+            hint: Elenco delle zone coperte dal servizio, con un eventuale link alla mappa della sede.
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "elenco-zone: lista delle zone servite · mappa-link: lista con indirizzo e link alla mappa della sede"
+                widget: select
+                options:
+                  - elenco-zone
+                  - mappa-link
+              - name: title
+                label: Titolo
+                hint: Titolo della sezione, al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: intro
+                label: Introduzione
+                hint: Spiega dove è disponibile il servizio, al massimo 240 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,240}$
+                  - al massimo 240 caratteri
+              - name: items
+                label: Zone servite
+                hint: Da 1 a 18 zone; indica solo territori realmente coperti, senza ripetere i recapiti dell’attività
+                widget: list
+                fields:
+                  - name: name
+                    label: Zona
+                    hint: Comune, quartiere o territorio realmente servito, al massimo 70 caratteri
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,70}$
+                      - al massimo 70 caratteri
+                  - name: text
+                    label: Dettaglio
+                    hint: Eventuali condizioni del servizio nella zona, al massimo 160 caratteri
+                    required: false
+                    widget: text
+                    pattern:
+                      - ^[\s\S]{1,160}$
+                      - al massimo 160 caratteri
+                min: 1
+                max: 18
+                collapsed: false
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
         min: 1
         collapsed: true
   - name: site
