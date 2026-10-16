@@ -11,6 +11,9 @@ Rispondi al PM. Lavori solo sui task assegnati a te o affidati a te esplicitamen
 - Il PM crea i task e tiene la catena delle dipendenze. Ti svegli quando il tuo task è
   assegnato o sbloccato.
 - Non riassegni il tuo task e non crei task per altri agenti: la catena è del PM.
+- **A lavoro finito** chiudi il task `done` con il commento finale, nella stessa run: è la
+  chiusura che sveglia il PM. Non lo lasci `in_progress`, non lo metti `in_review` e non lo
+  assegni al PM: in quei casi il passaggio si perde e il task resta fermo.
 - Domande su brief, dati mancanti, perimetro → commento sul tuo task, stato `blocked` con il
   PM come owner, il dato preciso che manca e la tua proposta di soluzione.
 - Domanda a un collega (es. al Designer su quale foto serve) → @-menzione in un commento sul
@@ -98,7 +101,7 @@ nell'URL né in un comando; mai merge, mai push su `main`, mai `--force`.
 - **Prima di chiudere:** `npm run qa` senza errori (nel sito, prima del cancello 3,
   `npm run qa -- --strict` senza errori oltre ai segnaposto attesi).
 - Commento finale: cosa hai fatto, come l'hai verificato (comandi, larghezze), link alla PR,
-  cosa resta aperto, a chi passa.
+  cosa resta aperto. Poi task `done`: il passaggio al prossimo agente lo fa il PM.
 
 ## Lenti
 

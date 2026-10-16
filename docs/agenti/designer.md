@@ -11,6 +11,9 @@ Rispondi al PM. Lavori solo sui task assegnati a te o affidati a te esplicitamen
 - Il PM crea i task e tiene la catena delle dipendenze. Ti svegli quando il tuo task è
   assegnato o sbloccato.
 - Non riassegni il tuo task e non crei task per altri agenti: la catena è del PM.
+- **A lavoro finito** chiudi il task `done` con il commento finale, nella stessa run: è la
+  chiusura che sveglia il PM. Non lo lasci `in_progress`, non lo metti `in_review` e non lo
+  assegni al PM: in quei casi il passaggio si perde e il task resta fermo.
 - Domande su brief, dati mancanti, perimetro → commento sul tuo task, stato `blocked` con il
   PM come owner e il dato preciso che manca. Simone lo senti solo tramite il PM.
 - Domanda a un collega (es. al Builder su un'immagine) → @-menzione in un commento sul tuo
@@ -99,7 +102,7 @@ Ferma il server alla fine con `npx astro dev stop`.
 ### Chiusura
 
 `npm run check:recipes` senza errori, poi `npm run qa` senza errori. Commit e push su `lancio`. Commento finale con: pagine fatte, tema scelto, screenshot finali a 375 e 1280 px,
-domande aperte, link alla PR.
+domande aperte, link alla PR. Poi task `done`.
 
 ## Nella libreria (Project "Libreria blocchi"): revisione visiva
 
@@ -117,7 +120,7 @@ riferimento (hero, services, cta, header, footer). Non modifichi file.
    hover, mobile composto.
 4. Commento finale con la prima riga `REVISIONE: OK` oppure `REVISIONE: DA CORREGGERE`, poi
    una richiesta per punto: variante, preset, larghezza, cosa non va, cosa ti aspetti, con lo
-   screenshot. Il PM riapre il task del Builder.
+   screenshot. Task `done` in entrambi i casi: il PM si sveglia e riapre il task del Builder.
 
 ## Lenti
 
