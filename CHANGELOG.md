@@ -19,6 +19,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
+- Blocco `areas`: varianti `elenco-zone` e `mappa-link`, con zone servite e link Maps della sede letto da `site.json`, senza mappa incorporata.
 - Blocchi `gallery` (`griglia-popup`, `prima-dopo`, `slider`: solo foto reali), `testimonials` (`cards`, `singola`, `slider`: ogni recensione ha la `fonte`, obbligatoria) e `carousel` (`immagini`, `immagini-testo`: scroll-snap, mai autoplay, mai nell’hero). Il check `interactive` prova anche la finestra della galleria e il cursore prima-dopo.
 - Blocchi `features` (`3-colonne`, `lista`), `about` (`immagine-testo`, `con-numeri`: ogni numero ha il campo `fonte`, obbligatorio) e `process` (`passi-numerati`, `timeline`).
 - Blocco `contact` (varianti `info-mappa`, `info-cta`): recapiti, indirizzo e orari letti da `site.json`. La mappa è il link «Apri in Maps»; con JavaScript il pulsante «Mostra la mappa qui» carica l’iframe solo al clic.

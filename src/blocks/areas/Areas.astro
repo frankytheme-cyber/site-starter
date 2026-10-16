@@ -1,0 +1,44 @@
+---
+import { mapsHref } from '@/core/links';
+import { getSiteSettings } from '@/core/settings';
+import Button from '@/core/ui/button/Button.astro';
+import Icon from '@/core/ui/Icon.astro';
+import Section from '@/core/ui/Section.astro';
+import type { AreasProps } from './schema';
+
+type Props = AreasProps;
+const { id, tone, variant, title, intro, items } = Astro.props;
+const site = variant === 'mappa-link' ? Astro.props.site ?? (await getSiteSettings()) : undefined;
+---
+
+<Section id={id} tone={tone}>
+	<div class="max-w-2xl">
+		<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+		{intro && <p class="mt-4 text-lg text-pretty text-fg-muted">{intro}</p>}
+	</div>
+	<div class:list={['mt-10 grid items-start gap-10 lg:gap-16', site && 'lg:grid-cols-[3fr_2fr]']}>
+		<ul class:list={['grid gap-x-8 gap-y-6 sm:grid-cols-2', !site && 'lg:grid-cols-3']}>
+			{items.map((item) => (
+				<li class="flex min-w-0 gap-3 border-t border-border pt-4">
+					<Icon name="mappa-pin" class="mt-1 shrink-0 text-primary" />
+					<div class="min-w-0 break-words">
+						<p class="text-lg font-semibold">{item.name}</p>
+						{item.text && <p class="mt-1 text-pretty text-fg-muted">{item.text}</p>}
+					</div>
+				</li>
+			))}
+		</ul>
+		{site && (
+			<div data-surface class="rounded-box border border-border bg-surface p-6 text-surface-fg sm:p-8">
+				<Icon name="mappa-pin" size="lg" class="text-primary" />
+				<h3 class="mt-4 text-2xl font-bold tracking-tight">La nostra sede</h3>
+				<address class="mt-3 break-words not-italic text-fg-muted">
+					{site.address.street}<br />
+					{site.address.postalCode} {site.address.city} ({site.address.province})
+				</address>
+				<p class="mt-4 text-pretty text-fg-muted">La mappa indica la sede. Le zone servite sono elencate in questa sezione.</p>
+				<div class="mt-6"><Button href={mapsHref(site.address)} icon="mappa-pin">Apri in Maps</Button></div>
+			</div>
+		)}
+	</div>
+</Section>
