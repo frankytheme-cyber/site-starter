@@ -21,7 +21,7 @@ const { label, class: className } = Astro.props;
 		data-carousel-track
 		tabindex="0"
 		aria-label={`${label}: scorri per vedere tutto`}
-		class="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pt-1 pb-4 motion-safe:scroll-smooth"
+		class="-mx-1 flex scroll-px-1 snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-1 pt-1 pb-4 motion-safe:scroll-smooth"
 	>
 		<slot />
 	</div>

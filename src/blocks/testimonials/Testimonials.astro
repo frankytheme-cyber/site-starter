@@ -24,11 +24,11 @@ const columns = items.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-
 			<ul class={`mt-10 grid gap-6 ${columns}`}>
 				{items.map((item) => (
 					<li class="flex">
-						<figure class="flex w-full flex-col rounded-box bg-surface p-6 text-surface-fg">
+						<figure data-surface class="flex w-full flex-col rounded-box bg-surface p-6 text-surface-fg">
 							<Icon name="citazione" size="lg" class="text-primary" />
 							{item.rating && (
 								<p class="mt-3 flex gap-0.5 text-primary" role="img" aria-label={`${item.rating} stelle su 5`}>
-									{Array.from({ length: item.rating }, () => <Icon name="stella" size="sm" class="fill-current" />)}
+									{Array.from({ length: item.rating }, () => <Icon name="stella" size="sm" class="[&_path]:fill-current" />)}
 								</p>
 							)}
 							<blockquote class="mt-3 text-pretty">
@@ -54,7 +54,7 @@ const columns = items.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-
 				<Icon name="citazione" size="lg" class="mx-auto text-primary" />
 				{items[0].rating && (
 					<p class="mt-4 flex justify-center gap-0.5 text-primary" role="img" aria-label={`${items[0].rating} stelle su 5`}>
-						{Array.from({ length: items[0].rating }, () => <Icon name="stella" size="md" class="fill-current" />)}
+						{Array.from({ length: items[0].rating }, () => <Icon name="stella" size="md" class="[&_path]:fill-current" />)}
 					</p>
 				)}
 				<blockquote class="mt-4 font-heading text-2xl font-bold tracking-tight text-balance sm:text-3xl">
@@ -81,7 +81,7 @@ const columns = items.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-
 							<Icon name="citazione" size="lg" class="mx-auto text-primary" />
 							{item.rating && (
 								<p class="mt-4 flex justify-center gap-0.5 text-primary" role="img" aria-label={`${item.rating} stelle su 5`}>
-									{Array.from({ length: item.rating }, () => <Icon name="stella" size="sm" class="fill-current" />)}
+									{Array.from({ length: item.rating }, () => <Icon name="stella" size="sm" class="[&_path]:fill-current" />)}
 								</p>
 							)}
 							<blockquote class="mt-4 text-xl text-balance sm:text-2xl">
