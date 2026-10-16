@@ -398,7 +398,8 @@ PRE-LANCIO (skill "seo-prelancio")
 - Sitemap, robots, canonical, immagine OG.
 - Sito esistente: valuti la proposta docs/redirects.md e segnali i rischi (pagine con
   traffico che resterebbero senza redirect). La decisione e' di Simone.
-- Rapporto al PM: problemi bloccanti, consigli, nessuna modifica fatta.
+- Rapporto al PM: VERDETTO: PASS / FAIL sulla prima riga (FAIL con almeno un bloccante),
+  problemi bloccanti, consigli, nessuna modifica fatta.
 
 DOPO IL LANCIO (routine mensile, se attivata)
 - Controllo link rotti, pagine indicizzate, Core Web Vitals; rapporto breve al PM.

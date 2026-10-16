@@ -5,7 +5,7 @@ description: Usala quando devi verificare la SEO di un sito cliente prima della 
 
 # Verifica SEO prima del lancio
 
-Per il SEO, su assegnazione, dopo il QA verde. Segnali, non riscrivi. Lighthouse (SEO 100), sitemap, robots e Open Graph li ha già controllati `npm run qa -- --strict`: qui quello che i controlli non giudicano.
+Per il SEO, su assegnazione, dopo il `VERDETTO: PASS` del QA. Segnali, non riscrivi. Lighthouse (SEO 100), sitemap, robots e Open Graph li ha già controllati `npm run qa -- --strict`: qui quello che i controlli non giudicano.
 
 ## Passi
 
@@ -13,7 +13,7 @@ Per il SEO, su assegnazione, dopo il QA verde. Segnali, non riscrivi. Lighthouse
 
    ```sh
    git status --porcelain                       # vuoto, altrimenti fermati e avvisa il PM
-   git fetch origin && git switch --detach origin/<branch della PR>
+   git fetch origin && git switch --detach origin/<branch della PR>   # nei siti: lancio
    npm ci && npm run build
    ```
 
@@ -51,6 +51,7 @@ Per il SEO, su assegnazione, dopo il QA verde. Segnali, non riscrivi. Lighthouse
 7. **Rapporto al PM** nel task, poi `git switch -`:
 
    ```text
+   VERDETTO: PASS | FAIL
    SEO pre-lancio — <PR>
    Bloccanti: <pagina, problema, chi lo corregge> (uno per riga) | nessuno
    Consigli: <…>
@@ -58,9 +59,11 @@ Per il SEO, su assegnazione, dopo il QA verde. Segnali, non riscrivi. Lighthouse
    Nessuna modifica fatta.
    ```
 
+   `FAIL` con almeno un bloccante: title o description duplicati o mancanti, più di un `h1`, canonical sbagliato, dati strutturati diversi da `site.json` o dalla pagina, pagine con traffico del vecchio sito senza redirect. Il resto è un consiglio e non blocca.
+
 ## Criterio di fine
 
-Rapporto al PM con bloccanti e consigli, senza alcuna modifica ai file.
+Rapporto al PM con `VERDETTO: PASS` o `VERDETTO: FAIL` sulla prima riga, bloccanti e consigli, senza alcuna modifica ai file.
 
 ## Non fare
 
