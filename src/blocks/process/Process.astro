@@ -1,0 +1,65 @@
+---
+import CtaButton from '@/core/ui/button/CtaButton.astro';
+import Section from '@/core/ui/Section.astro';
+import type { ProcessProps } from './schema';
+
+type Props = ProcessProps;
+
+const { id, tone, variant, eyebrow, title, intro, steps, cta } = Astro.props;
+
+const isTimeline = variant === 'timeline';
+// 4 passi stanno su due colonne, gli altri su tre.
+const twoColumns = steps.length === 4;
+---
+
+<Section id={id} tone={tone}>
+	<div class="mx-auto max-w-2xl text-center">
+		{eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider text-primary uppercase">{eyebrow}</p>}
+		<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+		{intro && <p class="mt-4 text-lg text-pretty text-fg-muted">{intro}</p>}
+	</div>
+
+	{
+		isTimeline ? (
+			<ol class="mx-auto mt-12 max-w-2xl">
+				{steps.map((step, index) => (
+					<li class="relative flex gap-5 pb-10 last:pb-0">
+						{index < steps.length - 1 && <span class="absolute top-12 bottom-0 left-6 -ml-px w-0.5 bg-border" aria-hidden="true" />}
+						<span
+							class="relative flex size-12 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-lg font-bold text-primary-fg"
+							aria-hidden="true"
+						>
+							{index + 1}
+						</span>
+						<div class="pt-2">
+							{step.timing && <p class="text-sm font-semibold text-primary">{step.timing}</p>}
+							<h3 class="text-xl font-bold tracking-tight">{step.title}</h3>
+							<p class="mt-1 text-pretty text-fg-muted">{step.text}</p>
+						</div>
+					</li>
+				))}
+			</ol>
+		) : (
+			<ol class:list={['mt-12 grid gap-10 sm:grid-cols-2', !twoColumns && 'lg:grid-cols-3']}>
+				{steps.map((step, index) => (
+					<li>
+						<span class="font-heading text-5xl font-bold text-primary" aria-hidden="true">
+							{String(index + 1).padStart(2, '0')}
+						</span>
+						{step.timing && <p class="mt-3 text-sm font-semibold text-primary">{step.timing}</p>}
+						<h3 class:list={['text-xl font-bold tracking-tight', !step.timing && 'mt-3']}>{step.title}</h3>
+						<p class="mt-2 text-pretty text-fg-muted">{step.text}</p>
+					</li>
+				))}
+			</ol>
+		)
+	}
+
+	{
+		cta && (
+			<p class="mt-12 text-center">
+				<CtaButton cta={cta} tone={tone} />
+			</p>
+		)
+	}
+</Section>

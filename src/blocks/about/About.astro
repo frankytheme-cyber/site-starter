@@ -1,0 +1,55 @@
+---
+import CtaButton from '@/core/ui/button/CtaButton.astro';
+import Img from '@/core/ui/Img.astro';
+import Section from '@/core/ui/Section.astro';
+import type { AboutProps } from './schema';
+
+type Props = AboutProps;
+
+const { id, tone, variant, eyebrow, title, paragraphs, image, cta, stats } = Astro.props;
+
+const showStats = variant === 'con-numeri' && stats;
+---
+
+<Section id={id} tone={tone}>
+	<div class:list={['grid items-center gap-12 lg:gap-16', image && 'lg:grid-cols-2']}>
+		{
+			image && (
+				<Img
+					src={image.src}
+					alt={image.alt}
+					sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 100vw"
+					class="aspect-4/3 w-full rounded-box object-cover"
+				/>
+			)
+		}
+		<div class:list={[!image && 'mx-auto max-w-3xl']}>
+			{eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider text-primary uppercase">{eyebrow}</p>}
+			<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+			<div class="mt-6 grid gap-4">
+				{paragraphs.map((text) => <p class="text-lg text-pretty text-fg-muted">{text}</p>)}
+			</div>
+			{
+				cta && (
+					<p class="mt-8">
+						<CtaButton cta={cta} defaultStyle="secondary" tone={tone} />
+					</p>
+				)
+			}
+		</div>
+	</div>
+
+	{
+		showStats && (
+			<dl class="mt-16 grid gap-8 border-t border-border pt-12 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(12rem,1fr))]">
+				{stats.map((stat) => (
+					<div class="flex flex-col gap-1">
+						<dt class="font-semibold">{stat.label}</dt>
+						<dd class="font-heading text-4xl font-bold tracking-tight text-primary">{stat.value}</dd>
+						<dd class="text-sm text-fg-muted">Fonte: {stat.fonte}</dd>
+					</div>
+				))}
+			</dl>
+		)
+	}
+</Section>
