@@ -12,23 +12,23 @@ Una fila di foto o di card che si scorre in orizzontale, col dito o con le frecc
 
 **Varianti:**
 
-- `foto` — Foto grandi con didascalia breve, quasi una per volta (due da tablet). **Quando usarla:** Per mostrare i lavori finiti, quando contano le immagini. Fixture «Foto», dal vivo `/catalogo/carousel/foto/`.
+- `immagini` — Foto grandi con didascalia breve, quasi una per volta (due da tablet). **Quando usarla:** Per mostrare i lavori finiti, quando contano le immagini. Fixture «Immagini», dal vivo `/catalogo/carousel/immagini/`.
 
-  ![Carosello, foto, 1280 px](../img/carousel-foto-desktop.webp)
+  ![Carosello, immagini, 1280 px](../img/carousel-immagini-desktop.webp)
 
-  <img src="../img/carousel-foto-mobile.webp" alt="Carosello, foto, 375 px" width="240">
+  <img src="../img/carousel-immagini-mobile.webp" alt="Carosello, immagini, 375 px" width="240">
 
-- `card` — Card con foto, titolo, testo e link facoltativo: una e un pezzo su mobile, fino a tre da desktop. **Quando usarla:** Per progetti o casi da raccontare in breve, ciascuno con il suo testo. Fixture «Card», dal vivo `/catalogo/carousel/card/`.
+- `immagini-testo` — Card con foto, titolo, testo e link facoltativo: una e un pezzo su mobile, fino a tre da desktop. **Quando usarla:** Per progetti o casi da raccontare in breve, ciascuno con il suo testo. Fixture «Immagini e testo», dal vivo `/catalogo/carousel/immagini-testo/`.
 
-  ![Carosello, card, 1280 px](../img/carousel-card-desktop.webp)
+  ![Carosello, immagini-testo, 1280 px](../img/carousel-immagini-testo-desktop.webp)
 
-  <img src="../img/carousel-card-mobile.webp" alt="Carosello, card, 375 px" width="240">
+  <img src="../img/carousel-immagini-testo-mobile.webp" alt="Carosello, immagini-testo, 375 px" width="240">
 
 **Campi:**
 
 | Campo | Tipo | Obbl. | Limiti | Note |
 | --- | --- | --- | --- | --- |
-| `variant` | scelta | sì | `foto` · `card` | «Variante» |
+| `variant` | scelta | sì | `immagini` · `immagini-testo` | «Variante» |
 | `eyebrow` | testo | no |  | «Occhiello» |
 | `title` | testo | sì | max 70 | «Titolo» |
 | `intro` | testo | no | max 240 | «Introduzione» |
@@ -36,9 +36,9 @@ Una fila di foto o di card che si scorre in orizzontale, col dito o con le frecc
 | `items[].image` | gruppo | sì |  | «Foto» |
 | `items[].image.src` | immagine | sì | foto in src/assets/images | «File» |
 | `items[].image.alt` | testo | sì | min 5 | «Testo alternativo» |
-| `items[].title` | testo | per card | max 60 | «Titolo» · In foto è la didascalia. |
-| `items[].text` | testo | per card | max 200 | «Testo» |
-| `items[].cta` | gruppo | no |  | «Link» · Mostrato solo nella variante card. |
+| `items[].title` | testo | per immagini-testo | max 60 | «Titolo» · In immagini è la didascalia. |
+| `items[].text` | testo | per immagini-testo | max 200 | «Testo» |
+| `items[].cta` | gruppo | no |  | «Link» · Mostrato solo nella variante immagini-testo. |
 | `items[].cta.label` | testo | sì, se c’è `items[].cta` | max 25 | «Testo del pulsante» |
 | `items[].cta.href` | testo | sì, se c’è `items[].cta` | un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa | «Link» |
 | `items[].cta.style` | scelta | no | `primary` · `secondary` · `ghost` · `link` | «Stile» |
@@ -48,14 +48,14 @@ Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `ty
 
 **Regole:**
 
-- La variante card richiede titolo e testo in ogni elemento.
+- La variante immagini-testo richiede titolo e testo in ogni elemento.
 
-**Esempio pronto** (fixture «Foto», una sezione per `sections`; immagini relative a `src/content/pages`):
+**Esempio pronto** (fixture «Immagini», una sezione per `sections`; immagini relative a `src/content/pages`):
 
 ```json
 {
 	"type": "carousel",
-	"variant": "foto",
+	"variant": "immagini",
 	"eyebrow": "La bottega",
 	"title": "Vieni a trovarci",
 	"items": [

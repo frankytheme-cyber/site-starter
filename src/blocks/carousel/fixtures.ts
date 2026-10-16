@@ -7,7 +7,7 @@ import vetrina from '@/assets/images/fixtures/negozio-vetrina.jpg';
 import type { BlockFixture } from '@/core/block-types';
 import type { schema } from './schema';
 
-// Attività di esempio: un negozio (foto) e un artigiano (card).
+// Attività di esempio: un negozio (immagini) e un artigiano (immagini-testo).
 const photos = {
 	vetrina: { src: vetrina, alt: 'Vetrina di una bottega con la tenda a righe bianche e rosse e la porta verde' },
 	scaffali: { src: scaffali, alt: 'Scaffali di legno con barattoli e scatole colorate in fila' },
@@ -19,9 +19,9 @@ const photos = {
 
 export const fixtures: BlockFixture<typeof schema>[] = [
 	{
-		name: 'Foto',
+		name: 'Immagini',
 		props: {
-			variant: 'foto',
+			variant: 'immagini',
 			eyebrow: 'La bottega',
 			title: 'Vieni a trovarci',
 			items: [
@@ -34,10 +34,10 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		},
 	},
 	{
-		name: 'Card',
+		name: 'Immagini e testo',
 		tone: 'muted',
 		props: {
-			variant: 'card',
+			variant: 'immagini-testo',
 			title: 'Lavori recenti',
 			intro: 'Ogni lavoro con il racconto di cosa abbiamo fatto e in quanto tempo.',
 			items: [
