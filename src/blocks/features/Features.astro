@@ -36,7 +36,7 @@ const twoColumns = items.length === 4;
 					))}
 				</ul>
 			) : (
-				<ul class:list={['grid gap-10 sm:grid-cols-2', twoColumns ? 'mx-auto max-w-4xl' : 'lg:grid-cols-3']}>
+				<ul class:list={['grid gap-10 sm:grid-cols-2', twoColumns ? 'mx-auto w-full max-w-4xl' : 'lg:grid-cols-3']}>
 					{items.map((item) => (
 						<li>
 							<span class="flex size-12 items-center justify-center rounded-button bg-primary text-primary-fg">
