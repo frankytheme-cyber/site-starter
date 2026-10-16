@@ -1,7 +1,7 @@
 {
   "version": "0.0.1",
   "repository": "https://github.com/frankytheme-cyber/site-starter.git",
-  "managed": ["src/blocks", "src/core", "src/themes", "src/layouts", "scripts", "docs/catalogo", "docs/skill", "docs/modelli", ".github/workflows"],
+  "managed": ["src/blocks", "src/core", "src/themes", "src/layouts", "scripts", "docs/catalogo", "docs/skill", "docs/modelli", "docs/agenti", ".github/workflows"],
   "managedFiles": [
     ".env.example",
     ".github/CODEOWNERS",

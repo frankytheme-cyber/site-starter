@@ -64,7 +64,7 @@ Verso una versione precedente serve `--force`.
 
 `library.manifest.json`:
 
-- `managed`: cartelle della libreria (`src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`, `docs/skill`, `docs/modelli`, `.github/workflows`): anche un file aggiunto lì è una modifica vietata;
+- `managed`: cartelle della libreria (`src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`, `docs/skill`, `docs/modelli`, `docs/agenti`, `.github/workflows`): anche un file aggiunto lì è una modifica vietata;
 - `managedFiles`: file singoli: `AGENTS.md` e `CLAUDE.md` (istruzioni per gli agenti), `.github/CODEOWNERS`, il manifest stesso, `astro.config.mjs`, `src/content.config.ts`, le route `src/pages/[...slug].astro` e `src/pages/robots.txt.ts`, `tsconfig.json`, `.env.example`, `public/admin/index.html` e la documentazione comune di `docs/`;
 - `exclude`: dentro le cartelle gestite ma né controllati né copiati (`src/library`);
 - `libraryOnly` e `libraryScripts`: solo nella libreria, tolti da `site:init` e mai copiati da `blocks:sync`.
