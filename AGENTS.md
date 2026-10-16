@@ -2,7 +2,7 @@
 
 Libreria di blocchi Astro + Tailwind v4 per siti vetrina di piccole attività, usata anche come template GitHub per i siti cliente.
 
-La specifica completa del sistema è in `docs/specifica.md`; in caso di dubbio prevale la specifica, poi chiedi al PM.
+La specifica completa del sistema è in `docs/specifica.md`; in caso di dubbio prevale la specifica, poi chiedi al PM. Le procedure della squadra di agenti (skill) sono in `docs/skill/<nome>/SKILL.md`, i modelli di brief e di task in `docs/modelli/`.
 
 ## Regole
 
@@ -29,11 +29,11 @@ La stessa repo vive in due modi, e la modalità la decide solo `SITE_STARTER_LIB
 - **Creare un sito:** «Use this template» su GitHub, clone, `npm install`, poi una volta `npm run site:init` (working tree pulito): toglie la parte della libreria, scrive il repository del CMS in `src/site.config.ts` e rigenera `config.yml`, scrive `blocks.lock.json` e crea `docs/sito.md`. Prima di pubblicare: `npm run qa -- --strict` senza errori.
 - **Aggiornare un sito:** `npm run blocks:sync -- vX.Y.Z` (working tree pulito), poi `npm install`, `npm run gen:decap`, `npm run qa -- --strict` e commit. Sostituisce cartelle e file gestiti con quelli del tag, unisce script e dipendenze in `package.json`, aggiorna il lock e mostra i breaking change di `CHANGELOG.md`.
 - **Cosa è gestito** (`library.manifest.json`, elenco completo lì):
-  - `managed`, cartelle: `src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`, `.github/workflows`;
+  - `managed`, cartelle: `src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`, `docs/skill`, `docs/modelli`, `.github/workflows`;
   - `managedFiles`: `AGENTS.md`, `CLAUDE.md`, `.github/CODEOWNERS`, `library.manifest.json`, `astro.config.mjs`, `src/content.config.ts`, `src/pages/[...slug].astro`, `src/pages/robots.txt.ts`, `tsconfig.json`, `.env.example`, `public/admin/index.html` e i documenti comuni di `docs/` (`controlli.md`, `decap.md`, `siti-cliente.md`, `blocchi-interattivi.md`, `specifica.md`, `THIRD_PARTY_LICENSES.md`);
   - `exclude`: percorsi né controllati né copiati da `blocks:sync` (`src/library`);
   - `libraryOnly` (`src/library` con il catalogo, `docs/README.md`, `CHANGELOG.md`) e `libraryScripts`: solo nella libreria, `site:init` li toglie e `blocks:sync` non li porta;
-  - del sito, liberi: `src/content/**`, `src/assets/images/**`, `src/site.config.ts`, le altre pagine di `src/pages`, `public/` (tranne `admin/index.html`), `docs/sito.md`, `README.md`, `name` e `version` di `package.json`.
+  - del sito, liberi: `src/content/**`, `src/assets/images/**`, `src/site.config.ts`, le altre pagine di `src/pages`, `public/` (tranne `admin/index.html`), `docs/sito.md` e gli altri documenti del sito (`docs/brief.md`, `docs/nota-design.md`, `docs/redirects.md`), `README.md`, `name` e `version` di `package.json`.
 - **Il lock.** `blocks.lock.json` registra la versione della libreria e l'hash sha256 di ogni file gestito; lo scrivono solo `site:init` e `blocks:sync`, mai a mano. `.github/CODEOWNERS` chiede la revisione del proprietario sulle pull request che toccano il lock o chi lo controlla (`.github/`, `scripts/`, `library.manifest.json`, `package.json`).
 - **Note del sito.** `CLAUDE.md` importa `AGENTS.md` (le regole comuni) e `docs/sito.md` (note ed eccezioni del sito: l'unico dei tre che il sito scrive). Con un altro agente, in un sito cliente leggi `docs/sito.md` prima di iniziare.
 

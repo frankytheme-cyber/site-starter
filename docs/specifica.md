@@ -29,9 +29,9 @@ Ogni sito cliente è una **copia sincronizzata** della libreria: i file della li
 | `npm run blocks:sync -- vX.Y.Z` | sito | Porta file gestiti e `package.json` a una versione della libreria; riepiloga cambi e breaking change |
 | `npm run release -- vX.Y.Z` | libreria | Catalogo, screenshot, controlli, commit e tag |
 
-**Gestiti dalla libreria** (`library.manifest.json`, mai modificati nei siti): `src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts/`, `docs/catalogo/`, `content.config.ts`, `src/pages/[...slug].astro`, `astro.config.mjs`, il manifest stesso, `.github/workflows/`, `.github/CODEOWNERS`, `CLAUDE.md`, `AGENTS.md`.
+**Gestiti dalla libreria** (`library.manifest.json`, mai modificati nei siti): `src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts/`, `docs/catalogo/`, `docs/skill/`, `docs/modelli/`, `content.config.ts`, `src/pages/[...slug].astro`, `astro.config.mjs`, il manifest stesso, `.github/workflows/`, `.github/CODEOWNERS`, `CLAUDE.md`, `AGENTS.md`.
 
-**Proprietà del sito:** `src/content/**` (ricette e impostazioni), `src/assets/images/**`, `src/site.config.ts`, `docs/sito.md`, `docs/brief.md`, `docs/redirects.md`, `vercel.json`.
+**Proprietà del sito:** `src/content/**` (ricette e impostazioni), `src/assets/images/**`, `src/site.config.ts`, `docs/sito.md`, `docs/brief.md`, `docs/nota-design.md`, `docs/redirects.md`, `vercel.json`.
 
 **Solo libreria (escluso):** `src/library/` (catalogo web, iniettato da un'integrazione Astro solo in modalità libreria).
 
@@ -250,7 +250,7 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 
 **Regole comuni a tutti gli agenti**
 
-1. Ogni task lavora su un branch proprio e apre subito una **PR in bozza**.
+1. Ogni task lavora su un branch proprio e apre subito una **PR in bozza** (skill `github-pr`).
 2. Prima di chiudere un task: `npm run qa`; nel sito, prima del cancello 3: `npm run qa -- --strict`.
 3. Si legge `AGENTS.md` (tramite `CLAUDE.md`) e la scheda del catalogo prima di usare un blocco.
 4. Un dato mancante non si inventa: si chiede al PM, che lo chiede a te.
@@ -276,8 +276,8 @@ COMPITI
 - Trasformi le richieste di Simone in task piccoli e chiari, uno per agente, usando i
   modelli di task (skill "modelli-task"). Ogni task ha: obiettivo, input, output atteso,
   criteri di fine, a chi passa dopo.
-- Raccogli il brief da Simone con il modello docs/brief.md (skill "brief"). Se un dato
-  manca, lo chiedi a lui: non lo ricavi e non lo inventi.
+- Raccogli il brief da Simone in docs/brief.md, dal modello docs/modelli/brief.md (skill
+  "brief"). Se un dato manca, lo chiedi a lui: non lo ricavi e non lo inventi.
 - Porti i cancelli 1 (brief) e 2 (design + eventuale mappa redirect) come Approval in
   Paperclip, con link all'anteprima Vercel e alla PR. Nessun lavoro della fase successiva
   parte prima dell'approvazione.
@@ -322,7 +322,8 @@ REGOLE
 - Un solo hero per pagina; titoli entro i limiti dello schema.
 - Se ti serve un blocco o una variante che non esiste: NON improvvisare. Scrivi una
   richiesta di nuovo blocco al PM (cosa serve, perche', esempio di contenuto).
-- Lavori su branch con PR in bozza; prima di passare al cancello: npm run qa senza errori.
+- Lavori su branch con PR in bozza (skill "github-pr"); prima di passare al cancello:
+  npm run qa senza errori.
 
 NON FAI
 Non scrivi codice, non modifichi blocchi o file gestiti, non fai merge.
@@ -352,9 +353,9 @@ NELLA LIBRERIA (Project "Libreria blocchi")
 - Blocchi interattivi secondo docs/blocchi-interattivi.md.
 
 SEMPRE
-- Branch + PR in bozza subito; npm run qa senza errori prima di chiudere.
+- Branch + PR in bozza subito (skill "github-pr"); npm run qa senza errori prima di chiudere.
 - PR con l'API GitHub via curl (gh non e' disponibile): POST /repos/<owner>/<repo>/pulls
-  con "draft": true e il token SOLO nell'header (Authorization: Bearer $GITHUB_TOKEN).
+  con "draft": true e il token SOLO nell'header (Authorization: Bearer $GH_TOKEN).
   Mai il token nell'URL, ne' della richiesta ne' del remote.
 - Non cambi testi, tema o scelte del Designer. Non fai merge. Non tocchi impostazioni
   di GitHub o Vercel.
@@ -417,12 +418,13 @@ Le procedure riusabili diventano company skill di Paperclip, assegnate solo agli
 | `qa` | QA | Procedura delle istruzioni QA, formato delle richieste | Rapporto al PM |
 | `seo-prelancio` | SEO | Checklist delle istruzioni SEO | Rapporto al PM |
 | `redirect` | Builder, SEO | Raccolta dei vecchi URL dalla sitemap o da una scansione, mappa, stato della decisione | Mappa decisa da Simone |
+| `github-pr` | PM, Designer, Builder | Branch, commit, push senza token nell'URL, PR in bozza con l'API GitHub via curl (`$GH_TOKEN`), link nel task; mai merge | PR in bozza aperta e linkata nel task |
 
-La versione Markdown di ogni skill si scrive con Claude Code in `docs/skill/<nome>.md` nella libreria, così resta versionata e arriva nei siti.
+Ogni skill si scrive con Claude Code in `docs/skill/<nome>/SKILL.md` nella libreria (frontmatter `name` e `description`, poi passi con i comandi, criterio di fine e cosa non fare), così resta versionata e arriva nei siti. I modelli di brief e di task sono in `docs/modelli/`.
 
 ## Modelli di task
 
-Ogni task del PM segue la stessa forma. Il primo esempio è il task del Builder per il lotto 1 dei blocchi.
+Ogni task del PM segue la stessa forma (`docs/modelli/task.md`, con la tabella dei task tipici). Il primo esempio è il task del Builder per il lotto 1 dei blocchi.
 
 ```markdown
 TITOLO: <verbo + oggetto>, es. "Pagina Servizi: ricetta e testi"
@@ -462,7 +464,7 @@ PASSA A: Designer (revisione visiva sul catalogo) -> CANCELLO: approvazione di S
 
 ## Modello di brief
 
-Il brief è la base di tutto: il Designer compone dal brief, il Builder ne prende i dati, il QA confronta col brief. Un campo obbligatorio vuoto blocca il cancello 1.
+Il brief è la base di tutto: il Designer compone dal brief, il Builder ne prende i dati, il QA confronta col brief. Un campo obbligatorio vuoto blocca il cancello 1. Il modello è `docs/modelli/brief.md`; nel sito si compila in `docs/brief.md`.
 
 ```markdown
 # Brief — <nome attività>
@@ -495,9 +497,10 @@ Stato: bozza | approvato il <data>
 - Recensioni da pubblicare: testo, autore, fonte e data (es. Google 03/2026)
 - Numeri da pubblicare (anni di attività, lavori fatti...): valore e fonte
 
-## 6. Sito esistente
+## 6. Sito esistente e dominio
 - Esiste un sito online? si/no, indirizzo
 - Se si: redirect da proporre? (la decisione è di Simone al cancello 2)
+- Dominio del nuovo sito (es. www.esempio.it) e chi lo gestisce
 
 ## 7. Aspetti legali
 - Cookie o servizi di terze parti previsti (analytics, mappe, video)

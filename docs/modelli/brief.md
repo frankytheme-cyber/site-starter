@@ -1,0 +1,43 @@
+<!-- Modello del brief (skill brief): si copia in docs/brief.md e si compila con Simone. Un campo vuoto o «da chiedere» nelle sezioni obbligatorie blocca il cancello 1. -->
+
+# Brief — <nome attività>
+Stato: bozza | approvato il <data>
+
+## 1. Attività (obbligatorio)
+- Nome commerciale / ragione sociale / forma giuridica
+- P.IVA; se società: REA, capitale sociale, sede legale
+- Indirizzo operativo, telefono, WhatsApp, email, orari
+- Social (link)
+
+## 2. Cosa fa e per chi (obbligatorio)
+- Servizi principali (max 6), con una riga ciascuno
+- Clienti tipo (privati, aziende, condomini...)
+- Zone servite
+- Cosa la distingue (solo fatti verificabili)
+
+## 3. Obiettivo del sito (obbligatorio)
+- Azione principale richiesta al visitatore (chiamata, WhatsApp, preventivo...)
+- Pagine previste (es. Home, Servizi, Chi siamo, Lavori, Contatti, Privacy, Cookie)
+
+## 4. Tono e stile
+- Tono dei testi (es. diretto e rassicurante)
+- Preferenze o vincoli di colore e stile; siti che piacciono / non piacciono
+- Logo disponibile: si/no, formato
+
+## 5. Materiali
+- Foto reali disponibili (lavori, squadra, sede) e chi le fornisce
+- Immagini stock ammesse? solo per sfondi/hero generici: si/no
+- Recensioni da pubblicare: testo, autore, fonte e data (es. Google 03/2026)
+- Numeri da pubblicare (anni di attività, lavori fatti...): valore e fonte
+
+## 6. Sito esistente e dominio
+- Esiste un sito online? si/no, indirizzo
+- Se si: redirect da proporre? (la decisione è di Simone al cancello 2)
+- Dominio del nuovo sito (es. www.esempio.it) e chi lo gestisce
+
+## 7. Aspetti legali
+- Cookie o servizi di terze parti previsti (analytics, mappe, video)
+- Chi fornisce i testi di privacy e cookie
+
+## Da chiedere
+- <dati mancanti, uno per riga>
