@@ -202,6 +202,8 @@ export async function interactive({ baseUrl }: CheckContext) {
 				expect('carosello', (await next.getAttribute('aria-label')) !== null && (await prev.getAttribute('aria-label')) !== null, 'le frecce non hanno aria-label');
 				expect('carosello', (await current()) === 0, 'all’inizio il primo pallino non ha aria-current');
 				expect('carosello', await prev.isDisabled(), 'all’inizio la freccia precedente non è disabilitata');
+				// Prima di misurare lo scroll aspetta che si assesti (snap e immagini che si caricano spostano di 1px).
+				await page.waitForTimeout(500);
 				const start = await track.evaluate((element) => element.scrollLeft);
 				await page.waitForTimeout(2500);
 				expect('carosello', (await track.evaluate((element) => element.scrollLeft)) === start, 'il carosello scorre da solo (autoplay)');
