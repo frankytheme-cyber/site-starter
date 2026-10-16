@@ -90,6 +90,30 @@
 	--palette-primary: var(--primary);
 	--palette-primary-fg: var(--primary-fg);
 	--palette-primary-hover: var(--primary-hover);
+	--palette-fg-muted: var(--fg-muted);
+	--palette-border: var(--border);
+	--palette-ring: var(--ring);
+}
+
+/*
+ * Card chiare (bg-surface) dentro una Section: i token tornano quelli della palette, così il
+ * testo resta scuro su ogni tono. Su tono muted la card passa a bg, altrimenti si confonde
+ * con il fondo della sezione, e prende un bordo.
+ */
+[data-surface] {
+	--fg: var(--surface-fg);
+	--fg-muted: var(--palette-fg-muted);
+	--primary: var(--palette-primary);
+	--primary-fg: var(--palette-primary-fg);
+	--primary-hover: var(--palette-primary-hover);
+	--border: var(--palette-border);
+	--ring: var(--palette-ring);
+}
+
+[data-tone="muted"] [data-surface] {
+	--fg: var(--palette-fg);
+	background-color: var(--palette-bg);
+	border: 1px solid var(--palette-border);
 }
 
 [data-on-tone="primary"] {

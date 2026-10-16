@@ -49,7 +49,7 @@ const full = variant === 'griglia-popup' ? await Promise.all(items.map((item) =>
 				<dialog
 					data-gallery-dialog
 					aria-label="Foto ingrandita"
-					class="m-0 h-dvh max-h-none w-full max-w-none border-0 bg-black/90 p-0 text-white backdrop:bg-black/80"
+					class="m-0 h-dvh max-h-none w-full max-w-none border-0 bg-black/90 p-0 text-white [--ring:var(--color-white)] backdrop:bg-black/80"
 				>
 					<div data-gallery-stage class="flex h-full flex-col p-4 sm:p-6">
 						<div class="flex items-center justify-between gap-4">
@@ -58,12 +58,12 @@ const full = variant === 'griglia-popup' ? await Promise.all(items.map((item) =>
 								<Icon name="chiudi" size="lg" label="Chiudi la foto" />
 							</button>
 						</div>
-						<div data-gallery-stage class="flex min-h-0 flex-1 items-center justify-center gap-2 py-4 sm:gap-4">
-							<button type="button" data-gallery-prev class="flex size-11 shrink-0 items-center justify-center rounded-button bg-white/15 hover:bg-white/25">
+						<div data-gallery-stage class="grid min-h-0 flex-1 grid-cols-2 grid-rows-[minmax(0,1fr)_auto] gap-3 py-4 sm:flex sm:items-center sm:justify-center sm:gap-4">
+							<button type="button" data-gallery-prev class="flex size-11 max-sm:row-start-2 max-sm:justify-self-start shrink-0 items-center justify-center rounded-button bg-white/15 hover:bg-white/25">
 								<Icon name="freccia-sinistra" size="lg" label="Foto precedente" />
 							</button>
-							<img data-gallery-image alt="" class="max-h-full min-w-0 max-w-full object-contain" />
-							<button type="button" data-gallery-next class="flex size-11 shrink-0 items-center justify-center rounded-button bg-white/15 hover:bg-white/25">
+							<img data-gallery-image alt="" class="col-span-2 mx-auto max-h-full min-h-0 min-w-0 max-w-full justify-self-center object-contain max-sm:row-start-1 max-sm:self-center" />
+							<button type="button" data-gallery-next class="flex size-11 max-sm:row-start-2 max-sm:col-start-2 max-sm:justify-self-end shrink-0 items-center justify-center rounded-button bg-white/15 hover:bg-white/25">
 								<Icon name="freccia-destra" size="lg" label="Foto successiva" />
 							</button>
 						</div>
@@ -115,7 +115,7 @@ const full = variant === 'griglia-popup' ? await Promise.all(items.map((item) =>
 									data-js-only
 									data-gallery-handle
 									aria-hidden="true"
-									class="pointer-events-none absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 bg-primary-fg peer-focus-visible:bg-ring"
+									class="pointer-events-none absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 bg-primary-fg peer-focus-visible:bg-white peer-focus-visible:*:outline-3 peer-focus-visible:*:outline-white peer-focus-visible:*:shadow-[0_0_0_6px_color-mix(in_oklab,var(--color-black)_65%,transparent)]"
 								>
 									<span class="absolute top-1/2 left-1/2 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-fg">
 										<Icon name="freccia-sinistra" size="sm" />
