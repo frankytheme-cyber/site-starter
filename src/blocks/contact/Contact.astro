@@ -28,12 +28,21 @@ const headingClass = 'text-sm font-bold tracking-wider uppercase';
 ---
 
 <Section id={id} tone={tone}>
-	<div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
-		<div>
+	<div class="grid gap-x-16 gap-y-8 lg:grid-cols-2">
+		<div class="lg:col-start-1 lg:row-start-1">
 			<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
 			{text && <p class="mt-4 text-lg text-pretty text-fg-muted">{text}</p>}
+			{variant === 'info-cta' && cta && (
+				<div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+					<CtaButton cta={cta} tone={tone} />
+					<Button href={mapsLink} variant="link" icon="mappa-pin" tone={tone}>
+						Apri in Maps
+					</Button>
+				</div>
+			)}
+		</div>
 
-			<div class="mt-8 grid gap-8 sm:grid-cols-2">
+		<div class:list={['grid gap-8 sm:grid-cols-2 lg:col-start-1', variant === 'info-cta' && 'lg:col-start-2 lg:row-start-1', variant !== 'info-cta' && 'lg:row-start-2']}>
 				<div>
 					<h3 class={headingClass}>Contatti</h3>
 					<address class="mt-3 grid not-italic">
@@ -80,43 +89,32 @@ const headingClass = 'text-sm font-bold tracking-wider uppercase';
 						</dl>
 					</div>
 				)}
-			</div>
-
-			{variant === 'info-cta' && cta && (
-				<div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-					<CtaButton cta={cta} tone={tone} />
-					<Button href={mapsLink} variant="link" icon="mappa-pin" tone={tone}>
-						Apri in Maps
-					</Button>
-				</div>
-			)}
 		</div>
 
 		{variant === 'info-mappa' && (
-			<div data-contact-map data-src={embedSrc} data-title={`Mappa: ${street}, ${city}`}>
+			<div class="lg:col-start-2 lg:row-span-2 lg:row-start-1" data-contact-map data-src={embedSrc} data-title={`Mappa: ${street}, ${city}`}>
 				{/* Senza JavaScript resta il link; il pulsante compare con lo script. */}
 				<div
 					data-contact-map-frame
-					class="flex min-h-72 flex-col items-center justify-center gap-4 rounded-box border border-border bg-surface text-surface-fg p-6 text-center lg:min-h-full"
+					class="flex min-h-72 flex-col items-center justify-center gap-4 rounded-box border border-border bg-surface p-6 text-center text-surface-fg lg:min-h-full"
 				>
 					<Icon name="mappa-pin" size="lg" />
 					<p class="text-pretty">{street}, {postalCode} {city}</p>
 					<div class="flex flex-wrap items-center justify-center gap-3">
-						<Button href={mapsLink} variant="primary" icon="mappa-pin" tone={tone}>
+						<Button href={mapsLink} variant="primary" icon="mappa-pin">
 							Apri in Maps
 						</Button>
 						<div data-js-only hidden>
 							<Button
 								variant="secondary"
-								tone={tone}
 								data-contact-map-load
 								aria-describedby={`${uid}-privacy`}
 							>
-								Mostra la mappa qui
+								Mostra la mappa
 							</Button>
 						</div>
 					</div>
-					<p id={`${uid}-privacy`} data-js-only hidden class="max-w-xs text-sm text-fg-muted">
+					<p id={`${uid}-privacy`} data-js-only hidden class="max-w-xs text-sm text-balance text-fg-muted">
 						La mappa è un servizio di Google: si carica solo se la mostri.
 					</p>
 				</div>
@@ -124,6 +122,23 @@ const headingClass = 'text-sm font-bold tracking-wider uppercase';
 		)}
 	</div>
 </Section>
+
+<style>
+	/* Il riquadro è una superficie normale in ogni tono: i token invertiti del tono primary restano fuori. */
+	:global([data-tone='primary']) [data-contact-map-frame] {
+		--fg: var(--palette-fg);
+		--fg-muted: color-mix(in oklab, var(--surface-fg) 75%, var(--surface));
+		--primary: var(--palette-primary);
+		--primary-fg: var(--palette-primary-fg);
+		--primary-hover: var(--palette-primary-hover);
+		--border: color-mix(in oklab, var(--surface-fg) 20%, var(--surface));
+		--ring: var(--palette-primary);
+	}
+	/* Nel tono muted la sezione è già sul fondo surface: il riquadro sta sul fondo bg, come una card. */
+	:global([data-tone='muted']) [data-contact-map-frame] {
+		background-color: var(--palette-bg);
+	}
+</style>
 
 <script>
 	// Uno script per tutti i blocchi della pagina. Regole: docs/blocchi-interattivi.md.
