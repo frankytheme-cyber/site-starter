@@ -1899,6 +1899,683 @@
 			}
 		},
 		{
+			"type": "about",
+			"name": "Chi siamo",
+			"scope": "page",
+			"category": "contenuti",
+			"version": "1.0.0",
+			"interactive": false,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Presentazione dell’attività: titolo, da 1 a 3 paragrafi, foto e, se ci sono, numeri veri con la loro fonte.",
+			"whenToUse": "Nella pagina «Chi siamo» o come sezione di presentazione in home. Con i numeri solo se il cliente li ha forniti e sa dire da dove vengono.",
+			"avoidWhen": "Per elencare i servizi (services) o i punti di forza (features). Mai con numeri inventati o arrotondati per fare effetto: senza fonte il numero non va nel blocco.",
+			"rules": [
+				"La variante immagine-testo richiede la foto (image).",
+				"La variante con-numeri richiede da 2 a 4 numeri (stats), ognuno con la sua fonte."
+			],
+			"variants": [
+				{
+					"name": "immagine-testo",
+					"description": "Foto da una parte e racconto dall’altra, su due colonne; su mobile la foto sta sopra.",
+					"whenToUse": "Quando c’è una foto vera del luogo, del titolare o del team.",
+					"fixture": "Immagine e testo",
+					"preview": "/catalogo/about/immagine-testo/",
+					"screenshots": {
+						"desktop": "img/about-immagine-testo-desktop.webp",
+						"mobile": "img/about-immagine-testo-mobile.webp"
+					}
+				},
+				{
+					"name": "con-numeri",
+					"description": "Racconto con foto facoltativa e, sotto, una fila di 2-4 numeri; ogni numero mostra la sua fonte.",
+					"whenToUse": "Quando il cliente ha dati verificabili (anni di attività, lavori fatti) e indica la fonte di ciascuno.",
+					"fixture": "Con numeri",
+					"preview": "/catalogo/about/con-numeri/",
+					"screenshots": {
+						"desktop": "img/about-con-numeri-desktop.webp",
+						"mobile": "img/about-con-numeri-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`immagine-testo` · `con-numeri`",
+					"constraints": {
+						"values": [
+							"immagine-testo",
+							"con-numeri"
+						]
+					},
+					"label": "Variante",
+					"hint": "immagine-testo: foto e racconto affiancati · con-numeri: racconto con una fila di numeri, ognuno con la sua fonte"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "max 40",
+					"constraints": {
+						"maxLength": 40
+					},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Titolo della sezione, al massimo 70 caratteri"
+				},
+				{
+					"path": "paragraphs",
+					"type": "elenco",
+					"required": true,
+					"limits": "1–3 voci",
+					"constraints": {
+						"minItems": 1,
+						"maxItems": 3
+					},
+					"label": "Testo",
+					"hint": "Da 1 a 3 paragrafi che raccontano chi siete"
+				},
+				{
+					"path": "image",
+					"type": "gruppo",
+					"required": false,
+					"requiredFor": [
+						"immagine-testo"
+					],
+					"limits": "",
+					"constraints": {},
+					"label": "Foto",
+					"hint": "Obbligatoria per la variante immagine-testo; facoltativa in con-numeri. Meglio una foto vera del luogo o delle persone",
+					"note": "Facoltativa in con-numeri."
+				},
+				{
+					"path": "image.src",
+					"type": "immagine",
+					"required": true,
+					"requiredWith": "image",
+					"limits": "foto in src/assets/images",
+					"constraints": {
+						"format": "image"
+					},
+					"label": "File",
+					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
+				},
+				{
+					"path": "image.alt",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "image",
+					"limits": "min 5",
+					"constraints": {
+						"minLength": 5
+					},
+					"label": "Testo alternativo",
+					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
+				},
+				{
+					"path": "cta",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante",
+					"hint": "Facoltativo, es. «Conosci il team»"
+				},
+				{
+					"path": "cta.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "cta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "cta.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "cta",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "cta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "cta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				},
+				{
+					"path": "stats",
+					"type": "elenco",
+					"required": false,
+					"requiredFor": [
+						"con-numeri"
+					],
+					"limits": "2–4 voci",
+					"constraints": {
+						"minItems": 2,
+						"maxItems": 4
+					},
+					"label": "Numeri",
+					"hint": "Da 2 a 4 numeri veri, solo per la variante con-numeri",
+					"note": "La variante immagine-testo non li mostra."
+				},
+				{
+					"path": "stats[].value",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "stats",
+					"limits": "max 12",
+					"constraints": {
+						"maxLength": 12
+					},
+					"label": "Numero",
+					"hint": "Es. «25» o «1.200+», al massimo 12 caratteri"
+				},
+				{
+					"path": "stats[].label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "stats",
+					"limits": "max 40",
+					"constraints": {
+						"maxLength": 40
+					},
+					"label": "Cosa misura",
+					"hint": "Es. «anni di attività», al massimo 40 caratteri"
+				},
+				{
+					"path": "stats[].fonte",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "stats",
+					"limits": "3–80",
+					"constraints": {
+						"minLength": 3,
+						"maxLength": 80
+					},
+					"label": "Fonte",
+					"hint": "Da dove viene il numero, es. «registro interno dei lavori, 2025». Obbligatoria: i numeri non si inventano",
+					"note": "Obbligatoria per ogni numero; compare sotto il numero."
+				}
+			],
+			"example": {
+				"fixture": "Immagine e testo",
+				"target": "sections",
+				"json": {
+					"type": "about",
+					"variant": "immagine-testo",
+					"eyebrow": "Chi siamo",
+					"title": "Una bottega di quartiere, con le persone al centro",
+					"paragraphs": [
+						"Siamo una piccola attività di famiglia: lavoriamo con poche persone, così ogni cliente parla sempre con chi si occupa del suo lavoro.",
+						"Ci piace spiegare cosa facciamo e perché, e consegnare solo quello di cui andiamo fieri."
+					],
+					"image": {
+						"src": "../../assets/images/fixtures/artigiano-laboratorio.jpg",
+						"alt": "Banco da lavoro in legno con martello, scalpello e sega appesi a un pannello forato"
+					},
+					"cta": {
+						"label": "Contattaci",
+						"href": "#contatti"
+					}
+				}
+			}
+		},
+		{
+			"type": "process",
+			"name": "Come lavoriamo",
+			"scope": "page",
+			"category": "contenuti",
+			"version": "1.0.0",
+			"interactive": false,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Il percorso dal primo contatto al lavoro finito, in 3-6 passi numerati, con tempi facoltativi.",
+			"whenToUse": "Quando il cliente deve sapere cosa succede dopo averti contattato: preventivo, sopralluogo, lavoro, consegna.",
+			"avoidWhen": "Per un elenco di vantaggi senza ordine (lì va features) o per la storia dell’attività (about). Non inventare tempi: se non sono garantiti, lascia vuoto il campo.",
+			"rules": [],
+			"variants": [
+				{
+					"name": "passi-numerati",
+					"description": "Griglia di passi (3 colonne su desktop), ognuno con un grande numero, titolo e testo.",
+					"whenToUse": "Percorsi di 3, 4 o 6 passi brevi, da vedere tutti insieme a colpo d’occhio.",
+					"fixture": "Passi numerati",
+					"preview": "/catalogo/process/passi-numerati/",
+					"screenshots": {
+						"desktop": "img/process-passi-numerati-desktop.webp",
+						"mobile": "img/process-passi-numerati-mobile.webp"
+					}
+				},
+				{
+					"name": "timeline",
+					"description": "Passi in colonna lungo una linea verticale con i numeri, uno sotto l’altro.",
+					"whenToUse": "Percorsi con testi più lunghi o tempi da mostrare, o di 5 passi.",
+					"fixture": "Timeline",
+					"preview": "/catalogo/process/timeline/",
+					"screenshots": {
+						"desktop": "img/process-timeline-desktop.webp",
+						"mobile": "img/process-timeline-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`passi-numerati` · `timeline`",
+					"constraints": {
+						"values": [
+							"passi-numerati",
+							"timeline"
+						]
+					},
+					"label": "Variante",
+					"hint": "passi-numerati: griglia di passi con il numero · timeline: passi in colonna lungo una linea verticale"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "max 40",
+					"constraints": {
+						"maxLength": 40
+					},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Titolo della sezione, al massimo 70 caratteri"
+				},
+				{
+					"path": "intro",
+					"type": "testo",
+					"required": false,
+					"limits": "max 240",
+					"constraints": {
+						"maxLength": 240
+					},
+					"label": "Introduzione",
+					"hint": "Una frase che presenta il percorso, al massimo 240 caratteri"
+				},
+				{
+					"path": "steps",
+					"type": "elenco",
+					"required": true,
+					"limits": "3–6 voci",
+					"constraints": {
+						"minItems": 3,
+						"maxItems": 6
+					},
+					"label": "Passi",
+					"hint": "Da 3 a 6 passi, nell’ordine in cui avvengono"
+				},
+				{
+					"path": "steps[].title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 50",
+					"constraints": {
+						"maxLength": 50
+					},
+					"label": "Titolo del passo",
+					"hint": "Al massimo 50 caratteri"
+				},
+				{
+					"path": "steps[].text",
+					"type": "testo",
+					"required": true,
+					"limits": "max 200",
+					"constraints": {
+						"maxLength": 200
+					},
+					"label": "Descrizione",
+					"hint": "Cosa succede in questo passo, al massimo 200 caratteri"
+				},
+				{
+					"path": "steps[].timing",
+					"type": "testo",
+					"required": false,
+					"limits": "max 30",
+					"constraints": {
+						"maxLength": 30
+					},
+					"label": "Tempi",
+					"hint": "Facoltativo, es. «In giornata» o «Entro 3 giorni»; solo se il tempo è reale"
+				},
+				{
+					"path": "cta",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante",
+					"hint": "Facoltativo, dopo l’ultimo passo, es. «Chiedi un preventivo»"
+				},
+				{
+					"path": "cta.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "cta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "cta.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "cta",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "cta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "cta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				}
+			],
+			"example": {
+				"fixture": "Passi numerati",
+				"target": "sections",
+				"json": {
+					"type": "process",
+					"variant": "passi-numerati",
+					"eyebrow": "Come lavoriamo",
+					"title": "Dalla prima chiamata al lavoro finito",
+					"intro": "Quattro passi, sempre gli stessi: sai in ogni momento a che punto siamo.",
+					"steps": [
+						{
+							"title": "Ci racconti cosa ti serve",
+							"text": "Ci chiami o ci scrivi: ascoltiamo il problema e fissiamo un sopralluogo."
+						},
+						{
+							"title": "Sopralluogo e preventivo",
+							"text": "Vediamo il lavoro sul posto e ti lasciamo un preventivo scritto, senza impegno."
+						},
+						{
+							"title": "Eseguiamo il lavoro",
+							"text": "Lavoriamo nei giorni concordati, tenendo in ordine gli spazi."
+						},
+						{
+							"title": "Controllo e consegna",
+							"text": "Controlliamo insieme il risultato e ti lasciamo i documenti del lavoro."
+						}
+					],
+					"cta": {
+						"label": "Chiedi un preventivo",
+						"href": "@telefono"
+					}
+				}
+			}
+		},
+		{
+			"type": "features",
+			"name": "Punti di forza",
+			"scope": "page",
+			"category": "contenuti",
+			"version": "1.0.0",
+			"interactive": false,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Da 3 a 6 vantaggi o punti di forza dell’attività, ognuno con icona, titolo e frase breve.",
+			"whenToUse": "Per dire perché scegliere l’attività: garanzie, modo di lavorare, cosa la distingue. Di solito dopo i servizi o prima della cta.",
+			"avoidWhen": "Per elencare i servizi (lì va services) o per dare numeri e risultati (lì va about con-numeri, con la fonte). Non per promesse che non si possono dimostrare.",
+			"rules": [],
+			"variants": [
+				{
+					"name": "3-colonne",
+					"description": "Griglia su 3 colonne (2 su tablet, 1 su mobile) con icona, titolo e testo centrati sul punto.",
+					"whenToUse": "Punti brevi e di pari peso, da 3 o 6 (le righe restano piene).",
+					"fixture": "3 colonne",
+					"preview": "/catalogo/features/3-colonne/",
+					"screenshots": {
+						"desktop": "img/features-3-colonne-desktop.webp",
+						"mobile": "img/features-3-colonne-mobile.webp"
+					}
+				},
+				{
+					"name": "lista",
+					"description": "Titolo e introduzione a sinistra, a destra un elenco verticale di punti con icona.",
+					"whenToUse": "Quando i punti sono 4 o 5, o hanno testi più lunghi e si leggono meglio uno sotto l’altro.",
+					"fixture": "Lista",
+					"preview": "/catalogo/features/lista/",
+					"screenshots": {
+						"desktop": "img/features-lista-desktop.webp",
+						"mobile": "img/features-lista-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`3-colonne` · `lista`",
+					"constraints": {
+						"values": [
+							"3-colonne",
+							"lista"
+						]
+					},
+					"label": "Variante",
+					"hint": "3-colonne: griglia di punti con icona · lista: titolo a sinistra, elenco di punti a destra"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "max 40",
+					"constraints": {
+						"maxLength": 40
+					},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Titolo della sezione, al massimo 70 caratteri"
+				},
+				{
+					"path": "intro",
+					"type": "testo",
+					"required": false,
+					"limits": "max 240",
+					"constraints": {
+						"maxLength": 240
+					},
+					"label": "Introduzione",
+					"hint": "Una frase che presenta i punti, al massimo 240 caratteri"
+				},
+				{
+					"path": "items",
+					"type": "elenco",
+					"required": true,
+					"limits": "3–6 voci",
+					"constraints": {
+						"minItems": 3,
+						"maxItems": 6
+					},
+					"label": "Punti di forza",
+					"hint": "Da 3 a 6 punti"
+				},
+				{
+					"path": "items[].icon",
+					"type": "icona",
+					"required": true,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Scegli l’icona che richiama il punto di forza"
+				},
+				{
+					"path": "items[].title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 50",
+					"constraints": {
+						"maxLength": 50
+					},
+					"label": "Titolo del punto",
+					"hint": "Al massimo 50 caratteri"
+				},
+				{
+					"path": "items[].text",
+					"type": "testo",
+					"required": true,
+					"limits": "max 160",
+					"constraints": {
+						"maxLength": 160
+					},
+					"label": "Descrizione",
+					"hint": "Una o due frasi, al massimo 160 caratteri"
+				}
+			],
+			"example": {
+				"fixture": "3 colonne",
+				"target": "sections",
+				"json": {
+					"type": "features",
+					"variant": "3-colonne",
+					"eyebrow": "Perché sceglierci",
+					"title": "Un lavoro fatto bene, con tempi e costi chiari",
+					"intro": "Prima di iniziare ti diciamo cosa facciamo, quanto costa e quando finiamo.",
+					"items": [
+						{
+							"icon": "preventivo",
+							"title": "Preventivo scritto",
+							"text": "Ricevi il costo del lavoro per iscritto, prima di iniziare."
+						},
+						{
+							"icon": "calendario",
+							"title": "Appuntamenti rispettati",
+							"text": "Concordiamo un giorno e una fascia oraria, e li manteniamo."
+						},
+						{
+							"icon": "garanzia",
+							"title": "Lavori garantiti",
+							"text": "Se qualcosa non va, torniamo a sistemarlo senza costi in più."
+						},
+						{
+							"icon": "pulizie",
+							"title": "Cantiere in ordine",
+							"text": "A fine giornata lasciamo gli spazi puliti e pronti da usare."
+						},
+						{
+							"icon": "telefono",
+							"title": "Un solo referente",
+							"text": "Per qualsiasi dubbio chiami sempre la stessa persona."
+						},
+						{
+							"icon": "euro",
+							"title": "Prezzi senza sorprese",
+							"text": "Il prezzo concordato è quello che paghi, salvo tuoi cambi."
+						}
+					]
+				}
+			}
+		},
+		{
 			"type": "tabs",
 			"name": "Schede",
 			"scope": "page",

@@ -1,0 +1,53 @@
+---
+import Icon from '@/core/ui/Icon.astro';
+import Section from '@/core/ui/Section.astro';
+import type { FeaturesProps } from './schema';
+
+type Props = FeaturesProps;
+
+const { id, tone, variant, eyebrow, title, intro, items } = Astro.props;
+
+const isLista = variant === 'lista';
+// 4 punti stanno su due colonne, gli altri su tre: niente card sola sull'ultima riga.
+const twoColumns = items.length === 4;
+---
+
+<Section id={id} tone={tone}>
+	<div class:list={['grid gap-12', isLista && 'lg:grid-cols-[2fr_3fr] lg:gap-16']}>
+		<div class:list={[!isLista && 'mx-auto max-w-2xl text-center']}>
+			{eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider text-primary uppercase">{eyebrow}</p>}
+			<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+			{intro && <p class="mt-4 text-lg text-pretty text-fg-muted">{intro}</p>}
+		</div>
+
+		{
+			isLista ? (
+				<ul class="grid gap-8">
+					{items.map((item) => (
+						<li class="flex gap-5">
+							<span class="flex size-12 shrink-0 items-center justify-center rounded-button bg-primary text-primary-fg">
+								<Icon name={item.icon} size="lg" />
+							</span>
+							<div>
+								<h3 class="text-xl font-bold tracking-tight text-balance">{item.title}</h3>
+								<p class="mt-1 text-pretty text-fg-muted">{item.text}</p>
+							</div>
+						</li>
+					))}
+				</ul>
+			) : (
+				<ul class:list={['grid gap-10 sm:grid-cols-2', twoColumns ? 'mx-auto w-full max-w-4xl' : 'lg:grid-cols-3']}>
+					{items.map((item) => (
+						<li>
+							<span class="flex size-12 items-center justify-center rounded-button bg-primary text-primary-fg">
+								<Icon name={item.icon} size="lg" />
+							</span>
+							<h3 class="mt-5 text-xl font-bold tracking-tight text-balance">{item.title}</h3>
+							<p class="mt-2 text-pretty text-fg-muted">{item.text}</p>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</div>
+</Section>
