@@ -13,10 +13,10 @@ Per il Builder, solo nel Project «Libreria blocchi» e solo su task approvato d
 
    ```sh
    git remote get-url origin                # https://github.com/frankytheme-cyber/site-starter.git
-   grep -x "SITE_STARTER_LIBRARY=1" .env    # la riga c'è
+   echo "SITE_STARTER_LIBRARY=${SITE_STARTER_LIBRARY:-}"   # 1 (dall'env del Project)
    ```
 
-2. **Branch** `builder/blocchi-<lotto o tipo>` e PR in bozza al primo commit (skill `github-pr`).
+2. **Branch** della tua cartella (o `builder/blocchi-<lotto o tipo>` se sei su `main`) e PR in bozza al primo commit (skill `github-pr`).
 3. **Leggi:** il task (varianti dalla specifica, sezione 4, o dalla richiesta approvata), `src/blocks/README.md`, i blocchi di riferimento (`hero/`, `services/`, `cta/`, `header/`, `footer/`, `accordion/`, `tabs/`, `carousel/`), le primitive di `src/core/ui/` (in `/catalogo/ui`) e, se il blocco ha JavaScript, `docs/blocchi-interattivi.md`.
 4. **Crea `src/blocks/<tipo>/`** (kebab-case) con quattro file:
    - `schema.ts`: `export const schema = ({ image }: SchemaContext) => z.object({…})`, `variant` come `z.enum`, limiti su ogni campo e `.describe("Etichetta|Aiuto")` in italiano; immagini con `imageSchema(image)`, icone con `iconSchema()`, pulsanti con `ctaSchema`; sopra ogni `refine`/`superRefine` il commento `// rule: <testo>`. Niente dati dell'attività: il componente li legge con `getSiteSettings()`.

@@ -11,7 +11,7 @@ Per il Builder, che prepara la mappa e poi applica le righe approvate, e per il 
 
 **Builder: proposta**
 
-1. **Branch `lancio`** (skill `github-pr`): la PR del sito c'è già.
+1. **Destinazione `lancio`** (skill `github-pr`, `DEST=lancio`): la PR del sito c'è già.
 2. **Raccogli i vecchi URL** dalla sitemap, se c'è (con un indice di sitemap, ripeti per ognuna):
 
    ```sh

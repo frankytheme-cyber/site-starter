@@ -21,12 +21,7 @@ Per il Builder, nella repo del sito, mai nella libreria. Prima di te Simone ha c
    git ls-remote --exit-code --heads origin lancio && echo "STOP: lancio esiste già"
    ```
 
-2. **Branch `lancio`** da `main` (skill `github-pr`, passo 1): l'unico branch del sito, su cui lavoreranno tutti i task fino alla messa online.
-
-   ```sh
-   git fetch origin
-   git switch --no-track -c lancio origin/main
-   ```
+2. **Branch.** Resti sul branch della tua cartella, nato da `main` (skill `github-pr`, passo 1; nella cartella del Project, su `main`, crea `builder/avvio-sito`). `lancio`, l'unico branch del sito su cui lavoreranno tutti i task fino alla messa online, nasce su GitHub con il push del passo 6.
 
 3. **Dipendenze** senza toccare `package-lock.json` (`site:init` vuole il working tree pulito):
 
@@ -52,7 +47,7 @@ Per il Builder, nella repo del sito, mai nella libreria. Prima di te Simone ha c
 
    `npm run check` senza errori; gli avvisi `DA-COMPILARE` sono attesi, i dati arrivano dopo il brief.
 
-6. **Commit, push e PR in bozza** verso `main` (skill `github-pr`, passi 3-6), con il titolo «Lancio: <nome della repo>». È l'unica PR del sito: la useranno tutti i task e Simone la unirà al cancello 3.
+6. **Commit, push e PR in bozza** verso `main` (skill `github-pr`, passi 3-6) con `DEST=lancio`: il push crea `lancio`. Titolo della PR «Lancio: <nome della repo>». È l'unica PR del sito: la useranno tutti i task e Simone la unirà al cancello 3.
 
 
    ```sh

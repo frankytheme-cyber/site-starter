@@ -250,7 +250,7 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 
 **Regole comuni a tutti gli agenti**
 
-1. **Branch e PR** (skill `github-pr`). In un sito un solo branch, `lancio`, con una sola **PR in bozza** verso `main` aperta all'avvio: tutti i task ci lavorano (solo i propri file, `git pull --rebase` prima del push) e i cancelli usano la stessa anteprima Vercel. Nella libreria ogni task lavora su un branch proprio e apre subito la sua PR in bozza.
+1. **Branch e PR** (skill `github-pr`). In un sito un solo branch, `lancio`, con una sola **PR in bozza** verso `main` aperta all'avvio: tutti i task ci lavorano, ognuno nella sua cartella isolata di Paperclip (worktree), allineandosi a `origin/lancio` e facendo push su `lancio`; i cancelli usano la stessa anteprima Vercel. Nella libreria ogni task lavora su un branch proprio e apre subito la sua PR in bozza.
 2. Prima di chiudere un task: `npm run qa`; nel sito, prima del cancello 3: `npm run qa -- --strict`.
 3. Si legge `AGENTS.md` (tramite `CLAUDE.md`) e la scheda del catalogo prima di usare un blocco.
 4. Un dato mancante non si inventa: si chiede al PM, che lo chiede a te.
@@ -461,7 +461,7 @@ PASSA A: Designer (revisione visiva sul catalogo) -> CANCELLO: approvazione di S
 
 **Sequenza dei lotti della libreria**: 1) contact; 2) features, about, process; 3) gallery, testimonials, carousel; 4) areas. Un lotto parte solo dopo il merge del precedente, così ogni lotto riusa quello che il precedente ha stabilito.
 
-**Sequenza dei task di un sito**: Avvio (Builder) → Brief (PM) → cancello 1 → Design (Designer) e Dati, immagini, redirect (Builder) in parallelo → cancello 2 → QA → correzioni → SEO pre-lancio → cancello 3. Tutti i task lavorano sul branch `lancio` e sulla sua PR, che al cancello 3 Simone unisce a `main`.
+**Sequenza dei task di un sito**: Avvio (Builder) → Brief (PM) → cancello 1 → Dati, immagini, redirect (Builder) → Design (Designer), che compone con i dati e le foto già su `lancio` → cancello 2 → QA → correzioni → SEO pre-lancio → cancello 3. Tutti i task lavorano sul branch `lancio` e sulla sua PR, che al cancello 3 Simone unisce a `main`.
 
 ## Modello di brief
 
@@ -536,7 +536,7 @@ Stato: bozza | approvato il <data>
 - [ ] Spuntato "Template repository" su GitHub
 - [ ] `.env` locale con `SITE_STARTER_LIBRARY=1`; stessa variabile nella repo GitHub (Variables) e su Vercel
 - [ ] Account GitHub `simone-agenti`, invitato con permesso *Write*; token classic con scadenza a 90 giorni
-- [ ] Paperclip, Project "Libreria blocchi": repo, cartella locale, env come nella tabella sopra (con `SITE_STARTER_LIBRARY=1`)
+- [ ] Paperclip, Project "Libreria blocchi": repo nella cartella gestita da Paperclip (non il tuo clone), Execution Workspaces con «Enable isolated task checkouts» e «New tasks default to isolated checkout» attivi, env come nella tabella sopra (con `SITE_STARTER_LIBRARY=1`)
 - [ ] Istruzioni di ruolo dei 5 agenti incollate; skill create e assegnate
 - [ ] Agenti attivi solo su assegnazione; PM con controllo giornaliero; budget per Project
 - [ ] Skill in `docs/skill/` scritte con Claude Code e rilasciate
@@ -547,7 +547,7 @@ Stato: bozza | approvato il <data>
 - [ ] GitHub: Use this template, repo privata, invito a `simone-agenti`
 - [ ] Ruleset importato da `docs/github-ruleset-sito.json` (se hai Pro)
 - [ ] Clone in locale (GitHub Desktop) nella cartella dei siti
-- [ ] Paperclip: Add Project, Configuration → repo e cartella locale, env come nella tabella sopra (senza `SITE_STARTER_LIBRARY`)
+- [ ] Paperclip: Add Project, Configuration → repo nella cartella gestita da Paperclip (non il clone di GitHub Desktop), Execution Workspaces con le cartelle isolate attive e predefinite, env come nella tabella sopra (senza `SITE_STARTER_LIBRARY`)
 - [ ] Vercel: Import della repo
 - [ ] Task "Avvio sito" al Builder (`site:init`)
 - [ ] Brief con il PM → cancello 1

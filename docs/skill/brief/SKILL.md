@@ -9,7 +9,7 @@ Per il PM, nella repo del sito già avviata (task «Avvio sito» fatto). Il brie
 
 ## Passi
 
-1. **Branch `lancio`** (skill `github-pr`): la PR del sito c'è già, l'ha aperta il Builder all'avvio.
+1. **Destinazione `lancio`** (skill `github-pr`, `DEST=lancio`): la PR del sito c'è già, l'ha aperta il Builder all'avvio.
 2. **Copia il modello**; se `docs/brief.md` c'è già, riprendi da lì:
 
    ```sh

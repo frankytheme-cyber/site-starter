@@ -23,7 +23,7 @@ PASSA A: <agente successivo> | CANCELLO: <se serve approvazione>
 | Avvio sito | Builder · sito | `avvio-sito` | `blocks.lock.json`, `docs/sito.md`, `cms.repo` in `src/site.config.ts`, branch `lancio` e PR in bozza verso `main` | lock scritto da `site:init`; `npm run check` senza errori | PM: brief |
 | Design del sito | Designer · sito | `ricetta-pagina` | `theme.json`, `layout.json`, `navigation.json`, `src/content/pages/*.json`, `docs/nota-design.md`, PR | una ricetta per ogni pagina del brief; nota completa | PM: cancello 2 |
 | Pagina «nome» | Designer · sito | `ricetta-pagina` | `src/content/pages/<slug>.json`, voce di menu, nota aggiornata, PR | solo blocchi del catalogo, testi dal brief | QA |
-| Dati e immagini | Builder · sito | — | `site.json`, foto in `src/assets/images/`, `defaultOgImage` vera, favicon dal logo se c'è, PR | solo dati del brief approvato; nessun `DA-COMPILARE` in `site.json`; `alt` descrittivi | PM: cancello 2 |
+| Dati e immagini | Builder · sito | — | `site.json`, foto in `src/assets/images/`, `defaultOgImage` vera, favicon dal logo se c'è, PR | solo dati del brief approvato; nessun `DA-COMPILARE` in `site.json`; `alt` descrittivi | Designer: design |
 | Proposta redirect | Builder · sito | `redirect` | `docs/redirects.md`, PR | ogni vecchio URL con destinazione o motivo; `vercel.json` non toccato | SEO (rischi), PM: cancello 2 |
 | Redirect approvati | Builder · sito | `redirect` | `vercel.json`, stato in `docs/redirects.md` | solo le righe approvate | QA |
 | QA | QA · sito o libreria | `qa` | rapporto nel task, richieste | — | PM |

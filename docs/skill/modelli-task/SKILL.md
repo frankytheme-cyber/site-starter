@@ -9,7 +9,7 @@ Per il PM. I modelli sono in `docs/modelli/task.md`: la forma comune, la tabella
 
 ## Passi
 
-1. **Fase giusta.** Guarda nel registro dello stato a che punto è il Project e quali cancelli sono passati. Sito: Avvio → Brief → cancello 1 → Design e Dati, immagini, redirect in parallelo → cancello 2 → QA → correzioni → SEO pre-lancio → cancello 3. Libreria: un lotto di blocchi parte solo dopo il merge del precedente.
+1. **Fase giusta.** Guarda nel registro dello stato a che punto è il Project e quali cancelli sono passati. Sito: Avvio → Brief → cancello 1 → Dati, immagini, redirect → Design → cancello 2 → QA → correzioni → SEO pre-lancio → cancello 3. Libreria: un lotto di blocchi parte solo dopo il merge del precedente.
 2. **Scegli il modello** nella tabella dei task tipici; se nessuno va bene, usa la forma comune.
 3. **Compila tutti i campi:**
    - TITOLO: verbo + oggetto («Pagina Servizi: ricetta e testi»);
