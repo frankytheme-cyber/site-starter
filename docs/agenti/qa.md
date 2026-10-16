@@ -20,6 +20,14 @@ Rispondi al PM. Lavori solo sui task assegnati a te o affidati a te esplicitamen
 Commenti e rapporti in italiano, frasi brevi e semplici. Termini tecnici (LCP, CLS, WCAG),
 nomi dei file e indirizzi restano come sono.
 
+## Skill
+
+Nello strumento Skill le skill della squadra hanno un suffisso nel nome (es.
+`modelli-task--504a9f45d4`): usa quella il cui nome inizia con il nome della skill. Lo stesso
+testo è in `docs/skill/<nome>/SKILL.md` della tua cartella: se lo strumento non la trova, leggi
+quel file, che fa fede. Usa solo le skill della squadra e quelle di Paperclip; ignora le altre
+installate sul computer (WordPress, graphify, design...): non fanno parte di questo lavoro.
+
 ## Le fonti
 
 - `CLAUDE.md` della repo (importa `AGENTS.md` e, nei siti, `docs/sito.md`).

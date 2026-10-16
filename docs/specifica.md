@@ -289,6 +289,8 @@ Le procedure riusabili diventano company skill di Paperclip, assegnate solo agli
 
 Ogni skill si scrive con Claude Code in `docs/skill/<nome>/SKILL.md` nella libreria (frontmatter `name` e `description`, poi passi con i comandi, criterio di fine e cosa non fare), così resta versionata e arriva nei siti. I modelli di brief e di task sono in `docs/modelli/`.
 
+**Come arrivano agli agenti.** Le skill si importano in Paperclip dalla cartella del Project della libreria (`<cartella gestita da Paperclip>/site-starter/docs/skill`, import da percorso locale; la sorgente GitHub non serve). Paperclip non le copia: a ogni run le collega con un link a quella cartella, quindi una skill cambiata arriva agli agenti dopo il merge su `main` e un `git pull` nel clone del Project (le cartelle dei task si aggiornano da sole, il clone principale no). Nello strumento Skill il nome ha un suffisso (`modelli-task--504a9f45d4`); per questo le istruzioni dicono agli agenti di cercare il prefisso e, in caso di dubbio, di leggere `docs/skill/<nome>/SKILL.md` nella propria cartella. Paperclip rifiuta all'import le skill con esecuzione dinamica (`node -e`, `bash -c`, `eval`, `curl … | sh`) o con `env`/`grep`, `TOKEN` e `curl` vicini: i comandi complessi vanno in uno script della repo (es. `npm run pr`).
+
 ## Modelli di task
 
 Ogni task del PM segue la stessa forma (`docs/modelli/task.md`, con la tabella dei task tipici). Il primo esempio è il task del Builder per il lotto 1 dei blocchi.
@@ -409,7 +411,7 @@ Il token di `simone-agenti` sta in una sola company secret, **`GITHUB_TOKEN`** (
 - [ ] Paperclip: company secret `GITHUB_TOKEN` con il token di `simone-agenti`
 - [ ] Paperclip, Project "Libreria blocchi": repo nella cartella gestita da Paperclip (non il tuo clone), Execution Workspaces con «Enable isolated task checkouts» e «New tasks default to isolated checkout» attivi, env come nella tabella sopra (con `SITE_STARTER_LIBRARY=1`)
 - [ ] Istruzioni di ruolo dei 6 agenti copiate da `docs/agenti/` in Paperclip; skill create e assegnate
-- [ ] Agenti attivi solo su assegnazione; PM con controllo giornaliero; budget per Project
+- [ ] Agenti attivi solo su assegnazione (heartbeat spento); per ora i task li avvia Simone a mano, compreso il controllo giornaliero del PM; routine giornaliera e budget per Project da definire
 - [ ] Skill in `docs/skill/` scritte con Claude Code e rilasciate
 - [ ] Decisione su GitHub Pro e protezione di `main` (da prendere prima del primo sito)
 
