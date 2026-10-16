@@ -285,7 +285,7 @@ Le procedure riusabili diventano company skill di Paperclip, assegnate solo agli
 | `qa` | QA | Procedura delle istruzioni QA, formato delle richieste | Rapporto al PM |
 | `seo-prelancio` | SEO | Checklist delle istruzioni SEO | Rapporto al PM |
 | `redirect` | Builder, SEO | Raccolta dei vecchi URL dalla sitemap o da una scansione, mappa, stato della decisione | Mappa decisa da Simone |
-| `github-pr` | PM, Designer, Builder | Branch (`lancio` nei siti, uno per task nella libreria), commit, push senza token nell'URL, PR in bozza con l'API GitHub via curl (`$GH_TOKEN`), link nel task; mai merge | PR in bozza aperta e linkata nel task |
+| `github-pr` | PM, Designer, Builder | Branch (`lancio` nei siti, uno per task nella libreria), commit, push senza token nell'URL, PR in bozza con `npm run pr` (API di GitHub, token dall'env), link nel task; mai merge | PR in bozza aperta e linkata nel task |
 
 Ogni skill si scrive con Claude Code in `docs/skill/<nome>/SKILL.md` nella libreria (frontmatter `name` e `description`, poi passi con i comandi, criterio di fine e cosa non fare), così resta versionata e arriva nei siti. I modelli di brief e di task sono in `docs/modelli/`.
 
@@ -381,20 +381,24 @@ Stato: bozza | approvato il <data>
 
 **Env di ogni Project Paperclip (libreria e siti)**
 
-| Variabile | Valore |
-| --- | --- |
-| `GH_TOKEN`, `GITHUB_TOKEN` | Token classic di `simone-agenti` (segreti) |
-| `GIT_AUTHOR_NAME`, `GIT_COMMITTER_NAME` | `simone-agenti` |
-| `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_EMAIL` | `frankytheme+agenti@gmail.com` |
-| `GIT_CONFIG_COUNT` | `2` |
-| `GIT_CONFIG_KEY_0` | `credential.helper` |
-| `GIT_CONFIG_VALUE_0` | *(vuoto)* |
-| `GIT_CONFIG_KEY_1` | `credential.helper` |
-| `GIT_CONFIG_VALUE_1` | `!f() { echo username=x-access-token; echo "password=$GITHUB_TOKEN"; }; f` |
-| `SITE_STARTER_LIBRARY` | `1` SOLO nel Project della libreria |
+Il token di `simone-agenti` sta in una sola company secret, **`GITHUB_TOKEN`** (Board → Secrets; il nome esatto, in maiuscolo, conta). L'env del Project la richiama, non la copia: Paperclip la risolve all'avvio di ogni run e la passa all'agente come variabile. Con quel nome la usa anche per i suoi `git fetch` (clone del Project e cartelle dei task), indispensabili con le repo private.
 
+| Variabile | Tipo | Valore |
+| --- | --- | --- |
+| `GH_TOKEN`, `GITHUB_TOKEN` | Secret | `GITHUB_TOKEN`, versione `latest` |
+| `GIT_AUTHOR_NAME`, `GIT_COMMITTER_NAME` | Testo | `simone-agenti` |
+| `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_EMAIL` | Testo | `frankytheme+agenti@gmail.com` |
+| `GIT_CONFIG_COUNT` | Testo | `2` |
+| `GIT_CONFIG_KEY_0` | Testo | `credential.helper` |
+| `GIT_CONFIG_VALUE_0` | Testo | *(vuoto: azzera gli helper ereditati, es. il portachiavi del Mac)* |
+| `GIT_CONFIG_KEY_1` | Testo | `credential.helper` |
+| `GIT_CONFIG_VALUE_1` | Testo | `!f() { echo username=x-access-token; echo "password=$GITHUB_TOKEN"; }; f` (il riferimento, non il token) |
+| `SITE_STARTER_LIBRARY` | Testo | `1` SOLO nel Project della libreria |
+
+- Il token mai come testo nell'env: le API locali di Paperclip restituiscono in chiaro i valori di tipo testo. Il «Store as secret» che Paperclip propone su nome ed email non serve.
+- Nel `.env` locale niente token: lì solo `SITE_STARTER_LIBRARY=1`, nella libreria. Gli agenti non lo leggono e gli script non caricano i token da file.
 - Nessuna connessione GitHub nei Connectors assegnata agli agenti: verso GitHub passano solo da queste variabili.
-- Il token si rinnova ogni 90 giorni, e va aggiornato in tutti i Project.
+- Il token si rinnova ogni 90 giorni: basta una nuova versione della secret `GITHUB_TOKEN` (Update value), che vale subito per tutti i Project.
 
 **Messa in servizio della squadra (una volta)**
 
@@ -402,6 +406,7 @@ Stato: bozza | approvato il <data>
 - [ ] Spuntato "Template repository" su GitHub
 - [ ] `.env` locale con `SITE_STARTER_LIBRARY=1`; stessa variabile nella repo GitHub (Variables) e su Vercel
 - [ ] Account GitHub `simone-agenti`, invitato con permesso *Write*; token classic con scadenza a 90 giorni
+- [ ] Paperclip: company secret `GITHUB_TOKEN` con il token di `simone-agenti`
 - [ ] Paperclip, Project "Libreria blocchi": repo nella cartella gestita da Paperclip (non il tuo clone), Execution Workspaces con «Enable isolated task checkouts» e «New tasks default to isolated checkout» attivi, env come nella tabella sopra (con `SITE_STARTER_LIBRARY=1`)
 - [ ] Istruzioni di ruolo dei 6 agenti copiate da `docs/agenti/` in Paperclip; skill create e assegnate
 - [ ] Agenti attivi solo su assegnazione; PM con controllo giornaliero; budget per Project

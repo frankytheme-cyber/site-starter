@@ -5,7 +5,7 @@ description: Usala ogni volta che un task cambia file in una repo, per branch, c
 
 # Branch, commit e PR in bozza
 
-Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si apre con l'API di GitHub via `curl`. Identità git (`simone-agenti`) e token arrivano dall'env del Project: `GH_TOKEN` e `GITHUB_TOKEN` sono lo stesso token; `git` lo legge da `GITHUB_TOKEN` con il credential helper dell'env, `curl` lo usa da `GH_TOKEN`.
+Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si apre con `npm run pr`, uno script della repo che usa l'API di GitHub. Identità git (`simone-agenti`) e token arrivano dalle variabili del Project: `git` usa il token con il credential helper, `npm run pr` lo legge da solo. Non serve mai scriverlo in un comando.
 
 ## Passi
 
@@ -69,36 +69,26 @@ Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si a
 
    Push rifiutato perché nel frattempo qualcuno ha pushato: ripeti il blocco. Se il rebase si ferma per un conflitto su file che non sono del tuo task: `git rebase --abort` e avvisa il PM, senza risolverlo tu.
 
-5. **PR in bozza al primo push**, non a fine lavoro: la CI gira solo sui branch con una PR. Prima guarda se c'è già:
+5. **PR in bozza al primo push**, non a fine lavoro: la CI gira solo sui branch con una PR. `npm run pr` cerca la PR aperta da `DEST` e, se non c'è e gli dai un titolo, la apre in bozza; stampa l'indirizzo della PR o l'errore di GitHub.
 
    ```sh
-   REPO=$(git remote get-url origin | sed -E 's#^https://github\.com/##; s#\.git$##')
-   DEST=<branch di destinazione>
-   curl -sS -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-     "https://api.github.com/repos/$REPO/pulls?state=open&head=${REPO%%/*}:$DEST" \
-     | node -e 'let s="";process.stdin.on("data",(d)=>(s+=d)).on("end",()=>{const r=[JSON.parse(s)].flat();console.log(r.map((p)=>p.html_url??p.message).join("\n")||"nessuna PR aperta")})'
+   npm run pr -- --dest <branch di destinazione>    # indirizzo della PR, o «nessuna PR aperta»
    ```
 
-   Con «nessuna PR aperta», aprila (`BASE` è `main` o il branch di partenza del task):
+   Con «nessuna PR aperta», scrivi il corpo in `reports/pr.md` (la cartella `reports/` non va nei commit) e aprila; `--base` è `main` o il branch di partenza del task:
 
    ```sh
-   REPO=$(git remote get-url origin | sed -E 's#^https://github\.com/##; s#\.git$##')
-   DEST=<branch di destinazione>
-   BASE=main
-   TITOLO="Pagina Servizi: ricetta e testi"
-   CORPO="Task: <titolo e link del task>
+   cat > reports/pr.md <<'TESTO'
+   Task: <titolo e link del task>
 
    - <cosa cambia, un punto per riga>
 
-   Controlli: <esito di npm run qa>"
-   node -e 'const [title, head, base, body] = process.argv.slice(1); process.stdout.write(JSON.stringify({ title, head, base, body, draft: true }))' \
-     "$TITOLO" "$DEST" "$BASE" "$CORPO" \
-     | curl -sS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-       --data-binary @- "https://api.github.com/repos/$REPO/pulls" \
-     | node -e 'let s="";process.stdin.on("data",(d)=>(s+=d)).on("end",()=>{const r=JSON.parse(s);console.log(r.html_url??`errore: ${r.message} ${JSON.stringify(r.errors??[])}`)})'
+   Controlli: <esito di npm run qa>
+   TESTO
+   npm run pr -- --dest <branch di destinazione> --base main --title "Pagina Servizi: ricetta e testi" --body-file reports/pr.md
    ```
 
-   Stampa l'indirizzo della PR o l'errore di GitHub. I push successivi (passo 4) la aggiornano da soli.
+   I push successivi (passo 4) aggiornano la PR da soli.
 
 6. **Link nel task:** l'indirizzo della PR va nel task Paperclip appena la apri; a fine lavoro aggiungi l'esito dei controlli.
 

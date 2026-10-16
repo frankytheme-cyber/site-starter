@@ -21,7 +21,7 @@ Per il QA. Verifichi, non correggi: ogni problema diventa una richiesta all'agen
 2. **Controlli:** nel sito `npm run qa -- --strict`, nella libreria `npm run qa`. Poi gli errori dal report:
 
    ```sh
-   node -e 'const r = JSON.parse(require("fs").readFileSync("reports/qa.json", "utf8")); for (const f of r.findings.filter((f) => f.level === "error")) console.log([f.check, f.file, f.where, f.message, f.hint].filter(Boolean).join(" | "))'
+   grep -n -A1 "❌" reports/qa.md    # ogni errore con file, punto e suggerimento (riga sotto, dopo →)
    ```
 
    Gli avvisi sono in `reports/qa.md` e vanno nel rapporto.

@@ -95,6 +95,7 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run check:template` | Libreria: il template inizializzato come sito deve fallire `qa --strict` solo per i segnaposto (job CI `template-as-site`) |
 | `npm run release -- vX.Y.Z` | Libreria: versione in `library.manifest.json`, `CHANGELOG.md` e `docs/specifica.md`, `gen:catalog`, `screenshots`, `check`, commit e tag (working tree pulito; push a mano) |
 | `npm run cms:local`      | `decap-server` per provare `/admin/` in locale, senza GitHub |
+| `npm run pr -- --dest <branch>` | Agenti: cerca la PR aperta dal branch; con `--title` (e `--body-file`) la apre in bozza (skill `github-pr`) |
 
 In CI (`.github/workflows/ci.yml`, gestito): `check` sulle pull request, sui push su `main` e a mano; `qa` (e nella libreria `template-as-site`) sulle pull request; `--strict` sulle pull request verso `main`. Dettagli e protezione di `main` in `docs/controlli.md`.
 
