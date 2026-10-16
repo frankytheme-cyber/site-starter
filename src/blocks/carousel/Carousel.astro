@@ -10,7 +10,7 @@ type Props = CarouselProps;
 
 const { id, tone, variant, eyebrow, title, intro, items } = Astro.props;
 
-const isCard = variant === 'card';
+const isCard = variant === 'immagini-testo';
 // Larghezze delle slide (CarouselSlide): foto quasi a tutta riga, due da md; card fino a tre da lg.
 const sizes = isCard
 	? '(min-width: 1152px) 352px, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 85vw'

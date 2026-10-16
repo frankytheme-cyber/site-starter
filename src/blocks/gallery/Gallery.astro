@@ -1,0 +1,247 @@
+---
+import { getImage } from 'astro:assets';
+import CarouselTrack from '@/core/ui/Carousel.astro';
+import CarouselSlide from '@/core/ui/CarouselSlide.astro';
+import Icon from '@/core/ui/Icon.astro';
+import Img from '@/core/ui/Img.astro';
+import Section from '@/core/ui/Section.astro';
+import type { GalleryProps } from './schema';
+
+type Props = GalleryProps;
+
+const { id, tone, variant, eyebrow, title, intro, items } = Astro.props;
+
+// Griglia: il link porta alla foto grande (senza JS apre il file, con JS la finestra).
+const full = variant === 'griglia-popup' ? await Promise.all(items.map((item) => getImage({ src: item.image.src, width: 1600 }))) : [];
+---
+
+<Section id={id} tone={tone} data-gallery>
+	<div class="max-w-2xl">
+		{eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider text-primary uppercase">{eyebrow}</p>}
+		<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+		{intro && <p class="mt-4 text-lg text-pretty text-fg-muted">{intro}</p>}
+	</div>
+
+	{
+		variant === 'griglia-popup' && (
+			<>
+				<ul class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
+					{items.map((item, index) => (
+						<li>
+							<a
+								href={full[index].src}
+								data-gallery-open
+								data-caption={item.caption}
+								class="group block overflow-hidden rounded-box"
+							>
+								<Img
+									src={item.image.src}
+									alt={item.image.alt}
+									sizes="(min-width: 1152px) 368px, (min-width: 768px) 31vw, 47vw"
+									class="aspect-square w-full object-cover motion-safe:transition-transform motion-safe:duration-300 group-hover:motion-safe:scale-105"
+								/>
+								{item.caption && <span class="sr-only">{item.caption}</span>}
+							</a>
+						</li>
+					))}
+				</ul>
+
+				<dialog
+					data-gallery-dialog
+					aria-label="Foto ingrandita"
+					class="m-0 h-dvh max-h-none w-full max-w-none border-0 bg-black/90 p-0 text-white backdrop:bg-black/80"
+				>
+					<div data-gallery-stage class="flex h-full flex-col p-4 sm:p-6">
+						<div class="flex items-center justify-between gap-4">
+							<p data-gallery-count class="text-sm" aria-live="polite" />
+							<button type="button" data-gallery-close class="flex size-11 items-center justify-center rounded-button bg-white/15 hover:bg-white/25">
+								<Icon name="chiudi" size="lg" label="Chiudi la foto" />
+							</button>
+						</div>
+						<div data-gallery-stage class="flex min-h-0 flex-1 items-center justify-center gap-2 py-4 sm:gap-4">
+							<button type="button" data-gallery-prev class="flex size-11 shrink-0 items-center justify-center rounded-button bg-white/15 hover:bg-white/25">
+								<Icon name="freccia-sinistra" size="lg" label="Foto precedente" />
+							</button>
+							<img data-gallery-image alt="" class="max-h-full min-w-0 max-w-full object-contain" />
+							<button type="button" data-gallery-next class="flex size-11 shrink-0 items-center justify-center rounded-button bg-white/15 hover:bg-white/25">
+								<Icon name="freccia-destra" size="lg" label="Foto successiva" />
+							</button>
+						</div>
+						<p data-gallery-caption class="min-h-6 text-center text-sm" />
+					</div>
+				</dialog>
+			</>
+		)
+	}
+
+	{
+		variant === 'prima-dopo' && (
+			<ul class:list={['mt-10 grid gap-8', items.length > 1 && 'md:grid-cols-2']}>
+				{items.map((item) => (
+					<li>
+						<figure>
+							<div data-gallery-compare class="gallery-compare relative grid gap-3 sm:grid-cols-2">
+								<div class="gallery-compare-before relative">
+									<Img
+										src={item.before!.src}
+										alt={item.before!.alt}
+										sizes="(min-width: 1152px) 544px, (min-width: 768px) 45vw, (min-width: 640px) 46vw, 92vw"
+										class="aspect-4/3 w-full rounded-box object-cover"
+									/>
+									<span class="gallery-compare-label absolute bottom-3 left-3 rounded-button bg-surface px-3 py-1 text-sm font-semibold text-surface-fg">Prima</span>
+								</div>
+								<div class="gallery-compare-after relative">
+									<Img
+										src={item.image.src}
+										alt={item.image.alt}
+										sizes="(min-width: 1152px) 544px, (min-width: 768px) 45vw, (min-width: 640px) 46vw, 92vw"
+										class="aspect-4/3 w-full rounded-box object-cover"
+									/>
+									<span class="gallery-compare-label absolute bottom-3 left-3 rounded-button bg-primary px-3 py-1 text-sm font-semibold text-primary-fg">Dopo</span>
+								</div>
+								<input
+									type="range"
+									min="0"
+									max="100"
+									value="50"
+									hidden
+									data-js-only
+									data-gallery-range
+									aria-label="Confronto prima e dopo: sposta per vedere più prima o più dopo"
+									class="peer absolute inset-0 z-10 size-full cursor-ew-resize touch-pan-y opacity-0"
+								/>
+								<span
+									hidden
+									data-js-only
+									data-gallery-handle
+									aria-hidden="true"
+									class="pointer-events-none absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 bg-primary-fg peer-focus-visible:bg-ring"
+								>
+									<span class="absolute top-1/2 left-1/2 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-fg">
+										<Icon name="freccia-sinistra" size="sm" />
+										<Icon name="freccia-destra" size="sm" />
+									</span>
+								</span>
+							</div>
+							{item.caption && <figcaption class="mt-3 text-sm text-fg-muted">{item.caption}</figcaption>}
+						</figure>
+					</li>
+				))}
+			</ul>
+		)
+	}
+
+	{
+		variant === 'slider' && (
+			<CarouselTrack label={title} class="mt-10">
+				{items.map((item) => (
+					<CarouselSlide width="full">
+						<figure>
+							<Img
+								src={item.image.src}
+								alt={item.image.alt}
+								sizes="(min-width: 1152px) 1152px, 100vw"
+								class="aspect-3/2 w-full rounded-box object-cover sm:aspect-16/9"
+							/>
+							{item.caption && <figcaption class="mt-3 text-center text-sm text-fg-muted">{item.caption}</figcaption>}
+						</figure>
+					</CarouselSlide>
+				))}
+			</CarouselTrack>
+		)
+	}
+</Section>
+
+<style is:global>
+	/* Prima e dopo: con JS le due foto si sovrappongono e il cursore svela il «prima». Senza JS stanno affiancate. */
+	[data-gallery-compare][data-js] {
+		display: block;
+		overflow: hidden;
+		border-radius: var(--radius-box);
+		--pos: 50%;
+	}
+	[data-gallery-compare][data-js] .gallery-compare-before {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+	}
+	[data-gallery-compare][data-js] .gallery-compare-before img,
+	[data-gallery-compare][data-js] .gallery-compare-after img {
+		border-radius: 0;
+	}
+	[data-gallery-compare][data-js] .gallery-compare-label {
+		bottom: 0.75rem;
+	}
+	[data-gallery-compare][data-js] .gallery-compare-after .gallery-compare-label {
+		left: auto;
+		right: 0.75rem;
+	}
+	[data-gallery-compare][data-js] [data-gallery-handle] {
+		left: var(--pos);
+	}
+</style>
+
+<script>
+	const compare = (root: HTMLElement) => {
+		const range = root.querySelector<HTMLInputElement>('[data-gallery-range]');
+		if (!range) return;
+		root.setAttribute('data-js', '');
+		const set = () => root.style.setProperty('--pos', `${range.value}%`);
+		range.addEventListener('input', set);
+		set();
+		root.querySelectorAll<HTMLElement>('[data-js-only]').forEach((element) => (element.hidden = false));
+	};
+
+	/** Finestra con la foto grande: <dialog> modale, frecce e tastiera. */
+	const lightbox = (gallery: HTMLElement) => {
+		const dialog = gallery.querySelector<HTMLDialogElement>('[data-gallery-dialog]');
+		const links = [...gallery.querySelectorAll<HTMLAnchorElement>('[data-gallery-open]')];
+		if (!dialog || links.length === 0) return;
+		const image = dialog.querySelector<HTMLImageElement>('[data-gallery-image]')!;
+		const caption = dialog.querySelector<HTMLElement>('[data-gallery-caption]')!;
+		const count = dialog.querySelector<HTMLElement>('[data-gallery-count]')!;
+		const page = document.documentElement;
+		let current = 0;
+
+		const show = (index: number) => {
+			current = (index + links.length) % links.length;
+			const link = links[current];
+			image.src = link.href;
+			image.alt = link.querySelector('img')?.alt ?? '';
+			caption.textContent = link.dataset.caption ?? '';
+			count.textContent = `${current + 1} di ${links.length}`;
+		};
+
+		links.forEach((link, index) =>
+			link.addEventListener('click', (event) => {
+				event.preventDefault();
+				show(index);
+				dialog.showModal();
+				page.classList.add('overflow-hidden');
+			}),
+		);
+
+		dialog.addEventListener('close', () => {
+			page.classList.remove('overflow-hidden');
+			links[current].focus();
+		});
+		dialog.querySelector('[data-gallery-close]')!.addEventListener('click', () => dialog.close());
+		dialog.querySelector('[data-gallery-prev]')!.addEventListener('click', () => show(current - 1));
+		dialog.querySelector('[data-gallery-next]')!.addEventListener('click', () => show(current + 1));
+		dialog.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowLeft') show(current - 1);
+			else if (event.key === 'ArrowRight') show(current + 1);
+		});
+		// Un click sul fondo (non sulla foto né sui pulsanti) chiude.
+		dialog.addEventListener('click', (event) => {
+			const target = event.target as HTMLElement;
+			if (target === dialog || target.hasAttribute('data-gallery-stage')) dialog.close();
+		});
+	};
+
+	for (const gallery of document.querySelectorAll<HTMLElement>('[data-gallery]')) {
+		gallery.querySelectorAll<HTMLElement>('[data-gallery-compare]').forEach(compare);
+		lightbox(gallery);
+	}
+</script>

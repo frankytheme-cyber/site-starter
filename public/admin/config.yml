@@ -983,11 +983,11 @@ collections:
             fields:
               - name: variant
                 label: Variante
-                hint: "foto: foto grandi con didascalia · card: foto, titolo, testo e link per ogni elemento"
+                hint: "immagini: foto grandi con didascalia · immagini-testo: foto, titolo, testo e link per ogni elemento"
                 widget: select
                 options:
-                  - foto
-                  - card
+                  - immagini
+                  - immagini-testo
               - name: eyebrow
                 label: Occhiello
                 hint: Breve testo sopra il titolo
@@ -1033,7 +1033,7 @@ collections:
                           - almeno 5 caratteri
                   - name: title
                     label: Titolo
-                    hint: Obbligatorio per la variante card; nelle foto è la didascalia
+                    hint: Obbligatorio per la variante immagini-testo; in immagini è la didascalia
                     required: false
                     widget: string
                     pattern:
@@ -1041,7 +1041,7 @@ collections:
                       - al massimo 60 caratteri
                   - name: text
                     label: Testo
-                    hint: Obbligatorio per la variante card, al massimo 200 caratteri
+                    hint: Obbligatorio per la variante immagini-testo, al massimo 200 caratteri
                     required: false
                     widget: text
                     pattern:
@@ -1049,7 +1049,7 @@ collections:
                       - al massimo 200 caratteri
                   - name: cta
                     label: Link
-                    hint: Facoltativo, solo nella variante card
+                    hint: Facoltativo, solo nella variante immagini-testo
                     required: false
                     widget: object
                     collapsed: true
@@ -2364,6 +2364,116 @@ collections:
                   - default
                   - muted
                   - primary
+          - name: gallery
+            label: Galleria
+            widget: object
+            hint: "Le foto dei lavori svolti: una griglia che si ingrandisce al clic, coppie prima e dopo, oppure una foto grande alla volta."
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "griglia-popup: miniature che si ingrandiscono al clic · prima-dopo: coppie di foto da confrontare · slider: una foto grande alla volta"
+                widget: select
+                options:
+                  - griglia-popup
+                  - prima-dopo
+                  - slider
+              - name: eyebrow
+                label: Occhiello
+                hint: Breve testo sopra il titolo
+                required: false
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,40}$
+                  - al massimo 40 caratteri
+              - name: title
+                label: Titolo
+                hint: Al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: intro
+                label: Introduzione
+                hint: Al massimo 240 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,240}$
+                  - al massimo 240 caratteri
+              - name: items
+                label: Foto
+                hint: Da 2 a 12, solo foto reali
+                widget: list
+                fields:
+                  - name: image
+                    label: Foto
+                    hint: Solo foto reali dei lavori; nel prima-dopo è la foto «dopo»
+                    widget: object
+                    collapsed: false
+                    fields:
+                      - name: src
+                        label: File
+                        hint: JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza
+                        widget: image
+                        choose_url: false
+                      - name: alt
+                        label: Testo alternativo
+                        hint: Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»
+                        widget: string
+                        pattern:
+                          - ^[\s\S]{5,}$
+                          - almeno 5 caratteri
+                  - name: before
+                    label: Foto «prima»
+                    hint: Obbligatoria per la variante prima-dopo, stessa inquadratura del «dopo»
+                    required: false
+                    widget: object
+                    collapsed: true
+                    fields:
+                      - name: src
+                        label: File
+                        hint: JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza
+                        required: false
+                        widget: image
+                        choose_url: false
+                      - name: alt
+                        label: Testo alternativo
+                        hint: Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»
+                        required: false
+                        widget: string
+                        pattern:
+                          - ^[\s\S]{5,}$
+                          - almeno 5 caratteri
+                  - name: caption
+                    label: Didascalia
+                    hint: Dove e cosa, al massimo 100 caratteri
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,100}$
+                      - al massimo 100 caratteri
+                min: 2
+                max: 12
+                collapsed: false
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
           - name: features
             label: Punti di forza
             widget: object
@@ -2754,6 +2864,104 @@ collections:
                       - al massimo 160 caratteri
                 min: 3
                 max: 6
+                collapsed: false
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
+          - name: testimonials
+            label: Recensioni
+            widget: object
+            hint: "Le parole dei clienti: recensioni vere con autore e fonte, in griglia, una sola in evidenza o da sfogliare."
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "cards: recensioni in griglia · singola: una sola recensione in evidenza · slider: recensioni che si sfogliano"
+                widget: select
+                options:
+                  - cards
+                  - singola
+                  - slider
+              - name: eyebrow
+                label: Occhiello
+                hint: Breve testo sopra il titolo
+                required: false
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,40}$
+                  - al massimo 40 caratteri
+              - name: title
+                label: Titolo
+                hint: Al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: items
+                label: Recensioni
+                hint: Solo recensioni reali, ognuna con la sua fonte
+                widget: list
+                fields:
+                  - name: quote
+                    label: Recensione
+                    hint: Le parole del cliente, copiate senza cambiarle, al massimo 400 caratteri
+                    widget: text
+                    pattern:
+                      - ^[\s\S]{10,400}$
+                      - tra 10 e 400 caratteri
+                  - name: author
+                    label: Autore
+                    hint: Come firma la recensione, es. «Marco R.»
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,60}$
+                      - al massimo 60 caratteri
+                  - name: role
+                    label: Chi è
+                    hint: Facoltativo, es. «cliente da 5 anni»
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,60}$
+                      - al massimo 60 caratteri
+                  - name: rating
+                    label: Stelle
+                    hint: Facoltativo, da 1 a 5, solo se la recensione le riporta
+                    required: false
+                    widget: number
+                    value_type: float
+                  - name: fonte
+                    label: Fonte
+                    hint: "Obbligatoria: dove è stata scritta, es. «Google, marzo 2025» o «messaggio WhatsApp»"
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{2,60}$
+                      - tra 2 e 60 caratteri
+                  - name: href
+                    label: Link alla recensione
+                    hint: Facoltativo, indirizzo completo della recensione originale
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^https://\S+$
+                      - un indirizzo completo che inizia con https://
+                min: 1
+                max: 10
                 collapsed: false
               - name: id
                 label: Ancora

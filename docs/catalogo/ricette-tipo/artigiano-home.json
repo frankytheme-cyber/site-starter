@@ -48,7 +48,7 @@
 		{
 			"type": "carousel",
 			"id": "lavori",
-			"variant": "foto",
+			"variant": "immagini",
 			"eyebrow": "Lavori finiti",
 			"title": "DA-COMPILARE: titolo della galleria dei lavori",
 			"items": [

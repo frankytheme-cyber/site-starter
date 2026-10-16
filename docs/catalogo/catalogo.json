@@ -1639,29 +1639,29 @@
 			"whenToUse": "Per una serie di elementi dello stesso tipo che si sfogliano: foto dei lavori finiti, prima e dopo, progetti, recensioni con foto.",
 			"avoidWhen": "Per contenuti importanti: le slide dopo la prima le guarda poca gente, quindi un messaggio da far leggere a tutti va in un hero o in un testo aperto. Con meno di 3 elementi (usa una griglia, come services) o con testi lunghi. Mai come apertura della pagina al posto dell’hero, e mai a scorrimento automatico (non è previsto).",
 			"rules": [
-				"La variante card richiede titolo e testo in ogni elemento."
+				"La variante immagini-testo richiede titolo e testo in ogni elemento."
 			],
 			"variants": [
 				{
-					"name": "foto",
+					"name": "immagini",
 					"description": "Foto grandi con didascalia breve, quasi una per volta (due da tablet).",
 					"whenToUse": "Per mostrare i lavori finiti, quando contano le immagini.",
-					"fixture": "Foto",
-					"preview": "/catalogo/carousel/foto/",
+					"fixture": "Immagini",
+					"preview": "/catalogo/carousel/immagini/",
 					"screenshots": {
-						"desktop": "img/carousel-foto-desktop.webp",
-						"mobile": "img/carousel-foto-mobile.webp"
+						"desktop": "img/carousel-immagini-desktop.webp",
+						"mobile": "img/carousel-immagini-mobile.webp"
 					}
 				},
 				{
-					"name": "card",
+					"name": "immagini-testo",
 					"description": "Card con foto, titolo, testo e link facoltativo: una e un pezzo su mobile, fino a tre da desktop.",
 					"whenToUse": "Per progetti o casi da raccontare in breve, ciascuno con il suo testo.",
-					"fixture": "Card",
-					"preview": "/catalogo/carousel/card/",
+					"fixture": "Immagini e testo",
+					"preview": "/catalogo/carousel/immagini-testo/",
 					"screenshots": {
-						"desktop": "img/carousel-card-desktop.webp",
-						"mobile": "img/carousel-card-mobile.webp"
+						"desktop": "img/carousel-immagini-testo-desktop.webp",
+						"mobile": "img/carousel-immagini-testo-mobile.webp"
 					}
 				}
 			],
@@ -1670,15 +1670,15 @@
 					"path": "variant",
 					"type": "scelta",
 					"required": true,
-					"limits": "`foto` · `card`",
+					"limits": "`immagini` · `immagini-testo`",
 					"constraints": {
 						"values": [
-							"foto",
-							"card"
+							"immagini",
+							"immagini-testo"
 						]
 					},
 					"label": "Variante",
-					"hint": "foto: foto grandi con didascalia · card: foto, titolo, testo e link per ogni elemento"
+					"hint": "immagini: foto grandi con didascalia · immagini-testo: foto, titolo, testo e link per ogni elemento"
 				},
 				{
 					"path": "eyebrow",
@@ -1759,29 +1759,29 @@
 					"type": "testo",
 					"required": false,
 					"requiredFor": [
-						"card"
+						"immagini-testo"
 					],
 					"limits": "max 60",
 					"constraints": {
 						"maxLength": 60
 					},
 					"label": "Titolo",
-					"hint": "Obbligatorio per la variante card; nelle foto è la didascalia",
-					"note": "In foto è la didascalia."
+					"hint": "Obbligatorio per la variante immagini-testo; in immagini è la didascalia",
+					"note": "In immagini è la didascalia."
 				},
 				{
 					"path": "items[].text",
 					"type": "testo",
 					"required": false,
 					"requiredFor": [
-						"card"
+						"immagini-testo"
 					],
 					"limits": "max 200",
 					"constraints": {
 						"maxLength": 200
 					},
 					"label": "Testo",
-					"hint": "Obbligatorio per la variante card, al massimo 200 caratteri"
+					"hint": "Obbligatorio per la variante immagini-testo, al massimo 200 caratteri"
 				},
 				{
 					"path": "items[].cta",
@@ -1790,8 +1790,8 @@
 					"limits": "",
 					"constraints": {},
 					"label": "Link",
-					"hint": "Facoltativo, solo nella variante card",
-					"note": "Mostrato solo nella variante card."
+					"hint": "Facoltativo, solo nella variante immagini-testo",
+					"note": "Mostrato solo nella variante immagini-testo."
 				},
 				{
 					"path": "items[].cta.label",
@@ -1851,11 +1851,11 @@
 				}
 			],
 			"example": {
-				"fixture": "Foto",
+				"fixture": "Immagini",
 				"target": "sections",
 				"json": {
 					"type": "carousel",
-					"variant": "foto",
+					"variant": "immagini",
 					"eyebrow": "La bottega",
 					"title": "Vieni a trovarci",
 					"items": [
@@ -2400,6 +2400,255 @@
 			}
 		},
 		{
+			"type": "gallery",
+			"name": "Galleria",
+			"scope": "page",
+			"category": "contenuti",
+			"version": "1.0.0",
+			"interactive": true,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Le foto dei lavori svolti: una griglia che si ingrandisce al clic, coppie prima e dopo, oppure una foto grande alla volta.",
+			"whenToUse": "Per mostrare lavori, locali o prodotti veri, quando le foto parlano da sole. Solo foto reali fornite dal cliente.",
+			"avoidWhen": "Senza foto vere: non si riempie con immagini d’archivio o inventate, si usa un altro blocco. Con meno di 2 foto. Per foto che accompagnano un testo (about, services). Per una serie da sfogliare con testo e link (carousel).",
+			"rules": [
+				"La variante prima-dopo richiede la foto «prima» (before) in ogni elemento e al massimo 6 coppie."
+			],
+			"variants": [
+				{
+					"name": "griglia-popup",
+					"description": "Griglia di miniature; al clic la foto si apre grande in una finestra, con frecce e didascalia. Senza JavaScript la miniatura apre il file della foto.",
+					"whenToUse": "Per tante foto di lavori diversi (da 4 a 12) da guardare nel dettaglio.",
+					"fixture": "Griglia con popup",
+					"preview": "/catalogo/gallery/griglia-popup/",
+					"screenshots": {
+						"desktop": "img/gallery-griglia-popup-desktop.webp",
+						"mobile": "img/gallery-griglia-popup-mobile.webp"
+					}
+				},
+				{
+					"name": "prima-dopo",
+					"description": "Coppie di foto «prima» e «dopo» con un cursore per confrontarle. Senza JavaScript le due foto stanno affiancate con la loro etichetta.",
+					"whenToUse": "Per ristrutturazioni, restauri, pulizie, trasformazioni: ogni coppia con la stessa inquadratura.",
+					"fixture": "Prima e dopo",
+					"preview": "/catalogo/gallery/prima-dopo/",
+					"screenshots": {
+						"desktop": "img/gallery-prima-dopo-desktop.webp",
+						"mobile": "img/gallery-prima-dopo-mobile.webp"
+					}
+				},
+				{
+					"name": "slider",
+					"description": "Una foto grande alla volta, con frecce, pallini e didascalia; scorre solo su comando.",
+					"whenToUse": "Per poche foto di qualità (da 3 a 8) che meritano tutto lo spazio.",
+					"fixture": "Slider",
+					"preview": "/catalogo/gallery/slider/",
+					"screenshots": {
+						"desktop": "img/gallery-slider-desktop.webp",
+						"mobile": "img/gallery-slider-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`griglia-popup` · `prima-dopo` · `slider`",
+					"constraints": {
+						"values": [
+							"griglia-popup",
+							"prima-dopo",
+							"slider"
+						]
+					},
+					"label": "Variante",
+					"hint": "griglia-popup: miniature che si ingrandiscono al clic · prima-dopo: coppie di foto da confrontare · slider: una foto grande alla volta"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "max 40",
+					"constraints": {
+						"maxLength": 40
+					},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Al massimo 70 caratteri"
+				},
+				{
+					"path": "intro",
+					"type": "testo",
+					"required": false,
+					"limits": "max 240",
+					"constraints": {
+						"maxLength": 240
+					},
+					"label": "Introduzione",
+					"hint": "Al massimo 240 caratteri"
+				},
+				{
+					"path": "items",
+					"type": "elenco",
+					"required": true,
+					"limits": "2–12 voci",
+					"constraints": {
+						"minItems": 2,
+						"maxItems": 12
+					},
+					"label": "Foto",
+					"hint": "Da 2 a 12, solo foto reali",
+					"note": "Prima-dopo: al massimo 6 coppie."
+				},
+				{
+					"path": "items[].image",
+					"type": "gruppo",
+					"required": true,
+					"limits": "",
+					"constraints": {},
+					"label": "Foto",
+					"hint": "Solo foto reali dei lavori; nel prima-dopo è la foto «dopo»"
+				},
+				{
+					"path": "items[].image.src",
+					"type": "immagine",
+					"required": true,
+					"limits": "foto in src/assets/images",
+					"constraints": {
+						"format": "image"
+					},
+					"label": "File",
+					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
+				},
+				{
+					"path": "items[].image.alt",
+					"type": "testo",
+					"required": true,
+					"limits": "min 5",
+					"constraints": {
+						"minLength": 5
+					},
+					"label": "Testo alternativo",
+					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
+				},
+				{
+					"path": "items[].before",
+					"type": "gruppo",
+					"required": false,
+					"requiredFor": [
+						"prima-dopo"
+					],
+					"limits": "",
+					"constraints": {},
+					"label": "Foto «prima»",
+					"hint": "Obbligatoria per la variante prima-dopo, stessa inquadratura del «dopo»",
+					"note": "Le altre varianti non la mostrano. Stessa inquadratura del «dopo»."
+				},
+				{
+					"path": "items[].before.src",
+					"type": "immagine",
+					"required": true,
+					"requiredWith": "items[].before",
+					"limits": "foto in src/assets/images",
+					"constraints": {
+						"format": "image"
+					},
+					"label": "File",
+					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
+				},
+				{
+					"path": "items[].before.alt",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "items[].before",
+					"limits": "min 5",
+					"constraints": {
+						"minLength": 5
+					},
+					"label": "Testo alternativo",
+					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
+				},
+				{
+					"path": "items[].caption",
+					"type": "testo",
+					"required": false,
+					"limits": "max 100",
+					"constraints": {
+						"maxLength": 100
+					},
+					"label": "Didascalia",
+					"hint": "Dove e cosa, al massimo 100 caratteri"
+				}
+			],
+			"example": {
+				"fixture": "Griglia con popup",
+				"target": "sections",
+				"json": {
+					"type": "gallery",
+					"variant": "griglia-popup",
+					"eyebrow": "I nostri lavori",
+					"title": "Dalla bottega, qualche lavoro recente",
+					"intro": "Tocca una foto per ingrandirla.",
+					"items": [
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/artigiano-mobile.jpg",
+								"alt": "Credenza in legno a due ante con maniglie dorate, in una stanza chiara"
+							},
+							"caption": "Credenza in rovere, consegnata a Firenze"
+						},
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/artigiano-laboratorio.jpg",
+								"alt": "Banco da lavoro in legno con martello, scalpello e sega appesi a un pannello forato"
+							},
+							"caption": "Il banco da lavoro in laboratorio"
+						},
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/artigiano-attrezzi.jpg",
+								"alt": "Martello, cacciavite e metro giallo appoggiati su un piano di legno"
+							},
+							"caption": "Gli attrezzi di tutti i giorni"
+						},
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/negozio-vetrina.jpg",
+								"alt": "Vetrina di una bottega con la tenda a righe bianche e rosse e la porta verde"
+							},
+							"caption": "Vetrina rinnovata per un negozio del centro"
+						},
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/negozio-scaffali.jpg",
+								"alt": "Scaffali di legno con barattoli e scatole colorate in fila"
+							},
+							"caption": "Scaffali su misura"
+						},
+						{
+							"image": {
+								"src": "../../assets/images/fixtures/negozio-regalo.jpg",
+								"alt": "Pacco regalo rosso con il fiocco giallo appoggiato sul banco"
+							},
+							"caption": "Confezioni regalo"
+						}
+					]
+				}
+			}
+		},
+		{
 			"type": "features",
 			"name": "Punti di forza",
 			"scope": "page",
@@ -2570,6 +2819,209 @@
 							"icon": "euro",
 							"title": "Prezzi senza sorprese",
 							"text": "Il prezzo concordato è quello che paghi, salvo tuoi cambi."
+						}
+					]
+				}
+			}
+		},
+		{
+			"type": "testimonials",
+			"name": "Recensioni",
+			"scope": "page",
+			"category": "contenuti",
+			"version": "1.0.0",
+			"interactive": true,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Le parole dei clienti: recensioni vere con autore e fonte, in griglia, una sola in evidenza o da sfogliare.",
+			"whenToUse": "Quando il cliente ha recensioni reali (Google, Facebook, messaggi) e può dire dove sono state scritte.",
+			"avoidWhen": "Senza recensioni reali: non si inventano né si riassumono. Senza la fonte di ognuna. Per numeri e statistiche (about, con-numeri). Per voti medi o conteggi complessivi, che non sono nel blocco.",
+			"rules": [
+				"La variante singola vuole una sola recensione, cards da 2 a 6, slider da 3 a 10."
+			],
+			"variants": [
+				{
+					"name": "cards",
+					"description": "Recensioni in card, su una, due o tre colonne; ognuna con autore e fonte.",
+					"whenToUse": "Con 2-6 recensioni brevi da leggere tutte insieme.",
+					"fixture": "Cards",
+					"preview": "/catalogo/testimonials/cards/",
+					"screenshots": {
+						"desktop": "img/testimonials-cards-desktop.webp",
+						"mobile": "img/testimonials-cards-mobile.webp"
+					}
+				},
+				{
+					"name": "singola",
+					"description": "Una sola recensione in grande, centrata, con autore e fonte.",
+					"whenToUse": "Quando una recensione è particolarmente forte, ad esempio sopra a una richiesta di contatto.",
+					"fixture": "Singola",
+					"preview": "/catalogo/testimonials/singola/",
+					"screenshots": {
+						"desktop": "img/testimonials-singola-desktop.webp",
+						"mobile": "img/testimonials-singola-mobile.webp"
+					}
+				},
+				{
+					"name": "slider",
+					"description": "Una recensione alla volta, con frecce e pallini; scorre solo su comando.",
+					"whenToUse": "Con 3-10 recensioni, quando non c’è spazio per mostrarle tutte.",
+					"fixture": "Slider",
+					"preview": "/catalogo/testimonials/slider/",
+					"screenshots": {
+						"desktop": "img/testimonials-slider-desktop.webp",
+						"mobile": "img/testimonials-slider-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`cards` · `singola` · `slider`",
+					"constraints": {
+						"values": [
+							"cards",
+							"singola",
+							"slider"
+						]
+					},
+					"label": "Variante",
+					"hint": "cards: recensioni in griglia · singola: una sola recensione in evidenza · slider: recensioni che si sfogliano"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "max 40",
+					"constraints": {
+						"maxLength": 40
+					},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Al massimo 70 caratteri"
+				},
+				{
+					"path": "items",
+					"type": "elenco",
+					"required": true,
+					"limits": "1–10 voci",
+					"constraints": {
+						"minItems": 1,
+						"maxItems": 10
+					},
+					"label": "Recensioni",
+					"hint": "Solo recensioni reali, ognuna con la sua fonte",
+					"note": "Singola: 1 recensione · cards: da 2 a 6 · slider: da 3 a 10."
+				},
+				{
+					"path": "items[].quote",
+					"type": "testo",
+					"required": true,
+					"limits": "10–400",
+					"constraints": {
+						"minLength": 10,
+						"maxLength": 400
+					},
+					"label": "Recensione",
+					"hint": "Le parole del cliente, copiate senza cambiarle, al massimo 400 caratteri"
+				},
+				{
+					"path": "items[].author",
+					"type": "testo",
+					"required": true,
+					"limits": "max 60",
+					"constraints": {
+						"maxLength": 60
+					},
+					"label": "Autore",
+					"hint": "Come firma la recensione, es. «Marco R.»"
+				},
+				{
+					"path": "items[].role",
+					"type": "testo",
+					"required": false,
+					"limits": "max 60",
+					"constraints": {
+						"maxLength": 60
+					},
+					"label": "Chi è",
+					"hint": "Facoltativo, es. «cliente da 5 anni»"
+				},
+				{
+					"path": "items[].rating",
+					"type": "numero",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Stelle",
+					"hint": "Facoltativo, da 1 a 5, solo se la recensione le riporta"
+				},
+				{
+					"path": "items[].fonte",
+					"type": "testo",
+					"required": true,
+					"limits": "2–60",
+					"constraints": {
+						"minLength": 2,
+						"maxLength": 60
+					},
+					"label": "Fonte",
+					"hint": "Obbligatoria: dove è stata scritta, es. «Google, marzo 2025» o «messaggio WhatsApp»",
+					"note": "Obbligatoria per ogni recensione; compare sotto l’autore."
+				},
+				{
+					"path": "items[].href",
+					"type": "testo",
+					"required": false,
+					"limits": "https://…",
+					"constraints": {
+						"format": "url"
+					},
+					"label": "Link alla recensione",
+					"hint": "Facoltativo, indirizzo completo della recensione originale",
+					"note": "Se c’è, la fonte diventa un link alla recensione originale."
+				}
+			],
+			"example": {
+				"fixture": "Cards",
+				"target": "sections",
+				"json": {
+					"type": "testimonials",
+					"variant": "cards",
+					"eyebrow": "Dicono di noi",
+					"title": "Cosa raccontano i clienti",
+					"items": [
+						{
+							"quote": "Puntuali e precisi. Mi hanno spiegato tutto prima di iniziare e il lavoro è finito nei tempi.",
+							"author": "Marco R.",
+							"role": "Cliente da 3 anni",
+							"rating": 5,
+							"fonte": "Google, marzo 2025"
+						},
+						{
+							"quote": "Gentili e disponibili anche dopo la consegna. Rifarei tutto con loro.",
+							"author": "Giulia B.",
+							"rating": 5,
+							"fonte": "Facebook, gennaio 2025"
+						},
+						{
+							"quote": "Un preventivo chiaro e nessuna sorpresa a fine lavori. Consigliati.",
+							"author": "Paolo S.",
+							"role": "Titolare di un negozio",
+							"fonte": "Messaggio WhatsApp, febbraio 2025"
 						}
 					]
 				}

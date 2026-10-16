@@ -19,6 +19,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
+- Blocchi `gallery` (`griglia-popup`, `prima-dopo`, `slider`: solo foto reali), `testimonials` (`cards`, `singola`, `slider`: ogni recensione ha la `fonte`, obbligatoria) e `carousel` (`immagini`, `immagini-testo`: scroll-snap, mai autoplay, mai nell’hero). Il check `interactive` prova anche la finestra della galleria e il cursore prima-dopo.
 - Blocchi `features` (`3-colonne`, `lista`), `about` (`immagine-testo`, `con-numeri`: ogni numero ha il campo `fonte`, obbligatorio) e `process` (`passi-numerati`, `timeline`).
 - Blocco `contact` (varianti `info-mappa`, `info-cta`): recapiti, indirizzo e orari letti da `site.json`. La mappa è il link «Apri in Maps»; con JavaScript il pulsante «Mostra la mappa qui» carica l’iframe solo al clic.
 - `docs/specifica.md`: la specifica completa del sistema, gestita (arriva nei siti con `blocks:sync`). `AGENTS.md` la indica come riferimento in caso di dubbio; `npm run release` ne aggiorna la riga «Versione».

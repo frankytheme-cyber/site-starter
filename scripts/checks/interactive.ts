@@ -5,6 +5,7 @@
  * - accordion: Invio e Spazio sul titolo aprono e chiudono; con single, aprirne una chiude le altre.
  * - tabs @1280: frecce, Home/End, tabindex mobile, un pannello visibile alla volta. @375: accordion al posto delle schede.
  * - carousel: freccia successiva e pallini (aria-current), freccia precedente disabilitata all'inizio, niente autoplay.
+ * - gallery: la miniatura si apre da tastiera in una finestra (focus dentro, frecce, Esc, focus di ritorno, scroll sbloccato); il cursore prima-dopo si muove con le frecce.
  * Ogni componente si prova sulla prima pagina che lo contiene (prima le pagine del sito, poi il catalogo).
  */
 import { readFileSync } from 'node:fs';
@@ -213,6 +214,48 @@ export async function interactive({ baseUrl }: CheckContext) {
 				expect('carosello', (await current()) === 1, 'dopo la freccia successiva il secondo pallino non ha aria-current');
 				expect('carosello', !(await prev.isDisabled()), 'dopo la freccia successiva la precedente resta disabilitata');
 			}
+			await page.close();
+		}
+
+		// ------------------------------------------------------------------ gallery: finestra con la foto grande
+		const lightboxPath = pageWith(/<a[^>]*\sdata-gallery-open[\s=>]/);
+		if (!lightboxPath) warning({ message: 'nessuna pagina con una galleria a finestra da provare' });
+		else {
+			const expect = expectFor(lightboxPath);
+			const page = await open(browser, lightboxPath, DESKTOP);
+			const link = page.locator('[data-gallery-open]').first();
+			const dialog = page.locator('[data-gallery-dialog]').first();
+			const count = page.locator('[data-gallery-count]').first();
+			await link.scrollIntoViewIfNeeded();
+			await link.focus();
+			await press(page, 'Enter');
+			expect('galleria', await dialog.evaluate((element) => (element as HTMLDialogElement).open), 'Invio sulla miniatura non apre la finestra');
+			expect('galleria', await dialog.evaluate((element) => element.contains(document.activeElement)), 'aperta la finestra il focus non è al suo interno');
+			expect('galleria', (await count.textContent())?.startsWith('1 di ') === true, 'la finestra non parte dalla prima foto');
+			await press(page, 'ArrowRight');
+			expect('galleria', (await count.textContent())?.startsWith('2 di ') === true, 'la freccia destra non passa alla foto successiva');
+			await press(page, 'Escape');
+			expect('galleria', !(await dialog.evaluate((element) => (element as HTMLDialogElement).open)), 'Esc non chiude la finestra');
+			expect('galleria', await page.locator('[data-gallery-open]').nth(1).evaluate((element) => element === document.activeElement), 'chiusa la finestra il focus non torna sulla miniatura');
+			expect('galleria', await page.evaluate(() => getComputedStyle(document.documentElement).overflow !== 'hidden'), 'chiusa la finestra lo scroll resta bloccato');
+			await page.close();
+		}
+
+		// ------------------------------------------------------------------ gallery: confronto prima e dopo
+		const comparePath = pageWith(/<div[^>]*\sdata-gallery-compare[\s=>]/);
+		if (!comparePath) warning({ message: 'nessuna pagina con un confronto prima-dopo da provare' });
+		else {
+			const expect = expectFor(comparePath);
+			const page = await open(browser, comparePath, DESKTOP);
+			const compare = page.locator('[data-gallery-compare]').first();
+			const range = compare.locator('[data-gallery-range]');
+			expect('prima-dopo', await range.isVisible({ timeout: 2000 }).catch(() => false) || (await range.count()) > 0, 'cursore non trovato');
+			expect('prima-dopo', (await range.getAttribute('aria-label')) !== null, 'il cursore non ha aria-label');
+			const pos = () => compare.evaluate((element) => (element as HTMLElement).style.getPropertyValue('--pos'));
+			await range.focus();
+			const before = await pos();
+			await press(page, 'ArrowRight');
+			expect('prima-dopo', (await pos()) !== before, 'la freccia destra non sposta il cursore');
 			await page.close();
 		}
 	} finally {
