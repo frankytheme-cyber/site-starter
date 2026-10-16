@@ -1,0 +1,148 @@
+---
+import { nextId } from '@/core/ids';
+import { mapsHref } from '@/core/links';
+import { formatDays, formatSlots } from '@/core/opening-hours';
+import { getSiteSettings, phoneHref, whatsappHref } from '@/core/settings';
+import Button from '@/core/ui/button/Button.astro';
+import CtaButton from '@/core/ui/button/CtaButton.astro';
+import Icon from '@/core/ui/Icon.astro';
+import Section from '@/core/ui/Section.astro';
+import type { ContactProps } from './schema';
+
+type Props = ContactProps;
+
+const { id, tone, variant, title, text, showHours, cta } = Astro.props;
+
+// Recapiti, indirizzo e orari arrivano solo da site.json (nel catalogo, dalla fixture): lo schema non li contiene.
+const site = Astro.props.site ?? (await getSiteSettings());
+const { street, postalCode, city, province } = site.address;
+const uid = nextId(Astro.request, 'contact');
+const NEW_TAB = '(si apre in una nuova scheda)';
+
+const mapsLink = mapsHref(site.address);
+// Indirizzo della mappa incorporata: la pagina non lo carica finché chi visita non preme «Mostra la mappa».
+const embedSrc = `https://www.google.com/maps?q=${encodeURIComponent(`${street}, ${postalCode} ${city} (${province})`)}&output=embed`;
+
+const linkClass = 'inline-flex min-h-11 items-center gap-2 decoration-2 underline-offset-4 hover:underline';
+const headingClass = 'text-sm font-bold tracking-wider uppercase';
+---
+
+<Section id={id} tone={tone}>
+	<div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+		<div>
+			<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+			{text && <p class="mt-4 text-lg text-pretty text-fg-muted">{text}</p>}
+
+			<div class="mt-8 grid gap-8 sm:grid-cols-2">
+				<div>
+					<h3 class={headingClass}>Contatti</h3>
+					<address class="mt-3 grid not-italic">
+						<a href={phoneHref(site.phone)} class={linkClass}>
+							<Icon name="telefono" />
+							<span class="sr-only">Telefono:</span>
+							{site.phone}
+						</a>
+						{site.whatsapp && (
+							<a href={whatsappHref(site.whatsapp)} target="_blank" rel="noopener" class={linkClass}>
+								<Icon name="whatsapp" />
+								<span class="sr-only">WhatsApp:</span>
+								{site.whatsapp}
+								<span class="sr-only">{NEW_TAB}</span>
+							</a>
+						)}
+						<a href={`mailto:${site.email}`} class:list={[linkClass, 'break-all']}>
+							<Icon name="email" />
+							<span class="sr-only">Email:</span>
+							{site.email}
+						</a>
+						<p class="mt-2 flex gap-2">
+							<Icon name="mappa-pin" class="mt-0.5" />
+							<span>
+								<span class="sr-only">Indirizzo:</span>
+								{street}
+								<br />
+								{postalCode} {city} ({province})
+							</span>
+						</p>
+					</address>
+				</div>
+
+				{showHours && (
+					<div>
+						<h3 class={headingClass}>Orari</h3>
+						<dl class="mt-3 grid gap-3">
+							{site.openingHours.map((row) => (
+								<div>
+									<dt class="font-semibold">{formatDays(row.days)}</dt>
+									<dd class="text-fg-muted">{formatSlots(row.slots)}</dd>
+								</div>
+							))}
+						</dl>
+					</div>
+				)}
+			</div>
+
+			{variant === 'info-cta' && cta && (
+				<div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+					<CtaButton cta={cta} tone={tone} />
+					<Button href={mapsLink} variant="link" icon="mappa-pin" tone={tone}>
+						Apri in Maps
+					</Button>
+				</div>
+			)}
+		</div>
+
+		{variant === 'info-mappa' && (
+			<div data-contact-map data-src={embedSrc} data-title={`Mappa: ${street}, ${city}`}>
+				{/* Senza JavaScript resta il link; il pulsante compare con lo script. */}
+				<div
+					data-contact-map-frame
+					class="flex min-h-72 flex-col items-center justify-center gap-4 rounded-box border border-border bg-surface text-surface-fg p-6 text-center lg:min-h-full"
+				>
+					<Icon name="mappa-pin" size="lg" />
+					<p class="text-pretty">{street}, {postalCode} {city}</p>
+					<div class="flex flex-wrap items-center justify-center gap-3">
+						<Button href={mapsLink} variant="primary" icon="mappa-pin" tone={tone}>
+							Apri in Maps
+						</Button>
+						<div data-js-only hidden>
+							<Button
+								variant="secondary"
+								tone={tone}
+								data-contact-map-load
+								aria-describedby={`${uid}-privacy`}
+							>
+								Mostra la mappa qui
+							</Button>
+						</div>
+					</div>
+					<p id={`${uid}-privacy`} data-js-only hidden class="max-w-xs text-sm text-fg-muted">
+						La mappa è un servizio di Google: si carica solo se la mostri.
+					</p>
+				</div>
+			</div>
+		)}
+	</div>
+</Section>
+
+<script>
+	// Uno script per tutti i blocchi della pagina. Regole: docs/blocchi-interattivi.md.
+	for (const map of document.querySelectorAll<HTMLElement>('[data-contact-map]')) {
+		for (const element of map.querySelectorAll<HTMLElement>('[data-js-only]')) element.hidden = false;
+		const button = map.querySelector<HTMLButtonElement>('[data-contact-map-load]');
+		const frame = map.querySelector<HTMLElement>('[data-contact-map-frame]');
+		if (!button || !frame) continue;
+
+		button.addEventListener('click', () => {
+			// L'iframe nasce solo qui: prima del clic la pagina non contatta Google.
+			const iframe = document.createElement('iframe');
+			iframe.src = map.dataset.src ?? '';
+			iframe.title = map.dataset.title ?? 'Mappa';
+			iframe.loading = 'lazy';
+			iframe.referrerPolicy = 'no-referrer-when-downgrade';
+			iframe.className = 'h-96 w-full rounded-box border border-border lg:h-full lg:min-h-96';
+			frame.replaceWith(iframe);
+			iframe.focus();
+		});
+	}
+</script>

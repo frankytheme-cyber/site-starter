@@ -2693,6 +2693,424 @@ collections:
                   - default
                   - muted
                   - primary
+          - name: contact
+            label: Contatti
+            widget: object
+            hint: Recapiti, indirizzo e orari dell’attività, presi da «Dati attività», con la mappa o un invito all’azione.
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "info-mappa: recapiti e orari con la mappa al clic · info-cta: recapiti e orari con un pulsante d’azione"
+                widget: select
+                options:
+                  - info-mappa
+                  - info-cta
+              - name: title
+                label: Titolo
+                hint: Al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: text
+                label: Testo
+                hint: Una o due frasi, al massimo 200 caratteri
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,200}$
+                  - al massimo 200 caratteri
+              - name: showHours
+                label: Mostra gli orari
+                hint: Aggiunge gli orari di apertura presi da «Dati attività»
+                widget: boolean
+                default: false
+              - name: cta
+                label: Pulsante
+                hint: L’azione che chiedi di fare, es. «Chiedi un preventivo»; serve nella variante info-cta
+                required: false
+                widget: object
+                collapsed: true
+                fields:
+                  - name: label
+                    label: Testo del pulsante
+                    hint: Al massimo 25 caratteri
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^[\s\S]{1,25}$
+                      - al massimo 25 caratteri
+                  - name: href
+                    label: Link
+                    hint: Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»
+                    required: false
+                    widget: string
+                    pattern:
+                      - ^(?:@telefono|@whatsapp|@email|@mappa|[^@\s]\S*)$
+                      - "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+                  - name: style
+                    label: Stile
+                    hint: "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+                    required: false
+                    widget: select
+                    options:
+                      - primary
+                      - secondary
+                      - ghost
+                      - link
+                  - name: icon
+                    label: Icona
+                    hint: Facoltativa, accanto al testo (le frecce vanno dopo il testo)
+                    required: false
+                    widget: select
+                    options:
+                      - label: casa (Casa e cantiere)
+                        value: casa
+                      - label: edificio (Casa e cantiere)
+                        value: edificio
+                      - label: fabbrica (Casa e cantiere)
+                        value: fabbrica
+                      - label: scale (Casa e cantiere)
+                        value: scale
+                      - label: muro (Casa e cantiere)
+                        value: muro
+                      - label: porta (Casa e cantiere)
+                        value: porta
+                      - label: chiavi (Casa e cantiere)
+                        value: chiavi
+                      - label: cantiere (Casa e cantiere)
+                        value: cantiere
+                      - label: pennello (Casa e cantiere)
+                        value: pennello
+                      - label: rullo (Casa e cantiere)
+                        value: rullo
+                      - label: bagno (Casa e cantiere)
+                        value: bagno
+                      - label: pulizie (Casa e cantiere)
+                        value: pulizie
+                      - label: martello (Attrezzi)
+                        value: martello
+                      - label: chiave-inglese (Attrezzi)
+                        value: chiave-inglese
+                      - label: trapano (Attrezzi)
+                        value: trapano
+                      - label: cassetta-attrezzi (Attrezzi)
+                        value: cassetta-attrezzi
+                      - label: pala (Attrezzi)
+                        value: pala
+                      - label: righello (Attrezzi)
+                        value: righello
+                      - label: "goccia (Impianti: acqua, luce, gas, clima)"
+                        value: goccia
+                      - label: "rubinetto (Impianti: acqua, luce, gas, clima)"
+                        value: rubinetto
+                      - label: "lampadina (Impianti: acqua, luce, gas, clima)"
+                        value: lampadina
+                      - label: "fulmine (Impianti: acqua, luce, gas, clima)"
+                        value: fulmine
+                      - label: "spina (Impianti: acqua, luce, gas, clima)"
+                        value: spina
+                      - label: "fiamma (Impianti: acqua, luce, gas, clima)"
+                        value: fiamma
+                      - label: "stufa (Impianti: acqua, luce, gas, clima)"
+                        value: stufa
+                      - label: "aria-condizionata (Impianti: acqua, luce, gas, clima)"
+                        value: aria-condizionata
+                      - label: "pannello-solare (Impianti: acqua, luce, gas, clima)"
+                        value: pannello-solare
+                      - label: foglia (Giardino e natura)
+                        value: foglia
+                      - label: albero (Giardino e natura)
+                        value: albero
+                      - label: fiore (Giardino e natura)
+                        value: fiore
+                      - label: germoglio (Giardino e natura)
+                        value: germoglio
+                      - label: recinto (Giardino e natura)
+                        value: recinto
+                      - label: riciclo (Giardino e natura)
+                        value: riciclo
+                      - label: posate (Cibo e bevande)
+                        value: posate
+                      - label: cuoco (Cibo e bevande)
+                        value: cuoco
+                      - label: caffe (Cibo e bevande)
+                        value: caffe
+                      - label: vino (Cibo e bevande)
+                        value: vino
+                      - label: birra (Cibo e bevande)
+                        value: birra
+                      - label: pizza (Cibo e bevande)
+                        value: pizza
+                      - label: torta (Cibo e bevande)
+                        value: torta
+                      - label: gelato (Cibo e bevande)
+                        value: gelato
+                      - label: cornetto (Cibo e bevande)
+                        value: cornetto
+                      - label: grano (Cibo e bevande)
+                        value: grano
+                      - label: cuore (Salute e benessere)
+                        value: cuore
+                      - label: battito (Salute e benessere)
+                        value: battito
+                      - label: stetoscopio (Salute e benessere)
+                        value: stetoscopio
+                      - label: farmaco (Salute e benessere)
+                        value: farmaco
+                      - label: dentista (Salute e benessere)
+                        value: dentista
+                      - label: occhiali (Salute e benessere)
+                        value: occhiali
+                      - label: forbici (Bellezza)
+                        value: forbici
+                      - label: brillantini (Bellezza)
+                        value: brillantini
+                      - label: profumo (Bellezza)
+                        value: profumo
+                      - label: gioiello (Bellezza)
+                        value: gioiello
+                      - label: auto (Auto e trasporti)
+                        value: auto
+                      - label: furgone (Auto e trasporti)
+                        value: furgone
+                      - label: camion (Auto e trasporti)
+                        value: camion
+                      - label: moto (Auto e trasporti)
+                        value: moto
+                      - label: bici (Auto e trasporti)
+                        value: bici
+                      - label: parcheggio (Auto e trasporti)
+                        value: parcheggio
+                      - label: carburante (Auto e trasporti)
+                        value: carburante
+                      - label: ricarica (Auto e trasporti)
+                        value: ricarica
+                      - label: negozio (Negozio e pagamenti)
+                        value: negozio
+                      - label: carrello (Negozio e pagamenti)
+                        value: carrello
+                      - label: borsa (Negozio e pagamenti)
+                        value: borsa
+                      - label: etichetta (Negozio e pagamenti)
+                        value: etichetta
+                      - label: sconto (Negozio e pagamenti)
+                        value: sconto
+                      - label: regalo (Negozio e pagamenti)
+                        value: regalo
+                      - label: pacco (Negozio e pagamenti)
+                        value: pacco
+                      - label: carta-di-credito (Negozio e pagamenti)
+                        value: carta-di-credito
+                      - label: contanti (Negozio e pagamenti)
+                        value: contanti
+                      - label: euro (Negozio e pagamenti)
+                        value: euro
+                      - label: valigetta (Ufficio e servizi professionali)
+                        value: valigetta
+                      - label: computer (Ufficio e servizi professionali)
+                        value: computer
+                      - label: calcolatrice (Ufficio e servizi professionali)
+                        value: calcolatrice
+                      - label: grafico (Ufficio e servizi professionali)
+                        value: grafico
+                      - label: bilancia (Ufficio e servizi professionali)
+                        value: bilancia
+                      - label: penna (Ufficio e servizi professionali)
+                        value: penna
+                      - label: laurea (Ufficio e servizi professionali)
+                        value: laurea
+                      - label: stretta-di-mano (Ufficio e servizi professionali)
+                        value: stretta-di-mano
+                      - label: wifi (Ufficio e servizi professionali)
+                        value: wifi
+                      - label: utente (Persone e famiglia)
+                        value: utente
+                      - label: utenti (Persone e famiglia)
+                        value: utenti
+                      - label: bambino (Persone e famiglia)
+                        value: bambino
+                      - label: accessibilita (Persone e famiglia)
+                        value: accessibilita
+                      - label: sorriso (Persone e famiglia)
+                        value: sorriso
+                      - label: orologio (Tempo e calendario)
+                        value: orologio
+                      - label: calendario (Tempo e calendario)
+                        value: calendario
+                      - label: prenotazione (Tempo e calendario)
+                        value: prenotazione
+                      - label: clessidra (Tempo e calendario)
+                        value: clessidra
+                      - label: cronometro (Tempo e calendario)
+                        value: cronometro
+                      - label: telefono (Contatti e luoghi)
+                        value: telefono
+                      - label: cellulare (Contatti e luoghi)
+                        value: cellulare
+                      - label: email (Contatti e luoghi)
+                        value: email
+                      - label: mappa-pin (Contatti e luoghi)
+                        value: mappa-pin
+                      - label: mappa (Contatti e luoghi)
+                        value: mappa
+                      - label: indicazioni (Contatti e luoghi)
+                        value: indicazioni
+                      - label: sito-web (Contatti e luoghi)
+                        value: sito-web
+                      - label: premio (Fiducia e qualità)
+                        value: premio
+                      - label: trofeo (Fiducia e qualità)
+                        value: trofeo
+                      - label: garanzia (Fiducia e qualità)
+                        value: garanzia
+                      - label: certificato (Fiducia e qualità)
+                        value: certificato
+                      - label: pollice (Fiducia e qualità)
+                        value: pollice
+                      - label: stella (Fiducia e qualità)
+                        value: stella
+                      - label: check (Fiducia e qualità)
+                        value: check
+                      - label: lucchetto (Fiducia e qualità)
+                        value: lucchetto
+                      - label: chat (Comunicazione)
+                        value: chat
+                      - label: messaggi (Comunicazione)
+                        value: messaggi
+                      - label: invia (Comunicazione)
+                        value: invia
+                      - label: megafono (Comunicazione)
+                        value: megafono
+                      - label: campanella (Comunicazione)
+                        value: campanella
+                      - label: citazione (Comunicazione)
+                        value: citazione
+                      - label: cuffie (Comunicazione)
+                        value: cuffie
+                      - label: freccia-destra (Frecce e interfaccia)
+                        value: freccia-destra
+                      - label: freccia-sinistra (Frecce e interfaccia)
+                        value: freccia-sinistra
+                      - label: freccia-su (Frecce e interfaccia)
+                        value: freccia-su
+                      - label: freccia-giu (Frecce e interfaccia)
+                        value: freccia-giu
+                      - label: chevron-giu (Frecce e interfaccia)
+                        value: chevron-giu
+                      - label: chevron-destra (Frecce e interfaccia)
+                        value: chevron-destra
+                      - label: menu (Frecce e interfaccia)
+                        value: menu
+                      - label: chiudi (Frecce e interfaccia)
+                        value: chiudi
+                      - label: cerca (Frecce e interfaccia)
+                        value: cerca
+                      - label: piu (Frecce e interfaccia)
+                        value: piu
+                      - label: info (Frecce e interfaccia)
+                        value: info
+                      - label: link-esterno (Frecce e interfaccia)
+                        value: link-esterno
+                      - label: preventivo (File e documenti)
+                        value: preventivo
+                      - label: contratto (File e documenti)
+                        value: contratto
+                      - label: cartella (File e documenti)
+                        value: cartella
+                      - label: lista-controllo (File e documenti)
+                        value: lista-controllo
+                      - label: libro (File e documenti)
+                        value: libro
+                      - label: foto (File e documenti)
+                        value: foto
+                      - label: fotocamera (File e documenti)
+                        value: fotocamera
+                      - label: sole (Meteo e stagioni)
+                        value: sole
+                      - label: nuvola (Meteo e stagioni)
+                        value: nuvola
+                      - label: pioggia (Meteo e stagioni)
+                        value: pioggia
+                      - label: neve (Meteo e stagioni)
+                        value: neve
+                      - label: vento (Meteo e stagioni)
+                        value: vento
+                      - label: termometro (Meteo e stagioni)
+                        value: termometro
+                      - label: cane (Animali)
+                        value: cane
+                      - label: gatto (Animali)
+                        value: gatto
+                      - label: zampa (Animali)
+                        value: zampa
+                      - label: uccello (Animali)
+                        value: uccello
+                      - label: pesce (Animali)
+                        value: pesce
+                      - label: palestra (Sport e tempo libero)
+                        value: palestra
+                      - label: pallone (Sport e tempo libero)
+                        value: pallone
+                      - label: nuoto (Sport e tempo libero)
+                        value: nuoto
+                      - label: tenda (Sport e tempo libero)
+                        value: tenda
+                      - label: valigia (Sport e tempo libero)
+                        value: valigia
+                      - label: musica (Sport e tempo libero)
+                        value: musica
+                      - label: biglietto (Sport e tempo libero)
+                        value: biglietto
+                      - label: arte (Sport e tempo libero)
+                        value: arte
+                      - label: whatsapp (Marchi)
+                        value: whatsapp
+                      - label: facebook (Marchi)
+                        value: facebook
+                      - label: instagram (Marchi)
+                        value: instagram
+                      - label: google (Marchi)
+                        value: google
+                      - label: youtube (Marchi)
+                        value: youtube
+                      - label: tiktok (Marchi)
+                        value: tiktok
+                      - label: tripadvisor (Marchi)
+                        value: tripadvisor
+                      - label: linkedin (Marchi)
+                        value: linkedin
+                      - label: pinterest (Marchi)
+                        value: pinterest
+                      - label: threads (Marchi)
+                        value: threads
+                      - label: x (Marchi)
+                        value: x
+                      - label: telegram (Marchi)
+                        value: telegram
+                      - label: booking (Marchi)
+                        value: booking
+                      - label: airbnb (Marchi)
+                        value: airbnb
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
           - name: cta
             label: Invito all’azione
             widget: object

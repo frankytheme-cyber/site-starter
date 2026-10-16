@@ -2459,6 +2459,175 @@
 			}
 		},
 		{
+			"type": "contact",
+			"name": "Contatti",
+			"scope": "page",
+			"category": "contatti",
+			"version": "1.0.0",
+			"interactive": true,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Recapiti, indirizzo e orari dell’attività, presi da «Dati attività», con la mappa o un invito all’azione.",
+			"whenToUse": "Nella pagina contatti, o in fondo a una pagina che deve far trovare l’attività. Telefono, WhatsApp, email, indirizzo e orari non si scrivono nel blocco: arrivano da site.json.",
+			"avoidWhen": "Per un semplice invito a chiamare o chiedere un preventivo (lì va cta) o quando serve un modulo da compilare: il form è rimandato alla v1.1.",
+			"rules": [
+				"La variante info-cta richiede il pulsante (cta)."
+			],
+			"variants": [
+				{
+					"name": "info-mappa",
+					"description": "Recapiti e orari da una parte, dall’altra un riquadro con «Apri in Maps» e il pulsante «Mostra la mappa», che carica la mappa solo al clic.",
+					"whenToUse": "La pagina contatti di un’attività con una sede da raggiungere: negozio, studio, laboratorio.",
+					"fixture": "Info e mappa, con orari",
+					"preview": "/catalogo/contact/info-mappa/",
+					"screenshots": {
+						"desktop": "img/contact-info-mappa-desktop.webp",
+						"mobile": "img/contact-info-mappa-mobile.webp"
+					}
+				},
+				{
+					"name": "info-cta",
+					"description": "Recapiti e orari in due colonne, con un pulsante d’azione e il link «Apri in Maps».",
+					"whenToUse": "Attività che lavora a domicilio o su appuntamento, dove la sede conta meno di un preventivo o di una prenotazione.",
+					"fixture": "Info e pulsante, con orari",
+					"preview": "/catalogo/contact/info-cta/",
+					"screenshots": {
+						"desktop": "img/contact-info-cta-desktop.webp",
+						"mobile": "img/contact-info-cta-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`info-mappa` · `info-cta`",
+					"constraints": {
+						"values": [
+							"info-mappa",
+							"info-cta"
+						]
+					},
+					"label": "Variante",
+					"hint": "info-mappa: recapiti e orari con la mappa al clic · info-cta: recapiti e orari con un pulsante d’azione"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Al massimo 70 caratteri"
+				},
+				{
+					"path": "text",
+					"type": "testo",
+					"required": false,
+					"limits": "max 200",
+					"constraints": {
+						"maxLength": 200
+					},
+					"label": "Testo",
+					"hint": "Una o due frasi, al massimo 200 caratteri"
+				},
+				{
+					"path": "showHours",
+					"type": "sì/no",
+					"required": true,
+					"limits": "",
+					"constraints": {},
+					"label": "Mostra gli orari",
+					"hint": "Aggiunge gli orari di apertura presi da «Dati attività»",
+					"note": "Se è attivo, gli orari vengono da site.json."
+				},
+				{
+					"path": "cta",
+					"type": "gruppo",
+					"required": false,
+					"requiredFor": [
+						"info-cta"
+					],
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante",
+					"hint": "L’azione che chiedi di fare, es. «Chiedi un preventivo»; serve nella variante info-cta",
+					"note": "Nella variante info-mappa non viene mostrato."
+				},
+				{
+					"path": "cta.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "cta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "cta.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "cta",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "cta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "cta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				}
+			],
+			"example": {
+				"fixture": "Info e mappa, con orari",
+				"target": "sections",
+				"json": {
+					"type": "contact",
+					"variant": "info-mappa",
+					"title": "Vieni a trovarci in bottega",
+					"text": "Siamo in laboratorio dal lunedì al sabato mattina. Passa a vedere i campioni di legno o chiamaci prima, così ti aspettiamo.",
+					"showHours": true
+				}
+			}
+		},
+		{
 			"type": "cta",
 			"name": "Invito all’azione",
 			"scope": "page",

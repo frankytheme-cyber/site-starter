@@ -44,6 +44,7 @@ Sezioni delle ricette di pagina (`scope: "page"`), nell’ordine in cui compaion
 | [carousel — Carosello](blocchi/carousel.md) | contenuti | `foto`, `card` | Per una serie di elementi dello stesso tipo che si sfogliano: foto dei lavori finiti, prima e dopo, progetti, recensioni con foto. |
 | [tabs — Schede](blocchi/tabs.md) | contenuti | `testo`, `testo-immagine` | Quando chi visita sceglie una strada tra poche alternative parallele dello stesso tipo: pranzo o cena, privati o imprese, servizi di base o completi. |
 | [services — Servizi](blocchi/services.md) | contenuti | `cards-icone`, `cards-immagine`, `alternato`, `schede` | Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno. |
+| [contact — Contatti](blocchi/contact.md) | contatti | `info-mappa`, `info-cta` | Nella pagina contatti, o in fondo a una pagina che deve far trovare l’attività. Telefono, WhatsApp, email, indirizzo e orari non si scrivono nel blocco: arrivano da site.json. |
 | [cta — Invito all’azione](blocchi/cta.md) | contatti | `banner`, `split-contatto` | Dopo i blocchi che convincono (servizi, lavori, recensioni) e in fondo alla pagina, prima del footer. Con showContacts mostra telefono e WhatsApp dell’attività presi da site.json. |
 
 ## Blocchi di layout

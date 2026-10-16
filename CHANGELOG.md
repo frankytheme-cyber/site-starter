@@ -19,6 +19,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
+- Blocco `contact` (varianti `info-mappa`, `info-cta`): recapiti, indirizzo e orari letti da `site.json`. La mappa è il link «Apri in Maps»; con JavaScript il pulsante «Mostra la mappa qui» carica l’iframe solo al clic.
 - `docs/specifica.md`: la specifica completa del sistema, gestita (arriva nei siti con `blocks:sync`). `AGENTS.md` la indica come riferimento in caso di dubbio; `npm run release` ne aggiorna la riga «Versione».
 - `npm run site:init` inizializza un sito copiato dal template; `npm run blocks:sync -- vX.Y.Z` lo aggiorna a una versione della libreria.
 - `--strict` nella libreria: errori per le regole strutturali delle ricette, avvisi per i segnaposto. Nei siti cliente tutto errore.
