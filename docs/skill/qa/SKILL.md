@@ -41,8 +41,9 @@ Per il QA. Verifichi, non correggi: ogni problema diventa una richiesta all'agen
    - nessuna recensione o numero senza una fonte presente nel brief;
    - foto dei lavori reali, stock dichiarato in `docs/nota-design.md`;
    - tono dei testi coerente con il brief;
-   - ogni pagina prevista dal brief esiste, nessuna pagina in più.
-5. **Controllo a vista** a 375 e 1280 px, sull'anteprima Vercel della PR o in locale (`npm run preview`, `http://localhost:4321`): menu mobile da tastiera, leggibilità, immagini tagliate male.
+   - ogni pagina prevista dal brief esiste, nessuna pagina in più;
+   - se c'è un sito esistente, in `vercel.json` esattamente le righe approvate in `docs/redirects.md`.
+5. **Controllo a vista** a 375 e 1280 px, in locale (`npm run preview`, `http://localhost:4321`) o sull'anteprima Vercel della PR se si apre senza credenziali: menu mobile da tastiera, leggibilità, immagini tagliate male.
 
    ```sh
    npx playwright screenshot --viewport-size="375,812" --full-page "<indirizzo della pagina>" reports/vista-375.png
@@ -53,23 +54,23 @@ Per il QA. Verifichi, non correggi: ogni problema diventa una richiesta all'agen
 7. **Rapporto al PM** nel task:
 
    ```text
+   VERDETTO: PASS | FAIL
    QA — <PR>
-   Esito: verde | rosso
    Controlli: npm run qa [-- --strict] → <n> errori, <n> avvisi
    Richieste aperte: <agente: file, problema> (una per riga)
    Brief: ok | <differenze>
    Vista 375/1280: ok | <note>
    ```
 
-   Verde solo con zero errori e nessuna differenza dal brief. Dopo le correzioni si riparte dal passo 1.
+   La prima riga è sempre il verdetto: il PM la legge per chiudere o riaprire i task. PASS solo con zero errori e nessuna differenza dal brief; gli avvisi vanno nel rapporto ma non bloccano. Dopo le correzioni si riparte dal passo 1.
 
 ## Criterio di fine
 
-Rapporto al PM inviato, con l'esito e l'elenco delle richieste aperte.
+Rapporto al PM inviato, con `VERDETTO: PASS` o `VERDETTO: FAIL` sulla prima riga e l'elenco delle richieste aperte.
 
 ## Non fare
 
 - Non modificare file, non fare commit né push, non correggere «al volo».
 - Non chiudere richieste di altri, non abbassare soglie, non saltare né spegnere controlli.
-- Non unire più problemi in una richiesta, non dare verde con errori aperti.
+- Non unire più problemi in una richiesta, non dare PASS con errori aperti.
 - Non fare merge e non togliere la PR dalla bozza.

@@ -380,7 +380,7 @@ PROCEDURA (skill "qa")
    - ogni pagina prevista dal brief esiste; nessuna pagina in piu' non prevista.
 4. Controllo visivo sull'anteprima Vercel a 375 px e 1280 px: menu mobile da tastiera,
    leggibilita', immagini tagliate male.
-5. Rapporto finale al PM: verde / rosso, elenco richieste aperte.
+5. Rapporto finale al PM: VERDETTO: PASS / FAIL sulla prima riga, elenco richieste aperte.
 
 NON FAI
 Non modifichi file, non chiudi richieste altrui, non abbassi soglie o controlli.
