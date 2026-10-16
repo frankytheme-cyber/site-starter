@@ -15,9 +15,11 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 - Sono gestiti anche `.github/workflows/` (tutta la cartella: un workflow aggiunto nel sito è una modifica vietata), `CLAUDE.md` e `.github/CODEOWNERS`. `CLAUDE.md` non è più un link ad `AGENTS.md`: importa `AGENTS.md` e `docs/sito.md`, dove vanno le note del sito.
 - CI: i push partono solo su `main`; gli altri branch girano come pull request (una volta sola per commit) o a mano (`workflow_dispatch`).
 - Icone: `scala` diventa `scale` (scale di casa, vano scala; Lucide non ha una scala a pioli), `scudo` diventa `garanzia`, `secchio-vernice` non c’è più. Nelle ricette va cambiato l’alias, altrimenti la build si ferma.
+- Sono gestite anche `docs/skill/`, `docs/modelli/` e `docs/agenti/`: nei siti cliente un file aggiunto lì è una modifica vietata, e `blocks:sync` lo toglie. Brief, nota di design e redirect del sito restano in `docs/brief.md`, `docs/nota-design.md` e `docs/redirects.md`.
 
 ### Novità
 
+- `docs/specifica.md`: la specifica completa del sistema, gestita (arriva nei siti con `blocks:sync`). `AGENTS.md` la indica come riferimento in caso di dubbio; `npm run release` ne aggiorna la riga «Versione».
 - `npm run site:init` inizializza un sito copiato dal template; `npm run blocks:sync -- vX.Y.Z` lo aggiorna a una versione della libreria.
 - `--strict` nella libreria: errori per le regole strutturali delle ricette, avvisi per i segnaposto. Nei siti cliente tutto errore.
 - `gen:decap` senza repository GitHub usa un segnaposto con un avviso; in un sito cliente con `--strict` è un errore. Il repository del sito sta in `src/site.config.ts` (`cms.repo`).
@@ -40,6 +42,10 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 - Icone: lista curata di 164 alias in 21 categorie (20 di simboli più i marchi) (`iconGroups` in `src/core/icons.ts`: casa e cantiere, attrezzi, impianti, cibo, salute, negozio, ufficio, marchi...), con i marchi linkedin, pinterest, threads, x, telegram, booking e airbnb. `/catalogo/icone` le mostra per categoria con la ricerca per alias o nome; nel CMS la select mostra la categoria accanto all’alias (`iconSchema()`); `check:blocks` verifica che ogni nome esista in Lucide o Simple Icons.
 - Nella libreria il menu ha la voce «Catalogo» (Blocchi, Bottoni, Icone, UI), aggiunta da `BaseLayout` senza toccare `navigation.json`; nei siti cliente non esiste. La barra del catalogo ha il link «← Sito» e lo sfondo pieno.
 - Fixture neutre: un’attività di esempio, «Bottega Esempio», e settori diversi tra i blocchi (artigiano, negozio, ristorante, studio professionale), con foto segnaposto nuove e recapiti finti; palette e forme senza settori unici nell’«adatto a».
+- Skill degli agenti Paperclip in `docs/skill/<nome>/SKILL.md`, dalla specifica: `brief`, `modelli-task`, `avvio-sito`, `ricetta-pagina`, `nuovo-blocco`, `richiesta-blocco`, `qa`, `seo-prelancio`, `redirect` e `github-pr` (branch, push senza token nell’URL, PR in bozza con l’API GitHub via curl, mai merge). Modelli del brief e dei task in `docs/modelli/`.
+- Siti cliente: un solo branch, `lancio`, con una sola PR in bozza verso `main` aperta dal task «Avvio sito»; tutti i task del sito ci lavorano e i cancelli usano la stessa anteprima Vercel. Nella libreria resta un branch e una PR per task.
+- Skill `github-pr` per le cartelle isolate di Paperclip (un git worktree per task, in `.paperclip/`, ignorata da git): si lavora sul branch della propria cartella e si fa push verso il branch di destinazione (`HEAD:lancio` nei siti), mai `git switch` su un branch aperto altrove. Nel sito i Dati del Builder vengono prima del Design.
+- Istruzioni di ruolo degli agenti Paperclip in `docs/agenti/<ruolo>.md` (PM, Designer, Builder, QA, SEO, Simone), copiate tali e quali in Paperclip; la specifica rimanda lì.
 
 ### Correzioni
 

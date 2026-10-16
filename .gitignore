@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # controlli di qualità (npm run check / qa)
 reports/
+
+# cartelle dei task di Paperclip (git worktree)
+.paperclip/

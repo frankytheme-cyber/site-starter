@@ -64,12 +64,12 @@ Verso una versione precedente serve `--force`.
 
 `library.manifest.json`:
 
-- `managed`: cartelle della libreria (`src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`, `.github/workflows`): anche un file aggiunto lì è una modifica vietata;
+- `managed`: cartelle della libreria (`src/blocks`, `src/core`, `src/themes`, `src/layouts`, `scripts`, `docs/catalogo`, `docs/skill`, `docs/modelli`, `docs/agenti`, `.github/workflows`): anche un file aggiunto lì è una modifica vietata;
 - `managedFiles`: file singoli: `AGENTS.md` e `CLAUDE.md` (istruzioni per gli agenti), `.github/CODEOWNERS`, il manifest stesso, `astro.config.mjs`, `src/content.config.ts`, le route `src/pages/[...slug].astro` e `src/pages/robots.txt.ts`, `tsconfig.json`, `.env.example`, `public/admin/index.html` e la documentazione comune di `docs/`;
 - `exclude`: dentro le cartelle gestite ma né controllati né copiati (`src/library`);
 - `libraryOnly` e `libraryScripts`: solo nella libreria, tolti da `site:init` e mai copiati da `blocks:sync`.
 
-Del sito, e mai toccati da `blocks:sync`: `src/content/**`, `src/assets/images/**`, `src/site.config.ts`, le altre pagine di `src/pages`, `public/` (tranne `admin/index.html`), `docs/sito.md`, `README.md`, `name` e `version` di `package.json`.
+Del sito, e mai toccati da `blocks:sync`: `src/content/**`, `src/assets/images/**`, `src/site.config.ts`, le altre pagine di `src/pages`, `public/` (tranne `admin/index.html`), `docs/sito.md` e gli altri documenti del sito (`docs/brief.md`, compilato dal modello `docs/modelli/brief.md`, `docs/nota-design.md`, `docs/redirects.md`), `README.md`, `name` e `version` di `package.json`.
 
 Nei siti cliente cartelle e file gestiti sono in sola lettura: il check `lock` confronta i loro hash con `blocks.lock.json` (che registra anche la versione della libreria) e ferma ogni modifica locale. Una correzione si fa in site-starter, si rilascia (`npm run release -- vX.Y.Z`) e arriva ai siti con `blocks:sync`.
 
