@@ -409,7 +409,7 @@ Il token di `simone-agenti` sta in una sola company secret, **`GITHUB_TOKEN`** (
 - [ ] `.env` locale con `SITE_STARTER_LIBRARY=1`; stessa variabile nella repo GitHub (Variables) e su Vercel
 - [ ] Account GitHub `simone-agenti`, invitato con permesso *Write*; token classic con scadenza a 90 giorni
 - [ ] Paperclip: company secret `GITHUB_TOKEN` con il token di `simone-agenti`
-- [ ] Paperclip, Project "Libreria blocchi": repo nella cartella gestita da Paperclip (non il tuo clone), Execution Workspaces con «Enable isolated task checkouts» e «New tasks default to isolated checkout» attivi, env come nella tabella sopra (con `SITE_STARTER_LIBRARY=1`)
+- [ ] Paperclip, Project "Libreria blocchi": repo nella cartella gestita da Paperclip (non il tuo clone), Execution Workspaces con «Enable isolated task checkouts» e «New tasks default to isolated checkout» attivi e, nelle impostazioni avanzate, la cartella dei worktree fuori dal clone (`<cartella del Project>/worktrees`, non `.paperclip/worktrees` dentro il clone: lì `astro check` e la build falliscono), env come nella tabella sopra (con `SITE_STARTER_LIBRARY=1`)
 - [ ] Istruzioni di ruolo dei 6 agenti copiate da `docs/agenti/` in Paperclip; skill create e assegnate
 - [ ] Agenti attivi solo su assegnazione (heartbeat spento); per ora i task li avvia Simone a mano, compreso il controllo giornaliero del PM; routine giornaliera e budget per Project da definire
 - [ ] Skill in `docs/skill/` scritte con Claude Code e rilasciate
@@ -420,7 +420,7 @@ Il token di `simone-agenti` sta in una sola company secret, **`GITHUB_TOKEN`** (
 - [ ] GitHub: Use this template, repo privata, invito a `simone-agenti`
 - [ ] Ruleset importato da `docs/github-ruleset-sito.json` (se hai Pro)
 - [ ] Clone in locale (GitHub Desktop) nella cartella dei siti
-- [ ] Paperclip: Add Project, Configuration → repo nella cartella gestita da Paperclip (non il clone di GitHub Desktop), Execution Workspaces con le cartelle isolate attive e predefinite, env come nella tabella sopra (senza `SITE_STARTER_LIBRARY`)
+- [ ] Paperclip: Add Project, Configuration → repo nella cartella gestita da Paperclip (non il clone di GitHub Desktop), Execution Workspaces con le cartelle isolate attive e predefinite e la cartella dei worktree fuori dal clone, env come nella tabella sopra (senza `SITE_STARTER_LIBRARY`)
 - [ ] Vercel: Import della repo
 - [ ] Task "Avvio sito" al Builder (`site:init`)
 - [ ] Brief con il PM → cancello 1
