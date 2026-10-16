@@ -9,17 +9,17 @@ Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si a
 
 ## Passi
 
-1. **Cartella, remote, dipendenze.** Di solito Paperclip ti dà una cartella tua per il task: un worktree in `.paperclip/worktrees/<ID>-<titolo>`, con un branch dello stesso nome nato da `main`. Un task riaperto ritrova la stessa cartella.
+1. **Cartella, remote, dipendenze.** Di solito Paperclip ti dà una cartella tua per il task: un worktree `<ID>-<titolo>` nella cartella `worktrees` del Project, accanto al clone principale, con un branch dello stesso nome nato da `main`. Un task riaperto ritrova la stessa cartella.
 
    ```sh
-   git rev-parse --show-toplevel     # …/.paperclip/worktrees/<ID>-<titolo>: cartella del task
+   test -f .git && echo "cartella del task" || echo "clone principale del Project"   # in un worktree .git è un file
    git branch --show-current
    git status --porcelain
    git remote get-url origin
    test -d node_modules || npm ci    # una cartella nuova non ha le dipendenze
    ```
 
-   `git status --porcelain` non stampa nulla. Se stampa qualcosa: nella cartella del task sono modifiche tue di un giro precedente, riprendile; nella cartella del Project (senza `.paperclip/worktrees` nel percorso) vuol dire che qualcun altro ci lavora, fermati e avvisa il PM. Il remote è `https://github.com/<owner>/<repo>.git`; se contiene un token o un utente (`…@github.com`), o è SSH (`git@github.com:…`), correggilo:
+   `git status --porcelain` non stampa nulla. Se stampa qualcosa: nella cartella del task sono modifiche tue di un giro precedente, riprendile; nel clone principale del Project vuol dire che qualcun altro ci lavora, fermati e avvisa il PM. Il remote è `https://github.com/<owner>/<repo>.git`; se contiene un token o un utente (`…@github.com`), o è SSH (`git@github.com:…`), correggilo:
 
    ```sh
    git remote set-url origin https://github.com/<owner>/<repo>.git
@@ -103,7 +103,7 @@ PR in bozza aperta verso la base giusta, tutti i commit del task pushati, link d
 - Mai il token nell'URL: né nel remote (`https://x-access-token:…@github.com/…`) né nella richiesta (`?access_token=`). Solo nell'header `Authorization`.
 - Mai stampare token o ambiente: niente `echo $GH_TOKEN`, `env`, `printenv`, `set -x`.
 - Mai merge, mai push su `main`, mai `git push --force`; non togliere la bozza: lo fa Simone quando unisce.
-- Mai `git switch` su `lancio` o sul branch di una PR aperta: si lavora sul branch della propria cartella e si fa push con `HEAD:<DEST>`. Mai cancellare o spostare cartelle in `.paperclip/worktrees`: le gestisce Paperclip.
+- Mai `git switch` su `lancio` o sul branch di una PR aperta: si lavora sul branch della propria cartella e si fa push con `HEAD:<DEST>`. Mai cancellare o spostare le cartelle dei task: le gestisce Paperclip.
 - Non approvare né chiudere PR, non cambiare impostazioni della repo (protezioni, collaboratori, variabili, segreti) o di Vercel.
 - Non installare `gh` o altri client e non usare i Connectors di GitHub.
 - Push o API rifiutati (401, 403): non cercare altre strade, avvisa il PM (il token scade ogni 90 giorni).
