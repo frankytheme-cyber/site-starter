@@ -285,7 +285,7 @@ Le procedure riusabili diventano company skill di Paperclip, assegnate solo agli
 | `qa` | QA | Procedura delle istruzioni QA, formato delle richieste | Rapporto al PM |
 | `seo-prelancio` | SEO | Checklist delle istruzioni SEO | Rapporto al PM |
 | `redirect` | Builder, SEO | Raccolta dei vecchi URL dalla sitemap o da una scansione, mappa, stato della decisione | Mappa decisa da Simone |
-| `github-pr` | PM, Designer, Builder | Branch (`lancio` nei siti, uno per task nella libreria), commit, push senza token nell'URL, PR in bozza con l'API GitHub via curl (`$GH_TOKEN`), link nel task; mai merge | PR in bozza aperta e linkata nel task |
+| `github-pr` | PM, Designer, Builder | Branch (`lancio` nei siti, uno per task nella libreria), commit, push senza token nell'URL, PR in bozza con `npm run pr` (API di GitHub, token dall'env), link nel task; mai merge | PR in bozza aperta e linkata nel task |
 
 Ogni skill si scrive con Claude Code in `docs/skill/<nome>/SKILL.md` nella libreria (frontmatter `name` e `description`, poi passi con i comandi, criterio di fine e cosa non fare), così resta versionata e arriva nei siti. I modelli di brief e di task sono in `docs/modelli/`.
 

@@ -61,7 +61,7 @@ Per il Builder, che prepara la mappa e poi applica le righe approvate, e per il 
    ```
 
    ```sh
-   node -e 'JSON.parse(require("fs").readFileSync("vercel.json", "utf8")); console.log("vercel.json valido")'
+   python3 -m json.tool vercel.json > /dev/null && echo "vercel.json valido"
    curl -sI "<anteprima Vercel della PR>/servizi/imbiancatura.html" | grep -iE '^(HTTP|location)'
    ```
 

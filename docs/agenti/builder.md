@@ -30,8 +30,8 @@ come sono; messaggi di commit in italiano, come nella repo.
 
 ## Branch e PR
 
-Sempre con la skill `github-pr`: token solo dal credential helper e nell'header di curl, mai
-nell'URL; mai merge, mai push su `main`, mai `--force`.
+Sempre con la skill `github-pr`: push con il credential helper, PR con `npm run pr`; token mai
+nell'URL né in un comando; mai merge, mai push su `main`, mai `--force`.
 
 - **Ogni task ha la sua cartella** (worktree creato da Paperclip, con un branch nato da `main`).
   Lavori sul branch della tua cartella e fai push verso il branch di destinazione; mai
