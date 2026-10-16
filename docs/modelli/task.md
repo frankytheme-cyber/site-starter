@@ -16,6 +16,8 @@ VINCOLI: <cosa non toccare>
 PASSA A: <agente successivo> | CANCELLO: <se serve approvazione>
 ```
 
+`PASSA A` serve a chi legge: chi esegue chiude il task `done` e il passaggio lo fa il PM.
+
 ## Task tipici
 
 | Task | Agente · Project | Skill | Output atteso | Criteri specifici | Passa a |

@@ -88,10 +88,15 @@ Il task padre del sito resta aperto fino al merge di Simone, non fino al verdett
 Qui non c'è brief. Si lavora per lotti, nell'ordine della specifica:
 1) contact; 2) features, about, process; 3) gallery, testimonials, carousel; 4) areas.
 
+Ogni lotto lo segui da un tuo task («Lotto N: <tipi>») che resta aperto fino al merge: i task
+del Builder e del Designer nascono sotto di lui (vedi «Meccanica in Paperclip»).
+
 1. **Lotto** → Builder (skill `nuovo-blocco`), con il modello di task del lotto della specifica.
 2. **Revisione visiva** → Designer, sul catalogo dell'anteprima Vercel con tutti i preset.
    Le sue richieste tornano al Builder.
-3. **Approvazione**: Approval a Simone con link alla PR e a `/catalogo/<tipo>` dell'anteprima.
+3. **Approvazione**: Approval a Simone con link alla PR e a `/catalogo/<tipo>` dell'anteprima,
+   collegata al task del lotto. Nel testo gli chiedi di approvare dopo il merge: così la
+   decisione ti sveglia con la PR già unita e fai partire subito il lotto dopo.
 4. **Merge** su `main`: lo fa Simone. Il lotto successivo parte solo dopo il merge del
    precedente, così riusa quello che ha stabilito.
 
@@ -99,10 +104,19 @@ Release (`npm run release`) e tag li fa Simone.
 
 ## Meccanica in Paperclip
 
+- **Un tuo task per fase, aperto fino al cancello.** I sottotask nascono sotto il tuo task
+  (`parentId`) e lui resta `blocked` dal sottotask in corso (`blockedByIssueIds`). Paperclip
+  ti sveglia quando un sottotask si chiude solo se il padre è aperto e assegnato a te: un
+  sottotask sotto un task già chiuso, finito, non sveglia nessuno. Non chiudere il tuo task
+  nel giro in cui crei i sottotask.
 - **Dipendenze vere.** Collega i sottotask con `blockedByIssueIds` solo dove c'è un passaggio
   di consegne reale. Dopo un cancello, il task successivo parte solo ad Approval ottenuta.
-  Metti nel task padre `blockedByIssueIds` sull'ultimo sottotask della fase, così ti svegli
-  quando finisce.
+- **Attesa di un'Approval.** Collegala al tuo task (`issueIds`) e lascia il task `blocked` con
+  il Board come owner, senza blocker già chiusi (ti risveglierebbero subito a vuoto): ti
+  sveglia la decisione di Simone.
+- **Passaggi.** Gli agenti chiudono il loro task `done` e non lo riassegnano. Se trovi un
+  task assegnato a te da un altro agente, o un task chiuso senza che tu ti sia svegliato,
+  fai tu il passaggio successivo.
 - **Segui, non interrogare.** Lascia che i risvegli automatici (`issue_blockers_resolved`,
   `issue_children_completed`) ti riportino il lavoro. Non controllare sottotask ancora bloccati.
 - **Verdetto di QA e SEO.** Il QA chiude il suo task con `VERDETTO: PASS` o `VERDETTO: FAIL`
@@ -144,7 +158,15 @@ agenti esecutori.
 
 Una volta al giorno, nel task della routine:
 
-1. Task fermi, bloccati o in attesa di un cancello, in tutti i Project.
+1. Task fermi, bloccati o in attesa di un cancello, in tutti i Project. Sblocchi tu quello
+   che puoi:
+   - task assegnati a te in `todo` o `in_progress` senza run attiva: li riprendi, o li chiudi
+     `done` se il lavoro è finito altrove (scrivi dove);
+   - task di un altro agente fermi da più di 2 ore in `todo` o `in_progress` senza run attiva:
+     un commento sul suo task con la @-menzione lo sveglia;
+   - task chiusi senza il passaggio successivo (sottotask di un padre già chiuso, passaggio
+     perso): fai tu il passaggio;
+   - Approval o merge in attesa da più di un giorno: lo ricordi a Simone nel riassunto.
 2. Commit su `main` delle repo dei Project: ogni commit deve risultare da una PR unita
    (`GET /repos/<owner>/<repo>/commits/<sha>/pulls`, con `merged_at` valorizzato). Un commit
    arrivato senza PR va segnalato a Simone come primo punto.

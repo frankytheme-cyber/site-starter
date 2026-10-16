@@ -309,6 +309,8 @@ VINCOLI: <cosa non toccare>
 PASSA A: <agente successivo> | CANCELLO: <se serve approvazione>
 ```
 
+`PASSA A` serve a chi legge: chi esegue chiude il task `done` e il passaggio lo fa il PM.
+
 **Esempio, lotto 1 del Builder (Project Libreria)**
 
 ```markdown
