@@ -58,6 +58,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Correzioni
 
+- Ruoli Paperclip e Capabilities allineati: passaggi distinti per PASS/FAIL, QA della libreria senza brief cliente, verifiche legate allo SHA, SEO dopo il lancio, dipendenze delle correzioni e letture/report mirati per ridurre i token senza saltare i controlli. Capabilities versionate in `docs/agenti/capabilities.json`.
+
 - `check:blocks` raccoglie tutti i problemi: un file mancante in un blocco non interrompe più il controllo degli altri.
 - `check:recipes` segnala tutti i recapiti scritti in uno stesso testo, non solo il primo.
 - Le fixture del footer usano recapiti palesemente finti (`055 000 0000`, `info@esempio.it`).

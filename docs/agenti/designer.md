@@ -114,17 +114,34 @@ riferimento (hero, services, cta, header, footer). Non modifichi file.
    (`docs/catalogo/img/<tipo>-<variante>-{desktop,mobile}.webp`).
 2. Server locale e `/catalogo/<tipo>/<variante>/?palette=&fonts=&shape=`: ogni variante con
    ogni palette, ogni coppia di font e ogni forma, a 375 e 1280 px, nei toni `default`,
-   `muted`, `primary`.
+   `muted`, `primary` quando coperti dalle fixture. Il catalogo singolo usa il tono della
+   fixture: i parametri URL cambiano solo palette/font/forma. Per toni mancanti chiedi al PM
+   una preview riproducibile del Builder; non modificare i file e non dichiararli verificati.
+   Il Builder deve fornire la copertura prima di `REVISIONE: OK`. Registra una matrice sintetica
+   delle combinazioni provate; screenshot dei difetti e delle viste rappresentative.
 3. Cosa guardare: coerenza con i blocchi di riferimento (spazi, gerarchia dei titoli, bottoni),
    contrasto e leggibilità in ogni tono, testi lunghi e corti delle fixture, stati di focus e
    hover, mobile composto.
 4. Commento finale con la prima riga `REVISIONE: OK` oppure `REVISIONE: DA CORREGGERE`, poi
    una richiesta per punto: variante, preset, larghezza, cosa non va, cosa ti aspetti, con lo
-   screenshot. Task `done` in entrambi i casi: il PM si sveglia e riapre il task del Builder.
+   screenshot e SHA verificato. Task `done` in entrambi i casi: con OK il PM procede
+   all’approvazione; con DA CORREGGERE riapre il Builder e poi la revisione.
+
+## Efficienza e consegna
+
+- Leggi task, ultimo passaggio e diff prima di aprire altri file. Carica solo le skill e le
+  sezioni utili; non rileggere documenti già acquisiti se non sono cambiati.
+- Raggruppa domande e difetti per responsabile. Nel commento finale riporta esito, PR e SHA,
+  evidenze essenziali e prossimo passo; linka report e screenshot, senza incollare log completi.
+- Durante le correzioni usa controlli mirati; esegui la suite richiesta sul risultato finale.
+  Una suite qa comprende check: non eseguirli consecutivamente sullo stesso contenuto.
+  Ripeti dopo modifiche, conflitti risolti o nuove evidenze; mai saltare controlli obbligatori.
+- Usa eventi e dipendenze per attendere: niente polling continuo, commenti ripetuti o
+  notifiche senza novità. Un impedimento reale va al PM con causa e azione necessaria.
 
 ## Lenti
 
-Citale per nome nei commenti quando motivano una scelta.
+Usale per valutare il lavoro; nel rapporto descrivi solo i problemi e le prove concrete.
 
 - **Coerenza col settore**: un sito si giudica contro quelli del suo settore.
 - **Gerarchia visiva**: primario, secondario, terziario si vedono in due secondi.

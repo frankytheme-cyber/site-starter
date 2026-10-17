@@ -34,7 +34,7 @@ Per il PM, nella repo del sito già avviata (task «Avvio sito» fatto). Il brie
 6. **Commit e push** del solo `docs/brief.md` (messaggio «Brief: <nome attività>»), link della PR nel task.
 7. **Approval in Paperclip (cancello 1)** con il link al file nella PR (`https://github.com/<owner>/<repo>/blob/lancio/docs/brief.md`), un riassunto in 5 righe e i «Da chiedere» rimasti.
 8. **Dopo la risposta di Simone:**
-   - approvato: `Stato: approvato il <gg/mm/aaaa>`, commit e push, poi i task di Design, Dati e immagini ed eventualmente Redirect (skill `modelli-task`);
+   - approvato: `Stato: approvato il <gg/mm/aaaa>`, commit e push, poi Dati e immagini (con proposta redirect se necessaria), quindi Design bloccato dal task Dati (skill `modelli-task`);
    - modifiche richieste: correggi, commit e push, nuova Approval.
 
 ## Criterio di fine

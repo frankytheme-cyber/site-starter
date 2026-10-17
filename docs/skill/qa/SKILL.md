@@ -36,13 +36,14 @@ Per il QA. Verifichi, non correggi: ogni problema diventa una richiesta all'agen
    SUGGERIMENTO: <hint>
    ```
 
-4. **Confronto con `docs/brief.md`**, che i controlli non coprono; ogni differenza è una richiesta, con file e punto:
+4. **Nei siti, confronto con `docs/brief.md`**, che i controlli non coprono; ogni differenza è una richiesta, con file e punto:
    - servizi, zone, orari e recapiti uguali al brief (`src/content/settings/site.json` e pagine);
    - nessuna recensione o numero senza una fonte presente nel brief;
    - foto dei lavori reali, stock dichiarato in `docs/nota-design.md`;
    - tono dei testi coerente con il brief;
    - ogni pagina prevista dal brief esiste, nessuna pagina in più;
    - se c'è un sito esistente, in `vercel.json` esattamente le righe approvate in `docs/redirects.md`.
+   Nella libreria usa invece il task approvato, `src/blocks/README.md`, schemi, fixture e criteri di accettazione: nessun brief cliente richiesto.
 5. **Controllo a vista** a 375 e 1280 px, in locale (`npm run preview`, `http://localhost:4321`) o sull'anteprima Vercel della PR se si apre senza credenziali: menu mobile da tastiera, leggibilità, immagini tagliate male.
 
    ```sh
@@ -50,19 +51,19 @@ Per il QA. Verifichi, non correggi: ogni problema diventa una richiesta all'agen
    npx playwright screenshot --viewport-size="1280,800" --full-page "<indirizzo della pagina>" reports/vista-1280.png
    ```
 
-6. **Lascia la cartella com'era:** se `git status --porcelain` mostra file tracciati cambiati dai comandi, annotali nel rapporto (`git diff --stat`), poi `git restore .`; infine `git switch -`.
+6. **Lascia la cartella com'era:** se `git status --porcelain` mostra file tracciati cambiati dai comandi, annotali nel rapporto (`git diff --stat`), ripristina solo i file generati identificati, con `git restore -- <file>`; se non sai da dove provengono, fermati e segnala al PM. Ferma il server avviato da te e infine `git switch -`.
 7. **Rapporto al PM** nel task:
 
    ```text
    VERDETTO: PASS | FAIL
-   QA — <PR>
+   QA — <PR> · SHA: <git rev-parse HEAD>
    Controlli: npm run qa [-- --strict] → <n> errori, <n> avvisi
    Richieste aperte: <agente: file, problema> (una per riga)
-   Brief: ok | <differenze>
+   Requisiti (brief sito / task libreria): ok | <differenze>
    Vista 375/1280: ok | <note>
    ```
 
-   La prima riga è sempre il verdetto: il PM la legge per chiudere o riaprire i task. PASS solo con zero errori e nessuna differenza dal brief; gli avvisi vanno nel rapporto ma non bloccano. Dopo le correzioni si riparte dal passo 1.
+   La prima riga è sempre il verdetto: il PM la legge per chiudere o riaprire i task. PASS solo con zero errori e requisiti rispettati; gli avvisi vanno nel rapporto ma non bloccano. Dopo le correzioni si riparte dal passo 1.
 
 ## Criterio di fine
 

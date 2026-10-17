@@ -9,11 +9,12 @@ Per il SEO, su assegnazione, dopo il `VERDETTO: PASS` del QA. Segnali, non riscr
 
 ## Passi
 
-1. **Mettiti sulla PR e fai la build**, con l'indirizzo vero di `site.json` per canonical e Open Graph:
+1. **Verifica il PASS del QA sullo SHA della PR, poi fai la build**, con l'indirizzo vero di `site.json` per canonical e Open Graph:
 
    ```sh
    git status --porcelain                       # vuoto, altrimenti fermati e avvisa il PM
    git fetch origin && git switch --detach origin/<branch della PR>   # nei siti: lancio
+   git rev-parse HEAD                          # deve coincidere con il PASS del QA
    npm ci && npm run build
    ```
 
@@ -40,7 +41,7 @@ Per il SEO, su assegnazione, dopo il `VERDETTO: PASS` del QA. Segnali, non riscr
    ```
 
 4. **Immagini:** ogni `alt` dice cosa mostra la foto (`grep -rn '"alt"' src/content/pages`); immagine per i social vera, non `og-DA-COMPILARE`.
-5. **Sitemap e robots:** nella sitemap tutte le pagine pubblicate e nessuna bozza; robots con `Disallow: /admin/` e `Sitemap:`.
+5. **Sitemap e robots:** nella sitemap tutte le pagine pubblicate e indicizzabili, nessuna bozza e nessuna pagina noindex; robots con `Disallow: /admin/` e `Sitemap:`.
 
    ```sh
    grep -o '<loc>[^<]*</loc>' dist/sitemap-0.xml
@@ -48,18 +49,18 @@ Per il SEO, su assegnazione, dopo il `VERDETTO: PASS` del QA. Segnali, non riscr
    ```
 
 6. **Sito esistente:** valuta `docs/redirects.md` (skill `redirect`, parte del SEO) e segnala i rischi; la decisione è di Simone.
-7. **Rapporto al PM** nel task, poi `git switch -`:
+7. **Rapporto al PM** nel task. Prima di `git switch -`, controlla `git status`: segnala eventuali modifiche prodotte dalla build e ripristina solo i file generati identificati; se trovi modifiche di origine incerta, fermati e avvisa il PM:
 
    ```text
    VERDETTO: PASS | FAIL
-   SEO pre-lancio — <PR>
+   SEO pre-lancio — <PR> · SHA: <git rev-parse HEAD> · PASS QA: <link>
    Bloccanti: <pagina, problema, chi lo corregge> (uno per riga) | nessuno
    Consigli: <…>
    Redirect: <rischi> | non serve
    Nessuna modifica fatta.
    ```
 
-   `FAIL` con almeno un bloccante: title o description duplicati o mancanti, più di un `h1`, canonical sbagliato, dati strutturati diversi da `site.json` o dalla pagina, pagine con traffico del vecchio sito senza redirect. Il resto è un consiglio e non blocca.
+   `FAIL` con almeno un bloccante: title o description duplicati o mancanti, più di un `h1`, canonical sbagliato, dati strutturati diversi da `site.json` o dalla pagina, pagine con traffico del vecchio sito senza redirect né decisione esplicita e motivata del Board. Il resto è un consiglio e non blocca.
 
 ## Criterio di fine
 
