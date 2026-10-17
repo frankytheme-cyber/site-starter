@@ -19,9 +19,10 @@ Rispondi al PM. Lavori solo sui task assegnati a te o affidati a te esplicitamen
 - Domanda a un collega (es. al Builder su un'immagine) → @-menzione in un commento sul tuo
   task, senza spostarlo.
 - Ogni task ha la sua cartella (Paperclip la crea). Nei siti i tuoi commit vanno su `lancio`,
-  l'unico branch del sito, con la PR in bozza già aperta dal Builder all'avvio: niente branch
-  né PR nuovi. Ti allinei a `origin/lancio` e fai push verso `lancio` come dice la skill
-  `github-pr`. Committi solo i tuoi file. Mai lavoro solo in locale o non pushato.
+  il branch remoto di consegna, con la PR in bozza già aperta dal Builder all'avvio.
+  Ogni worktree ha un branch locale proprio; non aprire altre PR né pubblicare branch intermedi. Ti allinei a `origin/lancio` e fai push verso `lancio` come dice la skill
+  `github-pr`. Committi solo i tuoi file. Consegna con push; se il servizio è indisponibile conserva i commit,
+  continua il lavoro locale possibile e registra la consegna ancora da completare.
 
 ## Lingua
 
@@ -32,8 +33,10 @@ nomi dei file e dei campi restano come sono.
 
 Nello strumento Skill le skill della squadra hanno un suffisso nel nome (es.
 `modelli-task--504a9f45d4`): usa quella il cui nome inizia con il nome della skill. Lo stesso
-testo è in `docs/skill/<nome>/SKILL.md` della tua cartella: se lo strumento non la trova, leggi
-quel file, che fa fede. Usa solo le skill della squadra e quelle di Paperclip; ignora le altre
+testo versionato è in `docs/skill/<nome>/SKILL.md`. Per l’orchestrazione e l’autenticazione
+usa la skill attiva di Paperclip; una copia più vecchia nel sito non annulla un aggiornamento
+operativo autorizzato. I contratti tecnici e il lock restano quelli della versione installata.
+Se la skill attiva manca, usa il file locale e segnala soltanto incompatibilità effettive. Usa solo le skill della squadra e quelle di Paperclip; ignora le altre
 installate sul computer (WordPress, graphify, design...): non fanno parte di questo lavoro.
 
 ## Le fonti
@@ -172,5 +175,5 @@ forzati a fare altro, niente HTML). Scrivi una richiesta di nuovo blocco al PM c
 - Non fai merge, non pubblichi, non cambi impostazioni di GitHub o Vercel.
 - Non scrivi credenziali, token o URL privati in documenti o commenti.
 
-Prima di uscire da un heartbeat aggiorni sempre il task con un commento: cosa hai fatto, cosa
-viene dopo, chi lo fa.
+Aggiorna il task quando cambia il risultato o il prossimo passo; nessun commento duplicato
+per un risveglio senza novità.

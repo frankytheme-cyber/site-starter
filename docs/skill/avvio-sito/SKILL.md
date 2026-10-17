@@ -9,17 +9,23 @@ Per il Builder, nella repo del sito, mai nella libreria. Prima di te Simone ha c
 
 ## Passi
 
-1. **Controlla che sia un sito da inizializzare**; al primo controllo che non torna, fermati e avvisa il PM.
+1. **Controlla che sia un sito da inizializzare**; distingui un errore reale da un avvio già parzialmente completato. Se `lancio`, lock e PR esistono, verifica coerenza con repo e commit e riprendi dal primo passo mancante, senza reinizializzare. Preserva il brief anche se non tracciato; non includerlo nel commit tecnico senza verificarne titolarità e approvazione.
 
    ```sh
    git remote get-url origin                               # la repo del sito, non frankytheme-cyber/site-starter
    echo "SITE_STARTER_LIBRARY=${SITE_STARTER_LIBRARY:-}"   # vuota
    grep -s SITE_STARTER_LIBRARY .env                       # nessuna riga con 1
-   test -e blocks.lock.json && echo "STOP: sito già inizializzato"
-   test -d src/library || echo "STOP: manca src/library, non è il template"
+   test -e blocks.lock.json && echo "Sito già inizializzato: verificare e riprendere"
+   # Dopo site:init src/library viene rimosso: è normale con un lock valido.
    git status --porcelain                                  # vuoto
-   git ls-remote --exit-code --heads origin lancio && echo "STOP: lancio esiste già"
+   git ls-remote --exit-code --heads origin lancio && echo "lancio esiste già: riusarlo"
    ```
+
+   Se il lock esiste, controlla `npm run check:lock`, `docs/sito.md` e CMS e salta site:init.
+   Se il lock manca ma src/library esiste, procedi su checkout pulito. Se mancano entrambi,
+   confronta la consegna e la cronologia: recupera il checkout corretto tramite PM, senza
+   ricreare il lock a mano. Per `git ls-remote --exit-code`, exit 2 indica branch assente;
+   errori di trasporto/autenticazione hanno una causa diversa.
 
 2. **Branch.** Resti sul branch della tua cartella, nato da `main` (skill `github-pr`, passo 1; nella cartella del Project, su `main`, crea `builder/avvio-sito`). `lancio`, l'unico branch del sito su cui lavoreranno tutti i task fino alla messa online, nasce su GitHub con il push del passo 6.
 
@@ -29,7 +35,7 @@ Per il Builder, nella repo del sito, mai nella libreria. Prima di te Simone ha c
    npm ci
    ```
 
-4. **Inizializza**, senza domande; il repository del CMS arriva dal remote `origin`:
+4. **Inizializza solo il template non ancora inizializzato**, senza domande; il repository del CMS arriva dal remote `origin`:
 
    ```sh
    npm run site:init -- --yes
@@ -51,11 +57,11 @@ Per il Builder, nella repo del sito, mai nella libreria. Prima di te Simone ha c
 
 
    ```sh
-   git add -A
+   git add <soli file prodotti da site:init, verificati con git status>
    git commit -m "Inizializza il sito"
    ```
 
-   La CI della PR verso `main` gira con `--strict` e resta rossa per i soli segnaposto (`DA-COMPILARE`, `og-DA-COMPILARE`) finché il sito non è completo: è atteso. Ogni altro errore va corretto.
+   La CI della PR verso `main` gira con `--strict` e può restare rossa per requisiti di rilascio ancora pendenti e documentati (segnaposto, informative o mappa redirect da decidere). Leggi sempre gli errori: schema, lock, build e altre regressioni vanno corretti subito; tutti i requisiti strict prima del rilascio.
 
 7. **`npm run qa`** senza errori, poi nel task: link della PR, versione della libreria (`"version"` in `blocks.lock.json`), esito di `check` e `qa`.
 

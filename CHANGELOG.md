@@ -59,6 +59,10 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Correzioni
 
+- Flusso agenti coerente: workspace isolati per task, riparazione a carico PM, approvazioni già registrate riutilizzate, anteprima con lacune esplicite e criteri di fine per ruolo. Script PR distribuito anche con la skill attiva per i checkout precedenti.
+
+- PR compatibili con il broker GitHub per operazione di Paperclip; ripresa autonoma dei task senza interpretare i token vuoti nella shell come guasto. Nessun cambio automatico di identità o permessi.
+
 - Ruoli Paperclip e Capabilities allineati: passaggi distinti per PASS/FAIL, QA della libreria senza brief cliente, verifiche legate allo SHA, SEO dopo il lancio, dipendenze delle correzioni e letture/report mirati per ridurre i token senza saltare i controlli. Capabilities versionate in `docs/agenti/capabilities.json`.
 
 - `check:blocks` raccoglie tutti i problemi: un file mancante in un blocco non interrompe più il controllo degli altri.

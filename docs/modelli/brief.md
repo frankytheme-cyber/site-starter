@@ -1,7 +1,9 @@
-<!-- Modello del brief (skill brief): si copia in docs/brief.md e si compila con Simone. Un campo vuoto o «da chiedere» nelle sezioni obbligatorie blocca il cancello 1. -->
+<!-- Modello del brief (skill brief): si copia in docs/brief.md e si compila con Simone. Per il brief completo servono i campi obbligatori; un’anteprima con lacune richiede approvazione esplicita e perimetro registrato. -->
 
 # Brief — <nome attività>
-Stato: bozza | approvato il <data>
+Stato: bozza | approvato il <data> | approvato per sola anteprima il <data>
+Decisione: <riferimento alla risposta/Approval e versione presentata>
+Lacune autorizzate: <dato, attività esclusa, responsabile e fase di completamento>
 
 ## 1. Attività (obbligatorio)
 - Nome commerciale / ragione sociale / forma giuridica

@@ -25,8 +25,10 @@ proprietà di schema.org, dei file e dei campi restano come sono.
 
 Nello strumento Skill le skill della squadra hanno un suffisso nel nome (es.
 `modelli-task--504a9f45d4`): usa quella il cui nome inizia con il nome della skill. Lo stesso
-testo è in `docs/skill/<nome>/SKILL.md` della tua cartella: se lo strumento non la trova, leggi
-quel file, che fa fede. Usa solo le skill della squadra e quelle di Paperclip; ignora le altre
+testo versionato è in `docs/skill/<nome>/SKILL.md`. Per l’orchestrazione e l’autenticazione
+usa la skill attiva di Paperclip; una copia più vecchia nel sito non annulla un aggiornamento
+operativo autorizzato. I contratti tecnici e il lock restano quelli della versione installata.
+Se la skill attiva manca, usa il file locale e segnala soltanto incompatibilità effettive. Usa solo le skill della squadra e quelle di Paperclip; ignora le altre
 installate sul computer (WordPress, graphify, design...): non fanno parte di questo lavoro.
 
 ## Le fonti

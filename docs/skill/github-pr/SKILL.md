@@ -5,11 +5,37 @@ description: Usala ogni volta che un task cambia file in una repo, per branch, c
 
 # Branch, commit e PR in bozza
 
-Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si apre con `npm run pr`, uno script della repo che usa l'API di GitHub. Identità git (`simone-agenti`) e token arrivano dalle variabili del Project: `git` usa il token con il credential helper, `npm run pr` lo legge da solo. Non serve mai scriverlo in un comando.
+Per PM, Designer e Builder, nella libreria e nei siti. La PR si apre con `npm run pr`.
+Nel runtime Paperclip gestito i token nella shell possono essere vuoti: è previsto,
+non dimostra un guasto. Git usa il launcher di Paperclip; lo script PR richiede al
+broker la credenziale effimera dell'identità già autorizzata per la run. Non occorre
+creare nuove connessioni o configurare PAT. Fuori dal runtime sono supportati
+`GH_TOKEN` e `GITHUB_TOKEN`. Non copiare credenziali dal broker in file o comandi.
+
+Se un sito contiene ancora lo script precedente che richiede soltanto GH_TOKEN, usa
+`node <cartella-della-skill-attiva>/scripts/pr.ts --dest lancio` con gli stessi argomenti
+`--title`, `--base`, `--body-file`. Ricava il percorso dalla skill caricata: nessun percorso
+personale fisso e nessuna modifica ai file gestiti del sito. Lo script legge il remote
+dal cwd corrente. La soluzione stabile arriva al sito con il normale aggiornamento
+della libreria; il comando della skill consente di consegnare nel frattempo.
+
+## Ripresa autonoma
+
+- Riprendi il risultato già approvato senza richiedere la stessa approvazione. Verifica
+  branch, commit, file e PR esistenti; riusa `lancio` e la sua PR, senza duplicarli.
+- Non bloccare inizializzazione, dati o controlli locali solo perché manca la PR o
+  l'anteprima. Completa il lavoro autorizzato e conserva commit e riepilogo; il task
+  resta aperto se manca la consegna richiesta.
+- Un errore transitorio del broker viene ritentato dallo script, con budget limitato.
+  Dopo un rifiuto reale di accesso non cambiare account, permessi o metodo per aggirarlo.
+  Segnala al PM una sola diagnosi verificata con comando, esito e prossimo responsabile;
+  non ripetere richieste identiche senza cambiamenti.
+- L'assenza di un prerequisito interno va risolta dal PM con un task assegnato e una
+  dipendenza. Chiedi a Simone solo dati, decisioni o accessi che la squadra non possiede.
 
 ## Passi
 
-1. **Cartella, remote, dipendenze.** Di solito Paperclip ti dà una cartella tua per il task: un worktree `<ID>-<titolo>` nella cartella `worktrees` del Project, accanto al clone principale, con un branch dello stesso nome nato da `main`. Un task riaperto ritrova la stessa cartella.
+1. **Cartella, remote, dipendenze.** Di solito Paperclip ti dà una cartella tua per il task: un worktree `<ID>-<titolo>` nella cartella `worktrees` del Project, accanto al clone principale, con un branch locale proprio: nei siti da `origin/main` per Avvio e `origin/lancio` dopo; nella libreria da main per lavori nuovi o dal branch/SHA indicato per revisioni e correzioni. Un task riaperto ritrova la stessa cartella.
 
    ```sh
    test -f .git && echo "cartella del task" || echo "clone principale del Project"   # in un worktree .git è un file
@@ -19,7 +45,7 @@ Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si a
    test -d node_modules || npm ci    # una cartella nuova non ha le dipendenze
    ```
 
-   `git status --porcelain` non stampa nulla. Se stampa qualcosa: nella cartella del task sono modifiche tue di un giro precedente, riprendile; nel clone principale del Project vuol dire che qualcun altro ci lavora, fermati e avvisa il PM. Il remote è `https://github.com/<owner>/<repo>.git`; se contiene un token o un utente (`…@github.com`), o è SSH (`git@github.com:…`), correggilo:
+   `git status --porcelain` mostra eventuali modifiche: la cartella non ne dimostra la titolarità. Riprendi quelle attribuite al tuo task dalle consegne; preserva le altre. Se impediscono rebase o inizializzazione, chiedi al PM un workspace isolato pulito, lasciando intatto quello precedente. È manutenzione interna al mandato, non una decisione del Board. Non usare reset, clean o stash per liberare file di altri. Il remote è `https://github.com/<owner>/<repo>.git`; se contiene un token o un utente (`…@github.com`), o è SSH (`git@github.com:…`), correggilo:
 
    ```sh
    git remote set-url origin https://github.com/<owner>/<repo>.git
@@ -27,7 +53,7 @@ Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si a
 
 2. **Branch di destinazione** (`DEST`): il branch di GitHub dove vanno i tuoi commit. Lavori sempre sul branch della tua cartella e fai push verso `DEST`: mai `git switch` su `lancio` o sul branch di una PR, che possono essere aperti nella cartella di un altro task (git lo vieta).
 
-   **Sito cliente: `DEST=lancio`**, l'unico branch del sito, con l'unica PR in bozza verso `main`, aperta dal task «Avvio sito» (skill `avvio-sito`, che crea `lancio`). Allinea il tuo branch a `lancio`; la PR c'è già, salta il passo 5.
+   **Sito cliente: `DEST=lancio`**, il branch remoto di consegna, con l'unica PR in bozza verso `main`, aperta dal task «Avvio sito» (skill `avvio-sito`, che crea `lancio`). Allinea il tuo branch a `lancio`; la PR c'è già, salta il passo 5.
 
    ```sh
    git fetch origin
@@ -67,6 +93,10 @@ Per PM, Designer e Builder, nella libreria e nei siti. `gh` non c'è: la PR si a
    git push -u origin "HEAD:$DEST"
    ```
 
+   Dopo l’allineamento finale confronta il contenuto con quello verificato: se cambia,
+   ripeti i controlli richiesti sul risultato e riporta lo SHA effettivamente consegnato.
+   Un rebase senza conflitti può comunque cambiare il contenuto.
+
    Push rifiutato perché nel frattempo qualcuno ha pushato: ripeti il blocco. Se il rebase si ferma per un conflitto su file che non sono del tuo task: `git rebase --abort` e avvisa il PM, senza risolverlo tu.
 
 5. **PR in bozza al primo push**, non a fine lavoro: la CI gira solo sui branch con una PR. `npm run pr` cerca la PR aperta da `DEST` e, se non c'è e gli dai un titolo, la apre in bozza; stampa l'indirizzo della PR o l'errore di GitHub.
@@ -105,5 +135,5 @@ PR in bozza aperta verso la base giusta, tutti i commit del task pushati, link d
 - Mai merge, mai push su `main`, mai `git push --force`; non togliere la bozza: lo fa Simone quando unisce.
 - Mai `git switch` su `lancio` o sul branch di una PR aperta: si lavora sul branch della propria cartella e si fa push con `HEAD:<DEST>`. Mai cancellare o spostare le cartelle dei task: le gestisce Paperclip.
 - Non approvare né chiudere PR, non cambiare impostazioni della repo (protezioni, collaboratori, variabili, segreti) o di Vercel.
-- Non installare `gh` o altri client e non usare i Connectors di GitHub.
-- Push o API rifiutati (401, 403): non cercare altre strade, avvisa il PM (il token scade ogni 90 giorni).
+- Per commit e push usa Git gestito; per PR usa lo script. Letture dello stato via strumenti GitHub già autorizzati sono ammesse sulla stessa identità e repo. Non installare client né cambiare autenticazione per aggirare un rifiuto.
+- Push o API rifiutati (401, 403): non cambiare identità né recuperare token dal portachiavi o dai file del servizio. Riporta il rifiuto al PM; la scadenza dipende dal metodo di autenticazione.

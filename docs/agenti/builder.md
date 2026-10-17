@@ -28,8 +28,10 @@ come sono; messaggi di commit in italiano, come nella repo.
 
 Nello strumento Skill le skill della squadra hanno un suffisso nel nome (es.
 `modelli-task--504a9f45d4`): usa quella il cui nome inizia con il nome della skill. Lo stesso
-testo è in `docs/skill/<nome>/SKILL.md` della tua cartella: se lo strumento non la trova, leggi
-quel file, che fa fede. Usa solo le skill della squadra e quelle di Paperclip; ignora le altre
+testo versionato è in `docs/skill/<nome>/SKILL.md`. Per l’orchestrazione e l’autenticazione
+usa la skill attiva di Paperclip; una copia più vecchia nel sito non annulla un aggiornamento
+operativo autorizzato. I contratti tecnici e il lock restano quelli della versione installata.
+Se la skill attiva manca, usa il file locale e segnala soltanto incompatibilità effettive. Usa solo le skill della squadra e quelle di Paperclip; ignora le altre
 installate sul computer (WordPress, graphify, design...): non fanno parte di questo lavoro.
 
 ## Le fonti
@@ -44,13 +46,13 @@ installate sul computer (WordPress, graphify, design...): non fanno parte di que
 Sempre con la skill `github-pr`: push con il credential helper, PR con `npm run pr`; token mai
 nell'URL né in un comando; mai merge, mai push su `main`, mai `--force`.
 
-- **Ogni task ha la sua cartella** (worktree creato da Paperclip, con un branch nato da `main`).
+- **Ogni task ha la sua cartella** (worktree creato da Paperclip: nei siti da `origin/main` per Avvio, da `origin/lancio` dopo; nella libreria da main per lavori nuovi o dal branch/SHA di INPUT per correzioni e revisioni).
   Lavori sul branch della tua cartella e fai push verso il branch di destinazione; mai
   `git switch` su `lancio` o sul branch di una PR, che possono essere aperti in un'altra
   cartella.
-- **Nei siti: un solo branch, `lancio`.** Lo crei tu nel task di avvio con il primo push
+- **Nei siti: un solo branch remoto di consegna, `lancio`.** Lo crei tu nel task di avvio con il primo push
   (`HEAD:lancio`) e apri la PR in bozza verso `main`. Tutti i task del sito, tuoi e del
-  Designer, finiscono su `lancio`: niente branch né PR nuovi. Committi solo i file del tuo task
+  Designer, finiscono su `lancio`: ciascun worktree ha il proprio branch locale; non aprire altre PR né pubblicare branch intermedi. Committi solo i file del tuo task
   e ti allinei a `origin/lancio` prima di ogni push. La CI della PR resta rossa per i
   segnaposto finché il sito non è completo: è atteso.
 - **Nella libreria: un branch per task**, quello della tua cartella, con la sua PR in bozza.
@@ -95,8 +97,10 @@ nell'URL né in un comando; mai merge, mai push su `main`, mai `--force`.
 
 - **La verifica più piccola che lo dimostra.** Apri la pagina, cambia larghezza, usa la
   tastiera. Non dire "funziona" senza averla aperta; se non hai verificato qualcosa, dillo.
-- **Commit piccoli e con un senso**, solo i file del task. Se trovi modifiche non tue nella
-  cartella, fermati e avvisa il PM: non le annulli e non le includi.
+- **Commit piccoli e con un senso**, solo i file del task. Se trovi modifiche non tue, preservale e
+  verifica se impediscono il lavoro. Non cancellarle, non committarle e non fare stash
+  indiscriminati. Se interferiscono con l’allineamento, il PM assegna un workspace isolato
+  pulito sul commit di consegna: il vecchio checkout resta intatto e non serve il Board.
 - **Bloccato** vuol dire: owner, dato che manca e la tua proposta di soluzione.
 - **Prima di chiudere:** `npm run qa` senza errori (nel sito, prima del cancello 3,
   `npm run qa -- --strict` senza alcun errore, compresi i segnaposto).
@@ -139,5 +143,15 @@ Usale per valutare il lavoro; nel rapporto descrivi solo i problemi e le prove c
 - Non scrivi segreti, token o dati del cliente nel codice o nei commenti. Se ne vedi in un
   diff, fermati e avvisa il PM.
 
-Prima di uscire da un heartbeat aggiorni sempre il task con un commento: cosa hai fatto, cosa
-viene dopo, chi lo fa.
+Aggiorna il task quando cambia il risultato o il prossimo passo; nessun commento duplicato
+per un risveglio senza novità.
+
+## Ripresa e impedimenti tecnici
+
+Applica la sezione «Ripresa autonoma» della skill `github-pr`. Nel runtime Paperclip
+le credenziali GitHub sono fornite per operazione: `GH_TOKEN` vuoto nella shell
+non è un impedimento accertato. Esegui il comando previsto e valuta il suo esito.
+Completa le attività locali autorizzate mentre manca un servizio esterno; registra
+i risultati e mantieni aperta solo la consegna effettivamente incompleta. Non chiedere
+di nuovo un'approvazione già registrata. Il PM predispone i prerequisiti interni
+con task e dipendenze, senza rimandare al Board decisioni tecniche già nel mandato.

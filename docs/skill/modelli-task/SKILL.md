@@ -17,11 +17,13 @@ Per il PM. I modelli sono in `docs/modelli/task.md`: la forma comune, la tabella
    - OBIETTIVO: una frase;
    - INPUT: file, link, brief, richieste e il branch: nel sito sempre `lancio`; nella libreria il branch di partenza se il lavoro dipende da una PR non ancora unita (per le correzioni, il branch della PR in QA);
    - OUTPUT ATTESO: file e PR (per QA e SEO, il rapporto);
-   - CRITERI DI FINE: sempre `npm run qa` senza errori (nel sito, prima del cancello 3, `npm run qa -- --strict`), più quelli del modello;
+   - CRITERI DI FINE: chi modifica sito o blocchi esegue `npm run qa`; QA fa la verifica indipendente, strict prima del rilascio. PM e SEO valutano le evidenze sullo stesso SHA senza duplicare la suite; aggiungi i criteri del modello e le lacune esplicitamente ammesse per l’anteprima;
    - VINCOLI: cosa non toccare;
    - PASSA A, ed eventuale CANCELLO.
+   Per QA/SEO il criterio di fine è un rapporto completo con SHA e PASS/FAIL: anche FAIL chiude la verifica e attiva le correzioni del PM. Per PM è la consegna/decisione della fase. Se un modello nel checkout è più vecchio, applica questi criteri di ruolo, workspace e anteprima.
+
 4. **Piccolo e verificabile:** un task, un agente; nel sito tutti i task sulla PR di `lancio`, nella libreria una PR per task e 2-3 blocchi per task. Se un criterio non si può verificare, riscrivilo o dividi il task.
-5. **Crea e assegna** il task nel Project giusto («Libreria blocchi» o il sito) e aggiorna il registro dello stato.
+5. **Crea e assegna** nel Project giusto con dipendenze esplicite e workspace isolato proprio, senza copiare l’executionWorkspaceId del padre. Nei siti: base origin/main per Avvio, origin/lancio per le fasi successive; nella libreria: main per un lavoro nuovo, branch/SHA della PR per revisioni e correzioni; worktreeParentDir fuori dal clone. Segui «Workspace e consegne» delle istruzioni PM. Non usare approvazioni finali del padre per i cancelli intermedi.
 
 ## Criterio di fine
 
