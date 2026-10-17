@@ -8,6 +8,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Breaking
 
+- Nei siti cliente `--strict` verifica anche i redirect: un brief presente deve rispondere esplicitamente a «Esiste un sito online?». Con sito esistente o redirect configurati serve una mappa decisa in `docs/redirects.md`, nel formato della skill `redirect`, corrispondente a `vercel.json`.
 - Modalità esplicita: la libreria è tale solo con `SITE_STARTER_LIBRARY=1` (`src/core/mode.ts`); senza, ogni progetto è un sito cliente. Nella libreria va impostata in `.env`, nelle variabili del repository GitHub e nel progetto Vercel.
 - Il catalogo si sposta da `src/pages/catalogo` a `src/library/catalogo` e si registra con l’integrazione `src/core/integrations/library.ts`, solo in modalità libreria.
 - `blocks.lock.json` registra la versione della libreria e copre anche i file gestiti (`managedFiles` del manifest). Lo scrivono solo `npm run site:init` e `npm run blocks:sync`: `npm run lock:write` non c’è più.
@@ -19,6 +20,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
+- Modello importabile `docs/github-ruleset-sito.json` per proteggere `main` nei siti cliente (PR, Code Owners, check e qa, niente force push o cancellazione); incluso nei file gestiti. L'attivazione resta manuale su GitHub.
+- Controllo dei redirect al rilascio, con test di regressione; corretta l'istruzione del Builder: prima del cancello 3 non sono ammessi errori di segnaposto.
 - Blocco `areas`: varianti `elenco-zone` e `mappa-link`, con zone servite e link Maps della sede letto da `site.json`, senza mappa incorporata.
 - Blocchi `gallery` (`griglia-popup`, `prima-dopo`, `slider`: solo foto reali), `testimonials` (`cards`, `singola`, `slider`: ogni recensione ha la `fonte`, obbligatoria) e `carousel` (`immagini`, `immagini-testo`: scroll-snap, mai autoplay, mai nell’hero). Il check `interactive` prova anche la finestra della galleria e il cursore prima-dopo.
 - Blocchi `features` (`3-colonne`, `lista`), `about` (`immagine-testo`, `con-numeri`: ogni numero ha il campo `fonte`, obbligatorio) e `process` (`passi-numerati`, `timeline`).

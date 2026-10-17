@@ -31,7 +31,8 @@ Stato: bozza | approvato il <data>
 - Numeri da pubblicare (anni di attività, lavori fatti...): valore e fonte
 
 ## 6. Sito esistente e dominio
-- Esiste un sito online? si/no, indirizzo
+- Esiste un sito online? da chiedere
+<!-- Conserva la domanda e sostituisci «da chiedere» con «sì, https://…» oppure «no»: la legge il controllo di rilascio. -->
 - Se si: redirect da proporre? (la decisione è di Simone al cancello 2)
 - Dominio del nuovo sito (es. www.esempio.it) e chi lo gestisce
 

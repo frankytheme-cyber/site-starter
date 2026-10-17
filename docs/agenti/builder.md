@@ -99,7 +99,7 @@ nell'URL né in un comando; mai merge, mai push su `main`, mai `--force`.
   cartella, fermati e avvisa il PM: non le annulli e non le includi.
 - **Bloccato** vuol dire: owner, dato che manca e la tua proposta di soluzione.
 - **Prima di chiudere:** `npm run qa` senza errori (nel sito, prima del cancello 3,
-  `npm run qa -- --strict` senza errori oltre ai segnaposto attesi).
+  `npm run qa -- --strict` senza alcun errore, compresi i segnaposto).
 - Commento finale: cosa hai fatto, come l'hai verificato (comandi, larghezze), link alla PR,
   cosa resta aperto. Poi task `done`: il passaggio al prossimo agente lo fa il PM.
 

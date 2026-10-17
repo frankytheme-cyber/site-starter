@@ -260,6 +260,8 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 
 **Redirect di un sito esistente**: il Builder prepara una proposta in `docs/redirects.md` e non applica nulla. Il PM la porta al cancello 2. Si applicano in `vercel.json` solo le righe approvate; se respinta, nessun redirect. Il SEO può segnalare rischi.
 
+Il controllo `release` legge nel brief la riga `- Esiste un sito online? sì, <indirizzo>` oppure `- Esiste un sito online? no`. Se il sito esiste, richiede la mappa anche quando la proposta viene respinta. La mappa conserva le colonne `Vecchio URL`, `Nuovo URL`, `Decisione`, `Note`; lo stato è `approvata il gg/mm/aaaa` o `respinta il gg/mm/aaaa`, ogni decisione è `sì` o `no` e ogni rifiuto ha una motivazione. I redirect Vercel devono corrispondere esattamente alle righe approvate, con `permanent: true`. Anche senza sito precedente, eventuali redirect configurati richiedono una mappa decisa. Questo verifica la coerenza dei file: il PM verifica separatamente l'Approval in Paperclip.
+
 **Foto**: lavori, prima/dopo, chi siamo e squadra solo con foto reali del cliente. Immagini stock con licenza commerciale libera solo per sfondi o hero generici, sempre dichiarate nel brief e nella nota di design.
 
 ## Istruzioni degli agenti
@@ -369,7 +371,7 @@ Stato: bozza | approvato il <data>
 - Numeri da pubblicare (anni di attività, lavori fatti...): valore e fonte
 
 ## 6. Sito esistente e dominio
-- Esiste un sito online? si/no, indirizzo
+- Esiste un sito online? da chiedere (compilare con «sì, <indirizzo>» oppure «no»)
 - Se si: redirect da proporre? (la decisione è di Simone al cancello 2)
 - Dominio del nuovo sito (es. www.esempio.it) e chi lo gestisce
 

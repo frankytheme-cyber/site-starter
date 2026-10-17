@@ -23,7 +23,7 @@ Per il PM, nella repo del sito già avviata (task «Avvio sito» fatto). Il brie
    - Servizi al massimo 6, una riga ciascuno; «cosa la distingue» solo con fatti verificabili.
    - Pagine previste, comprese Privacy e Cookie (o il link alle informative esterne), e chi ne fornisce i testi.
    - Recensioni con testo, autore, fonte e data; numeri con valore e fonte; foto reali e chi le fornisce; stock sì o no.
-   - Sito esistente e dominio: se c'è un sito, servirà la proposta dei redirect (skill `redirect`, decisione al cancello 2).
+   - Sito esistente e dominio: conserva la voce `- Esiste un sito online?` e rispondi `sì, <indirizzo>` oppure `no` (la legge il controllo di rilascio). Se c'è un sito, servirà la proposta dei redirect (skill `redirect`, decisione al cancello 2).
 4. **Dati mancanti:** nel campo scrivi `da chiedere` e aggiungi una riga in «Da chiedere», con il dato e a chi chiederlo.
 5. **Controllo prima del cancello:** nessun campo vuoto e nessun `da chiedere` nelle sezioni 1, 2 e 3.
 
