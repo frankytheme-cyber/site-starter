@@ -59,6 +59,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Correzioni
 
+- Domande del PM al titolare: una decisione per domanda, proposte e opzioni comprensibili, valori e anteprime visibili; grafica, redirect e testi legali separati. Il PM conserva il coordinamento durante le attese e riprende i feedback senza chiedere di gestire manualmente i task.
 - Flusso agenti coerente: workspace isolati per task, riparazione a carico PM, approvazioni già registrate riutilizzate, anteprima con lacune esplicite e criteri di fine per ruolo. Script PR distribuito anche con la skill attiva per i checkout precedenti.
 
 - PR compatibili con il broker GitHub per operazione di Paperclip; ripresa autonoma dei task senza interpretare i token vuoti nella shell come guasto. Nessun cambio automatico di identità o permessi.

@@ -18,7 +18,12 @@ Per il PM. Puoi raccogliere il brief mentre procede Avvio; la versione approvata
 
    Nel titolo il nome dell'attività, `Stato: bozza`.
 
-3. **Compila con Simone sezione per sezione**, da 1 a 7: domande brevi, raggruppate per sezione, solo sui dati che mancano; le risposte si scrivono come le dà lui.
+3. **Compila con Simone sezione per sezione**, da 1 a 7. Usa la checklist sotto per cercare
+   i dati, non copiarla come un questionario unico. Chiedi solo ciò che manca e serve alla
+   fase corrente: una decisione per domanda, al massimo tre domande per richiesta, con
+   proposta e due o tre opzioni quando possibile. Per confermare un dato mostra il valore
+   esatto; «non lo so / da fornire» resta una lacuna esplicita. Le risposte si scrivono
+   come le dà lui, senza chiedere di nuovo quelle già ricevute.
    - Attività: forma giuridica (ditta individuale, srl, srls, snc, sas, altro), P.IVA di 11 cifre, per le società REA, capitale sociale e sede legale; orari giorno per giorno, con le fasce.
    - Servizi al massimo 6, una riga ciascuno; «cosa la distingue» solo con fatti verificabili.
    - Pagine previste, comprese Privacy e Cookie (o il link alle informative esterne), e chi ne fornisce i testi.
@@ -33,6 +38,12 @@ Per il PM. Puoi raccogliere il brief mentre procede Avvio; la versione approvata
 
 6. **Commit e push** del solo `docs/brief.md` (messaggio «Brief: <nome attività>»), link della PR nel task.
 7. **Approval in Paperclip (cancello 1)** con il link al file nella PR (`https://github.com/<owner>/<repo>/blob/lancio/docs/brief.md`), un riassunto in 5 righe e i «Da chiedere» rimasti.
+   Chiedi «Queste informazioni e questa struttura del sito vanno bene per iniziare?» e
+   mostra cosa include la proposta e quali dati sono rinviati. Opzioni comprensibili:
+   approvare nel perimetro mostrato oppure indicare modifiche. Commit e PR identificano
+   la versione nei riferimenti, non sono la domanda. Non unire approvazioni di contenuti
+   indipendenti o della pubblicazione. Verifica il link della richiesta e mantieni il PM
+   assegnatario del task per riprendere alla risposta del Board.
    Se esiste già una risposta esplicita di approvazione, registrala con riferimento, data, perimetro e versione del brief; non aprire una richiesta duplicata. Una generica richiesta di continuare non approva automaticamente un contenuto non presentato.
 
 8. **Dopo la risposta di Simone:**

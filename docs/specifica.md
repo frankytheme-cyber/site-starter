@@ -248,6 +248,17 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 | 2. Design | Anteprima Vercel della PR, nota di design, ed eventuale mappa dei redirect | Approval in Paperclip, portata dal PM |
 | 3. Messa online | La PR verso `main` con tutti i controlli verdi | Merge su GitHub, fatto da te |
 
+**Domande al titolare**: il PM usa italiano semplice, una decisione per domanda e al massimo
+tre domande per richiesta. Presenta risultato/link verificato o valori da confermare,
+raccomandazione e opzioni con effetti concreti. I riferimenti tecnici identificano la
+versione a seguire; non sostituiscono la domanda. Grafica, destinazioni dei vecchi indirizzi
+e testi legali si decidono separatamente. Le lacune già rinviate restano registrate fino
+alla fase che ne dipende. Per testi legali si chiedono documenti approvati e responsabile,
+non clausole da comporre al momento. Il PM resta assegnatario del coordinamento anche
+quando il Board è destinatario di una decisione: verifica richiesta e ripresa senza far
+gestire a Simone stati e assegnazioni. Un feedback riapre il lavoro pertinente; un input
+esterno già mancante non giustifica cicli di correzione identici.
+
 **Regole comuni a tutti gli agenti**
 
 1. **Branch e PR** (skill `github-pr`). In un sito un solo branch, `lancio`, con una sola **PR in bozza** verso `main` aperta all'avvio: tutti i task ci lavorano, ognuno nella sua cartella isolata di Paperclip (worktree), allineandosi a `origin/lancio` e facendo push su `lancio`; i cancelli usano la stessa anteprima Vercel. Nella libreria ogni task lavora su un branch proprio e apre subito la sua PR in bozza.
