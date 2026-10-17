@@ -10,6 +10,7 @@ Documentazione della libreria: architettura, catalogo blocchi, guida all'uso com
 - [`modelli/`](modelli/): modello del brief (`brief.md`, che nel sito si compila in `docs/brief.md`) e dei task del PM (`task.md`).
 - [`blocchi-interattivi.md`](blocchi-interattivi.md): regole per i blocchi con JavaScript (JS vanilla, tastiera, focus, movimento ridotto).
 - [`siti-cliente.md`](siti-cliente.md): modalità libreria e sito (`SITE_STARTER_LIBRARY`), creazione di un sito (`site:init`), aggiornamento della libreria (`blocks:sync`), cartelle e file gestiti.
+- [`provisioning.md`](provisioning.md): comando del titolare `site:create` per repo privata, invito a `simone-agenti` e progetto Vercel, con anteprima e ripresa dopo errori.
 - [`controlli.md`](controlli.md): controlli automatici e CI (cosa controllano, cosa fare quando falliscono, protezione di `main`).
 - [`decap.md`](decap.md): CMS per i clienti (servizio OAuth, inviti, flusso editoriale, cosa si può modificare).
 - [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md): licenze delle risorse di terzi incluse nel sito.

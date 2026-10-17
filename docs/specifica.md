@@ -424,6 +424,14 @@ Il token di `simone-agenti` sta in una sola company secret, **`GITHUB_TOKEN`** (
 
 **Nuovo sito (ogni volta)**
 
+Il titolare può automatizzare creazione della repo privata dal template, invito Write a
+`simone-agenti` e progetto Vercel con `npm run site:create -- nome-cliente --apply`, eseguito
+dalla libreria. Senza `--apply` mostra solo il piano offline. Credenziali dedicate del titolare,
+ripresa e limiti in [`provisioning.md`](provisioning.md): il comando non è un compito degli
+agenti e non usa la loro company secret. Su Vercel imposta `SITE_STARTER_LIBRARY` vuota nei tre
+ambienti, mantenendo la modalità sito anche se esiste un valore condiviso del team. Non crea
+il Project Paperclip né esegue `site:init`; l'invito pendente deve essere accettato.
+
 - [ ] GitHub: Use this template, repo privata, invito a `simone-agenti`
 - [ ] Ruleset importato da `docs/github-ruleset-sito.json` (se hai Pro)
 - [ ] Clone in locale (GitHub Desktop) nella cartella dei siti

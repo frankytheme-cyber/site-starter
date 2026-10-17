@@ -12,6 +12,7 @@
     "docs/blocchi-interattivi.md",
     "docs/controlli.md",
     "docs/decap.md",
+    "docs/provisioning.md",
     "docs/github-ruleset-sito.json",
     "docs/siti-cliente.md",
     "docs/specifica.md",
@@ -24,5 +25,5 @@
   ],
   "exclude": ["src/library"],
   "libraryOnly": ["src/library", "docs/README.md", "CHANGELOG.md"],
-  "libraryScripts": ["site:init", "check:template", "gen:catalog", "screenshots", "catalog", "release"]
+  "libraryScripts": ["site:init", "site:create", "test:provisioning", "check:template", "gen:catalog", "screenshots", "catalog", "release"]
 }
