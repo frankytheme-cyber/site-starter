@@ -99,13 +99,25 @@ nell'URL né in un comando; mai merge, mai push su `main`, mai `--force`.
   cartella, fermati e avvisa il PM: non le annulli e non le includi.
 - **Bloccato** vuol dire: owner, dato che manca e la tua proposta di soluzione.
 - **Prima di chiudere:** `npm run qa` senza errori (nel sito, prima del cancello 3,
-  `npm run qa -- --strict` senza errori oltre ai segnaposto attesi).
+  `npm run qa -- --strict` senza alcun errore, compresi i segnaposto).
 - Commento finale: cosa hai fatto, come l'hai verificato (comandi, larghezze), link alla PR,
   cosa resta aperto. Poi task `done`: il passaggio al prossimo agente lo fa il PM.
 
+## Efficienza e consegna
+
+- Leggi task, ultimo passaggio e diff prima di aprire altri file. Carica solo le skill e le
+  sezioni utili; non rileggere documenti già acquisiti se non sono cambiati.
+- Raggruppa domande e difetti per responsabile. Nel commento finale riporta esito, PR e SHA,
+  evidenze essenziali e prossimo passo; linka report e screenshot, senza incollare log completi.
+- Durante le correzioni usa controlli mirati; esegui la suite richiesta sul risultato finale.
+  Una suite qa comprende check: non eseguirli consecutivamente sullo stesso contenuto.
+  Ripeti dopo modifiche, conflitti risolti o nuove evidenze; mai saltare controlli obbligatori.
+- Usa eventi e dipendenze per attendere: niente polling continuo, commenti ripetuti o
+  notifiche senza novità. Un impedimento reale va al PM con causa e azione necessaria.
+
 ## Lenti
 
-Citale per nome nei commenti quando motivano una scelta.
+Usale per valutare il lavoro; nel rapporto descrivi solo i problemi e le prove concrete.
 
 - **HTML semantico prima**: l'elemento giusto prima della classe giusta (landmark, titoli,
   liste, bottoni contro link).

@@ -45,8 +45,7 @@ Per il Builder, solo nel Project «Libreria blocchi» e solo su task approvato d
 9. **Controlli**, senza errori:
 
    ```sh
-   npm run check
-   npm run qa
+   npm run qa   # comprende check e build
    ```
 
 10. **Commit e push**, poi nel task: link della PR e dell'anteprima Vercel (`/catalogo/<tipo>`), blocchi e varianti fatti. Passa al Designer per la revisione visiva.

@@ -46,6 +46,8 @@ Gli stessi script girano nella repo site-starter (la **libreria**, solo con `SIT
 
 Note:
 
+- **Redirect al rilascio.** Nei siti con `--strict`, `release` legge la risposta esplicita a «Esiste un sito online?» in `docs/brief.md`. Con sito esistente o redirect configurati richiede `docs/redirects.md`, decisione datata, righe decise e corrispondenza esatta con `vercel.json` (solo `source`, `destination`, `permanent: true`). La procedura e il formato sono nella skill `redirect`. Il template senza brief e senza redirect resta valido per `check:template`; un brief presente con risposta mancante è un errore. L'Approval Paperclip va verificata dal PM.
+- **Test del controllo redirect.** `node --test scripts/checks/redirects.test.ts` verifica anche proposte pendenti, mappe respinte, configurazioni non approvate e redirect mancanti.
 - **Ordine.** `recipes` gira per primo: dati non validi o un'immagine che manca si leggono con file, sezione e campo, e `astro-check` e `build`, che si fermerebbero sullo stesso errore, vengono saltati. `decap` gira prima della build: il `prebuild` rigenera `config.yml`, e dopo il confronto non direbbe più niente.
 - **Messaggi dei contenuti.** Ricette e impostazioni si validano con l'error map italiana di `src/core/content-validation.ts`, sia in `recipes` sia nella build (i loader di `src/content.config.ts`): sezioni ed elementi si contano da 1, con il tipo del blocco.
 - **Check `blocks` incompleto.** Un blocco con un file mancante o che non si carica non ferma il controllo degli altri; il confronto con `docs/catalogo` in quel caso è saltato, con un avviso.
@@ -73,6 +75,10 @@ Note:
 - runner fissato a `ubuntu-24.04`, non `ubuntu-latest`: un'immagine nuova cambia pacchetti e font di sistema, e con loro le misure di Lighthouse e axe. Si passa a una versione nuova con una pull request apposta. Le azioni sono all'ultima versione maggiore, tutte su Node 24.
 
 ## Proteggere `main` su GitHub
+
+Il modello importabile per i siti cliente è [`github-ruleset-sito.json`](github-ruleset-sito.json): in **Settings → Rules → Rulesets** scegli **Import a ruleset**. Richiede `check` e `qa`, revisione dei Code Owners sui file gestiti indicati in `.github/CODEOWNERS` e nessun bypass. Dopo l'import verifica che i due check siano riconosciuti e che il proprietario abbia accesso al repository. L'import e l'attivazione li fa Simone; il file da solo non cambia le impostazioni di GitHub.
+
+Formato del modello: [documentazione GitHub dei ruleset](https://docs.github.com/en/rest/repos/rules). Per la libreria aggiungi anche `template-as-site` ai check obbligatori.
 
 Nel repository: **Settings → Rules → Rulesets → New branch ruleset** (o **Settings → Branches → Add branch protection rule**):
 

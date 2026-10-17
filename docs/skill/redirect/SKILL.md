@@ -52,7 +52,7 @@ Per il Builder, che prepara la mappa e poi applica le righe approvate, e per il 
 
 **Builder: dopo la decisione** (sempre su `lancio`)
 
-7. **Approvata, tutta o in parte:** in `vercel.json`, accanto a `headers`, solo le righe con decisione sì; in `docs/redirects.md`, `Stato: approvata il <gg/mm/aaaa>` e la decisione di ogni riga.
+7. **Approvata, tutta o in parte:** in `vercel.json`, accanto a `headers`, solo le righe con decisione sì; in `docs/redirects.md`, `Stato: approvata il <gg/mm/aaaa>` e la decisione di ogni riga (`sì` oppure `no`). Per ogni `no`, indica il motivo nelle note. Usa percorsi del sito che iniziano con `/`, senza formattazione Markdown nelle celle degli URL, e conserva le quattro colonne del modello. Per i redirect approvati usa solo `source`, `destination`, `permanent: true`.
 
    ```json
    "redirects": [
@@ -67,6 +67,8 @@ Per il Builder, che prepara la mappa e poi applica le righe approvate, e per il 
 
    **Respinta:** `Stato: respinta il <gg/mm/aaaa>` e nessun redirect in `vercel.json`.
 8. `npm run qa` senza errori, commit e push, esito nel task.
+
+Prima del lancio, `npm run qa -- --strict` controlla la risposta «Esiste un sito online?» del brief, lo stato datato della mappa e la corrispondenza esatta con `vercel.json`. Con un sito esistente la mappa serve anche quando si decide di non applicare redirect: registra il rifiuto e le motivazioni. Il controllo verifica i file, non l'identità di chi ha approvato: il PM deve verificare l'Approval di Simone in Paperclip.
 
 ## Criterio di fine
 

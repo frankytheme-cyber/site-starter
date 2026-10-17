@@ -251,7 +251,7 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 **Regole comuni a tutti gli agenti**
 
 1. **Branch e PR** (skill `github-pr`). In un sito un solo branch, `lancio`, con una sola **PR in bozza** verso `main` aperta all'avvio: tutti i task ci lavorano, ognuno nella sua cartella isolata di Paperclip (worktree), allineandosi a `origin/lancio` e facendo push su `lancio`; i cancelli usano la stessa anteprima Vercel. Nella libreria ogni task lavora su un branch proprio e apre subito la sua PR in bozza.
-2. Prima di chiudere un task: `npm run qa`; nel sito, prima del cancello 3: `npm run qa -- --strict`.
+2. Chi cambia il sito o i blocchi esegue `npm run qa` sul risultato finale; comprende `check`, quindi non occorre ripeterlo subito prima. Durante le correzioni usa controlli mirati. Il QA esegue la verifica indipendente; nel sito prima del cancello 3 serve `npm run qa -- --strict`, senza errori né eccezioni per i segnaposto. PM e SEO non duplicano la suite: il PM verifica CI ed evidenze, il SEO usa il PASS QA sul medesimo SHA e svolge la propria verifica.
 3. Si legge `AGENTS.md` (tramite `CLAUDE.md`) e la scheda del catalogo prima di usare un blocco.
 4. Un dato mancante non si inventa: si chiede al PM, che lo chiede a te.
 5. Un blocco mancante non si improvvisa: richiesta di nuovo blocco nel Project Libreria.
@@ -260,6 +260,8 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 
 **Redirect di un sito esistente**: il Builder prepara una proposta in `docs/redirects.md` e non applica nulla. Il PM la porta al cancello 2. Si applicano in `vercel.json` solo le righe approvate; se respinta, nessun redirect. Il SEO può segnalare rischi.
 
+Il controllo `release` legge nel brief la riga `- Esiste un sito online? sì, <indirizzo>` oppure `- Esiste un sito online? no`. Se il sito esiste, richiede la mappa anche quando la proposta viene respinta. La mappa conserva le colonne `Vecchio URL`, `Nuovo URL`, `Decisione`, `Note`; lo stato è `approvata il gg/mm/aaaa` o `respinta il gg/mm/aaaa`, ogni decisione è `sì` o `no` e ogni rifiuto ha una motivazione. I redirect Vercel devono corrispondere esattamente alle righe approvate, con `permanent: true`. Anche senza sito precedente, eventuali redirect configurati richiedono una mappa decisa. Questo verifica la coerenza dei file: il PM verifica separatamente l'Approval in Paperclip.
+
 **Foto**: lavori, prima/dopo, chi siamo e squadra solo con foto reali del cliente. Immagini stock con licenza commerciale libera solo per sfondi o hero generici, sempre dichiarate nel brief e nella nota di design.
 
 ## Istruzioni degli agenti
@@ -267,8 +269,11 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 Le istruzioni di ruolo stanno in `docs/agenti/`, un file per agente: [`pm.md`](agenti/pm.md), [`designer.md`](agenti/designer.md), [`builder.md`](agenti/builder.md), [`qa.md`](agenti/qa.md), [`seo.md`](agenti/seo.md), [`simone.md`](agenti/simone.md). Ogni file è il testo esatto delle istruzioni dell'agente in Paperclip (Agents → agente → Instructions): ruolo, confini, passaggi di consegne, verdetti. Le regole tecniche stanno in `AGENTS.md`, le procedure nelle skill.
 
 - Le istruzioni sono sempre nel contesto dell'agente; le skill le carica solo quando servono. Una regola che deve valere sempre (mai push su `main`, mai dati inventati, mai merge) sta nelle istruzioni; il come, con i comandi, in una skill.
-- Si cambiano nella libreria con Claude Code, poi si ricopiano in Paperclip; mai il contrario.
+- I testi del campo Capabilities sono versionati in `docs/agenti/capabilities.json`, una voce per agente. Non estendono i permessi né sostituiscono le istruzioni di ruolo.
+- Instructions e Capabilities si cambiano nella libreria, poi si ricopiano nei rispettivi campi di Paperclip e si confrontano dopo il salvataggio. Le skill importate si aggiornano dopo il merge e il pull nel clone del Project: non confondere un file locale con la versione attiva.
 - Convenzioni comuni: `VERDETTO: PASS | FAIL` sulla prima riga del commento finale di QA e SEO; `REVISIONE: OK | DA CORREGGERE` per la revisione visiva del Designer; nei siti tutti i task finiscono sul branch `lancio`, ognuno dalla sua cartella isolata.
+
+Il PM distingue conclusione della verifica ed esito: PASS/OK porta alla fase successiva, FAIL/DA CORREGGERE riapre i task responsabili. Dopo FAIL SEO: correzioni → QA → SEO, con dipendenze esplicite. Prima del merge, PASS QA, PASS SEO e CI devono riferirsi allo SHA attuale della PR. Il padre resta aperto fino al merge di Simone.
 
 ## Skill condivise
 
@@ -369,7 +374,7 @@ Stato: bozza | approvato il <data>
 - Numeri da pubblicare (anni di attività, lavori fatti...): valore e fonte
 
 ## 6. Sito esistente e dominio
-- Esiste un sito online? si/no, indirizzo
+- Esiste un sito online? da chiedere (compilare con «sì, <indirizzo>» oppure «no»)
 - Se si: redirect da proporre? (la decisione è di Simone al cancello 2)
 - Dominio del nuovo sito (es. www.esempio.it) e chi lo gestisce
 

@@ -27,6 +27,7 @@ import {
 	trimSlash,
 } from './lib/content.ts';
 import { withProjectModules } from './lib/vite.ts';
+import { checkRedirects } from './redirects.ts';
 
 /** Link legali da trovare nel footer: per indirizzo (percorsi usuali) o per testo del link. */
 const LEGAL_LINKS = [
@@ -63,6 +64,7 @@ const listPages = (paths: string[]) => paths.slice(0, 5).join(', ') + (paths.len
 
 export async function release({ root }: CheckContext) {
 	const { findings, error, warning } = collector('release');
+	findings.push(...checkRedirects(root));
 
 	// Impostazioni senza segnaposto.
 	const settingsDir = join(root, 'src/content/settings');

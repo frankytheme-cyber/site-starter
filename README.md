@@ -9,6 +9,10 @@ La stessa base di codice funziona in due modi, e la modalità la decide la varia
 
 Requisiti: Node ≥ 22.18 e npm.
 
+Demo della libreria: [catalogo dei blocchi](https://site-starter-sigma.vercel.app/catalogo/).
+
+Da completare prima di consegnare il CMS ai clienti: servizio OAuth condiviso e relativo indirizzo in `src/site.config.ts` (guida in `docs/decap.md`).
+
 ## Libreria (repo site-starter)
 
 ```sh

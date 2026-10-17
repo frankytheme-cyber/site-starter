@@ -75,9 +75,10 @@ pestarsi i piedi, ma l'ordine qui sotto resta quello delle dipendenze.
    `docs/nota-design.md`), bloccato dal task Dati: il Designer compone con i recapiti e le foto
    già su `lancio` (i link `@telefono`... falliscono senza `site.json`).
 5. **Cancello 2**: Approval con anteprima Vercel, nota di design ed eventuale mappa dei
-   redirect. I redirect si applicano solo dopo, e solo le righe approvate.
+   redirect. Dopo la decisione assegni al Builder l’applicazione delle sole righe approvate;
+   il QA dipende dalla chiusura di questo task, se necessario.
 6. **QA** → QA (`npm run qa -- --strict` e confronto col brief). Le correzioni vanno
-   all'agente che apre il QA; poi nuovo giro di QA, fino al verde.
+   al responsabile del file o del problema, come indicato nel rapporto; poi nuovo giro di QA, fino al verde.
 7. **SEO pre-lancio** → SEO. Segnala, non riscrive; le correzioni vanno a Designer o Builder.
 8. **Cancello 3**: segnali a Simone che la PR verso `main` è pronta. Il merge lo fa lui.
 
@@ -122,7 +123,14 @@ Release (`npm run release`) e tag li fa Simone.
 - **Verdetto di QA e SEO.** Il QA chiude il suo task con `VERDETTO: PASS` o `VERDETTO: FAIL`
   sulla prima riga del commento finale; il SEO fa lo stesso. Con FAIL riapri il sottotask
   esistente dell'agente responsabile con il difetto preciso (non ne crei uno nuovo), poi
-  riapri il task di chi ha dato FAIL. Dopo correzioni chieste dal SEO, anche il QA ripassa.
+  riapri il task di chi ha dato FAIL, bloccato dalle correzioni. Dopo FAIL del SEO la catena
+  è correzioni → QA → SEO, con dipendenze esplicite. Con PASS passi alla fase successiva.
+- **Revisione visiva.** `REVISIONE: DA CORREGGERE`: riapri il Builder e blocca la nuova
+  revisione sulla correzione. `REVISIONE: OK`: porta il lotto all’approvazione, senza riaprire
+  il Builder. Lo stato done significa verifica conclusa, non esito positivo.
+- **Revisione verificata.** Prima del cancello 3 richiedi PASS di QA e SEO e CI verde sullo
+  SHA attuale della PR. Se cambia, riapri le verifiche interessate: nessun PASS di un commit
+  precedente vale automaticamente per quello nuovo.
 - **Bloccato** vuol dire: owner con nome e azione da fare. Mai un "aspetta X" in un commento
   al posto di una dipendenza.
 - Prima di uscire da un heartbeat aggiorni sempre il task con un commento: cosa è cambiato,
@@ -153,6 +161,14 @@ agenti esecutori.
   rifiutato. Nella libreria, ogni modifica alla CI la fa Simone. Nei siti, `blocks:sync` di
   una versione che cambia i workflow fallisce al push: se il Builder lo segnala, il task
   passa a Simone. Non chiedere di aggirare il limite.
+
+## Efficienza
+
+Leggi task, ultimo commento e dipendenze; apri solo le fonti necessarie. Crea task per risultati
+revisionabili, non per ogni comando. Riusa task e PR esistenti. Raggruppa le domande al Board
+e le correzioni per responsabile, mantenendo ogni difetto identificabile. Nei passaggi indica
+PR, SHA, esito e prossimo owner; evita log completi e riassunti duplicati. Non rilanci i test
+già eseguiti dagli agenti: controlli prove, commit e CI.
 
 ## Controllo giornaliero
 
