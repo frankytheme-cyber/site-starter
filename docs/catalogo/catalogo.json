@@ -3599,7 +3599,7 @@
 			},
 			"description": "Recapiti, indirizzo e orari dell’attività, presi da «Dati attività», con la mappa o un invito all’azione.",
 			"whenToUse": "Nella pagina contatti, o in fondo a una pagina che deve far trovare l’attività. Telefono, WhatsApp, email, indirizzo e orari non si scrivono nel blocco: arrivano da site.json.",
-			"avoidWhen": "Per un semplice invito a chiamare o chiedere un preventivo (lì va cta) o quando serve un modulo da compilare: il form è rimandato alla v1.1.",
+			"avoidWhen": "Per un semplice invito a chiamare o chiedere un preventivo (usa cta), oppure quando serve un modulo da compilare (usa form).",
 			"rules": [
 				"La variante info-cta richiede il pulsante (cta)."
 			],
@@ -3990,6 +3990,144 @@
 						"href": "#lavori"
 					},
 					"showContacts": false
+				}
+			}
+		},
+		{
+			"type": "form",
+			"name": "Modulo di contatto",
+			"scope": "page",
+			"category": "contatti",
+			"version": "1.0.0",
+			"interactive": true,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Modulo di contatto o richiesta di preventivo, con invio tramite Resend su Vercel e collegamento all’informativa privacy.",
+			"whenToUse": "Quando chi visita deve inviare una richiesta scritta. Configura Resend secondo docs/form.md; il destinatario è l’email di site.json. Il catalogo simula l’invio senza spedire email.",
+			"avoidWhen": "Per un semplice invito a chiamare (usa cta o contact), prenotazioni con calendario, pagamenti, allegati o raccolta di dati sensibili.",
+			"rules": [
+				"La variante preventivo richiede un elenco di servizi (services).",
+				"L’informativa privacy deve esistere ed essere approvata per il trattamento e il servizio di invio utilizzati.",
+				"Il destinatario arriva solo dall’email di site.json; chiave API e mittente Resend sono variabili server, mai campi del blocco."
+			],
+			"variants": [
+				{
+					"name": "contatto",
+					"description": "Introduzione e recapiti affiancati a nome, email, telefono facoltativo e messaggio; su mobile tutto in colonna.",
+					"whenToUse": "Per domande generiche, disponibilità e richieste di informazioni.",
+					"fixture": "Richiesta di informazioni",
+					"preview": "/catalogo/form/contatto/",
+					"screenshots": {
+						"desktop": "img/form-contatto-desktop.webp",
+						"mobile": "img/form-contatto-mobile.webp"
+					}
+				},
+				{
+					"name": "preventivo",
+					"description": "Modulo con scelta del servizio e comune dell’intervento, oltre ai dati di contatto e alla descrizione della richiesta.",
+					"whenToUse": "Per raccogliere le prime informazioni utili a preparare un preventivo o un sopralluogo.",
+					"fixture": "Richiesta di preventivo",
+					"preview": "/catalogo/form/preventivo/",
+					"screenshots": {
+						"desktop": "img/form-preventivo-desktop.webp",
+						"mobile": "img/form-preventivo-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`contatto` · `preventivo`",
+					"constraints": {
+						"values": [
+							"contatto",
+							"preventivo"
+						]
+					},
+					"label": "Variante",
+					"hint": "contatto: nome, email, telefono e messaggio · preventivo: aggiunge servizio e comune dell’intervento"
+				},
+				{
+					"path": "title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Titolo della sezione, al massimo 70 caratteri"
+				},
+				{
+					"path": "text",
+					"type": "testo",
+					"required": false,
+					"limits": "max 240",
+					"constraints": {
+						"maxLength": 240
+					},
+					"label": "Introduzione",
+					"hint": "Spiega quali informazioni servono, senza promettere tempi di risposta non concordati"
+				},
+				{
+					"path": "services",
+					"type": "elenco",
+					"required": false,
+					"requiredFor": [
+						"preventivo"
+					],
+					"limits": "1–12 voci",
+					"constraints": {
+						"minItems": 1,
+						"maxItems": 12
+					},
+					"label": "Servizi richiesti",
+					"hint": "Da 1 a 12 opzioni per il preventivo; non vengono mostrate nel modulo contatto",
+					"note": "Ignorato nella variante contatto."
+				},
+				{
+					"path": "privacyHref",
+					"type": "testo",
+					"required": true,
+					"limits": "max 200; percorso interno dell’informativa, es. /privacy/",
+					"constraints": {
+						"maxLength": 200,
+						"patterns": [
+							{
+								"pattern": "^\\/(?!\\/)[a-z0-9/-]*\\/$",
+								"message": "percorso interno dell’informativa, es. /privacy/"
+							}
+						]
+					},
+					"label": "Informativa privacy",
+					"hint": "Percorso di una pagina privacy esistente, es. /privacy/; il testo va approvato per il servizio di invio scelto",
+					"note": "Pagina interna esistente. La presa visione è obbligatoria e separata da eventuali consensi marketing, che il blocco non raccoglie."
+				},
+				{
+					"path": "submitLabel",
+					"type": "testo",
+					"required": false,
+					"default": "Invia la richiesta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "L’azione richiesta, al massimo 25 caratteri"
+				}
+			],
+			"example": {
+				"fixture": "Richiesta di informazioni",
+				"target": "sections",
+				"json": {
+					"type": "form",
+					"variant": "contatto",
+					"title": "Raccontaci la tua idea",
+					"text": "Hai una domanda o un progetto in mente? Scrivici cosa vorresti realizzare e come possiamo aiutarti.",
+					"privacyHref": "/privacy/"
 				}
 			}
 		},

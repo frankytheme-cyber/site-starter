@@ -20,6 +20,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
+- Blocco `form` nelle varianti `contatto` e `preventivo`, accessibile e utilizzabile senza JavaScript. Invio Resend tramite funzione Vercel `/api/contact`, destinatario da `site.json`, validazione server, honeypot e protezione dai retry duplicati. Il catalogo simula l’invio; configurazione in `docs/form.md`, test automatici inclusi in `check` e `qa`.
 - `npm run site:create -- nome-cliente`: provisioning del titolare per repo privata dal template, invito Write a `simone-agenti` e progetto Vercel Astro. Anteprima offline di default, esecuzione con `--apply`, credenziali separate e ripresa senza duplicare risorse; guida `docs/provisioning.md` e test con API simulate.
 - Modello importabile `docs/github-ruleset-sito.json` per proteggere `main` nei siti cliente (PR, Code Owners, check e qa, niente force push o cancellazione); incluso nei file gestiti. L'attivazione resta manuale su GitHub.
 - Controllo dei redirect al rilascio, con test di regressione; corretta l'istruzione del Builder: prima del cancello 3 non sono ammessi errori di segnaposto.

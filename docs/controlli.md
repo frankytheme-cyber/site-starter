@@ -4,7 +4,7 @@ Due comandi, un solo formato di report:
 
 | Comando                     | Cosa esegue                                                                          | Quando                             |
 | --------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------- |
-| `npm run check`             | recipes, astro-check, decap, tokens, contrast, blocks, catalog, lock, build (+ release) | prima di ogni commit; CI sulle PR e sui push su `main` |
+| `npm run check`             | recipes, astro-check, decap, tokens, contrast, forms, blocks, catalog, lock, build (+ release) | prima di ogni commit; CI sulle PR e sui push su `main` |
 | `npm run qa`                | tutto `check`, poi su `astro preview`: links, a11y, interactive, buttons, lighthouse | prima di una PR; CI sulle PR       |
 | `npm run check -- --strict` | come sopra con le regole di pubblicazione: recipes come errori, release attivo (nei siti cliente) | CI sulle PR verso `main`           |
 | `npm run check:template`    | solo libreria: il template, inizializzato come sito, deve fallire `qa --strict` solo per i segnaposto | CI sulle PR (job `template-as-site`) |
@@ -26,6 +26,12 @@ Gli stessi script girano nella repo site-starter (la **libreria**, solo con `SIT
 - `build`: in un sito cliente fallisce se `/catalogo` è nel build.
 
 ## I check
+
+`forms` esegue `npm run test:forms` con Resend simulato: validazione server, origini,
+honeypot, limiti del corpo, retry idempotenti, errori e risposta HTML senza JavaScript.
+Nessuna credenziale o email reale. `interactive` prova anche i moduli nel browser:
+tastiera, validazione, istanze indipendenti, demo del catalogo, dati preservati dopo
+un errore e blocco dei doppi invii. Configurazione: [`form.md`](form.md).
 
 | Check         | Suite | Livello                         | Cosa controlla                                                                                                     | Se fallisce                                                                                                    |
 | ------------- | ----- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |

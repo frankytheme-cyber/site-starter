@@ -88,7 +88,7 @@ Un blocco è una cartella con quattro file; il registry li raccoglie da solo, se
 
 ## 4. Lista dei blocchi v1
 
-Quindici blocchi: cinque di riferimento fatti da te (✦), gli altri dal Builder in lotti da 2-3. Header e footer hanno scope `layout`: stanno in `layout.json`, non nelle ricette.
+Sedici blocchi: cinque di riferimento fatti da te (✦), gli altri dal Builder. Header e footer hanno scope `layout`: stanno in `layout.json`, non nelle ricette.
 
 | Blocco | Scope | Varianti | Quando usarlo | Chi |
 | --- | --- | --- | --- | --- |
@@ -107,8 +107,9 @@ Quindici blocchi: cinque di riferimento fatti da te (✦), gli altri dal Builder
 | testimonials | page | `cards`, `singola`, `slider` | Solo recensioni reali con `fonte` | Builder, lotto 3 |
 | carousel | page | `immagini`, `immagini-testo` | Prodotti o lavori in sequenza; mai nell'hero | Builder, lotto 3 |
 | areas | page | `elenco-zone`, `mappa-link` | Zone servite, SEO locale | Builder, lotto 4 |
+| form | page | `contatto`, `preventivo` | Richieste scritte, invio Resend su Vercel | Builder |
 
-Form di contatto rimandato alla v1.1.
+**Moduli di contatto**: blocco `form`, invio POST a `/api/contact` (Vercel Function indipendente dal sito statico), Resend via API server. Destinatario solo da `site.json.email`, mittente verificato e chiave API da variabili server. Validazione server, honeypot, controllo dell’origine, limite del corpo e chiave di idempotenza; nessuna conferma di successo se il provider fallisce. Senza JS il POST restituisce una pagina HTML con l’esito. Nel catalogo invio solo simulato ed esplicitamente indicato. Configurazione e informativa in `docs/form.md`.
 
 ## 5. Catalogo
 
@@ -514,7 +515,6 @@ il Project Paperclip né esegue `site:init`; l'invito pendente deve essere accet
 
 ## Rimandato alla v1.1
 
-- Form di contatto (gestione invio e privacy)
 - Immagine OG generata in automatico da nome e palette
 - Confronto visivo automatico degli screenshot dei blocchi
 - Lighthouse non bloccante anche sull'anteprima Vercel
