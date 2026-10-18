@@ -4,8 +4,7 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
-## Non rilasciato
-
+## v0.0.2 (2026-10-18)
 ### Breaking
 
 - Nei siti cliente `--strict` verifica anche i redirect: un brief presente deve rispondere esplicitamente a «Esiste un sito online?». Con sito esistente o redirect configurati serve una mappa decisa in `docs/redirects.md`, nel formato della skill `redirect`, corrispondente a `vercel.json`.
