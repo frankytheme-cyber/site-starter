@@ -5439,6 +5439,83 @@ collections:
                   - default
                   - muted
                   - primary
+          - name: form
+            label: Modulo di contatto
+            widget: object
+            hint: Modulo di contatto o richiesta di preventivo, con invio tramite Resend su Vercel e collegamento all’informativa privacy.
+            summary: "{{fields.title}}"
+            fields:
+              - name: variant
+                label: Variante
+                hint: "contatto: nome, email, telefono e messaggio · preventivo: aggiunge servizio e comune dell’intervento"
+                widget: select
+                options:
+                  - contatto
+                  - preventivo
+              - name: title
+                label: Titolo
+                hint: Titolo della sezione, al massimo 70 caratteri
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,70}$
+                  - al massimo 70 caratteri
+              - name: text
+                label: Introduzione
+                hint: Spiega quali informazioni servono, senza promettere tempi di risposta non concordati
+                required: false
+                widget: text
+                pattern:
+                  - ^[\s\S]{1,240}$
+                  - al massimo 240 caratteri
+              - name: services
+                label: Servizi richiesti
+                hint: Da 1 a 12 opzioni per il preventivo; non vengono mostrate nel modulo contatto
+                required: false
+                widget: list
+                field:
+                  name: item
+                  label: Servizio
+                  hint: Nome di un servizio realmente offerto, al massimo 80 caratteri
+                  widget: string
+                  pattern:
+                    - ^[\s\S]{1,80}$
+                    - al massimo 80 caratteri
+                min: 1
+                max: 12
+              - name: privacyHref
+                label: Informativa privacy
+                hint: Percorso di una pagina privacy esistente, es. /privacy/; il testo va approvato per il servizio di invio scelto
+                widget: text
+                pattern:
+                  - (?=^[\s\S]{0,200}$)(?=^\/(?!\/)[a-z0-9/-]*\/$)
+                  - al massimo 200 caratteri; percorso interno dell’informativa, es. /privacy/
+              - name: submitLabel
+                label: Testo del pulsante
+                hint: L’azione richiesta, al massimo 25 caratteri
+                required: false
+                default: Invia la richiesta
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,25}$
+                  - al massimo 25 caratteri
+              - name: id
+                label: Ancora
+                hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
+                required: false
+                widget: string
+                pattern:
+                  - ^[a-z0-9]+(?:-[a-z0-9]+)*$
+                  - id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")
+              - name: tone
+                label: Sfondo
+                hint: "default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine"
+                required: false
+                default: default
+                widget: select
+                options:
+                  - default
+                  - muted
+                  - primary
           - name: areas
             label: Zone servite
             widget: object

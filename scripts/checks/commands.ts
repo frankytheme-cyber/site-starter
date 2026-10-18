@@ -35,6 +35,14 @@ export async function astroCheck({ root }: CheckContext) {
 	return findings;
 }
 
+/** Invio moduli: API Resend simulata, nessun invio reale né credenziali richieste. */
+export async function forms({ root }: CheckContext) {
+	const { findings, error } = collector('forms');
+	const { code, output } = await exec(process.execPath, ['--test', 'scripts/forms.test.ts'], root);
+	if (code !== 0) error({ message: 'test dei moduli non riusciti', hint: output.trim().split('\n').slice(-16).join(' | ') });
+	return findings;
+}
+
 /**
  * build: npm run build (con il prebuild che rigenera la configurazione di Decap).
  * Nella suite qa SITE_URL punta al server di anteprima: canonical e Open Graph restano sullo stesso host.

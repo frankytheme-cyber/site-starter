@@ -13,6 +13,7 @@ import { join } from 'node:path';
 import { type Browser, chromium, type Page } from 'playwright';
 import { type CheckContext, collector } from './lib/report.ts';
 import { builtPages, DIST } from './lib/project.ts';
+import { testForms } from './form-interactive.ts';
 
 const MOBILE = { width: 375, height: 800 };
 const DESKTOP = { width: 1280, height: 900 };
@@ -258,6 +259,9 @@ export async function interactive({ baseUrl }: CheckContext) {
 			expect('prima-dopo', (await pos()) !== before, 'la freccia destra non sposta il cursore');
 			await page.close();
 		}
+		// Form: tastiera, validazione, istanze indipendenti, demo senza invio, errori e retry.
+		const formPath = pageWith(/<form[^>]*\sdata-contact-form[\s=>]/);
+		if (formPath) findings.push(...await testForms(browser, baseUrl, formPath));
 	} finally {
 		await browser.close();
 	}

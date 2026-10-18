@@ -51,6 +51,7 @@ Sezioni delle ricette di pagina (`scope: "page"`), nell’ordine in cui compaion
 | [services — Servizi](blocchi/services.md) | contenuti | `cards-icone`, `cards-immagine`, `alternato`, `schede` | Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno. |
 | [contact — Contatti](blocchi/contact.md) | contatti | `info-mappa`, `info-cta` | Nella pagina contatti, o in fondo a una pagina che deve far trovare l’attività. Telefono, WhatsApp, email, indirizzo e orari non si scrivono nel blocco: arrivano da site.json. |
 | [cta — Invito all’azione](blocchi/cta.md) | contatti | `banner`, `split-contatto` | Dopo i blocchi che convincono (servizi, lavori, recensioni) e in fondo alla pagina, prima del footer. Con showContacts mostra telefono e WhatsApp dell’attività presi da site.json. |
+| [form — Modulo di contatto](blocchi/form.md) | contatti | `contatto`, `preventivo` | Quando chi visita deve inviare una richiesta scritta. Configura Resend secondo docs/form.md; il destinatario è l’email di site.json. Il catalogo simula l’invio senza spedire email. |
 | [areas — Zone servite](blocchi/areas.md) | contatti | `elenco-zone`, `mappa-link` | Per rendere chiara la copertura locale di un servizio a domicilio o di un’attività. Usa nomi di comuni e quartieri realmente serviti. |
 
 ## Blocchi di layout

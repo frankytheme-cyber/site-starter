@@ -3,6 +3,7 @@
   "repository": "https://github.com/frankytheme-cyber/site-starter.git",
   "managed": ["src/blocks", "src/core", "src/themes", "src/layouts", "scripts", "docs/catalogo", "docs/skill", "docs/modelli", "docs/agenti", "docs/paperclip-runtime", ".github/workflows"],
   "managedFiles": [
+    "api/contact.ts",
     ".env.example",
     ".github/CODEOWNERS",
     "AGENTS.md",
@@ -12,6 +13,7 @@
     "docs/blocchi-interattivi.md",
     "docs/controlli.md",
     "docs/decap.md",
+    "docs/form.md",
     "docs/provisioning.md",
     "docs/paperclip.md",
     "docs/github-ruleset-sito.json",
