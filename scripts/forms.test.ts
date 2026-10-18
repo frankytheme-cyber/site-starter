@@ -3,12 +3,18 @@ import { test } from 'node:test';
 import { handleContact } from '../src/core/forms/handler.ts';
 
 const site = { url: 'https://www.esempio.it', email: 'info@esempio.it', businessName: 'Attività di prova' };
-const env = { RESEND_API_KEY: 'test-key', RESEND_FROM: 'Moduli <moduli@esempio.it>' };
+const env = { CONTACT_FORM_ENABLED: '1', RESEND_API_KEY: 'test-key', RESEND_FROM: 'Moduli <moduli@esempio.it>' };
 const valid = { variant: 'contatto', name: 'Persona Esempio', email: 'persona@example.net', message: 'Vorrei informazioni sui servizi.', privacy: 'accepted', website: '' };
 function request(data: Record<string, string> = valid, headers: Record<string, string> = {}) {
 	return new Request(`${site.url}/api/contact`, { method: 'POST', headers: { Origin: site.url, Accept: 'application/json', ...headers }, body: new URLSearchParams(data) });
 }
 const neverSend: typeof fetch = async () => { throw new Error('Il provider non deve essere chiamato'); };
+
+test('il modulo resta disattivato finché non viene abilitato esplicitamente, anche con chiavi presenti', async () => {
+	for (const value of [undefined, '', '0', 'true']) {
+		assert.equal((await handleContact(request(), { site, env: { ...env, CONTACT_FORM_ENABLED: value }, fetch: neverSend })).status, 503);
+	}
+});
 
 test('invia a site.email con mittente verificato, reply_to del visitatore e testo semplice', async () => {
 	let payload: Record<string, unknown> = {};

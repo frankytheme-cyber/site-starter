@@ -13,6 +13,9 @@ const { id, tone, variant, title, text, services, privacyHref, submitLabel = 'In
 const site = Astro.props.site ?? await getSiteSettings();
 const uid = nextId(Astro.request, 'form');
 const demo = isLibraryMode() && Astro.url.pathname.startsWith('/catalogo');
+// L’anteprima può includere il modulo prima che servizio e informativa siano pronti.
+// Lo sblocco richiede una scelta esplicita e le credenziali server alla build.
+const unavailable = !demo && !(process.env.CONTACT_FORM_ENABLED === '1' && process.env.RESEND_API_KEY && process.env.RESEND_FROM);
 const inputClass = 'mt-2 min-h-12 w-full min-w-0 rounded-button border border-border bg-transparent px-3 py-2 text-fg';
 ---
 
@@ -30,8 +33,10 @@ const inputClass = 'mt-2 min-h-12 w-full min-w-0 rounded-button border border-bo
 				</address>
 			</div>
 		</div>
-		<form action="/api/contact" method="post" data-contact-form data-demo={demo ? 'true' : undefined} aria-labelledby={`${uid}-title`} class="min-w-0 space-y-6">
+		<form action="/api/contact" method="post" data-contact-form data-demo={demo ? 'true' : undefined} data-unavailable={unavailable ? 'true' : undefined} aria-labelledby={`${uid}-title`} class="min-w-0 space-y-6">
 			{demo && <p class="rounded-box border border-border p-4 text-sm text-fg-muted">Modulo dimostrativo: puoi provarlo, nessuna email verrà inviata.</p>}
+			{unavailable && <p class="rounded-box border border-border p-4 text-sm text-fg-muted">Il modulo non è ancora attivo. Per contattarci usa il telefono o l’email indicati in questa sezione.</p>}
+			<fieldset disabled={unavailable} class="min-w-0 space-y-6">
 			<p id={`${uid}-help`} class="text-sm text-fg-muted">Tutti i campi sono obbligatori, tranne il telefono. Non inserire dati sensibili.</p>
 			<input type="hidden" name="variant" value={variant} />
 			<div hidden aria-hidden="true">
@@ -75,10 +80,11 @@ const inputClass = 'mt-2 min-h-12 w-full min-w-0 rounded-button border border-bo
 				<label for={`${uid}-privacy`} class="text-sm leading-7">Ho letto l’<a href={privacyHref} class="underline underline-offset-4">informativa privacy</a> relativa al trattamento dei dati della richiesta.</label>
 			</div>
 			<div class="flex flex-wrap items-center gap-4">
-				<Button type="submit" size="lg" disabled={demo} data-form-submit>{submitLabel}</Button>
+				<Button type="submit" size="lg" disabled={demo || unavailable} data-form-submit>{submitLabel}</Button>
 				<p data-form-status role="status" aria-live="polite" aria-atomic="true" tabindex="-1" class="text-sm text-fg-muted"></p>
 			</div>
 			<noscript><p class="text-sm text-fg-muted">{demo ? 'La prova del catalogo richiede JavaScript. Nei siti il modulo funziona anche senza.' : 'Dopo l’invio si aprirà una pagina con l’esito della richiesta.'}</p></noscript>
+			</fieldset>
 		</form>
 	</div>
 </Section>
@@ -89,6 +95,7 @@ const inputClass = 'mt-2 min-h-12 w-full min-w-0 rounded-button border border-bo
 
 <script>
 	for (const form of document.querySelectorAll<HTMLFormElement>('[data-contact-form]')) {
+		if (form.dataset.unavailable === 'true') continue;
 		const button = form.querySelector<HTMLButtonElement>('[data-form-submit]');
 		const status = form.querySelector<HTMLElement>('[data-form-status]');
 		if (!button || !status) continue;

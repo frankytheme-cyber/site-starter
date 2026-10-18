@@ -16,12 +16,20 @@ export async function testForms(browser: Browser, baseUrl: string, path: string)
 			await form.locator('[name="city"]').fill('Comune Esempio');
 		}
 	};
+	let unavailable = false;
 	for (const width of [375, 1280]) {
 		const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce' });
 		const page = await context.newPage();
 		try {
 			await page.goto(new URL(path, baseUrl).href);
 			const form = page.locator('[data-contact-form]').first();
+			if (await form.getAttribute('data-unavailable') === 'true') {
+				unavailable = true;
+				expect(await form.locator('fieldset').isDisabled(), 'il modulo non attivato consente di compilare i campi');
+				expect(await form.locator('[type="submit"]').isDisabled(), 'il modulo non attivato consente di inviare');
+				expect(await form.getByText('Il modulo non è ancora attivo.', { exact: false }).isVisible(), 'manca l’avviso sul modulo non attivo');
+				continue;
+			}
 			const submit = form.locator('[type="submit"]');
 			const status = form.locator('[data-form-status]');
 			const demo = await form.getAttribute('data-demo') === 'true';
@@ -52,6 +60,7 @@ export async function testForms(browser: Browser, baseUrl: string, path: string)
 			}
 		} finally { await context.close(); }
 	}
+	if (unavailable) return findings;
 	// Sulla copia della pagina togliamo soltanto la modalità demo: proviamo lo script reale
 	// con un endpoint intercettato, lasciando invariati il componente e il sito.
 	const context = await browser.newContext();

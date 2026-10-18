@@ -15,7 +15,7 @@ const submission = z.object({
 }).refine((data) => data.variant !== 'preventivo' || Boolean(data.service && data.city));
 
 interface FormSite { email: string; url: string; businessName: string }
-interface FormEnvironment { RESEND_API_KEY?: string; RESEND_FROM?: string; SITE_STARTER_LIBRARY?: string; VERCEL_URL?: string }
+interface FormEnvironment { CONTACT_FORM_ENABLED?: string; RESEND_API_KEY?: string; RESEND_FROM?: string; SITE_STARTER_LIBRARY?: string; VERCEL_URL?: string }
 interface Options {
 	site: FormSite;
 	env: FormEnvironment;
@@ -61,6 +61,7 @@ async function readBody(request: Request) {
 export async function handleContact(request: Request, { site, env, fetch: send = fetch }: Options): Promise<Response> {
 	if (request.method !== 'POST') return reply(request, 405, 'Questo indirizzo accetta solo l’invio del modulo.', { Allow: 'POST' });
 	if (env.SITE_STARTER_LIBRARY === '1') return reply(request, 403, 'Il catalogo è dimostrativo: nessuna email viene inviata.');
+	if (env.CONTACT_FORM_ENABLED !== '1') return reply(request, 503, 'Il modulo non è ancora attivo. Usa i recapiti indicati sul sito.');
 	// Origini esatte: dominio configurato e singolo deployment Vercel, mai *.vercel.app o Host del client.
 	const origins = new Set([new URL(site.url).origin]);
 	if (env.VERCEL_URL) origins.add(`https://${env.VERCEL_URL}`);
