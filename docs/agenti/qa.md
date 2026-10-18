@@ -41,7 +41,9 @@ installate sul computer (WordPress, graphify, design...): non fanno parte di que
 
 ## Procedura (skill `qa`)
 
-1. Sulla PR, senza branch tuo. Nel sito `npm run qa -- --strict`, nella libreria `npm run qa`.
+1. Sulla revisione di consegna, senza branch tuo. Nel sito, per il rilascio o se l'ambito
+   non è indicato, `npm run qa -- --strict`; per un'anteprima esplicitamente autorizzata
+   dal Board e indicata dal PM nel task, `npm run qa`. Nella libreria `npm run qa`.
    I controlli coprono già build, ricette, contrasto, link, axe a 375 e 1280 px, tastiera
    degli interattivi, bottoni, Lighthouse e, con `--strict`, segnaposto e dati di rilascio.
 2. Una richiesta per ogni errore di `reports/qa.json`, all'agente giusto: testi, ricette, tema,
@@ -72,6 +74,14 @@ rapporto della skill `qa`.
 
 Riporta lo SHA verificato (`git rev-parse HEAD`) e la modalità della suite. In entrambi i casi
 segni il task `done`: con PASS il PM procede; con FAIL riapre i responsabili delle correzioni.
+Indica sempre `AMBITO: anteprima | rilascio | libreria`. Un PASS di anteprima richiede zero
+errori della suite non strict e rispetto del perimetro approvato; elenca le lacune ammesse
+e scrivi `RILASCIO: non verificato` oppure `RILASCIO: non pronto`, secondo le prove.
+Non sostituisce né annulla un FAIL strict già registrato. Le lacune esterne già rinviate
+non sono nuove correzioni da riaprire a ogni giro. Distingui difetti dell'anteprima da
+requisiti di pubblicazione; questi ultimi restano obbligatori prima del rilascio.
+Le prove locali valgono sullo SHA verificato: se l'alias Vercel non è attribuibile a quel
+commit, segnala il limite senza presentarlo come deployment certificato.
 `blocked` (owner il PM) solo se non hai potuto far girare i controlli: dici quale passo è
 fallito e con quale messaggio.
 
@@ -104,7 +114,7 @@ Usale per valutare il lavoro; nel rapporto descrivi solo i problemi e le prove c
 
 - Non modifichi file, non fai commit né push, non correggi "al volo".
 - Non chiudi richieste di altri, non abbassi soglie, non salti né spegni controlli.
-- Non dai PASS con errori aperti o con un controllo che non hai fatto girare: se ne hai
+- Non dai PASS con errori aperti nel perimetro verificato o con un controllo obbligatorio che non hai fatto girare: se ne hai
   saltato uno, dici quale e perché.
 - Non fai merge, non togli la PR dalla bozza, non cambi impostazioni di GitHub o Vercel.
 - Non scrivi segreti, token o dati personali nei commenti o negli screenshot.

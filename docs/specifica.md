@@ -261,7 +261,7 @@ esterno già mancante non giustifica cicli di correzione identici.
 
 **Regole comuni a tutti gli agenti**
 
-1. **Branch e PR** (skill `github-pr`). In un sito un solo branch, `lancio`, con una sola **PR in bozza** verso `main` aperta all'avvio: tutti i task ci lavorano, ognuno nella sua cartella isolata di Paperclip (worktree), allineandosi a `origin/lancio` e facendo push su `lancio`; i cancelli usano la stessa anteprima Vercel. Nella libreria ogni task lavora su un branch proprio e apre subito la sua PR in bozza.
+1. **Branch e PR** (skill `github-pr`). In un sito un solo branch, `lancio`, con una sola **PR aperta per volta** verso `main`, in bozza e inizialmente aperta all'avvio: tutti i task ci lavorano, ognuno nella sua cartella isolata di Paperclip (worktree), allineandosi a `origin/lancio` e facendo push su `lancio`; i cancelli usano la stessa anteprima Vercel. Dopo un merge, ulteriori correzioni autorizzate richiedono una nuova PR per il delta non ancora in main. Nella libreria ogni task lavora su un branch proprio e apre subito la sua PR in bozza.
 2. Chi cambia il sito o i blocchi esegue `npm run qa` sul risultato finale; comprende `check`, quindi non occorre ripeterlo subito prima. Durante le correzioni usa controlli mirati. Il QA esegue la verifica indipendente; nel sito prima del cancello 3 serve `npm run qa -- --strict`, senza errori né eccezioni per i segnaposto. PM e SEO non duplicano la suite: il PM verifica CI ed evidenze, il SEO usa il PASS QA sul medesimo SHA e svolge la propria verifica.
 3. Si legge `AGENTS.md` (tramite `CLAUDE.md`) e la scheda del catalogo prima di usare un blocco.
 4. Un dato mancante non si inventa: il PM usa materiali e ricerche autorizzate e raggruppa le domande residue. Blocca solo le attività dipendenti da quel dato; un’anteprima approvata con lacune può procedere nel perimetro ricevuto.
@@ -298,6 +298,24 @@ con i blocchi esistenti; non c’è un secondo task Builder per ricopiare il des
 Il Builder interviene dopo il design solo per integrazioni tecniche o redirect approvati.
 I task esecutivi terminano con consegna e stato done; il PM gestisce i cancelli intermedi
 sui risultati, senza usare l’approvazione finale del padre per ogni fase.
+
+Ogni task dichiara l'ambito: anteprima, rilascio o libreria. Il QA di un'anteprima
+esplicitamente autorizzata dal Board usa `npm run qa`, verifica il perimetro e registra
+lacune e requisiti di pubblicazione ancora aperti. Il suo PASS non annulla un FAIL strict
+storico e non certifica il rilascio; per quest'ultimo resta obbligatorio `qa --strict`
+senza errori. Senza ambito esplicito, il QA di un sito resta una verifica di rilascio.
+Un servizio già rinviato non genera riaperture identiche senza nuovi input. Una grafica
+social ricavata da testi e tema approvati può essere assegnata come derivazione interna,
+con provenienza registrata; non sostituisce foto reali con immagini inventate.
+La verifica di un alias non certifica lo SHA del deployment: occorrono metadati che
+colleghino commit, deployment e URL univoco; in assenza si dichiarano le prove separate.
+
+Le domande non essenziali al risultato corrente si registrano con responsabile e fase
+entro cui servono; il PM prosegue senza lasciarle come interazioni bloccanti. Può usare
+una scelta provvisoria già nel mandato o omettere un contenuto opzionale. Le risposte
+residue si raccolgono prima della consegna che ne dipende, senza consenso implicito,
+dati inventati o deroghe ai requisiti di pubblicazione. Si ferma la sola attività che
+richiede un dato, un accesso o un'autorizzazione indispensabile, non l'intero progetto.
 
 ## Istruzioni degli agenti
 

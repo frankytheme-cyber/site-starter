@@ -30,6 +30,10 @@ Per il PM. Puoi raccogliere il brief mentre procede Avvio; la versione approvata
    - Recensioni con testo, autore, fonte e data; numeri con valore e fonte; foto reali e chi le fornisce; stock sì o no.
    - Sito esistente e dominio: conserva la voce `- Esiste un sito online?` e rispondi `sì, <indirizzo>` oppure `no` (la legge il controllo di rilascio). Se c'è un sito, servirà la proposta dei redirect (skill `redirect`, decisione al cancello 2).
 4. **Dati mancanti:** nel campo scrivi `da chiedere` e aggiungi una riga in «Da chiedere», con il dato e a chi chiederlo.
+   Indica anche entro quale fase serve e cosa dipende dalla risposta. Se il punto non
+   è necessario al lavoro corrente, lascialo nel registro senza una domanda bloccante;
+   usa il perimetro già approvato e raccogli la risposta prima della consegna interessata.
+   Una domanda già aperta e rinviabile si ritira con motivo, senza segnarla approvata.
 5. **Controllo prima del cancello:** esplicita ogni lacuna e il suo impatto. Per il brief completo le sezioni 1, 2 e 3 devono essere complete. Se il Board approva esplicitamente un’anteprima con lacune, registra quali, cosa resta escluso e quali dati serviranno prima della pubblicazione; non richiedere di nuovo la stessa approvazione.
 
    ```sh

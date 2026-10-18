@@ -15,6 +15,11 @@ Per il PM. I modelli sono in `docs/modelli/task.md`: la forma comune, la tabella
    - TITOLO: verbo + oggetto («Pagina Servizi: ricetta e testi»);
    - AGENTE e PROJECT: uno solo per task;
    - OBIETTIVO: una frase;
+   - AMBITO: anteprima, rilascio o libreria. Per l'anteprima riporta la decisione del Board
+     e le lacune ammesse; QA usa la suite non strict e non certifica la pubblicazione.
+     Per il rilascio resta obbligatorio QA strict senza errori;
+   - DOMANDE RINVIATE: dato o scelta, responsabile, fase entro cui serve e sola attività
+     dipendente. Le risposte non essenziali al risultato attuale non sono blocker del task;
    - INPUT: file, link, brief, richieste e il branch: nel sito sempre `lancio`; nella libreria il branch di partenza se il lavoro dipende da una PR non ancora unita (per le correzioni, il branch della PR in QA);
    - OUTPUT ATTESO: file e PR (per QA e SEO, il rapporto);
    - CRITERI DI FINE: chi modifica sito o blocchi esegue `npm run qa`; QA fa la verifica indipendente, strict prima del rilascio. PM e SEO valutano le evidenze sullo stesso SHA senza duplicare la suite; aggiungi i criteri del modello e le lacune esplicitamente ammesse per l’anteprima;

@@ -1,12 +1,14 @@
 # Modello di task
 
-Ogni task del PM ha questa forma (skill `modelli-task`): un task, un agente; chi cambia file lavora, nei siti, su un branch locale proprio e consegna a `lancio` con l'unica PR in bozza del sito, aperta all'avvio; nella libreria su un branch con la sua PR in bozza (skill `github-pr`).
+Ogni task del PM ha questa forma (skill `modelli-task`): un task, un agente; chi cambia file lavora, nei siti, su un branch locale proprio e consegna a `lancio` con una sola PR aperta per volta, in bozza; nella libreria su un branch con la sua PR in bozza (skill `github-pr`).
 
 ```text
 TITOLO: <verbo + oggetto>, es. "Pagina Servizi: ricetta e testi"
 AGENTE: <Builder | Designer | QA | SEO>
 PROJECT: <Libreria blocchi | nome sito>
 OBIETTIVO: <una frase>
+AMBITO: <anteprima | rilascio | libreria; per anteprima: decisione Board e lacune ammesse>
+DOMANDE RINVIATE: <dato/scelta, responsabile, fase entro cui serve; nessun blocco su attività indipendenti>
 INPUT: <file, link, brief, richieste; branch: `lancio` nei siti, nella libreria quello di partenza se non è main>
 WORKSPACE: <isolato proprio; sito: base origin/main per Avvio, origin/lancio dopo; libreria: main o branch/SHA di INPUT; non ereditare il checkout del padre>
 OUTPUT ATTESO: <file e PR>
@@ -17,7 +19,7 @@ VINCOLI: <cosa non toccare>
 PASSA A: <agente successivo> | CANCELLO: <se serve approvazione>
 ```
 
-Per QA e SEO conta il rapporto completo con SHA e verdetto, anche FAIL; il PM non rilancia la suite degli esecutori.
+Per QA e SEO conta il rapporto completo con SHA, ambito e verdetto, anche FAIL; il PM non rilancia la suite degli esecutori. QA di anteprima esplicitamente autorizzata: `npm run qa`; QA di rilascio (e sito senza ambito indicato): `npm run qa -- --strict`. Il PASS di anteprima non annulla un FAIL di rilascio e registra i requisiti ancora aperti.
 
 `PASSA A` serve a chi legge: chi esegue chiude il task `done` e il passaggio lo fa il PM.
 

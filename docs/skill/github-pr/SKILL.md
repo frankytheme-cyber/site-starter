@@ -53,7 +53,12 @@ della libreria; il comando della skill consente di consegnare nel frattempo.
 
 2. **Branch di destinazione** (`DEST`): il branch di GitHub dove vanno i tuoi commit. Lavori sempre sul branch della tua cartella e fai push verso `DEST`: mai `git switch` su `lancio` o sul branch di una PR, che possono essere aperti nella cartella di un altro task (git lo vieta).
 
-   **Sito cliente: `DEST=lancio`**, il branch remoto di consegna, con l'unica PR in bozza verso `main`, aperta dal task «Avvio sito» (skill `avvio-sito`, che crea `lancio`). Allinea il tuo branch a `lancio`; la PR c'è già, salta il passo 5.
+   **Sito cliente: `DEST=lancio`**, il branch remoto di consegna, con una sola PR aperta
+   per volta verso `main`, inizialmente aperta in bozza da «Avvio sito». Allinea il tuo
+   branch a `lancio` e verifica la PR aperta. Se la precedente è già unita e il task
+   autorizza ulteriori modifiche, confronta `origin/main...origin/lancio` e apri al passo 5
+   una nuova PR in bozza per il delta; riusa una PR già aperta. Non tentare di aggiornare
+   una PR unita né considerare consegnati su main i commit successivi al merge.
 
    ```sh
    git fetch origin

@@ -59,6 +59,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Correzioni
 
+- Domande rinviabili registrate con responsabile e fase di completamento, senza bloccare attività indipendenti né considerare il silenzio un'approvazione.
+- QA con ambito esplicito: anteprima autorizzata distinta dal rilascio strict, senza cicli sulle lacune già rinviate. Consegne dopo un merge tramite nuova PR in bozza e prove di deployment distinte dalle risposte di un alias.
 - Domande del PM al titolare: una decisione per domanda, proposte e opzioni comprensibili, valori e anteprime visibili; grafica, redirect e testi legali separati. Il PM conserva il coordinamento durante le attese e riprende i feedback senza chiedere di gestire manualmente i task.
 - Flusso agenti coerente: workspace isolati per task, riparazione a carico PM, approvazioni già registrate riutilizzate, anteprima con lacune esplicite e criteri di fine per ruolo. Script PR distribuito anche con la skill attiva per i checkout precedenti.
 

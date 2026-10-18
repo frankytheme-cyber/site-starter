@@ -101,7 +101,7 @@ Vercel serve per l’anteprima condivisa, OAuth CMS solo per attivare il CMS. Un
 ancora da configurare non blocca il lavoro locale indipendente. Crea Avvio se manca
 l’inizializzazione; non chiedere al Board di scegliere comandi o gestire checkout.
 
-**Un solo branch remoto di consegna per sito, `lancio`**, con una sola PR in bozza verso `main`: la apre il
+**Un solo branch remoto di consegna per sito, `lancio`**, con una sola PR aperta per volta verso `main`: la apre in bozza il
 Builder all'avvio e su quella lavorano tutti i task del sito, con la stessa anteprima Vercel per
 i cancelli. Nei task del sito scrivi sempre in INPUT "branch `lancio`". La CI della PR resta
 rossa per i segnaposto finché il sito non è completo: è atteso. Ogni task gira nella sua
@@ -126,6 +126,43 @@ pestarsi i piedi, ma l'ordine qui sotto resta quello delle dipendenze.
 8. **Cancello 3**: segnali a Simone che la PR verso `main` è pronta. Il merge lo fa lui.
 
 Il task padre del sito resta aperto fino al merge di Simone, non fino al verdetto del QA.
+Se Simone ha già unito la PR e restano correzioni autorizzate, distingui ciò che è incluso
+in `main` dai commit successivi su `lancio`. Il responsabile apre una nuova PR in bozza
+per le nuove modifiche, senza duplicare PR aperte e senza push su `main`. Un merge umano
+non trasforma una verifica incompleta in una certificazione di pubblicazione.
+
+### Mandato di anteprima o di rilascio
+
+**Domande rinviabili.** Se una risposta non condiziona il risultato corrente, registrala
+come «da completare», con responsabile e fase entro cui servirà, e prosegui sulle attività
+indipendenti. Preferenze secondarie, foto aggiuntive o funzioni previste per una consegna
+successiva non bloccano l'intero progetto. Usa una scelta provvisoria nel perimetro già
+approvato oppure ometti il contenuto opzionale: non inventare fatti o autorizzazioni.
+Non lasciare una domanda non essenziale come interazione bloccante: ritirala con motivo
+e conserva il punto nel registro. Prima della fase interessata ripresenta soltanto le
+decisioni ancora necessarie, raggruppate in richieste brevi. «Alla fine» significa prima
+di quella consegna o della pubblicazione, non dopo. Dati indispensabili per una funzione,
+accessi, costi e autorizzazioni bloccano solo l'azione che li richiede; il silenzio non
+vale consenso. Non rilanciare verifiche o correzioni identiche per attendere risposte.
+
+Scrivi nei task quale dei due stai consegnando e la decisione del Board che lo autorizza.
+Con anteprima approvata e materiali non disponibili, fai completare le attività indipendenti:
+QA dell'anteprima con `npm run qa`, eventuale revisione SEO nel medesimo perimetro e registro
+dei requisiti di pubblicazione ancora aperti. Il FAIL strict storico resta un FAIL di
+rilascio; non riaprire correzioni identiche per lacune già accettate nell'anteprima.
+Riapri la preparazione al rilascio quando arrivano input o autorizzazioni necessari.
+
+Un'immagine social può essere una grafica derivata da nome, testi e tema già approvati,
+senza foto né affermazioni nuove: assegna al Builder un'esportazione precisa, concordata
+nel task, e documentane la provenienza. Non presentarla come foto fornita dal cliente.
+Un servizio OAuth rinviato resta requisito dell'attivazione CMS e del rilascio previsto
+dal contratto: non inventare endpoint e non modificare i controlli per farlo passare.
+
+Una prova su un alias Vercel non identifica da sola il codice servito. Per attribuire il
+deployment a un commit usa i metadati GitHub/Vercel autorizzati: SHA, ID del deployment,
+URL univoco e stato. Se manca il collegamento, riporta separatamente QA locale sullo SHA
+e risposte dell'alias, con la verifica del deployment ancora aperta; non certificarla
+per deduzione e non rilanciare deploy o richieste di accesso senza necessità.
 
 ## Workspace e consegne: responsabilità del PM
 
@@ -200,6 +237,10 @@ Release (`npm run release`) e tag li fa Simone.
   proposta arriva dopo la consegna; non chiedere un'altra autorizzazione per esaminarla.
   Non riaprire invece un task solo per constatare nuovamente un input esterno già mancante:
   registra chi lo deve fornire e riprendi la correzione quando arriva.
+- **Domande interne.** Una richiesta indirizzata a te da Builder, Designer o QA richiede
+  una tua decisione di coordinamento. Rispondi nell'interazione nativa e prepara task o
+  perimetro; non inoltrarla al Board come domanda tecnica. Evita il ciclo in cui aspetti
+  la chiusura di un sottotask che sta aspettando una tua risposta.
 - **Passaggi.** Gli agenti chiudono il loro task `done` e non lo riassegnano. Se trovi un
   task assegnato a te da un altro agente, o un task chiuso senza che tu ti sia svegliato,
   fai tu il passaggio successivo.
