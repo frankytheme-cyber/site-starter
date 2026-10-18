@@ -10,7 +10,7 @@ Per il Designer, nei siti cliente, dopo il cancello 1. Il sito si completa, non 
 ## Passi
 
 1. **Destinazione `lancio`** (skill `github-pr`, `DEST=lancio`): la PR del sito c'è già. Committi solo i tuoi file (impostazioni di tema, layout e menu, pagine, nota di design).
-2. **Leggi prima di scegliere:** `docs/brief.md` (con `Stato: approvato il …`), `docs/sito.md`, `docs/catalogo/README.md` (regole d'oro e di composizione, temi, link speciali, icone) e `docs/catalogo/ricette-tipo/README.md`; poi, per ogni blocco che pensi di usare, la scheda `docs/catalogo/blocchi/<tipo>.md` e gli screenshot `docs/catalogo/img/<tipo>-<variante>-desktop.webp` e `-mobile.webp`.
+2. **Leggi prima di scegliere:** `docs/brief.md` (con `Stato: approvato il …` oppure `approvato per sola anteprima il …`, decisione e versione registrate; nel secondo caso rispetta le lacune e il perimetro autorizzati), `docs/sito.md`, `docs/catalogo/README.md` (regole d'oro e di composizione, temi, link speciali, icone) e `docs/catalogo/ricette-tipo/README.md`; poi, per ogni blocco che pensi di usare, la scheda `docs/catalogo/blocchi/<tipo>.md` e gli screenshot `docs/catalogo/img/<tipo>-<variante>-desktop.webp` e `-mobile.webp`.
 3. **Tema** in `src/content/settings/theme.json`: `palette`, `fonts` e `shape` per affinità tra tono e settore del brief e `mood`/`adattoA` dei preset (tabelle «Temi» del catalogo).
 4. **Layout** in `src/content/settings/layout.json`: header (`variant`, `sticky`, `logo`) e footer (`variant`, `ctaBand`, spento se le pagine chiudono con una cta).
 5. **Menu** in `src/content/settings/navigation.json`: una voce per pagina del brief, `cta` se l'header è `con-cta`, `footer.legal` con privacy e cookie.
@@ -22,6 +22,10 @@ Per il Designer, nei siti cliente, dopo il cancello 1. Il sito si completa, non 
 
    `"$schema": "../../../.astro/collections/pages.schema.json"`, `title` ≤ 60, `description` ≤ 160, sezioni piatte (`type`, `variant`, `id`, `tone` e i campi della scheda), toni alternati. Privacy e cookie con `"kind": "legale"` e i testi indicati nel brief.
 7. **Testi e immagini.** Testi nel tono del brief, entro i limiti delle schede, solo con fatti del brief. Recapiti mai nei testi: nei link `@telefono`, `@whatsapp`, `@email`, `@mappa`, nelle cta `showContacts`. Recensioni e numeri solo dal brief, con `fonte`. Foto solo tra quelle in `src/assets/images/` (le carica il Builder; le foto di prova di `fixtures/` vanno sostituite), con un `alt` che dice cosa mostra; senza foto, la variante senza foto.
+   Se il brief richiede una gallery con immagini da una fonte autorizzata da Simone,
+   chiedi al PM la consegna del Builder prima della composizione: non omettere la
+   gallery solo perché i file non sono ancora locali. Nessuna nuova autorizzazione
+   generica; nessuna attribuzione di lavori o risultati dedotta dalle sole fotografie.
 8. **Controlli**, finché non ci sono errori:
 
    ```sh

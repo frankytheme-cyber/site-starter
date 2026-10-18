@@ -18,7 +18,9 @@ Per il QA. Verifichi, non correggi: ogni problema diventa una richiesta all'agen
    npm ci
    ```
 
-2. **Controlli:** nel sito `npm run qa -- --strict`, nella libreria `npm run qa`. Poi gli errori dal report:
+2. **Controlli:** nel sito, per il rilascio o senza ambito esplicito, `npm run qa -- --strict`.
+   Se il task indica sola anteprima con decisione del Board registrata, `npm run qa`;
+   nella libreria `npm run qa`. Non modificare soglie o codice dei controlli. Poi gli errori dal report:
 
    ```sh
    grep -n -A1 "❌" reports/qa.md    # ogni errore con file, punto e suggerimento (riga sotto, dopo →)
@@ -56,14 +58,22 @@ Per il QA. Verifichi, non correggi: ogni problema diventa una richiesta all'agen
 
    ```text
    VERDETTO: PASS | FAIL
+   AMBITO: anteprima | rilascio | libreria
    QA — <PR> · SHA: <git rev-parse HEAD>
    Controlli: npm run qa [-- --strict] → <n> errori, <n> avvisi
    Richieste aperte: <agente: file, problema> (una per riga)
    Requisiti (brief sito / task libreria): ok | <differenze>
    Vista 375/1280: ok | <note>
+   Rilascio (se anteprima): non verificato | non pronto; <requisiti ancora aperti>
    ```
 
    La prima riga è sempre il verdetto: il PM la legge per chiudere o riaprire i task. PASS solo con zero errori e requisiti rispettati; gli avvisi vanno nel rapporto ma non bloccano. Dopo le correzioni si riparte dal passo 1.
+   Il PASS riguarda solo l'ambito indicato: per un'anteprima rispetta le lacune ammesse
+   dal Board, registra i requisiti di pubblicazione ancora mancanti e conserva il FAIL
+   strict storico. Non riaprire richieste identiche per materiali o servizi già rinviati.
+   Un esito su alias Vercel non certifica un deployment dello SHA: servono i metadati che
+   li collegano. In loro assenza distingue la prova locale sul commit dalla prova HTTP
+   dell'alias, senza presentare quest'ultima come verifica della medesima versione.
 
 ## Criterio di fine
 

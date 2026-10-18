@@ -88,7 +88,7 @@ Un blocco è una cartella con quattro file; il registry li raccoglie da solo, se
 
 ## 4. Lista dei blocchi v1
 
-Quindici blocchi: cinque di riferimento fatti da te (✦), gli altri dal Builder in lotti da 2-3. Header e footer hanno scope `layout`: stanno in `layout.json`, non nelle ricette.
+Sedici blocchi: cinque di riferimento fatti da te (✦), gli altri dal Builder. Header e footer hanno scope `layout`: stanno in `layout.json`, non nelle ricette.
 
 | Blocco | Scope | Varianti | Quando usarlo | Chi |
 | --- | --- | --- | --- | --- |
@@ -107,8 +107,9 @@ Quindici blocchi: cinque di riferimento fatti da te (✦), gli altri dal Builder
 | testimonials | page | `cards`, `singola`, `slider` | Solo recensioni reali con `fonte` | Builder, lotto 3 |
 | carousel | page | `immagini`, `immagini-testo` | Prodotti o lavori in sequenza; mai nell'hero | Builder, lotto 3 |
 | areas | page | `elenco-zone`, `mappa-link` | Zone servite, SEO locale | Builder, lotto 4 |
+| form | page | `contatto`, `preventivo` | Richieste scritte, invio Resend su Vercel | Builder |
 
-Form di contatto rimandato alla v1.1.
+**Moduli di contatto**: blocco `form`, invio POST a `/api/contact` (Vercel Function indipendente dal sito statico), Resend via API server. Destinatario solo da `site.json.email`, mittente verificato e chiave API da variabili server. Validazione server, honeypot, controllo dell’origine, limite del corpo e chiave di idempotenza; nessuna conferma di successo se il provider fallisce. Senza JS il POST restituisce una pagina HTML con l’esito. Nel catalogo invio solo simulato ed esplicitamente indicato. Configurazione e informativa in `docs/form.md`.
 
 ## 5. Catalogo
 
@@ -248,21 +249,94 @@ Se al Designer manca un blocco, apre una richiesta nel Project Libreria; il sito
 | 2. Design | Anteprima Vercel della PR, nota di design, ed eventuale mappa dei redirect | Approval in Paperclip, portata dal PM |
 | 3. Messa online | La PR verso `main` con tutti i controlli verdi | Merge su GitHub, fatto da te |
 
+**Domande al titolare**: il PM usa italiano semplice, una decisione per domanda e al massimo
+tre domande per richiesta. Presenta risultato/link verificato o valori da confermare,
+raccomandazione e opzioni con effetti concreti. I riferimenti tecnici identificano la
+versione a seguire; non sostituiscono la domanda. Grafica, destinazioni dei vecchi indirizzi
+e testi legali si decidono separatamente. Le lacune già rinviate restano registrate fino
+alla fase che ne dipende. Per testi legali si chiedono documenti approvati e responsabile,
+non clausole da comporre al momento. Il PM resta assegnatario del coordinamento anche
+quando il Board è destinatario di una decisione: verifica richiesta e ripresa senza far
+gestire a Simone stati e assegnazioni. Un feedback riapre il lavoro pertinente; un input
+esterno già mancante non giustifica cicli di correzione identici.
+
 **Regole comuni a tutti gli agenti**
 
-1. **Branch e PR** (skill `github-pr`). In un sito un solo branch, `lancio`, con una sola **PR in bozza** verso `main` aperta all'avvio: tutti i task ci lavorano, ognuno nella sua cartella isolata di Paperclip (worktree), allineandosi a `origin/lancio` e facendo push su `lancio`; i cancelli usano la stessa anteprima Vercel. Nella libreria ogni task lavora su un branch proprio e apre subito la sua PR in bozza.
+1. **Branch e PR** (skill `github-pr`). In un sito un solo branch, `lancio`, con una sola **PR aperta per volta** verso `main`, in bozza e inizialmente aperta all'avvio: tutti i task ci lavorano, ognuno nella sua cartella isolata di Paperclip (worktree), allineandosi a `origin/lancio` e facendo push su `lancio`; i cancelli usano la stessa anteprima Vercel. Dopo un merge, ulteriori correzioni autorizzate richiedono una nuova PR per il delta non ancora in main. Nella libreria ogni task lavora su un branch proprio e apre subito la sua PR in bozza.
 2. Chi cambia il sito o i blocchi esegue `npm run qa` sul risultato finale; comprende `check`, quindi non occorre ripeterlo subito prima. Durante le correzioni usa controlli mirati. Il QA esegue la verifica indipendente; nel sito prima del cancello 3 serve `npm run qa -- --strict`, senza errori né eccezioni per i segnaposto. PM e SEO non duplicano la suite: il PM verifica CI ed evidenze, il SEO usa il PASS QA sul medesimo SHA e svolge la propria verifica.
 3. Si legge `AGENTS.md` (tramite `CLAUDE.md`) e la scheda del catalogo prima di usare un blocco.
-4. Un dato mancante non si inventa: si chiede al PM, che lo chiede a te.
+4. Un dato mancante non si inventa: il PM usa materiali e ricerche autorizzate e raggruppa le domande residue. Blocca solo le attività dipendenti da quel dato; un’anteprima approvata con lacune può procedere nel perimetro ricevuto.
 5. Un blocco mancante non si improvvisa: richiesta di nuovo blocco nel Project Libreria.
 6. Nessun agente fa merge su `main`, pubblica, cambia impostazioni della repo o di Vercel.
-7. Identità GitHub: account `simone-agenti`, token e identità git nell'env del Project (tabella nella checklist).
+7. Identità GitHub: account `simone-agenti` tramite connessione e broker per operazione Paperclip; token vuoti nella shell sono previsti (checklist sotto).
 
 **Redirect di un sito esistente**: il Builder prepara una proposta in `docs/redirects.md` e non applica nulla. Il PM la porta al cancello 2. Si applicano in `vercel.json` solo le righe approvate; se respinta, nessun redirect. Il SEO può segnalare rischi.
 
 Il controllo `release` legge nel brief la riga `- Esiste un sito online? sì, <indirizzo>` oppure `- Esiste un sito online? no`. Se il sito esiste, richiede la mappa anche quando la proposta viene respinta. La mappa conserva le colonne `Vecchio URL`, `Nuovo URL`, `Decisione`, `Note`; lo stato è `approvata il gg/mm/aaaa` o `respinta il gg/mm/aaaa`, ogni decisione è `sì` o `no` e ogni rifiuto ha una motivazione. I redirect Vercel devono corrispondere esattamente alle righe approvate, con `permanent: true`. Anche senza sito precedente, eventuali redirect configurati richiedono una mappa decisa. Questo verifica la coerenza dei file: il PM verifica separatamente l'Approval in Paperclip.
 
 **Foto**: lavori, prima/dopo, chi siamo e squadra solo con foto reali del cliente. Immagini stock con licenza commerciale libera solo per sfondi o hero generici, sempre dichiarate nel brief e nella nota di design.
+Un'indicazione esplicita del titolare di riusare le immagini del sito esistente è una
+fonte d'uso sufficiente nel suo perimetro: si registra con testo, data e URL, senza
+chiedere di nuovo lo stesso permesso. Non prova fatti ulteriori sul lavoro ritratto:
+le didascalie descrivono ciò che si vede. Il Builder importa e seleziona, il Designer
+compone la gallery richiesta con il blocco esistente. L'assenza dei file locali o di
+altro materiale non annulla l'autorizzazione e non rende facoltativa la sezione richiesta.
+
+## Autonomia operativa e versioni delle consegne
+
+Il PM gestisce prerequisiti, dipendenze e workspace dei task: ogni task ha un checkout
+isolato e un branch locale proprio. Nei siti l’origine è `origin/main` per Avvio e
+`origin/lancio` dopo; nella libreria main per lavori nuovi o il branch/SHA di INPUT per
+correzioni e revisioni. Non si eredita il workspace del padre. Un checkout sporco di altri resta
+intatto e viene sostituito nell’assegnazione del task con uno pulito; non richiede una
+nuova decisione di prodotto. Il PM può cambiare queste impostazioni del task, non account,
+permessi, agenti, segreti o politiche di sicurezza. La procedura è nelle istruzioni PM.
+
+Le approvazioni esplicite già ricevute si registrano con fonte, data, artefatto/versione e
+perimetro. L’approvazione per anteprima non autorizza pubblicazione né rende veri dati
+mancanti. In anteprima le lacune autorizzate e i requisiti di rilascio ancora da completare
+non fermano attività indipendenti; il PM assegna owner e fase di completamento. Prima del
+merge devono passare QA strict, SEO e CI sullo SHA finale. Una CI rossa non è automaticamente
+attesa: occorre leggere le cause e distinguere i soli requisiti di rilascio documentati
+(dati/segnaposto, informative, redirect ancora da decidere) da regressioni da correggere.
+
+Avvio e Dati sono tecnici. Il Designer compone direttamente tema, menu, pagine e testi
+con i blocchi esistenti; non c’è un secondo task Builder per ricopiare il design.
+Il Builder interviene dopo il design solo per integrazioni tecniche o redirect approvati.
+I task esecutivi terminano con consegna e stato done; il PM gestisce i cancelli intermedi
+sui risultati, senza usare l’approvazione finale del padre per ogni fase.
+
+Ogni task dichiara l'ambito: anteprima, rilascio o libreria. Il QA di un'anteprima
+esplicitamente autorizzata dal Board usa `npm run qa`, verifica il perimetro e registra
+lacune e requisiti di pubblicazione ancora aperti. Il suo PASS non annulla un FAIL strict
+storico e non certifica il rilascio; per quest'ultimo resta obbligatorio `qa --strict`
+senza errori. Senza ambito esplicito, il QA di un sito resta una verifica di rilascio.
+Un servizio già rinviato non genera riaperture identiche senza nuovi input. Una grafica
+social ricavata da testi e tema approvati può essere assegnata come derivazione interna,
+con provenienza registrata; non sostituisce foto reali con immagini inventate.
+La verifica di un alias non certifica lo SHA del deployment: occorrono metadati che
+colleghino commit, deployment e URL univoco; in assenza si dichiarano le prove separate.
+
+Le domande non essenziali al risultato corrente si registrano con responsabile e fase
+entro cui servono; il PM prosegue senza lasciarle come interazioni bloccanti. Può usare
+una scelta provvisoria già nel mandato o omettere un contenuto opzionale. Le risposte
+residue si raccolgono prima della consegna che ne dipende, senza consenso implicito,
+dati inventati o deroghe ai requisiti di pubblicazione. Si ferma la sola attività che
+richiede un dato, un accesso o un'autorizzazione indispensabile, non l'intero progetto.
+
+Il PM separa la consegna corrente dalle attività rinviate in `docs/sito.md`: punto,
+motivo, alternativa attuale, owner e condizione di ripresa. I relativi task restano in
+backlog nel Project, fuori dai sottotask e dalle dipendenze dell'anteprima. Anche il SEO
+può consegnare una verifica di anteprima dopo PASS QA non strict sullo stesso SHA,
+senza certificare il rilascio. Composizione e correzioni richieste con input disponibili
+restano lavoro corrente; un rinvio non giustifica omissioni come una gallery autorizzata.
+
+Dopo un passaggio il PM verifica una volta che il destinatario sia effettivamente partito.
+Un task `blocked` con dipendenze tutte concluse può avere un arresto di esecuzione: si
+leggono diagnostica e `executionBlocker`, si preservano diff/commit e si usa la procedura
+nativa di recupero. Non si aggira l'arresto con task duplicati né si ripetono azioni di
+esito incerto. Il recupero riservato al Board va al gestore del runtime con evidenze;
+non diventa una domanda di prodotto a Simone. Procedura in `docs/paperclip.md`.
 
 ## Istruzioni degli agenti
 
@@ -281,7 +355,7 @@ Le procedure riusabili diventano company skill di Paperclip, assegnate solo agli
 
 | Skill | Agenti | Passi principali | Finita quando |
 | --- | --- | --- | --- |
-| `brief` | PM | Compila `docs/brief.md` sezione per sezione con Simone; segna "da chiedere" ogni dato mancante | Nessun campo obbligatorio vuoto; Approval inviata |
+| `brief` | PM | Compila `docs/brief.md` sezione per sezione con Simone; segna "da chiedere" ogni dato mancante | Decisione sul brief registrata con versione e perimetro, lacune dell’anteprima esplicite |
 | `modelli-task` | PM | Sceglie il modello, compila obiettivo, input, output, criteri, consegna | Task assegnato con tutti i campi |
 | `avvio-sito` | Builder | Verifica repo e cartella, `site:init`, `npm run check`, commit, branch `lancio` e PR in bozza | Lock scritto, check verde |
 | `ricetta-pagina` | Designer | Legge brief e catalogo, sceglie blocchi, scrive JSON e testi, `check:recipes`, nota di design | `npm run qa` senza errori, nota completa |
@@ -290,7 +364,7 @@ Le procedure riusabili diventano company skill di Paperclip, assegnate solo agli
 | `qa` | QA | Procedura delle istruzioni QA, formato delle richieste | Rapporto al PM |
 | `seo-prelancio` | SEO | Checklist delle istruzioni SEO | Rapporto al PM |
 | `redirect` | Builder, SEO | Raccolta dei vecchi URL dalla sitemap o da una scansione, mappa, stato della decisione | Mappa decisa da Simone |
-| `github-pr` | PM, Designer, Builder | Branch (`lancio` nei siti, uno per task nella libreria), commit, push senza token nell'URL, PR in bozza con `npm run pr` (API di GitHub, token dall'env), link nel task; mai merge | PR in bozza aperta e linkata nel task |
+| `github-pr` | PM, Designer, Builder | Branch (`lancio` nei siti, uno per task nella libreria), commit, push senza token nell'URL, PR in bozza con `npm run pr` (API di GitHub, broker gestito o token dall'env), link nel task; mai merge | PR in bozza aperta e linkata nel task |
 
 Ogni skill si scrive con Claude Code in `docs/skill/<nome>/SKILL.md` nella libreria (frontmatter `name` e `description`, poi passi con i comandi, criterio di fine e cosa non fare), così resta versionata e arriva nei siti. I modelli di brief e di task sono in `docs/modelli/`.
 
@@ -308,7 +382,7 @@ OBIETTIVO: <una frase>
 INPUT: <file, link, brief, richieste>
 OUTPUT ATTESO: <file e PR>
 CRITERI DI FINE:
-- npm run qa senza errori (nel sito prima del cancello 3: --strict)
+- controlli del ruolo: implementazione npm run qa; QA finale --strict con rapporto PASS/FAIL; PM e SEO non duplicano la suite
 - <criteri specifici>
 VINCOLI: <cosa non toccare>
 PASSA A: <agente successivo> | CANCELLO: <se serve approvazione>
@@ -336,15 +410,17 @@ PASSA A: Designer (revisione visiva sul catalogo) -> CANCELLO: approvazione di S
 
 **Sequenza dei lotti della libreria**: 1) contact; 2) features, about, process; 3) gallery, testimonials, carousel; 4) areas. Un lotto parte solo dopo il merge del precedente, così ogni lotto riusa quello che il precedente ha stabilito.
 
-**Sequenza dei task di un sito**: Avvio (Builder) → Brief (PM) → cancello 1 → Dati, immagini, redirect (Builder) → Design (Designer), che compone con i dati e le foto già su `lancio` → cancello 2 → QA → correzioni → SEO pre-lancio → cancello 3. Tutti i task lavorano sul branch `lancio` e sulla sua PR, che al cancello 3 Simone unisce a `main`.
+**Sequenza dei task di un sito**: Avvio (Builder) → Brief (PM) → cancello 1 → Dati, immagini, redirect (Builder) → Design (Designer), che compone con i dati e le foto già su `lancio` → cancello 2 → QA → correzioni → SEO pre-lancio → cancello 3. Tutti i task lavorano nel proprio branch locale e consegnano su `lancio` e sulla sua PR, che al cancello 3 Simone unisce a `main`.
 
 ## Modello di brief
 
-Il brief è la base di tutto: il Designer compone dal brief, il Builder ne prende i dati, il QA confronta col brief. Un campo obbligatorio vuoto blocca il cancello 1. Il modello è `docs/modelli/brief.md`; nel sito si compila in `docs/brief.md`.
+Il brief è la base di tutto: il Designer compone dal brief, il Builder ne prende i dati, il QA confronta col brief. Un campo obbligatorio vuoto richiede chiarimento per il brief completo; un’anteprima può procedere con lacune solo su approvazione esplicita del Board, registrata con perimetro e versione. Il modello è `docs/modelli/brief.md`; nel sito si compila in `docs/brief.md`.
 
 ```markdown
 # Brief — <nome attività>
-Stato: bozza | approvato il <data>
+Stato: bozza | approvato il <data> | approvato per sola anteprima il <data>
+Decisione: <riferimento alla risposta/Approval e versione presentata>
+Lacune autorizzate: <dato, attività esclusa, responsabile e fase di completamento>
 
 ## 1. Attività (obbligatorio)
 - Nome commerciale / ragione sociale / forma giuridica
@@ -388,35 +464,27 @@ Stato: bozza | approvato il <data>
 
 ## Checklist: messa in servizio e nuovo sito
 
-**Env di ogni Project Paperclip (libreria e siti)**
+**Autenticazione di ogni Project Paperclip (libreria e siti)**
 
-Il token di `simone-agenti` sta in una sola company secret, **`GITHUB_TOKEN`** (Board → Secrets; il nome esatto, in maiuscolo, conta). L'env del Project la richiama, non la copia: Paperclip la risolve all'avvio di ogni run e la passa all'agente come variabile. Con quel nome la usa anche per i suoi `git fetch` (clone del Project e cartelle dei task), indispensabili con le repo private.
+Nel runtime gestito si assegna agli agenti la connessione GitHub di `simone-agenti`,
+con accesso alla repo cliente. L'identità della run è risolta da Paperclip: Git usa il
+launcher e `npm run pr` il broker delle credenziali per operazione. L'assenza di
+`GH_TOKEN` e `GITHUB_TOKEN` nella shell è prevista. Non aggiungere token statici per
+compensarla e non usare l'account personale come ripiego. Un rifiuto di accesso
+resta un limite da correggere nel runtime, senza cambiare identità autonomamente.
 
-| Variabile | Tipo | Valore |
-| --- | --- | --- |
-| `GH_TOKEN`, `GITHUB_TOKEN` | Secret | `GITHUB_TOKEN`, versione `latest` |
-| `GIT_AUTHOR_NAME`, `GIT_COMMITTER_NAME` | Testo | `simone-agenti` |
-| `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_EMAIL` | Testo | `frankytheme+agenti@gmail.com` |
-| `GIT_CONFIG_COUNT` | Testo | `2` |
-| `GIT_CONFIG_KEY_0` | Testo | `credential.helper` |
-| `GIT_CONFIG_VALUE_0` | Testo | *(vuoto: azzera gli helper ereditati, es. il portachiavi del Mac)* |
-| `GIT_CONFIG_KEY_1` | Testo | `credential.helper` |
-| `GIT_CONFIG_VALUE_1` | Testo | `!f() { echo username=x-access-token; echo "password=$GITHUB_TOKEN"; }; f` (il riferimento, non il token) |
-| `SITE_STARTER_LIBRARY` | Testo | `1` SOLO nel Project della libreria |
-
-- Il token mai come testo nell'env: le API locali di Paperclip restituiscono in chiaro i valori di tipo testo. Il «Store as secret» che Paperclip propone su nome ed email non serve.
-- Nel `.env` locale niente token: lì solo `SITE_STARTER_LIBRARY=1`, nella libreria. Gli agenti non lo leggono e gli script non caricano i token da file.
-- Nessuna connessione GitHub nei Connectors assegnata agli agenti: verso GitHub passano solo da queste variabili.
-- Il token si rinnova ogni 90 giorni: basta una nuova versione della secret `GITHUB_TOKEN` (Update value), che vale subito per tutti i Project.
+Fuori dal runtime gestito lo script PR supporta `GH_TOKEN`/`GITHUB_TOKEN` forniti
+in modo sicuro dall'ambiente; mai nei remote, nei file o nei log.
+`SITE_STARTER_LIBRARY=1` va impostato solo per la libreria, anche su Vercel e CI.
 
 **Messa in servizio della squadra (una volta)**
 
 - [ ] Prompt Q eseguito (catalogo nel menu, testi neutri, icone) e `npm run release -- v1.0.0` (o v1.1.0)
 - [ ] Spuntato "Template repository" su GitHub
 - [ ] `.env` locale con `SITE_STARTER_LIBRARY=1`; stessa variabile nella repo GitHub (Variables) e su Vercel
-- [ ] Account GitHub `simone-agenti`, invitato con permesso *Write*; token classic con scadenza a 90 giorni
-- [ ] Paperclip: company secret `GITHUB_TOKEN` con il token di `simone-agenti`
-- [ ] Paperclip, Project "Libreria blocchi": repo nella cartella gestita da Paperclip (non il tuo clone), Execution Workspaces con «Enable isolated task checkouts» e «New tasks default to isolated checkout» attivi e, nelle impostazioni avanzate, la cartella dei worktree fuori dal clone (`<cartella del Project>/worktrees`, non `.paperclip/worktrees` dentro il clone: lì `astro check` e la build falliscono), env come nella tabella sopra (con `SITE_STARTER_LIBRARY=1`)
+- [ ] Account GitHub `simone-agenti`, invitato con permesso *Write*; connessione gestita assegnata agli agenti
+- [ ] Paperclip: identità GitHub gestita `simone-agenti` verificata nella run
+- [ ] Paperclip, Project "Libreria blocchi": repo nella cartella gestita da Paperclip (non il tuo clone), Execution Workspaces con «Enable isolated task checkouts» e «New tasks default to isolated checkout» attivi e, nelle impostazioni avanzate, la cartella dei worktree fuori dal clone (`<cartella del Project>/worktrees`, non `.paperclip/worktrees` dentro il clone: lì `astro check` e la build falliscono), autenticazione gestita come sopra (con `SITE_STARTER_LIBRARY=1`)
 - [ ] Istruzioni di ruolo dei 6 agenti copiate da `docs/agenti/` in Paperclip; skill create e assegnate
 - [ ] Agenti attivi solo su assegnazione (heartbeat spento); per ora i task li avvia Simone a mano, compreso il controllo giornaliero del PM; routine giornaliera e budget per Project da definire
 - [ ] Skill in `docs/skill/` scritte con Claude Code e rilasciate
@@ -424,10 +492,18 @@ Il token di `simone-agenti` sta in una sola company secret, **`GITHUB_TOKEN`** (
 
 **Nuovo sito (ogni volta)**
 
+Il titolare può automatizzare creazione della repo privata dal template, invito Write a
+`simone-agenti` e progetto Vercel con `npm run site:create -- nome-cliente --apply`, eseguito
+dalla libreria. Senza `--apply` mostra solo il piano offline. Credenziali dedicate del titolare,
+ripresa e limiti in [`provisioning.md`](provisioning.md): il comando non è un compito degli
+agenti e non usa la loro company secret. Su Vercel imposta `SITE_STARTER_LIBRARY` vuota nei tre
+ambienti, mantenendo la modalità sito anche se esiste un valore condiviso del team. Non crea
+il Project Paperclip né esegue `site:init`; l'invito pendente deve essere accettato.
+
 - [ ] GitHub: Use this template, repo privata, invito a `simone-agenti`
 - [ ] Ruleset importato da `docs/github-ruleset-sito.json` (se hai Pro)
 - [ ] Clone in locale (GitHub Desktop) nella cartella dei siti
-- [ ] Paperclip: Add Project, Configuration → repo nella cartella gestita da Paperclip (non il clone di GitHub Desktop), Execution Workspaces con le cartelle isolate attive e predefinite e la cartella dei worktree fuori dal clone, env come nella tabella sopra (senza `SITE_STARTER_LIBRARY`)
+- [ ] Paperclip: Add Project, Configuration → repo nella cartella gestita da Paperclip (non il clone di GitHub Desktop), Execution Workspaces con le cartelle isolate attive e predefinite e la cartella dei worktree fuori dal clone, autenticazione gestita come sopra (senza `SITE_STARTER_LIBRARY`)
 - [ ] Vercel: Import della repo
 - [ ] Task "Avvio sito" al Builder (`site:init`)
 - [ ] Brief con il PM → cancello 1
@@ -439,7 +515,6 @@ Il token di `simone-agenti` sta in una sola company secret, **`GITHUB_TOKEN`** (
 
 ## Rimandato alla v1.1
 
-- Form di contatto (gestione invio e privacy)
 - Immagine OG generata in automatico da nome e palette
 - Confronto visivo automatico degli screenshot dei blocchi
 - Lighthouse non bloccante anche sull'anteprima Vercel

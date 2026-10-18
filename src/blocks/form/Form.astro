@@ -1,0 +1,131 @@
+---
+import { nextId } from '@/core/ids';
+import { FORM_LIMITS } from '@/core/forms/fields';
+import { isLibraryMode } from '@/core/mode';
+import { getSiteSettings, phoneHref } from '@/core/settings';
+import Button from '@/core/ui/button/Button.astro';
+import Icon from '@/core/ui/Icon.astro';
+import Section from '@/core/ui/Section.astro';
+import type { FormProps } from './schema';
+
+type Props = FormProps;
+const { id, tone, variant, title, text, services, privacyHref, submitLabel = 'Invia la richiesta' } = Astro.props;
+const site = Astro.props.site ?? await getSiteSettings();
+const uid = nextId(Astro.request, 'form');
+const demo = isLibraryMode() && Astro.url.pathname.startsWith('/catalogo');
+const inputClass = 'mt-2 min-h-12 w-full min-w-0 rounded-button border border-border bg-transparent px-3 py-2 text-fg';
+---
+
+<Section id={id} tone={tone} aria-labelledby={`${uid}-title`}>
+	<div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
+		<div>
+			<p class="mb-3 text-sm font-semibold tracking-wider text-fg-muted uppercase">{variant === 'preventivo' ? 'Il tuo prossimo progetto' : 'Scrivici'}</p>
+			<h2 id={`${uid}-title`} class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+			{text && <p class="mt-5 max-w-lg text-lg text-pretty text-fg-muted">{text}</p>}
+			<div class="mt-8 border-t border-border pt-6">
+				<p class="font-semibold">Preferisci un contatto diretto?</p>
+				<address class="mt-3 grid gap-1 not-italic">
+					<a class="inline-flex min-h-11 items-center gap-3 underline-offset-4 hover:underline" href={phoneHref(site.phone)}><Icon name="telefono" /><span>{site.phone}</span></a>
+					<a class="inline-flex min-h-11 items-center gap-3 break-all underline-offset-4 hover:underline" href={`mailto:${site.email}`}><Icon name="email" /><span>{site.email}</span></a>
+				</address>
+			</div>
+		</div>
+		<form action="/api/contact" method="post" data-contact-form data-demo={demo ? 'true' : undefined} aria-labelledby={`${uid}-title`} class="min-w-0 space-y-6">
+			{demo && <p class="rounded-box border border-border p-4 text-sm text-fg-muted">Modulo dimostrativo: puoi provarlo, nessuna email verrà inviata.</p>}
+			<p id={`${uid}-help`} class="text-sm text-fg-muted">Tutti i campi sono obbligatori, tranne il telefono. Non inserire dati sensibili.</p>
+			<input type="hidden" name="variant" value={variant} />
+			<div hidden aria-hidden="true">
+				<label for={`${uid}-website`}>Lascia vuoto questo campo</label>
+				<input id={`${uid}-website`} name="website" type="text" tabindex="-1" autocomplete="off" maxlength="200" />
+			</div>
+			<div class="grid gap-6 sm:grid-cols-2">
+				<div>
+					<label for={`${uid}-name`} class="font-semibold">Nome e cognome</label>
+					<input class={inputClass} id={`${uid}-name`} name="name" autocomplete="name" required minlength="2" maxlength={FORM_LIMITS.name} aria-describedby={`${uid}-help`} />
+				</div>
+				<div>
+					<label for={`${uid}-email`} class="font-semibold">Email</label>
+					<input class={inputClass} id={`${uid}-email`} name="email" type="email" autocomplete="email" required maxlength={FORM_LIMITS.email} />
+				</div>
+			</div>
+			<div>
+				<label for={`${uid}-phone`} class="font-semibold">Telefono <span class="font-normal text-fg-muted">(facoltativo)</span></label>
+				<input class={inputClass} id={`${uid}-phone`} name="phone" type="tel" autocomplete="tel" maxlength={FORM_LIMITS.phone} pattern="[+0-9\s\x28\x29\x2E\x2F\x2D]{5,30}" />
+			</div>
+			{variant === 'preventivo' && <div class="grid gap-6 sm:grid-cols-2">
+				<div>
+					<label for={`${uid}-service`} class="font-semibold">Servizio</label>
+					<select class={inputClass} id={`${uid}-service`} name="service" required>
+						<option value="" selected disabled>Scegli un servizio</option>
+						{services?.map((service) => <option value={service}>{service}</option>)}
+					</select>
+				</div>
+				<div>
+					<label for={`${uid}-city`} class="font-semibold">Comune dell’intervento</label>
+					<input class={inputClass} id={`${uid}-city`} name="city" autocomplete="address-level2" required maxlength={FORM_LIMITS.city} />
+				</div>
+			</div>}
+			<div>
+				<label for={`${uid}-message`} class="font-semibold">{variant === 'preventivo' ? 'Descrivi il lavoro' : 'Messaggio'}</label>
+				<textarea class={inputClass} id={`${uid}-message`} name="message" rows="5" required minlength="10" maxlength={FORM_LIMITS.message} aria-describedby={`${uid}-message-help`}></textarea>
+				<p id={`${uid}-message-help`} class="mt-2 text-sm text-fg-muted">Da 10 a {FORM_LIMITS.message} caratteri.</p>
+			</div>
+			<div class="flex items-start gap-3">
+				<input id={`${uid}-privacy`} name="privacy" type="checkbox" value="accepted" required class="mt-1 size-5 shrink-0 accent-current" />
+				<label for={`${uid}-privacy`} class="text-sm leading-7">Ho letto l’<a href={privacyHref} class="underline underline-offset-4">informativa privacy</a> relativa al trattamento dei dati della richiesta.</label>
+			</div>
+			<div class="flex flex-wrap items-center gap-4">
+				<Button type="submit" size="lg" disabled={demo} data-form-submit>{submitLabel}</Button>
+				<p data-form-status role="status" aria-live="polite" aria-atomic="true" tabindex="-1" class="text-sm text-fg-muted"></p>
+			</div>
+			<noscript><p class="text-sm text-fg-muted">{demo ? 'La prova del catalogo richiede JavaScript. Nei siti il modulo funziona anche senza.' : 'Dopo l’invio si aprirà una pagina con l’esito della richiesta.'}</p></noscript>
+		</form>
+	</div>
+</Section>
+
+<style>
+	select option { background: var(--palette-bg); color: var(--palette-fg); }
+</style>
+
+<script>
+	for (const form of document.querySelectorAll<HTMLFormElement>('[data-contact-form]')) {
+		const button = form.querySelector<HTMLButtonElement>('[data-form-submit]');
+		const status = form.querySelector<HTMLElement>('[data-form-status]');
+		if (!button || !status) continue;
+		const label = button.textContent ?? '';
+		const demo = form.dataset.demo === 'true';
+		if (demo) button.disabled = false;
+		let pending = false;
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			if (pending || !form.reportValidity()) return;
+			if (demo) {
+				status.textContent = 'Prova completata. Questo è un modulo dimostrativo: nessuna email è stata inviata.';
+				status.focus();
+				return;
+			}
+			pending = true;
+			button.disabled = true;
+			button.textContent = 'Invio in corso…';
+			form.setAttribute('aria-busy', 'true');
+			status.textContent = 'Invio della richiesta in corso.';
+			try {
+				const body = new URLSearchParams();
+				for (const [key, value] of new FormData(form)) if (typeof value === 'string') body.append(key, value);
+				const response = await fetch(form.action, { method: 'POST', headers: { Accept: 'application/json' }, body, signal: AbortSignal.timeout(15000) });
+				const result = await response.json();
+				if (!response.ok || result.ok !== true) throw new Error('invio non riuscito');
+				form.reset();
+				status.textContent = 'La tua richiesta è stata inviata. Grazie per averci scritto.';
+			} catch {
+				status.textContent = 'Non è stato possibile confermare l’invio. I dati sono ancora qui: riprova o usa i recapiti a fianco.';
+			} finally {
+				pending = false;
+				button.disabled = false;
+				button.textContent = label;
+				form.removeAttribute('aria-busy');
+				status.focus();
+			}
+		});
+	}
+</script>

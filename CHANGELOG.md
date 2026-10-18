@@ -20,6 +20,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
+- Blocco `form` nelle varianti `contatto` e `preventivo`, accessibile e utilizzabile senza JavaScript. Invio Resend tramite funzione Vercel `/api/contact`, destinatario da `site.json`, validazione server, honeypot e protezione dai retry duplicati. Il catalogo simula l’invio; configurazione in `docs/form.md`, test automatici inclusi in `check` e `qa`.
+- `npm run site:create -- nome-cliente`: provisioning del titolare per repo privata dal template, invito Write a `simone-agenti` e progetto Vercel Astro. Anteprima offline di default, esecuzione con `--apply`, credenziali separate e ripresa senza duplicare risorse; guida `docs/provisioning.md` e test con API simulate.
 - Modello importabile `docs/github-ruleset-sito.json` per proteggere `main` nei siti cliente (PR, Code Owners, check e qa, niente force push o cancellazione); incluso nei file gestiti. L'attivazione resta manuale su GitHub.
 - Controllo dei redirect al rilascio, con test di regressione; corretta l'istruzione del Builder: prima del cancello 3 non sono ammessi errori di segnaposto.
 - Blocco `areas`: varianti `elenco-zone` e `mappa-link`, con zone servite e link Maps della sede letto da `site.json`, senza mappa incorporata.
@@ -57,6 +59,19 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 - Istruzioni di ruolo degli agenti Paperclip in `docs/agenti/<ruolo>.md` (PM, Designer, Builder, QA, SEO, Simone), copiate tali e quali in Paperclip; la specifica rimanda lì.
 
 ### Correzioni
+
+- Flusso Paperclip: verifica del passaggio dopo ogni consegna, diagnosi degli arresti
+  runtime e registro delle attività rinviate separato dall’anteprima. QA e SEO seguono
+  lo stesso ambito; OAuth e requisiti futuri non riattivano cicli di correzione identici.
+  Procedura e limiti del recupero in `docs/paperclip.md`.
+
+- Riuso di immagini dal sito esistente: l'istruzione esplicita del titolare viene registrata e applicata, con passaggio Builder → Designer per la gallery richiesta, senza domande duplicate o attribuzioni inventate.
+- Domande rinviabili registrate con responsabile e fase di completamento, senza bloccare attività indipendenti né considerare il silenzio un'approvazione.
+- QA con ambito esplicito: anteprima autorizzata distinta dal rilascio strict, senza cicli sulle lacune già rinviate. Consegne dopo un merge tramite nuova PR in bozza e prove di deployment distinte dalle risposte di un alias.
+- Domande del PM al titolare: una decisione per domanda, proposte e opzioni comprensibili, valori e anteprime visibili; grafica, redirect e testi legali separati. Il PM conserva il coordinamento durante le attese e riprende i feedback senza chiedere di gestire manualmente i task.
+- Flusso agenti coerente: workspace isolati per task, riparazione a carico PM, approvazioni già registrate riutilizzate, anteprima con lacune esplicite e criteri di fine per ruolo. Script PR distribuito anche con la skill attiva per i checkout precedenti.
+
+- PR compatibili con il broker GitHub per operazione di Paperclip; ripresa autonoma dei task senza interpretare i token vuoti nella shell come guasto. Nessun cambio automatico di identità o permessi.
 
 - Ruoli Paperclip e Capabilities allineati: passaggi distinti per PASS/FAIL, QA della libreria senza brief cliente, verifiche legate allo SHA, SEO dopo il lancio, dipendenze delle correzioni e letture/report mirati per ridurre i token senza saltare i controlli. Capabilities versionate in `docs/agenti/capabilities.json`.
 

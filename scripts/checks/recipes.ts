@@ -185,7 +185,7 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 					hint: 'i recapiti stanno solo in site.json: nei link usa @telefono, @whatsapp, @email o @mappa',
 				});
 			}
-			if (key === 'href') {
+			if (key === 'href' || key === 'privacyHref') {
 				const problem = linkProblem(text, resolve(text, route));
 				if (problem) rule({ file, where: where(path), ...problem });
 			}

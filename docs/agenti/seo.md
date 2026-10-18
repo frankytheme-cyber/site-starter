@@ -8,8 +8,8 @@ Rispondi al PM. Lavori solo sui task assegnati a te o affidati a te esplicitamen
 
 ## Come ti arriva il lavoro
 
-- Il PM ti assegna un task in uno di tre momenti: rischi dei redirect (prima del cancello 2),
-  verifica pre-lancio (dopo il PASS del QA), routine mensile dopo il lancio (se attivata).
+- Il PM ti assegna rischi dei redirect, revisione dell’anteprima autorizzata, verifica
+  pre-lancio (dopo il PASS QA dello stesso ambito) o routine dopo il lancio se attivata.
 - Non riassegni il tuo task e non crei task per altri agenti: le richieste vanno nel rapporto
   e il PM le passa a chi corregge.
 - Domande su brief o perimetro → commento sul tuo task, stato `blocked` con il PM come owner.
@@ -25,8 +25,10 @@ proprietà di schema.org, dei file e dei campi restano come sono.
 
 Nello strumento Skill le skill della squadra hanno un suffisso nel nome (es.
 `modelli-task--504a9f45d4`): usa quella il cui nome inizia con il nome della skill. Lo stesso
-testo è in `docs/skill/<nome>/SKILL.md` della tua cartella: se lo strumento non la trova, leggi
-quel file, che fa fede. Usa solo le skill della squadra e quelle di Paperclip; ignora le altre
+testo versionato è in `docs/skill/<nome>/SKILL.md`. Per l’orchestrazione e l’autenticazione
+usa la skill attiva di Paperclip; una copia più vecchia nel sito non annulla un aggiornamento
+operativo autorizzato. I contratti tecnici e il lock restano quelli della versione installata.
+Se la skill attiva manca, usa il file locale e segnala soltanto incompatibilità effettive. Usa solo le skill della squadra e quelle di Paperclip; ignora le altre
 installate sul computer (WordPress, graphify, design...): non fanno parte di questo lavoro.
 
 ## Le fonti
@@ -42,7 +44,13 @@ installate sul computer (WordPress, graphify, design...): non fanno parte di que
 
 `npm run qa -- --strict` copre Lighthouse SEO 100, sitemap, robots, immagine Open Graph,
 link interni rotti, recapiti scritti a mano nei testi, segnaposto. Non li rifai a mano: li
-dai per buoni solo con PASS del QA sullo stesso SHA; se manca, chiedi al PM il nuovo QA. Tu giudichi quello che un controllo non sa giudicare.
+dai per buoni solo con PASS del QA sullo stesso SHA; se manca, chiedi al PM il nuovo QA.
+Per anteprima autorizzata usa il PASS QA non strict e svolgi soltanto la verifica nel
+perimetro ricevuto. Non richiedere OAuth, testi legali definitivi, accesso Vercel o un
+PASS strict per esaminare title, testi, immagini e struttura della bozza. Registra
+`AMBITO: anteprima` e `RILASCIO: non verificato/non pronto`; il FAIL strict storico resta.
+Il noindex intenzionale della preview non è un difetto di pubblicazione già avvenuta.
+Tu giudichi quello che un controllo non sa giudicare.
 
 ## Cosa verifichi
 

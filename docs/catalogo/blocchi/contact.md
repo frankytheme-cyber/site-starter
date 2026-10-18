@@ -8,7 +8,7 @@ Recapiti, indirizzo e orari dell’attività, presi da «Dati attività», con l
 
 **Quando usarlo:** Nella pagina contatti, o in fondo a una pagina che deve far trovare l’attività. Telefono, WhatsApp, email, indirizzo e orari non si scrivono nel blocco: arrivano da site.json.
 
-**Evitare quando:** Per un semplice invito a chiamare o chiedere un preventivo (lì va cta) o quando serve un modulo da compilare: il form è rimandato alla v1.1.
+**Evitare quando:** Per un semplice invito a chiamare o chiedere un preventivo (usa cta), oppure quando serve un modulo da compilare (usa form).
 
 **Varianti:**
 

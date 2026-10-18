@@ -87,6 +87,8 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run gen:decap`      | Genera `public/admin/config.yml` dagli schemi (anche in `prebuild`); senza repository GitHub usa un segnaposto con un avviso |
 | `npm run check:decap`    | Fallisce se `config.yml` non è aggiornato                  |
 | `npm run site:init`      | Sito cliente, una volta: toglie la parte della libreria, repository del CMS, `blocks.lock.json`, `docs/sito.md` |
+| `npm run site:create -- nome-cliente` | Solo titolare, dalla libreria: piano offline di repo privata, invito agente e progetto Vercel; `--apply` esegue (guida `docs/provisioning.md`) |
+| `npm run test:provisioning` | Libreria: test di `site:create` con API simulate, senza creare risorse |
 | `npm run blocks:sync -- vX.Y.Z` | Sito cliente: aggiorna cartelle e file gestiti, `package.json` e lock alla versione indicata della libreria |
 | `npm run gen:catalog`    | Libreria: genera `docs/catalogo` (README, schede, catalogo.json) da schemi, meta e fixture |
 | `npm run screenshots`    | Libreria: build, anteprima e screenshot di ogni variante in `docs/catalogo/img` |

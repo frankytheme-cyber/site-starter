@@ -13,7 +13,7 @@ import { join } from 'node:path';
 import { a11y } from './a11y.ts';
 import { blocks } from './blocks.ts';
 import { buttons } from './buttons.ts';
-import { astroCheck, build } from './commands.ts';
+import { astroCheck, build, forms } from './commands.ts';
 import { contrast } from './contrast.ts';
 import { decap } from './decap.ts';
 import { interactive } from './interactive.ts';
@@ -68,6 +68,7 @@ const CHECKS: Record<string, CheckDefinition> = {
 	decap: { run: decap },
 	tokens: { run: tokens },
 	contrast: { run: contrast },
+	forms: { run: forms },
 	blocks: {
 		run: blocks,
 		skip: ({ isLibrary: library }) => (library ? undefined : 'solo nella libreria, con SITE_STARTER_LIBRARY=1'),
@@ -95,7 +96,7 @@ const CHECKS: Record<string, CheckDefinition> = {
 };
 
 const SUITES: Record<string, string[]> = {
-	check: ['recipes', 'astro-check', 'decap', 'tokens', 'contrast', 'blocks', 'lock', 'build', 'release'],
+	check: ['recipes', 'astro-check', 'decap', 'tokens', 'contrast', 'forms', 'blocks', 'lock', 'build', 'release'],
 };
 SUITES.qa = [...SUITES.check, 'links', 'a11y', 'interactive', 'buttons', 'lighthouse'];
 
