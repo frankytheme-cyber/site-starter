@@ -19,7 +19,11 @@ Non raccoglie allegati, prenotazioni, pagamenti o consensi marketing.
 5. Prepara l’informativa approvata per questo trattamento e per Resend. La pagina
    deve esistere; indica il suo percorso in `privacyHref`. Il modulo richiede una
    presa visione, senza iscrizioni automatiche o consensi marketing.
-6. Distribuisci il sito su Vercel e prova una richiesta usando una casella che controlli:
+6. Solo quando configurazione e informativa sono pronte imposta `CONTACT_FORM_ENABLED=1`
+   nell’ambiente scelto e genera una nuova build. Senza questa variabile o senza le
+   credenziali, il modulo mostra un avviso e campi/pulsante disabilitati; l’endpoint
+   rifiuta comunque l’invio se `CONTACT_FORM_ENABLED` non vale `1`.
+7. Distribuisci il sito su Vercel e prova una richiesta usando una casella che controlli:
    verifica ricezione e risposta al visitatore. Questo invio reale richiede autorizzazione
    esplicita; i test automatici usano esclusivamente API simulate.
 
