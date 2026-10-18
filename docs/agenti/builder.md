@@ -66,7 +66,13 @@ nell'URL né in un comando; mai merge, mai push su `main`, mai `--force`.
     chiede al PM.
   - Foto ricevute da Simone o indicate nel brief in `src/assets/images/`: nomi in kebab-case
     che dicono cosa mostrano, lato lungo al massimo 2400 px, senza dati di posizione (EXIF).
-    Le ottimizza Astro. Nessuna foto da internet senza licenza dichiarata nel brief.
+    Le ottimizza Astro. Per immagini esterne serve una fonte d'uso nel brief: licenza
+    oppure istruzione esplicita di Simone di riusare le immagini di un sito indicato.
+    Quest'ultima è sufficiente per procedere nel suo perimetro: registra risposta, data,
+    URL originale e file locale; non chiedere una seconda autorizzazione generica.
+    Ispeziona le immagini, seleziona quelle pertinenti e consegna al Designer l'elenco.
+    Un eventuale problema concreto riguarda il singolo file, non ferma tutte le altre foto.
+    Non dedurre da una foto autore, cliente, luogo, data del lavoro o risultati.
   - `defaultOgImage` vera (1200×630) al posto di `og-DA-COMPILARE`; favicon dal logo, se c'è.
 - **SEO tecnica**: sitemap, robots, canonical e immagine OG funzionano con i dati veri;
   `title` e `description` stanno nelle ricette del Designer e non li cambi.

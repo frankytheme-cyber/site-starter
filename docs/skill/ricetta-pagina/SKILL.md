@@ -22,6 +22,10 @@ Per il Designer, nei siti cliente, dopo il cancello 1. Il sito si completa, non 
 
    `"$schema": "../../../.astro/collections/pages.schema.json"`, `title` ≤ 60, `description` ≤ 160, sezioni piatte (`type`, `variant`, `id`, `tone` e i campi della scheda), toni alternati. Privacy e cookie con `"kind": "legale"` e i testi indicati nel brief.
 7. **Testi e immagini.** Testi nel tono del brief, entro i limiti delle schede, solo con fatti del brief. Recapiti mai nei testi: nei link `@telefono`, `@whatsapp`, `@email`, `@mappa`, nelle cta `showContacts`. Recensioni e numeri solo dal brief, con `fonte`. Foto solo tra quelle in `src/assets/images/` (le carica il Builder; le foto di prova di `fixtures/` vanno sostituite), con un `alt` che dice cosa mostra; senza foto, la variante senza foto.
+   Se il brief richiede una gallery con immagini da una fonte autorizzata da Simone,
+   chiedi al PM la consegna del Builder prima della composizione: non omettere la
+   gallery solo perché i file non sono ancora locali. Nessuna nuova autorizzazione
+   generica; nessuna attribuzione di lavori o risultati dedotta dalle sole fotografie.
 8. **Controlli**, finché non ci sono errori:
 
    ```sh

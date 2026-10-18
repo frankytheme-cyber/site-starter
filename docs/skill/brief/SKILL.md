@@ -28,6 +28,10 @@ Per il PM. Puoi raccogliere il brief mentre procede Avvio; la versione approvata
    - Servizi al massimo 6, una riga ciascuno; «cosa la distingue» solo con fatti verificabili.
    - Pagine previste, comprese Privacy e Cookie (o il link alle informative esterne), e chi ne fornisce i testi.
    - Recensioni con testo, autore, fonte e data; numeri con valore e fonte; foto reali e chi le fornisce; stock sì o no.
+     Se Simone indica «usa le immagini del sito», registra fonte, frase e data come
+     autorizzazione al riuso. L'importazione è un task Builder; non convertirla in una
+     domanda ancora aperta sul permesso. Didascalie e attribuzioni restano aderenti ai
+     fatti disponibili. La mancanza di altro materiale non annulla questa indicazione.
    - Sito esistente e dominio: conserva la voce `- Esiste un sito online?` e rispondi `sì, <indirizzo>` oppure `no` (la legge il controllo di rilascio). Se c'è un sito, servirà la proposta dei redirect (skill `redirect`, decisione al cancello 2).
 4. **Dati mancanti:** nel campo scrivi `da chiedere` e aggiungi una riga in «Da chiedere», con il dato e a chi chiederlo.
    Indica anche entro quale fase serve e cosa dipende dalla risposta. Se il punto non

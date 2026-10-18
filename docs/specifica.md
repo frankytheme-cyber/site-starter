@@ -274,6 +274,12 @@ esterno già mancante non giustifica cicli di correzione identici.
 Il controllo `release` legge nel brief la riga `- Esiste un sito online? sì, <indirizzo>` oppure `- Esiste un sito online? no`. Se il sito esiste, richiede la mappa anche quando la proposta viene respinta. La mappa conserva le colonne `Vecchio URL`, `Nuovo URL`, `Decisione`, `Note`; lo stato è `approvata il gg/mm/aaaa` o `respinta il gg/mm/aaaa`, ogni decisione è `sì` o `no` e ogni rifiuto ha una motivazione. I redirect Vercel devono corrispondere esattamente alle righe approvate, con `permanent: true`. Anche senza sito precedente, eventuali redirect configurati richiedono una mappa decisa. Questo verifica la coerenza dei file: il PM verifica separatamente l'Approval in Paperclip.
 
 **Foto**: lavori, prima/dopo, chi siamo e squadra solo con foto reali del cliente. Immagini stock con licenza commerciale libera solo per sfondi o hero generici, sempre dichiarate nel brief e nella nota di design.
+Un'indicazione esplicita del titolare di riusare le immagini del sito esistente è una
+fonte d'uso sufficiente nel suo perimetro: si registra con testo, data e URL, senza
+chiedere di nuovo lo stesso permesso. Non prova fatti ulteriori sul lavoro ritratto:
+le didascalie descrivono ciò che si vede. Il Builder importa e seleziona, il Designer
+compone la gallery richiesta con il blocco esistente. L'assenza dei file locali o di
+altro materiale non annulla l'autorizzazione e non rende facoltativa la sezione richiesta.
 
 ## Autonomia operativa e versioni delle consegne
 

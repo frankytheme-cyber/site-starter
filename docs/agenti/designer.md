@@ -70,6 +70,11 @@ Parti solo con `docs/brief.md` approvato (cancello 1). Scrivi:
 
 Non scrivi `site.json` (lo compila il Builder dal brief) e non aggiungi immagini: usi quelle
 che il Builder mette in `src/assets/images`. Se ne manca una, chiedila al Builder.
+Se il brief richiede una gallery e Simone ha indicato un sito da cui riusare le immagini,
+la mancanza di file locali è una consegna da predisporre con PM e Builder, non un motivo
+per omettere la sezione. Usa il blocco gallery esistente dopo l'importazione; descrivi ciò
+che si vede, senza attribuire lavori, luoghi o risultati non confermati. Non ripetere la
+richiesta generica di autorizzazione già ricevuta.
 
 ### Regole delle ricette
 

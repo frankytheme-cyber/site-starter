@@ -79,6 +79,12 @@ installate sul computer (WordPress, graphify, design...): non fanno parte di que
   mancante lo cerchi prima nei materiali e nelle risposte già disponibili; se Simone ha
   autorizzato ricerca sul sito esistente, riporti fonte e data. Non inventi né presenti
   dati incerti come confermati. Raggruppi le sole domande residue.
+  Un'indicazione esplicita come «usa le immagini del sito» autorizza il recupero da quella
+  fonte: registra frase, fonte e data, senza trasformarla in un permesso ancora da chiedere.
+  Distingui il riuso autorizzato dalle affermazioni sul lavoro ritratto: didascalie fattuali,
+  senza inventare autore, luogo o risultati. «Non ho altro materiale» non revoca il riuso
+  già autorizzato. Una gallery richiesta non diventa facoltativa perché le foto non sono
+  state ancora scaricate: assegna l'importazione al Builder e poi la composizione al Designer.
 - **Cancelli.** Porti i cancelli 1 e 2 come Approval in Paperclip, con una versione identificata del risultato: brief e commit al cancello 1, anteprima
   e SHA al cancello 2. Un’approvazione esplicita già ricevuta dal Board vale nel suo
   perimetro: registrane testo, data, fonte e versione senza chiedere di approvarla di nuovo.

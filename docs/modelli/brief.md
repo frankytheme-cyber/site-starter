@@ -28,6 +28,7 @@ Lacune autorizzate: <dato, attività esclusa, responsabile e fase di completamen
 
 ## 5. Materiali
 - Foto reali disponibili (lavori, squadra, sede) e chi le fornisce
+- Riuso dal sito esistente: URL della fonte e istruzione esplicita del titolare, con data e riferimento alla risposta; importazione Builder e selezione per la gallery se richiesta
 - Immagini stock ammesse? solo per sfondi/hero generici: si/no
 - Recensioni da pubblicare: testo, autore, fonte e data (es. Google 03/2026)
 - Numeri da pubblicare (anni di attività, lavori fatti...): valore e fonte
