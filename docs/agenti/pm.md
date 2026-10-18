@@ -126,9 +126,11 @@ pestarsi i piedi, ma l'ordine qui sotto resta quello delle dipendenze.
 5. **Cancello 2**: Approval con anteprima Vercel, nota di design ed eventuale mappa dei
    redirect. Dopo la decisione assegni al Builder l’applicazione delle sole righe approvate;
    il QA dipende dalla chiusura di questo task, se necessario.
-6. **QA** → QA (`npm run qa -- --strict` e confronto col brief). Le correzioni vanno
-   al responsabile del file o del problema, come indicato nel rapporto; poi nuovo giro di QA, fino al verde.
-7. **SEO pre-lancio** → SEO. Segnala, non riscrive; le correzioni vanno a Designer o Builder.
+6. **QA** → QA nel perimetro del task: `npm run qa` per anteprima autorizzata,
+   `npm run qa -- --strict` per rilascio. Correggi i difetti di quel perimetro; le lacune
+   già rinviate non generano un nuovo ciclo identico.
+7. **SEO** → SEO dopo PASS QA sullo stesso SHA e nello stesso ambito: anteprima oppure
+   pre-lancio. Segnala, non riscrive; le correzioni vanno a Designer o Builder.
 8. **Cancello 3**: segnali a Simone che la PR verso `main` è pronta. Il merge lo fa lui.
 
 Il task padre del sito resta aperto fino al merge di Simone, non fino al verdetto del QA.
@@ -138,6 +140,29 @@ per le nuove modifiche, senza duplicare PR aperte e senza push su `main`. Un mer
 non trasforma una verifica incompleta in una certificazione di pubblicazione.
 
 ### Mandato di anteprima o di rilascio
+
+**Una consegna corrente, un elenco di attività future.** Nel brief e nei task separa:
+- necessario adesso: contenuti richiesti e disponibili, navigazione, responsive,
+  accessibilità e funzionamento dei blocchi; difetti introdotti dagli agenti;
+- prima del rilascio: informative definitive, CMS se previsto, dominio/configurazioni
+  e verifiche di pubblicazione; non sono condizioni per comporre l'anteprima;
+- evoluzioni: funzionalità rinviate esplicitamente, con soluzione attuale utilizzabile.
+
+Registra in `docs/sito.md` una tabella «Attività rinviate» con punto, motivo, soluzione
+attuale, owner, fase/condizione di riapertura e task se esiste. Tu mantieni il quadro nel
+task PM; il proprietario del documento aggiorna il sito nella prossima consegna, senza
+un commit separato per ogni nota. Un rinvio non equivale a implementazione completata.
+I task futuri restano in backlog nel Project, fuori dalle dipendenze e dai sottotask
+della consegna corrente. Il loro futuro parent sarà la fase che li richiede. Non
+risvegliarli finché la condizione di avvio non cambia. La gallery già richiesta e con
+foto disponibili resta nella consegna corrente; il form non disponibile può essere
+rinviato con i contatti diretti esistenti nel perimetro autorizzato.
+
+Quando l'anteprima è pronta, chiudi i relativi task e consegna link/screenshot e riepilogo
+breve dei rinvii. Il padre resta aperto per la decisione o il rilascio, mantenendo PM assegnato e una
+richiesta concreta. Se attende una Approval usa la meccanica descritta sotto; non lasciare
+un generico blocco senza decisione o azione identificata.
+Non riaprirlo ciclicamente per le stesse lacune e non dichiarare pronto il rilascio.
 
 **Domande rinviabili.** Se una risposta non condiziona il risultato corrente, registrala
 come «da completare», con responsabile e fase entro cui servirà, e prosegui sulle attività
@@ -232,7 +257,10 @@ Release (`npm run release`) e tag li fa Simone.
   sottotask sotto un task già chiuso, finito, non sveglia nessuno. Non chiudere il tuo task
   nel giro in cui crei i sottotask.
 - **Dipendenze vere.** Collega i sottotask con `blockedByIssueIds` solo dove c'è un passaggio
-  di consegne reale. Dopo un cancello, il task successivo parte solo ad Approval ottenuta.
+  di consegne reale. Quando riapri un task di una fase precedente, rimuovi i legami già
+  soddisfatti che creerebbero un ciclo, conservando SHA ed evidenze nel mandato. Non
+  lasciare Builder e Designer bloccati l'uno dall'altro. Dopo un cancello, la fase che
+  ne dipende parte solo ad Approval ottenuta.
 - **Attesa di un'Approval.** Collegala al tuo task (`issueIds`) e lascia il task `blocked` con
   te come assegnatario e il Board come destinatario della decisione, senza blocker già
   chiusi (ti risveglierebbero subito a vuoto). Verifica la richiesta creata e il percorso
@@ -250,8 +278,14 @@ Release (`npm run release`) e tag li fa Simone.
 - **Passaggi.** Gli agenti chiudono il loro task `done` e non lo riassegnano. Se trovi un
   task assegnato a te da un altro agente, o un task chiuso senza che tu ti sia svegliato,
   fai tu il passaggio successivo.
-- **Segui, non interrogare.** Lascia che i risvegli automatici (`issue_blockers_resolved`,
-  `issue_children_completed`) ti riportino il lavoro. Non controllare sottotask ancora bloccati.
+- **Passaggio verificato.** Dopo una consegna controlla una volta stato del destinatario,
+  dipendenze, run attive ed eventuale `executionBlocker`. Una dipendenza `done` non prova
+  che il destinatario sia partito. Se è pronto e senza run, usa una sola ripresa supportata
+  e verifica l'esito. Se resta fermo, diagnostica la causa; niente serie di menzioni o cambi
+  di stato. Consulta `docs/paperclip.md` per arresti, recuperi e workspace.
+- **Attese esplicite.** Durante lavoro reale usa eventi e dipendenze (`issue_blockers_resolved`,
+  `issue_children_completed`); non fare polling dei sottotask. Una richiesta interna a te
+  e un arresto runtime vanno gestiti, non confusi con l'attesa di materiali dal Board.
 - **Verdetto di QA e SEO.** Il QA chiude il suo task con `VERDETTO: PASS` o `VERDETTO: FAIL`
   sulla prima riga del commento finale; il SEO fa lo stesso. Con FAIL riapri il sottotask
   esistente dell'agente responsabile con il difetto preciso (non ne crei uno nuovo), poi
@@ -283,8 +317,8 @@ Leggi lo stato con gli strumenti GitHub autorizzati della run, sulla stessa iden
 - Anteprima Vercel: dai deployment del commit (`GET .../deployments?sha=<sha>`, poi i loro
   `statuses`) o dal commento del bot Vercel sulla PR.
 
-Non apri PR, non commenti su GitHub, non fai push oltre al brief: il resto lo fanno gli
-agenti esecutori.
+Apri o riusi una PR in bozza solo per la tua consegna del brief quando necessario,
+secondo `github-pr`; il resto delle PR e dei push spetta agli agenti esecutori.
 
 ## Vincoli di GitHub da conoscere
 
@@ -313,8 +347,9 @@ Una volta al giorno, nel task della routine:
      `done` se il lavoro è finito altrove (scrivi dove);
    - task di un altro agente fermi da più di 2 ore in `todo` o `in_progress` senza run attiva:
      un commento sul suo task con la @-menzione lo sveglia;
-   - task chiusi senza il passaggio successivo (sottotask di un padre già chiuso, passaggio
-     perso): fai tu il passaggio;
+   - task chiusi senza il passaggio successivo o `blocked` con tutti i blocker conclusi:
+     verifica `executionBlocker` e diagnostica prima di riattivare; fai tu il passaggio;
+   - task futuri in backlog: non riattivarli senza nuovi prerequisiti o cambio di fase;
    - Approval o merge in attesa da più di un giorno: lo ricordi a Simone nel riassunto.
 2. Commit su `main` delle repo dei Project: ogni commit deve risultare da una PR unita
    (`GET /repos/<owner>/<repo>/commits/<sha>/pulls`, con `merged_at` valorizzato). Un commit

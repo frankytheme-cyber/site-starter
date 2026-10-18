@@ -323,6 +323,20 @@ residue si raccolgono prima della consegna che ne dipende, senza consenso implic
 dati inventati o deroghe ai requisiti di pubblicazione. Si ferma la sola attività che
 richiede un dato, un accesso o un'autorizzazione indispensabile, non l'intero progetto.
 
+Il PM separa la consegna corrente dalle attività rinviate in `docs/sito.md`: punto,
+motivo, alternativa attuale, owner e condizione di ripresa. I relativi task restano in
+backlog nel Project, fuori dai sottotask e dalle dipendenze dell'anteprima. Anche il SEO
+può consegnare una verifica di anteprima dopo PASS QA non strict sullo stesso SHA,
+senza certificare il rilascio. Composizione e correzioni richieste con input disponibili
+restano lavoro corrente; un rinvio non giustifica omissioni come una gallery autorizzata.
+
+Dopo un passaggio il PM verifica una volta che il destinatario sia effettivamente partito.
+Un task `blocked` con dipendenze tutte concluse può avere un arresto di esecuzione: si
+leggono diagnostica e `executionBlocker`, si preservano diff/commit e si usa la procedura
+nativa di recupero. Non si aggira l'arresto con task duplicati né si ripetono azioni di
+esito incerto. Il recupero riservato al Board va al gestore del runtime con evidenze;
+non diventa una domanda di prodotto a Simone. Procedura in `docs/paperclip.md`.
+
 ## Istruzioni degli agenti
 
 Le istruzioni di ruolo stanno in `docs/agenti/`, un file per agente: [`pm.md`](agenti/pm.md), [`designer.md`](agenti/designer.md), [`builder.md`](agenti/builder.md), [`qa.md`](agenti/qa.md), [`seo.md`](agenti/seo.md), [`simone.md`](agenti/simone.md). Ogni file è il testo esatto delle istruzioni dell'agente in Paperclip (Agents → agente → Instructions): ruolo, confini, passaggi di consegne, verdetti. Le regole tecniche stanno in `AGENTS.md`, le procedure nelle skill.

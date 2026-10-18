@@ -5,7 +5,13 @@ description: Usala quando devi verificare la SEO di un sito cliente prima della 
 
 # Verifica SEO prima del lancio
 
-Per il SEO, su assegnazione, dopo il `VERDETTO: PASS` del QA. Segnali, non riscrivi. Lighthouse (SEO 100), sitemap, robots e Open Graph li ha già controllati `npm run qa -- --strict`: qui quello che i controlli non giudicano.
+Per il SEO, su assegnazione, dopo il `VERDETTO: PASS` QA sullo stesso SHA e nello stesso
+ambito. Segnali, non riscrivi. Per rilascio serve PASS strict; per anteprima esplicitamente
+autorizzata basta PASS non strict. Non trattare lacune rinviate (CMS, testi legali) o il
+noindex intenzionale della preview come difetti della composizione. Controlla i contenuti
+realmente presenti e registra separatamente i requisiti di rilascio ancora aperti.
+Riusa dal rapporto QA i controlli automatici effettivamente eseguiti; non attribuire al
+PASS non strict controlli di rilascio che non contiene.
 
 ## Passi
 
@@ -53,7 +59,9 @@ Per il SEO, su assegnazione, dopo il `VERDETTO: PASS` del QA. Segnali, non riscr
 
    ```text
    VERDETTO: PASS | FAIL
-   SEO pre-lancio — <PR> · SHA: <git rev-parse HEAD> · PASS QA: <link>
+   AMBITO: anteprima | rilascio
+   Rilascio (se anteprima): non pronto | non verificato; <punti aperti>
+   SEO — <PR> · SHA: <git rev-parse HEAD> · PASS QA: <link>
    Bloccanti: <pagina, problema, chi lo corregge> (uno per riga) | nessuno
    Consigli: <…>
    Redirect: <rischi> | non serve

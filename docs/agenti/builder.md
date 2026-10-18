@@ -52,7 +52,7 @@ nell'URL né in un comando; mai merge, mai push su `main`, mai `--force`.
   cartella.
 - **Nei siti: un solo branch remoto di consegna, `lancio`.** Lo crei tu nel task di avvio con il primo push
   (`HEAD:lancio`) e apri la PR in bozza verso `main`. Tutti i task del sito, tuoi e del
-  Designer, finiscono su `lancio`: ciascun worktree ha il proprio branch locale; non aprire altre PR né pubblicare branch intermedi. Committi solo i file del tuo task
+  Designer, finiscono su `lancio`: ciascun worktree ha il proprio branch locale; mantieni una sola PR aperta per volta e non pubblicare branch intermedi. Se la precedente è unita e restano modifiche autorizzate, apri autonomamente una nuova PR in bozza da `lancio` verso `main`, secondo `github-pr`, senza richiedere un nuovo permesso. Committi solo i file del tuo task
   e ti allinei a `origin/lancio` prima di ogni push. La CI della PR resta rossa per i
   segnaposto finché il sito non è completo: è atteso.
 - **Nella libreria: un branch per task**, quello della tua cartella, con la sua PR in bozza.

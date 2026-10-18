@@ -1,0 +1,24 @@
+--- a/services/conversation-continuation.js
++++ b/services/conversation-continuation.js
+@@ -88,14 +88,19 @@
+         .where(and(eq(heartbeatRuns.companyId, companyId), eq(heartbeatRuns.runtimeMode, "legacy"), conversationRunPredicate(), sql `coalesce(${heartbeatRuns.nativeIssueId}::text, ${heartbeatRuns.contextSnapshot}->>'issueId') = ${issueId}`, inArray(heartbeatRuns.status, ["failed", "timed_out", "interrupted", "cancelled"]), or(isNotNull(heartbeatRuns.processPid), isNotNull(heartbeatRuns.processGroupId), activeLease))).orderBy(desc(heartbeatRuns.createdAt), desc(heartbeatRuns.id));
+     for (const { run, activeLease: leaseHeld } of candidates) {
+         let pidAlive = run.processPid !== null && processMayBeAlive(run.processPid);
++        let leaderRecycled = false;
+         if (pidAlive && run.processStartedAt) {
+             // A recycled PID cannot keep an old task blocked. An unreadable identity
+             // stays conservative; the original process may still own execution.
+             const observed = await readProcessStartedAt(run.processPid).catch(() => null);
+-            if (observed && new Date(observed).getTime() !== run.processStartedAt.getTime())
++            if (observed && new Date(observed).getTime() !== run.processStartedAt.getTime()) {
+                 pidAlive = false;
++                // A newly created leader with this PID also owns a new group.
++                // Do not attribute that group to the terminal historical run.
++                leaderRecycled = run.processGroupId === run.processPid;
++            }
+         }
+-        const groupAlive = run.processGroupId !== null && processMayBeAlive(-run.processGroupId);
++        const groupAlive = !leaderRecycled && run.processGroupId !== null && processMayBeAlive(-run.processGroupId);
+         if (pidAlive || groupAlive || leaseHeld) {
+             return {
+                 runId: run.id,

@@ -30,6 +30,24 @@ Per il PM. I modelli sono in `docs/modelli/task.md`: la forma comune, la tabella
 4. **Piccolo e verificabile:** un task, un agente; nel sito tutti i task sulla PR di `lancio`, nella libreria una PR per task e 2-3 blocchi per task. Se un criterio non si può verificare, riscrivilo o dividi il task.
 5. **Crea e assegna** nel Project giusto con dipendenze esplicite e workspace isolato proprio, senza copiare l’executionWorkspaceId del padre. Nei siti: base origin/main per Avvio, origin/lancio per le fasi successive; nella libreria: main per un lavoro nuovo, branch/SHA della PR per revisioni e correzioni; worktreeParentDir fuori dal clone. Segui «Workspace e consegne» delle istruzioni PM. Non usare approvazioni finali del padre per i cancelli intermedi.
 
+## Attese e passaggi
+
+Separa il risultato corrente dalle attività future: task rinviati in backlog nel Project,
+senza parent o dipendenza verso l'anteprima attiva. Registra owner, condizione di ripresa
+e alternativa attuale in «Attività rinviate» di `docs/sito.md`; un task resta da fare,
+non diventa completato. Non inserire OAuth, nuovi servizi o testi legali da fornire come
+criteri di chiusura di una composizione già autorizzata per anteprima.
+
+Quando riusi un task per una correzione, aggiorna le dipendenze della nuova consegna:
+rimuovi i legami ormai soddisfatti che genererebbero cicli, conservando SHA ed evidenze.
+
+Dopo una consegna verifica una volta che il successore sia partito o abbia una vera
+attesa. Se tutti i blocker sono conclusi ma resta fermo, leggi `executionBlocker`,
+`diagnostics/blockers` e `diagnostics/wakes` con gli strumenti nativi disponibili.
+`done` non prova che il risveglio sia riuscito. Ripresa supportata una sola volta, poi
+diagnosi; nessuna ripetizione alla cieca di azioni esterne. Dettagli in [references/paperclip.md](references/paperclip.md), disponibile anche tramite
+`docs/paperclip.md` nella libreria.
+
 ## Criterio di fine
 
 Task assegnato, con tutti i campi compilati.

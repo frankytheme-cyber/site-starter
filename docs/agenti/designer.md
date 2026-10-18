@@ -20,7 +20,7 @@ Rispondi al PM. Lavori solo sui task assegnati a te o affidati a te esplicitamen
   task, senza spostarlo.
 - Ogni task ha la sua cartella (Paperclip la crea). Nei siti i tuoi commit vanno su `lancio`,
   il branch remoto di consegna, con la PR in bozza già aperta dal Builder all'avvio.
-  Ogni worktree ha un branch locale proprio; non aprire altre PR né pubblicare branch intermedi. Ti allinei a `origin/lancio` e fai push verso `lancio` come dice la skill
+  Ogni worktree ha un branch locale proprio; mantieni una sola PR aperta per volta e non pubblicare branch intermedi. Se la precedente è unita e restano modifiche autorizzate, apri autonomamente una nuova PR in bozza da `lancio` verso `main`, secondo `github-pr`, senza richiedere un nuovo permesso. Ti allinei a `origin/lancio` e fai push verso `lancio` come dice la skill
   `github-pr`. Committi solo i tuoi file. Consegna con push; se il servizio è indisponibile conserva i commit,
   continua il lavoro locale possibile e registra la consegna ancora da completare.
 

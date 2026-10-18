@@ -8,7 +8,7 @@ AGENTE: <Builder | Designer | QA | SEO>
 PROJECT: <Libreria blocchi | nome sito>
 OBIETTIVO: <una frase>
 AMBITO: <anteprima | rilascio | libreria; per anteprima: decisione Board e lacune ammesse>
-DOMANDE RINVIATE: <dato/scelta, responsabile, fase entro cui serve; nessun blocco su attività indipendenti>
+ATTIVITÀ RINVIATE: <punto, motivo, alternativa attuale, responsabile, condizione/fase di ripresa; nessuna dipendenza della consegna corrente>
 INPUT: <file, link, brief, richieste; branch: `lancio` nei siti, nella libreria quello di partenza se non è main>
 WORKSPACE: <isolato proprio; sito: base origin/main per Avvio, origin/lancio dopo; libreria: main o branch/SHA di INPUT; non ereditare il checkout del padre>
 OUTPUT ATTESO: <file e PR>
@@ -21,7 +21,7 @@ PASSA A: <agente successivo> | CANCELLO: <se serve approvazione>
 
 Per QA e SEO conta il rapporto completo con SHA, ambito e verdetto, anche FAIL; il PM non rilancia la suite degli esecutori. QA di anteprima esplicitamente autorizzata: `npm run qa`; QA di rilascio (e sito senza ambito indicato): `npm run qa -- --strict`. Il PASS di anteprima non annulla un FAIL di rilascio e registra i requisiti ancora aperti.
 
-`PASSA A` serve a chi legge: chi esegue chiude il task `done` e il passaggio lo fa il PM.
+`PASSA A` serve a chi legge: chi esegue chiude il task `done` e il passaggio lo fa il PM. Il PM verifica una volta che il successore sia partito; un arresto runtime richiede diagnosi, non una nuova domanda sul brief. I task rinviati restano in backlog nel Project, fuori dai sottotask e dalle dipendenze della consegna corrente.
 
 ## Task tipici
 
