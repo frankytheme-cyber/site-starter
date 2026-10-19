@@ -85,6 +85,11 @@ richiesta generica di autorizzazione già ricevuta.
   mai due vicine, solo quelli ammessi dalla scheda del blocco; senza motivo resta `pieno`.
   `decoro` usa il `pattern` del tema: sceglilo solo se il tema ne ha uno.
   Sezione «Effetti di sfondo» di `docs/catalogo/README.md`, dal vivo `/catalogo/sfondi`.
+- Bordo in alto (`edge`: `onda`, `diagonale`, `curva`) al massimo su 2 sezioni, mai sulla prima,
+  solo dopo una sezione di tone diverso, con la forma adatta al tono del brief (onda morbida,
+  diagonale decisa, curva per la chiusura). Sezione «Bordi tra sezioni» del catalogo.
+- Per l'hero `full` la velatura (`overlay`) può essere `colorata`, col colore principale,
+  invece che `scura`.
 - Titoli e testi entro i limiti dello schema, scritti con le lunghezze reali, nel tono del brief.
 - Recapiti, P.IVA, indirizzi: mai nei testi. Nei link `@telefono`, `@whatsapp`, `@email`,
   `@mappa`.

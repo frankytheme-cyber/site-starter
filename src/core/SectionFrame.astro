@@ -1,0 +1,32 @@
+---
+/**
+ * Cornice di una sezione: effetto di sfondo (campo background, src/themes/backgrounds.css) e bordo
+ * in alto (campo edge, src/themes/edges.css). Il blocco non li riceve: questo wrapper senza box
+ * (display: contents) porta data-background e data-edge, e il CSS li applica alla radice <Section>
+ * del blocco. Con i valori di partenza (pieno, dritto) niente wrapper: l'HTML resta quello di sempre.
+ */
+import type { Background } from '@/themes/backgrounds';
+import type { Edge } from '@/themes/edges';
+
+interface Props {
+	background?: Background;
+	edge?: Edge;
+}
+
+const { background = 'pieno', edge = 'dritto' } = Astro.props;
+const plain = background === 'pieno' && edge === 'dritto';
+---
+
+{
+	plain ? (
+		<slot />
+	) : (
+		<div
+			data-background={background === 'pieno' ? undefined : background}
+			data-edge={edge === 'dritto' ? undefined : edge}
+			class="contents"
+		>
+			<slot />
+		</div>
+	)
+}

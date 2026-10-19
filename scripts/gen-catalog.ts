@@ -27,8 +27,9 @@ import { fileURLToPath } from 'node:url';
 import { type BlockMeta, compareBlocks, type Tone } from '../src/core/block-types.ts';
 import * as catalog from '../src/core/catalog.ts';
 import { requireLibraryMode } from '../src/core/mode.ts';
-import { RECIPE_RULES } from '../src/core/recipe-rules.ts';
+import { MAX_EDGES, RECIPE_RULES } from '../src/core/recipe-rules.ts';
 import { allowedBackgrounds, BACKGROUND_META, BACKGROUNDS, type BackgroundMeta } from '../src/themes/backgrounds.ts';
+import { EDGE_META, EDGES, type EdgeMeta } from '../src/themes/edges.ts';
 import type { PaletteMeta, PresetMeta } from '../src/themes/presets.ts';
 import { withProjectModules } from './checks/lib/vite.ts';
 import { unwrap, type ZodLike } from './gen-decap-config.ts';
@@ -113,6 +114,8 @@ export interface CatalogData {
 	icons: { alias: string; icon: string; category: string; note?: string }[];
 	/** Effetti di sfondo delle sezioni (src/themes/backgrounds.ts), con i blocchi che li ammettono. */
 	backgrounds: (BackgroundMeta & { key: string; blocks: string[]; screenshot?: string })[];
+	/** Bordi tra sezioni (src/themes/edges.ts), con uno screenshot di tutti insieme. */
+	edges: { items: (EdgeMeta & { key: string })[]; screenshot: string };
 	themes: {
 		/** Le chiavi di theme.json (themeSchema). */
 		fields: FieldInfo[];
@@ -284,7 +287,7 @@ function blockPage(block: BlockInfo) {
 	const where =
 		block.scope === 'layout'
 			? `Le props si scrivono in \`src/content/settings/layout.json\`, sotto la chiave ${code(block.type)}; BaseLayout disegna il blocco su ogni pagina.`
-			: `Ogni sezione ha anche \`type\` (${code(block.type)}), \`id\` (ancora facoltativa, in kebab-case), \`tone\` (\`default\`, \`muted\`, \`primary\`) e \`background\`, l’effetto dello sfondo (${block.backgrounds.map(code).join(', ')}; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi \`src/content/pages/README.md\`.`;
+			: `Ogni sezione ha anche \`type\` (${code(block.type)}), \`id\` (ancora facoltativa, in kebab-case), \`tone\` (\`default\`, \`muted\`, \`primary\`), \`background\`, l’effetto dello sfondo (${block.backgrounds.map(code).join(', ')}; [effetti di sfondo](../README.md#effetti-di-sfondo)), ed \`edge\`, il bordo in alto ([bordi tra sezioni](../README.md#bordi-tra-sezioni)): vedi \`src/content/pages/README.md\`.`;
 	const variants = block.variants
 		.map((variant) =>
 			[
@@ -375,6 +378,10 @@ function readmePage(data: CatalogData, rules: string) {
 			.filter((background) => background.screenshot)
 			.map((background) => `![Effetto ${background.name} sui toni default, muted e primary](${background.screenshot})`)
 			.join('\n'),
+		'## Bordi tra sezioni',
+		`Accanto a \`tone\` e \`background\`, ogni sezione può avere \`edge\`: il bordo in alto prende una forma nel colore della sezione e copre il fondo della sezione precedente (CSS in \`src/themes/edges.css\`, nessun colore nuovo). Il valore di partenza è \`dritto\`. Si vede solo dopo una sezione di tone diverso, non si applica alla prima sezione; al massimo ${MAX_EDGES} per pagina (controllo recipes). Dal vivo in fondo a \`/catalogo/sfondi\` e su \`/catalogo/sfondi/bordi/\`.`,
+		table(['Bordo', 'Nome', 'Com’è', 'Quando usarlo'], data.edges.items.map((edge) => [code(edge.key), edge.name, edge.description, edge.whenToUse])),
+		`![Bordi onda, diagonale e curva tra sezioni di toni diversi](${data.edges.screenshot})`,
 		'## Temi',
 		'L’aspetto si sceglie in `src/content/settings/theme.json` con cinque preset (`palette`, `fonts`, `shape`, `pattern`, `texture`), ciascuno con la sua scheda `<nome>.meta.ts` accanto al CSS in `src/themes/`. `pattern` e `texture` hanno un valore di partenza (`nessuno`, `liscia`). Una variante da sola accetta `?palette=…&fonts=…&shape=…&pattern=…&texture=…`.',
 		table(
@@ -669,7 +676,7 @@ export async function generateCatalog() {
 			...(key !== 'pieno' && key !== 'decoro' && { screenshot: `img/${catalog.backgroundScreenshotName(key)}` }),
 		}));
 		backgrounds.push(...BACKGROUNDS.filter((key) => key !== 'pieno' && key !== 'decoro'));
-		images.push(...backgrounds.map((key) => catalog.backgroundScreenshotName(key)));
+		images.push(...backgrounds.map((key) => catalog.backgroundScreenshotName(key)), catalog.EDGES_SCREENSHOT);
 
 		const data: CatalogData = {
 			library: 'site-starter',
@@ -680,6 +687,7 @@ export async function generateCatalog() {
 				Object.entries(group).map(([alias, icon]) => ({ alias, icon, category: label, ...(iconNotes.has(alias) && { note: iconNotes.get(alias) }) })),
 			),
 			backgrounds: backgroundData,
+			edges: { items: EDGES.map((key) => ({ key, ...EDGE_META[key] })), screenshot: `img/${catalog.EDGES_SCREENSHOT}` },
 			themes,
 			blocks,
 		};

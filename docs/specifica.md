@@ -78,7 +78,7 @@ Un blocco è una cartella con quattro file; il registry li raccoglie da solo, se
 | `fixtures.ts` | Almeno un esempio valido per variante; attività di esempio generica, recapiti palesemente finti |
 | `<Nome>.astro` | Radice `<Section>`; solo classi semantiche e primitive del core |
 
-**Campi comuni** aggiunti dal motore a ogni sezione: `id` (ancora, kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l'effetto di sfondo (`pieno`, `sfumato`, `alone`, `aurora`, `decoro`; ammessi per blocco in `meta.ts`, CSS solo con token in `src/themes/backgrounds.css`, contrasto verificato nel punto più carico).
+**Campi comuni** aggiunti dal motore a ogni sezione: `id` (ancora, kebab-case), `tone` (`default`, `muted`, `primary`) `edge`, il bordo in alto (`dritto`, `onda`, `diagonale`, `curva`; CSS in `src/themes/edges.css`, non sulla prima sezione), e `background`, l'effetto di sfondo (`pieno`, `sfumato`, `alone`, `aurora`, `decoro`; ammessi per blocco in `meta.ts`, CSS solo con token in `src/themes/backgrounds.css`, contrasto verificato nel punto più carico).
 
 **Primitive** (`src/core/ui/`, usate dai blocchi, mai nelle ricette):
 
@@ -143,7 +143,7 @@ Una “ricetta” è un insieme di JSON validati: quattro impostazioni per sito 
 | `settings/navigation.json` | menu principale e gruppo `footer` | Designer | Sì |
 | `pages/<slug>.json` | `title` ≤ 60, `description` ≤ 160, `draft`, `ogImage?`, `noindex?`, `kind?` (`legale`), `sections` | Designer | Sì |
 
-**Sezioni piatte**: `type`, `variant`, `id`, `tone`, `background` e contenuti allo stesso livello, compatibile con Decap.
+**Sezioni piatte**: `type`, `variant`, `id`, `tone`, `background`, `edge` e contenuti allo stesso livello, compatibile con Decap.
 
 ```json
 { "type": "hero", "variant": "split", "tone": "default",
@@ -155,7 +155,7 @@ Una “ricetta” è un insieme di JSON validati: quattro impostazioni per sito 
 
 1. **Zod al build**: struttura, limiti, varianti, icone, immagini esistenti. Messaggi in italiano, indici da 1, con pagina, sezione e campo.
 2. **JSON Schema** con `$schema` nei file, per l'autocompletamento.
-3. **`check:recipes`**: segnaposto, recapiti scritti nei testi, più di un hero, `id` duplicati, link interni rotti, `alt` uguale al nome file, `@link` senza dato in `site.json`. Avvisi: `tone` uguali consecutivi, più di 3 sezioni con effetto di sfondo o due vicine, più di 12 sezioni, prima sezione non hero, nessuna cta (non per le pagine `legale`), più di un accordion `faq`.
+3. **`check:recipes`**: segnaposto, recapiti scritti nei testi, più di un hero, `id` duplicati, link interni rotti, `alt` uguale al nome file, `@link` senza dato in `site.json`. Avvisi: `tone` uguali consecutivi, più di 3 sezioni con effetto di sfondo o due vicine, più di 2 bordi in alto o un bordo sulla prima sezione o tra toni uguali, più di 12 sezioni, prima sezione non hero, nessuna cta (non per le pagine `legale`), più di un accordion `faq`.
 
 **Bozze**: `draft: true` compare solo nelle anteprime Vercel, mai in produzione.
 

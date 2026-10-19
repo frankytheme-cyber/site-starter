@@ -2,7 +2,7 @@
 
 # hero — Hero
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.1.1 · apertura · non interattivo · disegno originale · dal vivo `/catalogo/hero/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.2.0 · apertura · non interattivo · disegno originale · dal vivo `/catalogo/hero/`
 
 Apertura della pagina: titolo principale, sottotitolo e invito all’azione.
 
@@ -18,7 +18,7 @@ Apertura della pagina: titolo principale, sottotitolo e invito all’azione.
 
   <img src="../img/hero-split-mobile.webp" alt="Hero, split, 375 px" width="240">
 
-- `full` — Foto a tutta larghezza con velatura scura e testo chiaro sopra. **Quando usarla:** Quando c’è una foto di grande qualità e si vuole impatto; non con foto piccole o confuse. Fixture «Full», dal vivo `/catalogo/hero/full/`.
+- `full` — Foto a tutta larghezza con velatura (scura o colorata, campo overlay) e testo chiaro sopra. **Quando usarla:** Quando c’è una foto di grande qualità e si vuole impatto; non con foto piccole o confuse. Fixture «Full», dal vivo `/catalogo/hero/full/`.
 
   ![Hero, full, 1280 px](../img/hero-full-desktop.webp)
 
@@ -51,8 +51,9 @@ Apertura della pagina: titolo principale, sottotitolo e invito all’azione.
 | `image` | gruppo | per split, full |  | «Foto» · centered non la mostra. |
 | `image.src` | immagine | sì, se c’è `image` | foto in src/assets/images | «File» |
 | `image.alt` | testo | sì, se c’è `image` | min 5 | «Testo alternativo» |
+| `overlay` | scelta | no (predefinito `"scura"`) | `scura` · `colorata` | «Velatura» · Solo per la variante full; nelle altre non ha effetto. |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`hero`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `aurora`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`hero`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`), `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `aurora`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)), ed `edge`, il bordo in alto ([bordi tra sezioni](../README.md#bordi-tra-sezioni)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 

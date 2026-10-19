@@ -13,6 +13,9 @@
  * oklab, radial-gradient con misure in %), quindi il controllo segue il file; i colori del decoro
  * (--decor-*) coprono tutta la sezione e sono alternativi: ogni disegno ne usa uno.
  *
+ * Velature delle foto (src/themes/overlays.css): il testo bianco della variante full dell'hero sul
+ * colore della velatura composto su una foto tutta bianca, il caso peggiore, per ogni palette.
+ *
  * Texture (src/themes/textures/): una grana grigia in soft-light sopra ogni sfondo. Dal CSS si
  * leggono i limiti del rumore (tableValues) e l'opacità: ogni punto qui sopra si verifica anche
  * schiarito e scurito al massimo dalla grana, per ogni texture.
@@ -54,6 +57,8 @@ const TONE_TEXT: Record<Tone, [string, number][]> = {
 
 const BACKGROUNDS_FILE = 'src/themes/backgrounds.css';
 const TEXTURES_DIR = 'src/themes/textures';
+const OVERLAYS_FILE = 'src/themes/overlays.css';
+const WHITE: Rgb = [1, 1, 1];
 
 type Rgb = [number, number, number];
 
@@ -185,7 +190,19 @@ interface EffectRule {
 	veils: Veil[];
 }
 
-const COLOR = /color-mix\(\s*in oklab\s*,\s*var\(--([\w-]+)\)\s+([\d.]+)%\s*,\s*(?:(transparent)|var\(--([\w-]+)\))\s*\)|var\(--([\w-]+)\)/g;
+const COLOR = /color-mix\(\s*in oklab\s*,\s*var\(--([\w-]+)\)\s+([\d.]+)%\s*,\s*(?:(transparent)|var\(--([\w-]+)\)|(black|white))\s*\)|var\(--([\w-]+)\)/g;
+
+/** I colori di un testo CSS: var(--token), color-mix(in oklab, var(--token) N%, transparent | var(--token) | black | white). */
+const colorsIn = (text: string): Layer[] =>
+	[...text.matchAll(COLOR)].map(([, mixed, percent, transparent, other, keyword, plain]) => {
+		if (plain) return { token: plain, alpha: 1 };
+		if (transparent) return { token: mixed, alpha: Number(percent) / 100 };
+		return { token: mixed, alpha: 1, mix: { with: other ?? keyword, percent: Number(percent) / 100 } };
+	});
+
+/** --palette-<token> (salvati su <html> da base.css) vale il token della palette; black e white sono loro. */
+const tokenName = (token: string) => token.replace(/^palette-/, '');
+const KEYWORDS: Record<string, Rgb> = { black: [0, 0, 0], white: [1, 1, 1] };
 const WHOLE: Veil['box'] = [0, 100, 0, 100];
 
 /** Le funzioni di primo livello di un valore CSS ("radial-gradient(...), linear-gradient(...)"). */
@@ -224,12 +241,6 @@ function readEffects(css: string): EffectRule[] {
 		const value = /background-image\s*:\s*([^;]+);/.exec(body)?.[1];
 		const decor = [...body.matchAll(/--decor-[\w-]+\s*:\s*([^;]+);/g)].map(([, color]) => color);
 		if ((!value || value.trim() === 'none') && decor.length === 0) continue;
-		const colorsIn = (text: string): Layer[] =>
-			[...text.matchAll(COLOR)].map(([, mixed, percent, transparent, other, plain]) => {
-				if (plain) return { token: plain, alpha: 1 };
-				if (transparent) return { token: mixed, alpha: Number(percent) / 100 };
-				return { token: mixed, alpha: 1, mix: { with: other, percent: Number(percent) / 100 } };
-			});
 		const veils: Veil[] = [
 			...(value && value.trim() !== 'none' ? topLevelFunctions(value).map((gradient) => ({ box: boxOf(gradient), colors: colorsIn(gradient) })) : []),
 			// Ogni disegno del decoro usa uno solo dei colori --decor-*: alternative nello stesso velo, mai sovrapposte.
@@ -251,6 +262,15 @@ function overlappingGroups(veils: Veil[]): Veil[][] {
 		if (group.length > 1 && group.every((a, i) => group.slice(i + 1).every((b) => touch(a, b)))) groups.push(group);
 	}
 	return groups;
+}
+
+/** Le velature [data-overlay="nome"] { background-color: ...; opacity: N } di overlays.css. */
+function readOverlays(css: string): { name: string; layer: Layer; opacity: number }[] {
+	const source = css.replace(/\/\*[\s\S]*?\*\//g, '');
+	return [...source.matchAll(/\[data-overlay="([\w-]+)"\]\s*\{([^}]*)\}/g)].flatMap(([, name, body]) => {
+		const layer = colorsIn(/background-color\s*:\s*([^;]+);/.exec(body)?.[1] ?? '')[0];
+		return layer ? [{ name, layer, opacity: Number(/opacity\s*:\s*([\d.]+)/.exec(body)?.[1] ?? 1) }] : [];
+	});
 }
 
 // Arrotonda per difetto: 4.499 non deve comparire come 4.50.
@@ -313,7 +333,7 @@ export function contrast({ root }: CheckContext) {
 			usable = false;
 		}
 		const layers = effect.veils.flatMap((veil) => veil.colors);
-		const unknown = layers.flatMap((layer) => [layer.token, layer.mix?.with ?? []].flat()).filter((token) => !TOKENS.includes(token));
+		const unknown = layers.flatMap((layer) => [layer.token, layer.mix?.with ?? []].flat()).filter((token) => !TOKENS.includes(tokenName(token)) && !(token in KEYWORDS));
 		if (layers.length === 0 || unknown.length > 0) {
 			error({
 				file: BACKGROUNDS_FILE,
@@ -339,7 +359,7 @@ export function contrast({ root }: CheckContext) {
 		texture ? [texture.low, texture.high].map((gray) => over(point.map((channel) => softLight(channel, gray)) as Rgb, point, texture.opacity)) : [point];
 
 	for (const { palette, vars } of complete) {
-		const color = (token: string) => parseHex(vars.get(token)!);
+		const color = (token: string) => KEYWORDS[token] ?? parseHex(vars.get(tokenName(token))!);
 		// Le sezioni senza effetto (pieno) prendono anche loro la texture.
 		const plain: EffectRule[] = TONES.map((tone) => ({ background: 'pieno', tone, veils: [] }));
 		for (const texture of [undefined, ...textures]) {
@@ -367,6 +387,29 @@ export function contrast({ root }: CheckContext) {
 						});
 					}
 				}
+			}
+		}
+	}
+	// Velature delle foto: il testo bianco sulla velatura, sopra una foto tutta bianca.
+	const overlays = existsSync(join(root, OVERLAYS_FILE)) ? readOverlays(readFileSync(join(root, OVERLAYS_FILE), 'utf8')) : [];
+	for (const overlay of overlays) {
+		const unknown = [overlay.layer.token, overlay.layer.mix?.with ?? []].flat().filter((token) => !TOKENS.includes(tokenName(token)) && !(token in KEYWORDS));
+		if (unknown.length > 0 || !Number.isFinite(overlay.opacity)) {
+			error({ file: OVERLAYS_FILE, where: overlay.name, message: unknown.length > 0 ? `token sconosciuti: ${unknown.join(', ')}` : 'opacity mancante', hint: 'background-color: color-mix(in oklab, var(--token) N%, black) e opacity: N' });
+			continue;
+		}
+		for (const { palette, vars } of complete) {
+			const color = (token: string) => KEYWORDS[token] ?? parseHex(vars.get(tokenName(token))!);
+			const { layer } = overlay;
+			const fill = layer.mix ? mixOklab(color(layer.token), color(layer.mix.with), layer.mix.percent) : color(layer.token);
+			const ratio = ratioOf(WHITE, over(fill, WHITE, overlay.opacity * layer.alpha));
+			if (ratio < 4.5) {
+				error({
+					file: OVERLAYS_FILE,
+					where: `${overlay.name} › ${palette}`,
+					message: `testo bianco ${shown(ratio)}:1 sulla velatura sopra una foto bianca, minimo 4.5:1 (WCAG AA)`,
+					hint: 'scurisci la velatura (più nero nel color-mix) o alza l’opacità',
+				});
 			}
 		}
 	}

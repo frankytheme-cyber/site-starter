@@ -38,6 +38,21 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		},
 	},
 	{
+		name: 'Full, velatura colorata',
+		props: {
+			variant: 'full',
+			overlay: 'colorata',
+			eyebrow: 'Bottega in centro',
+			title: 'Prodotti scelti con cura, a due passi da casa',
+			subtitle: 'Casalinghi, articoli da regalo e prodotti del territorio, con confezioni su misura per ogni occasione.',
+			primaryCta: { label: 'Vieni a trovarci', href: '#dove-siamo' },
+			image: {
+				src: vetrina,
+				alt: 'Vetrina di una bottega con la tenda a righe bianche e rosse e la porta verde',
+			},
+		},
+	},
+	{
 		name: 'Centered',
 		props: {
 			variant: 'centered',

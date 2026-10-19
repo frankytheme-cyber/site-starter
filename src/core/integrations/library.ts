@@ -17,6 +17,7 @@ const ROUTES: [pattern: string, entrypoint: string][] = [
 	['/catalogo/bottoni', 'bottoni.astro'],
 	['/catalogo/icone', 'icone.astro'],
 	['/catalogo/sfondi', 'sfondi.astro'],
+	['/catalogo/sfondi/bordi', 'sfondi/bordi.astro'],
 	['/catalogo/sfondi/[background]', 'sfondi/[background].astro'],
 	['/catalogo/[type]', '[type].astro'],
 	['/catalogo/[type]/[variant]', '[type]/[variant].astro'],

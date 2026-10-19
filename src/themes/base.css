@@ -5,6 +5,8 @@
 @import "./shapes/morbido.css";
 @import "./shapes/arrotondato.css";
 @import "./backgrounds.css";
+@import "./edges.css";
+@import "./overlays.css";
 @import "./patterns/punti.css";
 @import "./patterns/griglia.css";
 @import "./patterns/righe.css";

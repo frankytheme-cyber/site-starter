@@ -6,7 +6,7 @@ import type { HeroProps } from './schema';
 
 type Props = HeroProps;
 
-const { id, tone, variant, eyebrow, title, subtitle, primaryCta, secondaryCta, image } = Astro.props;
+const { id, tone, variant, eyebrow, title, subtitle, primaryCta, secondaryCta, image, overlay } = Astro.props;
 
 const isSplit = variant === 'split';
 const isFull = variant === 'full';
@@ -18,8 +18,14 @@ const isCentered = variant === 'centered';
 		isFull && image && (
 			<Fragment slot="background">
 				<Img src={image.src} alt={image.alt} layout="full-width" priority class="size-full object-cover" />
-				{/* Velatura nera al 60%: il testo bianco resta ≥ 5.7:1 anche su una foto tutta bianca. */}
-				<div class="absolute inset-0 bg-black/60" />
+				{/*
+					Velatura nera al 60%: il testo bianco resta ≥ 5.7:1 anche su una foto tutta bianca. La colorata
+					(primary col nero) è in src/themes/overlays.css, verificata dal check contrast per ogni palette.
+				*/}
+				<div
+					class:list={['absolute inset-0', overlay !== 'colorata' && 'bg-black/60']}
+					data-overlay={overlay === 'colorata' ? 'colorata' : undefined}
+				/>
 			</Fragment>
 		)
 	}

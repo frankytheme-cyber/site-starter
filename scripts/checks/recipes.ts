@@ -13,7 +13,8 @@
  * - segnaposto (DA-COMPILARE, og-DA-COMPILARE, lorem, TODO, […]): errori nei siti cliente, avvisi
  *   nella libreria, dove il template li contiene per scelta.
  * Sempre avvisi: due sezioni consecutive con lo stesso tone; più di 3 sezioni con un effetto di
- * sfondo, o due vicine; background "decoro" con pattern "nessuno" in theme.json; più di 12 sezioni; prima sezione che non è un hero; più di un accordion faq
+ * sfondo, o due vicine; background "decoro" con pattern "nessuno" in theme.json; più di 2 bordi in
+ * alto (edge), un bordo sulla prima sezione o dopo una sezione dello stesso tone; più di 12 sezioni; prima sezione che non è un hero; più di un accordion faq
  * (i dati strutturati FAQPage sarebbero più di uno); nessuna cta (non nelle pagine legali,
  * "kind": "legale", né in quelle con noindex).
  *
@@ -24,7 +25,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { CONTENT_HINT, type ContentSchema, contentProblems, fieldLocation, sectionLabel } from '../../src/core/content-validation.ts';
-import { MAX_BACKGROUNDS, MAX_SECTIONS } from '../../src/core/recipe-rules.ts';
+import { MAX_BACKGROUNDS, MAX_EDGES, MAX_SECTIONS } from '../../src/core/recipe-rules.ts';
 import { type CheckContext, collector, type Finding } from './lib/report.ts';
 import {
 	eachObject,
@@ -47,7 +48,7 @@ import { withProjectModules } from './lib/vite.ts';
 const OG_HINT = 'metti l’immagine vera per i social: defaultOgImage in site.json («Dati attività»), o ogImage nella pagina';
 
 /** Chiavi che non contengono testo per chi visita: niente controlli sul contenuto. */
-const NOT_TEXT = new Set(['$schema', 'type', 'id', 'tone', 'background', 'variant', 'icon']);
+const NOT_TEXT = new Set(['$schema', 'type', 'id', 'tone', 'background', 'edge', 'overlay', 'variant', 'icon']);
 
 /** Recapiti da cercare nei testi, nell'ordine: un pezzo di testo già preso non si conta due volte. */
 const BUSINESS_DATA: { label: string; pattern: RegExp; accept?: (match: string) => boolean }[] = [
@@ -251,7 +252,16 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 		const content = sections.map((section, index) => ({ section, index }));
 		const toneOf = (section: JsonObject) => (typeof section.tone === 'string' ? section.tone : 'default');
 		const effectOf = (section: JsonObject) => (typeof section.background === 'string' ? section.background : 'pieno');
+		const edgeOf = (section: JsonObject) => (typeof section.edge === 'string' ? section.edge : 'dritto');
 
+		if (content.length > 0 && edgeOf(content[0].section) !== 'dritto') {
+			warning({
+				file,
+				where: sectionLabel(content[0].section, content[0].index),
+				message: `bordo in alto (${edgeOf(content[0].section)}) sulla prima sezione: sopra non c’è niente da coprire, non si applica`,
+				hint: 'togli edge dalla prima sezione; mettilo su una sezione più in basso, dopo una di tone diverso',
+			});
+		}
 		if (content.length > 0 && content[0].section.type !== 'hero') {
 			warning({ file, where: sectionLabel(content[0].section, content[0].index), message: 'la pagina non si apre con un hero' });
 		}
@@ -263,6 +273,14 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 					where: sectionLabel(section, index),
 					message: `stesso tone della sezione precedente (${toneOf(section)})`,
 					hint: 'alterna i toni (default, muted, primary) per separare le sezioni',
+				});
+			}
+			if (edgeOf(section) !== 'dritto' && toneOf(section) === toneOf(content[i - 1].section)) {
+				warning({
+					file,
+					where: sectionLabel(section, index),
+					message: `bordo in alto (${edgeOf(section)}) invisibile: la sezione precedente ha lo stesso tone (${toneOf(section)})`,
+					hint: 'il bordo si vede solo tra due toni diversi: cambia tone a una delle due o togli edge',
 				});
 			}
 			if (effectOf(section) !== 'pieno' && effectOf(content[i - 1].section) !== 'pieno') {
@@ -283,6 +301,15 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 					hint: 'scegli pattern in src/content/settings/theme.json (punti, griglia, righe, onde, cerchi, arco) o usa un altro effetto',
 				});
 			}
+		}
+		const withEdge = content.filter(({ section }) => edgeOf(section) !== 'dritto');
+		if (withEdge.length > MAX_EDGES) {
+			warning({
+				file,
+				where: withEdge.map(({ section, index }) => sectionLabel(section, index)).join(', '),
+				message: `${withEdge.length} sezioni con un bordo in alto`,
+				hint: `al massimo ${MAX_EDGES}: tanti bordi diversi stancano, tieni quelli tra le sezioni più importanti`,
+			});
 		}
 		const withEffect = content.filter(({ section }) => effectOf(section) !== 'pieno');
 		if (withEffect.length > MAX_BACKGROUNDS) {

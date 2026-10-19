@@ -1,0 +1,11 @@
+/*
+ * Velature delle foto a tutta sezione (hero full, campo overlay), sotto il testo bianco. La velatura
+ * scura è bg-black/60 nel blocco. La colorata è primary della palette (--palette-primary, non quello
+ * del tono, che sul tono primary si inverte) mescolato col nero, quasi coprente: il check contrast
+ * verifica il bianco sul risultato con una foto tutta bianca, il caso peggiore, per ogni palette.
+ * Formato che legge: background-color con color-mix(in oklab, var(--token) N%, black) e opacity.
+ */
+[data-overlay="colorata"] {
+	background-color: color-mix(in oklab, var(--palette-primary) 45%, black);
+	opacity: 0.75;
+}

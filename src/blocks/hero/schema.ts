@@ -24,6 +24,12 @@ export const schema = ({ image }: SchemaContext) =>
 				.describe('Pulsante secondario|Un’alternativa meno importante: compila testo e link, oppure nessuno dei due'),
 			/** Obbligatoria per split e full; centered non la mostra. */
 			image: imageSchema(image).optional().describe('Foto|Obbligatoria per le varianti split e full'),
+			/** Solo per full: la velatura sulla foto, sotto il testo bianco (src/themes/overlays.css). */
+			overlay: z
+				.enum(['scura', 'colorata'])
+				.meta({ optionLabels: { scura: 'Scura', colorata: 'Colorata' } })
+				.default('scura')
+				.describe('Velatura|Sopra la foto della variante full: scura (nera) o colorata (col colore principale del sito); il testo resta bianco e leggibile'),
 		})
 		// rule: Le varianti split e full richiedono la foto (image).
 		.refine((props) => props.variant === 'centered' || props.image, {

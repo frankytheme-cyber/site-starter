@@ -12,15 +12,16 @@ Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma 
 2. Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande); non nelle pagine legali ("kind": "legale"). *(controllo recipes)*
 3. Due sezioni vicine non hanno lo stesso tone (default, muted, primary). *(controllo recipes)*
 4. Effetto dello sfondo (background) su poche sezioni: al massimo 3 per pagina, mai in due sezioni vicine. *(controllo recipes)*
-5. Ogni blocco ammette solo gli effetti di sfondo della sua scheda: aurora solo in hero e cta, moduli, domande, schede e contatti solo pieno o sfumato. *(build)*
-6. Al massimo 12 sezioni: oltre, meglio dividere la pagina. *(controllo recipes)*
-7. Al massimo un accordion faq per pagina: i dati strutturati FAQPage per Google sono uno solo. *(controllo recipes)*
-8. Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json. *(build)*
-9. Recapiti mai nei testi: nei pulsanti i link speciali (@telefono, @whatsapp, @email, @mappa), nelle cta showContacts. *(controllo recipes)*
-10. Link interni solo a pagine e ancore che esistono; ogni id di sezione è in kebab-case e unico nella pagina. *(controllo recipes)*
-11. Ogni foto ha un alt che dice cosa mostra, non il nome del file. *(controllo recipes)*
-12. Testi entro i limiti dei campi (titoli 70 caratteri, pulsanti 25...): sono nelle schede dei blocchi. *(build)*
-13. Niente segnaposto (DA-COMPILARE, lorem, TODO) in una pagina pubblicata. *(controllo release)*
+5. Bordo in alto (edge) al massimo su 2 sezioni per pagina, mai sulla prima e solo dopo una sezione di tone diverso, altrimenti non si vede. *(controllo recipes)*
+6. Ogni blocco ammette solo gli effetti di sfondo della sua scheda: aurora solo in hero e cta, moduli, domande, schede e contatti solo pieno o sfumato. *(build)*
+7. Al massimo 12 sezioni: oltre, meglio dividere la pagina. *(controllo recipes)*
+8. Al massimo un accordion faq per pagina: i dati strutturati FAQPage per Google sono uno solo. *(controllo recipes)*
+9. Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json. *(build)*
+10. Recapiti mai nei testi: nei pulsanti i link speciali (@telefono, @whatsapp, @email, @mappa), nelle cta showContacts. *(controllo recipes)*
+11. Link interni solo a pagine e ancore che esistono; ogni id di sezione è in kebab-case e unico nella pagina. *(controllo recipes)*
+12. Ogni foto ha un alt che dice cosa mostra, non il nome del file. *(controllo recipes)*
+13. Testi entro i limiti dei campi (titoli 70 caratteri, pulsanti 25...): sono nelle schede dei blocchi. *(build)*
+14. Niente segnaposto (DA-COMPILARE, lorem, TODO) in una pagina pubblicata. *(controllo release)*
 
 <!-- regole-di-composizione:inizio -->
 ## Regole di composizione
@@ -118,6 +119,19 @@ Accanto a `tone`, ogni sezione può avere `background`: un effetto dipinto sopra
 ![Effetto Sfumato sui toni default, muted e primary](img/sfondo-sfumato-desktop.webp)
 ![Effetto Alone sui toni default, muted e primary](img/sfondo-alone-desktop.webp)
 ![Effetto Aurora sui toni default, muted e primary](img/sfondo-aurora-desktop.webp)
+
+## Bordi tra sezioni
+
+Accanto a `tone` e `background`, ogni sezione può avere `edge`: il bordo in alto prende una forma nel colore della sezione e copre il fondo della sezione precedente (CSS in `src/themes/edges.css`, nessun colore nuovo). Il valore di partenza è `dritto`. Si vede solo dopo una sezione di tone diverso, non si applica alla prima sezione; al massimo 2 per pagina (controllo recipes). Dal vivo in fondo a `/catalogo/sfondi` e su `/catalogo/sfondi/bordi/`.
+
+| Bordo | Nome | Com’è | Quando usarlo |
+| --- | --- | --- | --- |
+| `dritto` | Dritto | Il bordo in alto è una linea dritta, come sempre. | La maggior parte delle sezioni: è il valore di partenza. |
+| `onda` | Onda | Il bordo in alto è un’onda morbida, nel colore della sezione. | Siti dal tono morbido o naturale: benessere, mare, natura, bambini. |
+| `diagonale` | Diagonale | Il bordo in alto sale in diagonale da sinistra a destra. | Siti dal tono deciso o tecnico: officine, edilizia, sport. |
+| `curva` | Curva | Il bordo in alto è un arco largo e basso, più alto al centro. | Per far risaltare una sezione di chiusura, come l’invito finale. |
+
+![Bordi onda, diagonale e curva tra sezioni di toni diversi](img/bordi-desktop.webp)
 
 ## Temi
 

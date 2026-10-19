@@ -6,7 +6,7 @@
  */
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { TONES } from '@/core/block-types';
-import SectionBackground from '@/core/SectionBackground.astro';
+import SectionFrame from '@/core/SectionFrame.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { BACKGROUND_META, BACKGROUNDS } from '@/themes/backgrounds';
 import { fonts, palettes, patterns, shapes, textures } from '@/themes/presets';
@@ -36,9 +36,9 @@ const presets = { palette: palettes, fonts, shape: shapes, pattern: patterns, te
 		<h1 class="sr-only">Effetto di sfondo {name} sui toni default, muted e primary</h1>
 		{
 			TONES.map((tone) => (
-				<SectionBackground background={background}>
+				<SectionFrame background={background}>
 					<Component {...fixture.props} tone={tone} site={fixture.site} />
-				</SectionBackground>
+				</SectionFrame>
 			))
 		}
 	</main>

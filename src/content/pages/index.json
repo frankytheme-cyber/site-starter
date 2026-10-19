@@ -21,6 +21,7 @@
 			"type": "services",
 			"id": "servizi",
 			"tone": "muted",
+			"edge": "onda",
 			"variant": "cards-icone",
 			"eyebrow": "Servizi",
 			"title": "DA-COMPILARE: titolo della sezione servizi",

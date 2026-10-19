@@ -41,6 +41,8 @@ export const backgroundScreenshotName = (background: string) => `sfondo-${backgr
 export const patternScreenshotName = (pattern: string) => `decoro-${pattern}-desktop.webp`;
 /** Screenshot desktop di una texture sull'effetto aurora (/catalogo/sfondi/aurora/?texture=), in docs/catalogo/img/. */
 export const textureScreenshotName = (texture: string) => `texture-${texture}-desktop.webp`;
+/** Screenshot desktop dei bordi tra sezioni (/catalogo/sfondi/bordi/), in docs/catalogo/img/. */
+export const EDGES_SCREENSHOT = 'bordi-desktop.webp';
 /** Qualità WebP degli screenshot. */
 export const SCREENSHOT_QUALITY = 75;
 

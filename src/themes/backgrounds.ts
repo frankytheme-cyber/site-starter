@@ -1,6 +1,6 @@
 /**
  * Effetti di sfondo delle sezioni: il campo `background` delle ricette, accanto a `tone`. Il CSS è in
- * backgrounds.css e usa solo i token della palette; core/SectionBackground.astro lo applica alla
+ * backgrounds.css e usa solo i token della palette; core/SectionFrame.astro lo applica alla
  * sezione. Il check contrast legge quel CSS e verifica i testi nel punto più carico di ogni effetto,
  * per ogni palette e tono. Solo dati, senza import: lo usano anche gli script.
  */
