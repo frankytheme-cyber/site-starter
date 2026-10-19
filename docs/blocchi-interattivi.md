@@ -17,6 +17,7 @@ La pagina deve funzionare anche senza JavaScript: lo script migliora l'esperienz
 
 - Ogni contenuto e ogni link sono nell'HTML generato in build, mai creati dallo script.
 - I controlli che senza JS non fanno nulla (es. il pulsante hamburger) partono con l'attributo `hidden` e un marcatore `data-js-only`; lo script li mostra all'avvio.
+- Unica eccezione voluta: l'indirizzo email. Per non darlo ai bot dello spam non è mai in chiaro nell'HTML: il link c'è, ma testo e `mailto:` li scrive `EmailLink` (sezione 8). Senza JS l'indirizzo si legge come «nome chiocciola dominio».
 - Lo script segna l'istanza come attiva (`data-js`); il CSS di fallback vale solo senza quel segno. Nell'header, senza JS i sottomenu si aprono con hover e `:focus-within`, e su mobile le voci compaiono sotto la barra dentro un `<noscript>`.
 - Per provare: carica la pagina in un `<iframe sandbox="allow-same-origin">` (senza `allow-scripts`) o disattiva JavaScript nel browser.
 
@@ -64,7 +65,8 @@ In `src/core/ui/`, già conformi a queste regole e provate da `npm run qa` (chec
 | `Accordion` + `AccordionItem` | `<details>`/`<summary>`; `single` chiude le sorelle all'apertura | Invio e Spazio sul titolo (nativi) | Funziona tutto; con `single` restano apribili più voci | Dissolvenza solo quando chi visita apre una voce, non al caricamento; niente con movimento ridotto |
 | `Tabs` | Da `md`: `tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, `tabindex` mobile (0 sulla scheda attiva, −1 sulle altre). Sotto `md`: `Accordion` | Frecce sinistra/destra (a giro), Home, End; la scheda si attiva spostandosi | Pannelli uno dopo l'altro, ognuno col suo titolo | — |
 | `Carousel` + `CarouselSlide` | `aria-roledescription="carosello"` con nome; slide `role="group"` `aria-roledescription="slide"` «N di M»; frecce con `aria-label`, pallini «Vai alla posizione N di M», attivo con `aria-current` | Traccia focalizzabile: frecce della tastiera per scorrere; frecce e pallini sono pulsanti | Scorrimento con swipe, trackpad o tastiera; frecce e pallini non compaiono | Nessun autoplay; scorrimento morbido solo senza movimento ridotto; slide attiva con `IntersectionObserver` |
-| `Button` | `<a>` con `href`, altrimenti `<button>`; link esterni in nuova scheda con `rel="noopener"` e testo «(si apre in una nuova scheda)» per gli screen reader | Nativa | — | — |
+| `EmailLink` | `<a>` con l'indirizzo codificato in `data-email-link`; lo script mette `href="mailto:…"` e il testo | Nativa (è un link) | Testo «nome chiocciola dominio», senza link; i pulsanti `@email` non compaiono | — |
+| `Button` | `<a>` con `href`, altrimenti `<button>`; un `@email` passa da `EmailLink`; link esterni in nuova scheda con `rel="noopener"` e testo «(si apre in una nuova scheda)» per gli screen reader | Nativa | — | — |
 
 Il contenuto di `Tabs` si passa negli slot `panel-0`, `panel-1`... e viene usato due volte (accordion sotto `md`, pannelli da `md`): niente `id` dentro i pannelli.
 

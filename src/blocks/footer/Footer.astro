@@ -7,6 +7,7 @@ import { formatDays, formatSlots } from '@/core/opening-hours';
 import type { ButtonStyle } from '@/core/ui/button/cta';
 import { getSiteSettings, phoneHref, type SocialNetwork, whatsappHref, whatsappLabel } from '@/core/settings';
 import Button from '@/core/ui/button/Button.astro';
+import EmailLink from '@/core/ui/EmailLink.astro';
 import Icon from '@/core/ui/Icon.astro';
 import Img from '@/core/ui/Img.astro';
 import Section from '@/core/ui/Section.astro';
@@ -150,11 +151,10 @@ const socialClass = 'inline-flex size-11 items-center justify-center rounded-but
 								<span class="sr-only">{NEW_TAB}</span>
 							</a>
 						)}
-						<a href={`mailto:${site.email}`} class:list={[linkClass, 'gap-2 break-all']}>
+						<EmailLink email={site.email} class:list={[linkClass, 'gap-2 break-all']}>
 							<Icon name="email" />
 							<span class="sr-only">Email:</span>
-							{site.email}
-						</a>
+						</EmailLink>
 						<div class="mt-2 flex gap-2">
 							<Icon name="mappa-pin" class="mt-0.5" />
 							<p>

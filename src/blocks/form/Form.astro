@@ -4,6 +4,7 @@ import { FORM_LIMITS } from '@/core/forms/fields';
 import { isLibraryMode } from '@/core/mode';
 import { getSiteSettings, phoneHref } from '@/core/settings';
 import Button from '@/core/ui/button/Button.astro';
+import EmailLink from '@/core/ui/EmailLink.astro';
 import Icon from '@/core/ui/Icon.astro';
 import Section from '@/core/ui/Section.astro';
 import type { FormProps } from './schema';
@@ -29,7 +30,7 @@ const inputClass = 'mt-2 min-h-12 w-full min-w-0 rounded-button border border-bo
 				<p class="font-semibold">Preferisci un contatto diretto?</p>
 				<address class="mt-3 grid gap-1 not-italic">
 					<a class="inline-flex min-h-11 items-center gap-3 underline-offset-4 hover:underline" href={phoneHref(site.phone)}><Icon name="telefono" /><span>{site.phone}</span></a>
-					<a class="inline-flex min-h-11 items-center gap-3 break-all underline-offset-4 hover:underline" href={`mailto:${site.email}`}><Icon name="email" /><span>{site.email}</span></a>
+					<EmailLink email={site.email} class="inline-flex min-h-11 items-center gap-3 break-all underline-offset-4 hover:underline"><Icon name="email" /></EmailLink>
 				</address>
 			</div>
 		</div>

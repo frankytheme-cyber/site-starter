@@ -1,5 +1,5 @@
 {
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": "https://github.com/frankytheme-cyber/site-starter.git",
   "managed": ["src/blocks", "src/core", "src/themes", "src/layouts", "scripts", "docs/catalogo", "docs/skill", "docs/modelli", "docs/agenti", "docs/paperclip-runtime", ".github/workflows"],
   "managedFiles": [

@@ -6,13 +6,14 @@
  * - tabs @1280: frecce, Home/End, tabindex mobile, un pannello visibile alla volta. @375: accordion al posto delle schede.
  * - carousel: freccia successiva e pallini (aria-current), freccia precedente disabilitata all'inizio, niente autoplay.
  * - gallery: la miniatura si apre da tastiera in una finestra (focus dentro, frecce, Esc, focus di ritorno, scroll sbloccato); il cursore prima-dopo si muove con le frecce.
+ * - email: nessuna pagina generata ha un mailto: o l'email di site.json in chiaro; con JS ogni link email (EmailLink) ha il mailto:, il testo è l'indirizzo e i pulsanti @email sono visibili.
  * Ogni componente si prova sulla prima pagina che lo contiene (prima le pagine del sito, poi il catalogo).
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { type Browser, chromium, type Page } from 'playwright';
 import { type CheckContext, collector } from './lib/report.ts';
-import { builtPages, DIST } from './lib/project.ts';
+import { builtPages, DIST, ROOT } from './lib/project.ts';
 import { testForms } from './form-interactive.ts';
 
 const MOBILE = { width: 375, height: 800 };
@@ -259,6 +260,36 @@ export async function interactive({ baseUrl }: CheckContext) {
 			expect('prima-dopo', (await pos()) !== before, 'la freccia destra non sposta il cursore');
 			await page.close();
 		}
+		// ------------------------------------------------------------------ email: mai in chiaro nell'HTML
+		// Nessuna pagina generata ha un mailto: o l'email di site.json; con JS il link la ricompone.
+		const siteEmail: unknown = JSON.parse(readFileSync(join(ROOT, 'src/content/settings/site.json'), 'utf8')).email;
+		for (const path of builtPages()) {
+			const html = readFileSync(join(DIST, path, 'index.html'), 'utf8');
+			// mailto: seguito da un indirizzo: lo script di EmailLink contiene `mailto:${…}`, che non espone nulla.
+			const mailto = /mailto:[^\s"'<>`$]+@/.exec(html);
+			const exposed = mailto ? `un link ${mailto[0]}…` : typeof siteEmail === 'string' && html.includes(siteEmail) ? `l’email ${siteEmail}` : undefined;
+			if (exposed) error({ where: path, message: `l’HTML contiene in chiaro ${exposed}`, hint: 'per i link email usa EmailLink (src/core/ui/EmailLink.astro) o il link speciale @email' });
+		}
+		const emailPath = pageWith(/<a[^>]*\sdata-email-link[\s=>]/);
+		if (!emailPath) warning({ message: 'nessuna pagina con un link email da provare' });
+		else {
+			const expect = expectFor(emailPath);
+			const page = await open(browser, emailPath, DESKTOP);
+			const links = await page.locator('a[data-email-link]').evaluateAll((elements) =>
+				elements.map((element) => ({
+					href: element.getAttribute('href') ?? '',
+					address: element.querySelector('[data-email-link-address]')?.textContent ?? null,
+					hidden: (element as HTMLElement).hidden,
+				})),
+			);
+			for (const link of links) {
+				expect('email', /^mailto:[^@\s]+@[^@\s]+$/.test(link.href), `il link email non ha l’indirizzo nell’href dopo il caricamento (${link.href || 'vuoto'})`);
+				expect('email', link.address === null || `mailto:${link.address}` === link.href, `il testo del link email non è l’indirizzo (${link.address})`);
+				expect('email', !link.hidden, 'un pulsante email resta nascosto con JavaScript attivo');
+			}
+			await page.close();
+		}
+
 		// Form: tastiera, validazione, istanze indipendenti, demo senza invio, errori e retry.
 		const formPath = pageWith(/<form[^>]*\sdata-contact-form[\s=>]/);
 		if (formPath) findings.push(...await testForms(browser, baseUrl, formPath));

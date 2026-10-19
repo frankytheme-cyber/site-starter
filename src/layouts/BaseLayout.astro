@@ -54,6 +54,7 @@ const businessImage =
 	logo || (site.defaultOgImage && (await getImage({ src: site.defaultOgImage, width: 1200, height: 630, fit: 'cover', format: 'jpg' })));
 
 // Scheda dell'attività per i motori di ricerca (schema.org/LocalBusiness o il sottotipo scelto), tutta da site.json.
+// Senza email: nel JSON-LD starebbe in chiaro per i bot che raccolgono indirizzi (vedi core/ui/EmailLink).
 const { street, postalCode, city, province } = site.address;
 const openingHours = openingHoursSpecification(site.openingHours);
 const localBusiness = {
@@ -66,7 +67,6 @@ const localBusiness = {
 	description: site.description,
 	url: site.url,
 	telephone: site.phone,
-	email: site.email,
 	vatID: site.vatNumber,
 	address: {
 		'@type': 'PostalAddress',

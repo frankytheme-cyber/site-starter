@@ -3,7 +3,8 @@
  * Pulsante o link d'azione. Con href è un <a>, altrimenti un <button>. Aspetto e stati (hover,
  * focus, active, disabled) stanno in button.css: .btn con data-variant e data-size.
  * href accetta anche @telefono, @whatsapp, @email, @mappa (risolti da site.json, core/links.ts);
- * i link esterni si aprono in una nuova scheda con rel="noopener".
+ * i link esterni si aprono in una nuova scheda con rel="noopener". Un mailto: (@email) passa da
+ * EmailLink: l'indirizzo non è in chiaro nell'HTML e il pulsante compare solo con JavaScript.
  * disabled: <button disabled>, o un <a> senza href con aria-disabled (non si apre e non prende il focus).
  *
  * Tono: dentro una Section i token si adattano già al suo data-tone (base.css), quindi su
@@ -13,6 +14,7 @@
 import type { Tone } from '@/core/block-types';
 import type { IconName } from '@/core/icons';
 import { isExternal, resolveHref } from '@/core/links';
+import EmailLink from '../EmailLink.astro';
 import Icon from '../Icon.astro';
 import type { ButtonStyle } from './cta';
 
@@ -46,13 +48,28 @@ const {
 
 const url = href ? await resolveHref(href) : undefined;
 const external = url && !disabled ? isExternal(url, Astro.site) : false;
+const email = url?.startsWith('mailto:') && !disabled ? url.slice('mailto:'.length) : undefined;
 
 const iconSize = size === 'sm' ? 'sm' : 'md';
 const onTone = tone === 'primary' ? 'primary' : undefined;
 ---
 
 {
-	url ? (
+	email ? (
+		<EmailLink
+			email={email}
+			showAddress={false}
+			class:list={['btn', className]}
+			data-variant={variant}
+			data-size={size}
+			data-on-tone={onTone}
+			{...attributes}
+		>
+			{icon && iconPosition === 'start' && <Icon name={icon} size={iconSize} />}
+			<slot />
+			{icon && iconPosition === 'end' && <Icon name={icon} size={iconSize} />}
+		</EmailLink>
+	) : url ? (
 		<a
 			href={disabled ? undefined : url}
 			role={disabled ? 'link' : undefined}
