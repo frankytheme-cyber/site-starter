@@ -13,6 +13,9 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 - Otto coppie di font nuove, da scegliere in `theme.json` (`fonts`) come le due di prima: `elegante` (Cormorant + Jost), `autorevole` (Newsreader + Public Sans), `fresco` (Outfit + Figtree), `amichevole` (Nunito + Nunito Sans), `carattere` (Bricolage Grotesque + Hanken Grotesk), `robusto` (Big Shoulders + Archivo), `gourmet` (Playfair Display + Work Sans) e `preciso` (Sora + Instrument Sans). Arrivano da `@fontsource-variable` e le serve il sito, con i ripieghi misurati contro il CLS; mood e settori sono nella sezione «Temi» del catalogo. Dopo `blocks:sync` serve `npm install` per i pacchetti nuovi.
 
+- Otto palette nuove, dieci in tutto, tutte con contrasto AA verificato: `salvia` (salute, benessere), `cipria` (estetica, fioristi), `laguna` (mare, turismo), `bordeaux` (vino, ristoranti gastronomici), `cobalto` (professionisti, tecnologia), `antracite` (edilizia, artigiani), `prugna` (creativi, scuole) e `notte`, la prima palette scura (locali serali, barbieri, palestre). Si scelgono in `theme.json` come le altre.
+- Catalogo più facile da navigare: nuova pagina `/catalogo/temi` con palette, font e forme a confronto (anteprima dal vivo, mood, settori, «Usa questa»); nella barra nomi leggibili nei selettori, campione dei colori della palette attiva, menu «Blocchi» per categoria e pagina attiva evidenziata; l’indice raggruppa i blocchi per categoria con il numero di varianti; la pagina del singolo blocco ha precedente e successivo. `?palette=&fonts=&shape=&pattern=&texture=` vale in tutte le pagine del catalogo.
+
 ## v0.0.3 (2026-10-19)
 ### Novità
 

@@ -2,8 +2,10 @@
 import Container from '@/core/ui/Container.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getTheme } from '@/core/settings';
+import { presetMetas } from '@/themes/metas';
 import { fonts, palettes, patterns, shapes, textures } from '@/themes/presets';
 import { LIBRARY_DESCRIPTION } from './_library';
+import { blockGroups, THEME_STORAGE_KEY, themePresets } from './_nav';
 
 interface Props {
 	/** Titolo completo della pagina: catalogTitle() di _library.ts. */
@@ -14,37 +16,110 @@ const { title } = Astro.props;
 const theme = await getTheme();
 
 const controls = [
-	{ key: 'palette', label: 'Palette', options: palettes, value: theme.palette },
-	{ key: 'fonts', label: 'Font', options: fonts, value: theme.fonts },
-	{ key: 'shape', label: 'Forma', options: shapes, value: theme.shape },
-	{ key: 'pattern', label: 'Decoro', options: patterns, value: theme.pattern },
-	{ key: 'texture', label: 'Texture', options: textures, value: theme.texture },
+	{ key: 'palette', label: 'Palette', options: palettes, metas: presetMetas.palettes, value: theme.palette },
+	{ key: 'fonts', label: 'Font', options: fonts, metas: presetMetas.fonts, value: theme.fonts },
+	{ key: 'shape', label: 'Forma', options: shapes, metas: presetMetas.shapes, value: theme.shape },
+	{ key: 'pattern', label: 'Decoro', options: patterns, metas: presetMetas.patterns, value: theme.pattern },
+	{ key: 'texture', label: 'Texture', options: textures, metas: presetMetas.textures, value: theme.texture },
 ];
+
+const path = Astro.url.pathname.replace(/\/?$/, '/');
+const links = [
+	{ href: '/catalogo/temi/', label: 'Temi' },
+	{ href: '/catalogo/bottoni/', label: 'Bottoni' },
+	{ href: '/catalogo/icone/', label: 'Icone' },
+	{ href: '/catalogo/ui/', label: 'UI' },
+	{ href: '/catalogo/sfondi/', label: 'Sfondi' },
+];
+const linkClass = 'text-sm text-primary underline-offset-4 hover:underline aria-[current=page]:font-semibold aria-[current=page]:underline';
+// Colori della palette attiva: leggono i token, quindi cambiano da soli col selettore.
+const swatches = ['bg-bg', 'bg-surface', 'bg-fg', 'bg-primary', 'bg-accent'];
 ---
 
 <BaseLayout title={title} description={LIBRARY_DESCRIPTION} noindex allFonts siteLayout={false}>
-	<header data-catalog-bar class="sticky top-0 z-50 border-b border-border bg-bg">
+	{/*
+		Prima di tutto il resto, così non si vede il cambio di tema: ?palette=&fonts=&shape=&pattern=&texture= nell'indirizzo,
+		altrimenti la scelta fatta in un'altra pagina del catalogo. Solo valori ammessi dai preset.
+	*/}
+	<script is:inline define:vars={{ presets: themePresets, storageKey: THEME_STORAGE_KEY }}>
+		let saved = {};
+		try {
+			saved = JSON.parse(sessionStorage.getItem(storageKey) ?? '{}');
+		} catch {}
+		const params = new URLSearchParams(location.search);
+		for (const [key, values] of Object.entries(presets)) {
+			const value = params.get(key) ?? saved[key];
+			if (value && values.includes(value)) {
+				document.documentElement.dataset[key] = value;
+				saved[key] = value;
+			}
+		}
+		try {
+			sessionStorage.setItem(storageKey, JSON.stringify(saved));
+		} catch {}
+	</script>
+	<header data-catalog-bar data-storage-key={THEME_STORAGE_KEY} class="sticky top-0 z-50 border-b border-border bg-bg">
 		<Container>
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
-				<nav aria-label="Catalogo" class="mr-auto flex flex-wrap items-baseline gap-x-6 gap-y-2">
+				<nav aria-label="Catalogo" class="mr-auto flex flex-wrap items-center gap-x-5 gap-y-2">
 					<a href="/" class="text-sm text-primary underline underline-offset-4">← Sito</a>
-					<a href="/catalogo/" class="font-heading text-lg font-bold">Catalogo blocchi</a>
-					<a href="/catalogo/bottoni/" class="text-sm text-primary underline underline-offset-4">Bottoni</a>
-					<a href="/catalogo/icone/" class="text-sm text-primary underline underline-offset-4">Icone</a>
-					<a href="/catalogo/ui/" class="text-sm text-primary underline underline-offset-4">UI</a>
-					<a href="/catalogo/sfondi/" class="text-sm text-primary underline underline-offset-4">Sfondi</a>
+					<a href="/catalogo/" class="font-heading text-lg font-bold" aria-current={path === '/catalogo/' ? 'page' : undefined}>
+						Catalogo blocchi
+					</a>
+					<details data-catalog-menu class="relative">
+						<summary class="flex min-h-9 cursor-pointer list-none items-center gap-1 text-sm text-primary [&::-webkit-details-marker]:hidden">
+							Blocchi <span aria-hidden="true">▾</span>
+						</summary>
+						<div class="absolute left-0 top-full z-10 mt-2 grid w-max max-w-[calc(100vw-2rem)] gap-4 rounded-box border border-border bg-bg p-4 shadow-lg sm:grid-cols-2">
+							{
+								blockGroups.map((group) => (
+									<div>
+										<p class="text-xs font-semibold uppercase tracking-wide text-fg-muted">{group.category}</p>
+										<ul class="mt-1">
+											{group.blocks.map((block) => (
+												<li>
+													<a
+														href={`/catalogo/${block.type}/`}
+														aria-current={path === `/catalogo/${block.type}/` ? 'page' : undefined}
+														class="flex min-h-8 items-center gap-2 text-sm text-fg hover:text-primary hover:underline aria-[current=page]:font-semibold aria-[current=page]:text-primary"
+													>
+														{block.name}
+														<span class="text-xs text-fg-muted">{block.variants}</span>
+													</a>
+												</li>
+											))}
+										</ul>
+									</div>
+								))
+							}
+						</div>
+					</details>
+					{
+						links.map((link) => (
+							<a href={link.href} class={linkClass} aria-current={path === link.href ? 'page' : undefined}>
+								{link.label}
+							</a>
+						))
+					}
 				</nav>
 				{
-					controls.map(({ key, label, options, value }) => (
+					controls.map(({ key, label, options, metas, value }) => (
 						<label class="flex items-center gap-2 text-sm">
 							<span class="text-fg-muted">{label}</span>
+							{key === 'palette' && (
+								<span aria-hidden="true" class="flex overflow-hidden rounded-button border border-border">
+									{swatches.map((swatch) => (
+										<span class={`h-5 w-2.5 ${swatch}`} />
+									))}
+								</span>
+							)}
 							<select
 								data-theme-control={key}
 								class="min-h-9 rounded-button border border-border bg-bg px-3 text-fg"
 							>
 								{options.map((option) => (
 									<option value={option} selected={option === value}>
-										{option}
+										{metas[option].name}
 									</option>
 								))}
 							</select>
@@ -66,32 +141,45 @@ const controls = [
 
 <script>
 	// Cambia i data-* di <html> al volo e ricorda la scelta tra le pagine del catalogo.
-	const STORAGE_KEY = 'catalogo-tema';
 	const root = document.documentElement;
 
 	// I blocchi sticky (es. header) si agganciano sotto questa barra, che su mobile va su più righe.
 	const bar = document.querySelector<HTMLElement>('[data-catalog-bar]')!;
+	const storageKey = bar.dataset.storageKey!;
 	new ResizeObserver(() => root.style.setProperty('--sticky-offset', `${bar.offsetHeight}px`)).observe(bar);
 
 	let saved: Record<string, string> = {};
 	try {
-		saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? '{}');
+		saved = JSON.parse(sessionStorage.getItem(storageKey) ?? '{}');
 	} catch {}
 
 	for (const select of document.querySelectorAll<HTMLSelectElement>('[data-theme-control]')) {
 		const key = select.dataset.themeControl!;
-		const stored = saved[key];
-		if (stored && [...select.options].some((option) => option.value === stored)) {
-			select.value = stored;
-			root.dataset[key] = stored;
-		}
+		// Il tema l'ha già messo lo script in testa (indirizzo o scelta precedente): il selettore lo mostra.
+		const current = root.dataset[key];
+		if (current && [...select.options].some((option) => option.value === current)) select.value = current;
 
 		select.addEventListener('change', () => {
 			root.dataset[key] = select.value;
 			saved[key] = select.value;
 			try {
-				sessionStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+				sessionStorage.setItem(storageKey, JSON.stringify(saved));
 			} catch {}
+		});
+	}
+
+	// Menu «Blocchi»: si chiude con Esc o cliccando fuori.
+	const menu = document.querySelector<HTMLDetailsElement>('[data-catalog-menu]');
+	if (menu) {
+		const summary = menu.querySelector('summary')!;
+		document.addEventListener('click', (event) => {
+			if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+		});
+		menu.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && menu.open) {
+				menu.open = false;
+				summary.focus();
+			}
 		});
 	}
 </script>

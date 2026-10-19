@@ -4,6 +4,7 @@ import Container from '@/core/ui/Container.astro';
 import BlockEntry from './_BlockEntry.astro';
 import CatalogLayout from './_CatalogLayout.astro';
 import { catalogTitle } from './_library';
+import { blockGroups } from './_nav';
 ---
 
 <CatalogLayout title={catalogTitle()}>
@@ -11,24 +12,36 @@ import { catalogTitle } from './_library';
 		<Container>
 			<div class="py-10">
 				<p class="text-fg-muted">
-					{blocks.length}
+					{blocks.length}{' '}
 					{blocks.length === 1 ? 'blocco' : 'blocchi'} in <code>src/blocks</code>, ognuno con le sue fixture. Usa i
-					selettori in alto per provarli con ogni palette, font e forma.
+					selettori in alto per provarli con ogni palette, font e forma, o confronta i preset nella pagina{' '}
+					<a href="/catalogo/temi/" class="text-primary underline underline-offset-4">Temi</a>.
 				</p>
 				<p class="mt-2 text-fg-muted">
 					Anche: <a href="/catalogo/bottoni/" class="text-primary underline underline-offset-4">bottoni</a> in ogni
-					variante, stato e tono, <a href="/catalogo/ui/" class="text-primary underline underline-offset-4">primitive UI</a>,
-					<a href="/catalogo/icone/" class="text-primary underline underline-offset-4">icone</a> ed
+					variante, stato e tono, <a href="/catalogo/ui/" class="text-primary underline underline-offset-4">primitive UI</a>,{' '}
+					<a href="/catalogo/icone/" class="text-primary underline underline-offset-4">icone</a> ed{' '}
 					<a href="/catalogo/sfondi/" class="text-primary underline underline-offset-4">effetti di sfondo</a>.
 				</p>
-				<nav aria-label="Blocchi" class="mt-4">
-					<ul class="flex flex-wrap gap-x-6 gap-y-2">
+				<nav id="indice" aria-label="Blocchi" class="mt-6 scroll-mt-24">
+					<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
 						{
-							blocks.map((block) => (
+							blockGroups.map((group) => (
 								<li>
-									<a href={`#${block.type}`} class="text-primary underline underline-offset-4">
-										{block.meta.name}
-									</a>
+									<p class="text-xs font-semibold uppercase tracking-wide text-fg-muted">{group.category}</p>
+									<ul class="mt-2 grid gap-1">
+										{group.blocks.map((block) => (
+											<li>
+												<a href={`#${block.type}`} class="text-primary underline underline-offset-4">
+													{block.name}
+												</a>
+												<span class="text-sm text-fg-muted">
+													{' '}
+													· {block.variants} {block.variants === 1 ? 'variante' : 'varianti'}
+												</span>
+											</li>
+										))}
+									</ul>
 								</li>
 							))
 						}

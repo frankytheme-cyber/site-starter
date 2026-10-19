@@ -340,7 +340,7 @@ function readmePage(data: CatalogData, rules: string) {
 		GENERATED,
 		'# Catalogo dei blocchi',
 		`**${data.library} — libreria di blocchi per siti vetrina**, versione **v${data.version}** (\`library.manifest.json\`). Le fixture usano attività di esempio di settori diversi (artigiano, negozio, ristorante, studio professionale) con recapiti finti. Tutto quello che segue è generato da \`npm run gen:catalog\` a partire da schemi, schede e fixture; gli screenshot da \`npm run screenshots\`; gli stessi dati per le macchine sono in [\`catalogo.json\`](catalogo.json). \`npm run check\` fallisce se questa cartella non corrisponde agli schemi.`,
-		'Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/sfondi` (gli effetti di sfondo sui tre toni), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.',
+		'Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/temi` (palette, font e forme a confronto), `/catalogo/sfondi` (gli effetti di sfondo sui tre toni), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.',
 		'## Regole d’oro delle ricette',
 		data.recipeRules.map((rule, index) => `${index + 1}. ${rule.rule}${rule.check ? ` *(${checkLabel[rule.check]})*` : ''}`).join('\n'),
 		rules,

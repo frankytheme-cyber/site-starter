@@ -23,7 +23,7 @@ const Heading = href ? 'h2' : 'h1';
 const SubHeading = href ? 'h3' : 'h2';
 ---
 
-<article id={meta.type} class="scroll-mt-20 border-t-4 border-border">
+<article id={meta.type} class="scroll-mt-24 border-t-4 border-border">
 	<Container>
 		<div class="py-10">
 			<p class="text-sm text-fg-muted">
@@ -32,9 +32,16 @@ const SubHeading = href ? 'h3' : 'h2';
 				{meta.scope === 'layout' && ' · layout: si sceglie in layout.json, non nelle ricette'}
 			</p>
 			{/* Nell'elenco il nome del blocco è un h2; nella pagina del singolo blocco è il titolo della pagina. */}
-			<Heading class="mt-1 text-3xl font-bold">
-				{href ? <a href={href} class="underline-offset-4 hover:underline">{meta.name}</a> : meta.name}
-			</Heading>
+			<div class="mt-1 flex flex-wrap items-baseline justify-between gap-x-4">
+				<Heading class="text-3xl font-bold">
+					{href ? <a href={href} class="underline-offset-4 hover:underline">{meta.name}</a> : meta.name}
+				</Heading>
+				{href && (
+					<a href="#indice" class="inline-flex min-h-9 items-center text-sm text-primary underline underline-offset-4">
+						↑ Indice
+					</a>
+				)}
+			</div>
 			<p class="mt-3 max-w-3xl text-lg">{meta.description}</p>
 
 			<dl class="mt-8 grid gap-6 md:grid-cols-2">

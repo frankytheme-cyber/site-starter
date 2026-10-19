@@ -1,0 +1,187 @@
+---
+/**
+ * Temi: ogni preset di src/themes (palette, font, forme) con la sua scheda e un'anteprima vera.
+ * Ogni scheda porta il suo data-palette, data-fonts o data-shape: i token valgono dentro la scheda,
+ * qualunque sia il tema scelto nella barra. «Usa questa» cambia il selettore della barra.
+ */
+import Button from '@/core/ui/button/Button.astro';
+import Container from '@/core/ui/Container.astro';
+import { presetMetas } from '@/themes/metas';
+import type { PresetMeta } from '@/themes/presets';
+import CatalogLayout from './_CatalogLayout.astro';
+import { catalogTitle } from './_library';
+
+const palettes = Object.entries(presetMetas.palettes);
+const fonts = Object.entries(presetMetas.fonts);
+const shapes = Object.entries(presetMetas.shapes);
+const sections = [
+	{ id: 'palette', title: 'Palette', count: palettes.length },
+	{ id: 'font', title: 'Font', count: fonts.length },
+	{ id: 'forme', title: 'Forme', count: shapes.length },
+];
+const chip = 'rounded-button border border-border px-2 py-0.5 text-xs';
+const useClass =
+	'min-h-9 rounded-button border border-border px-3 text-sm font-semibold hover:bg-current/10 aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-fg';
+
+const describe = (meta: PresetMeta) => {
+	const mood = meta.mood.join(', ');
+	return `${mood.charAt(0).toUpperCase()}${mood.slice(1)}. Adatto a ${meta.adattoA.join(', ')}.`;
+};
+---
+
+<CatalogLayout title={catalogTitle('Temi')}>
+	<main>
+		<Container>
+			<div class="py-10">
+				<h1 class="text-3xl font-bold">Temi</h1>
+				<p class="mt-3 max-w-3xl text-fg-muted">
+					L’aspetto del sito si sceglie in <code>src/content/settings/theme.json</code> combinando una palette, una coppia
+					di font e una forma. Ogni scheda mostra il preset dal vivo; «Usa questa» lo applica a tutto il catalogo, e
+					«Vedi i blocchi» apre l’elenco dei blocchi con quel preset. Tutte le palette hanno il contrasto AA verificato
+					da <code>npm run check:contrast</code>. Decoro e texture si provano dalla barra in alto e su{' '}
+					<a href="/catalogo/sfondi/" class="text-primary underline underline-offset-4">Sfondi</a>.
+				</p>
+				<nav aria-label="Sezioni" class="mt-4">
+					<ul class="flex flex-wrap gap-x-6 gap-y-2">
+						{
+							sections.map((section) => (
+								<li>
+									<a href={`#${section.id}`} class="text-primary underline underline-offset-4">
+										{section.title}
+									</a>
+									<span class="text-sm text-fg-muted"> ({section.count})</span>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+
+				<h2 id="palette" class="mt-12 scroll-mt-24 text-2xl font-bold">Palette</h2>
+				<ul class="mt-4 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+					{
+						palettes.map(([key, meta]) => (
+							<li data-palette={key} class="flex flex-col overflow-hidden rounded-box border border-border bg-bg text-fg">
+								<div class="flex">
+									{Object.entries(meta.colors).map(([token, value]) => (
+										<span class="h-12 flex-1" style={`background:${value}`} title={`${token} ${value}`} />
+									))}
+								</div>
+								<div class="flex flex-1 flex-col p-5">
+									<h3 class="font-heading text-xl font-bold">{meta.name}</h3>
+									<p class="text-sm text-fg-muted">
+										<code>{key}</code>
+									</p>
+									<ul class="mt-3 flex flex-wrap gap-2" aria-label="Impressione">
+										{meta.mood.map((mood) => (
+											<li class={chip}>{mood}</li>
+										))}
+									</ul>
+									<p class="mt-3 text-sm text-fg-muted">Adatta a {meta.adattoA.join(', ')}.</p>
+									<div class="mt-4 rounded-box bg-surface p-4 text-surface-fg">
+										<p class="font-heading text-lg font-bold">Prenota il tuo tavolo</p>
+										<p class="mt-1 text-sm text-fg-muted">Testo secondario su fondo surface, come nel tono muted.</p>
+										<div class="mt-3 flex flex-wrap gap-2">
+											<Button variant="primary" size="sm">Primario</Button>
+											<Button variant="secondary" size="sm">Secondario</Button>
+											<span class="inline-flex items-center rounded-button bg-accent px-3 text-sm font-semibold text-accent-fg">
+												Accento
+											</span>
+										</div>
+									</div>
+									<div class="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-4">
+										<button type="button" hidden data-use-preset="palette" value={key} aria-pressed="false" class={useClass}>
+											Usa questa
+										</button>
+										<a href={`/catalogo/?palette=${key}`} class="text-sm text-primary underline underline-offset-4">
+											Vedi i blocchi
+										</a>
+									</div>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+
+				<h2 id="font" class="mt-12 scroll-mt-24 text-2xl font-bold">Font</h2>
+				<ul class="mt-4 grid gap-6 md:grid-cols-2">
+					{
+						fonts.map(([key, meta]) => (
+							<li data-fonts={key} class="flex flex-col rounded-box border border-border p-5">
+								<p class="text-sm text-fg-muted">
+									{meta.name} · <code>{key}</code>
+								</p>
+								<h3 class="mt-2 font-heading text-3xl font-bold">Pane fresco ogni mattina</h3>
+								<p class="mt-2 font-body">
+									Il testo del sito usa il carattere per il corpo: deve restare leggibile anche in paragrafi lunghi e su
+									schermi piccoli.
+								</p>
+								<p class="mt-3 text-sm text-fg-muted">{describe(meta)}</p>
+								<div class="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-4">
+									<button type="button" hidden data-use-preset="fonts" value={key} aria-pressed="false" class={useClass}>
+										Usa questa
+									</button>
+									<a href={`/catalogo/?fonts=${key}`} class="text-sm text-primary underline underline-offset-4">
+										Vedi i blocchi
+									</a>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+
+				<h2 id="forme" class="mt-12 scroll-mt-24 text-2xl font-bold">Forme</h2>
+				<ul class="mt-4 grid gap-6 md:grid-cols-3">
+					{
+						shapes.map(([key, meta]) => (
+							<li data-shape={key} class="flex flex-col rounded-box border border-border p-5">
+								<p class="text-sm text-fg-muted">
+									{meta.name} · <code>{key}</code>
+								</p>
+								<div class="mt-3 rounded-box bg-surface p-4 text-surface-fg">
+									<p class="font-semibold">Riquadro (rounded-box)</p>
+									<div class="mt-3">
+										<Button variant="primary" size="sm">Pulsante</Button>
+									</div>
+								</div>
+								<p class="mt-3 text-sm text-fg-muted">{describe(meta)}</p>
+								<div class="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-4">
+									<button type="button" hidden data-use-preset="shape" value={key} aria-pressed="false" class={useClass}>
+										Usa questa
+									</button>
+									<a href={`/catalogo/?shape=${key}`} class="text-sm text-primary underline underline-offset-4">
+										Vedi i blocchi
+									</a>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</Container>
+	</main>
+</CatalogLayout>
+
+<script>
+	// «Usa questa» cambia il selettore della barra (che applica e ricorda la scelta) e segna la scheda attiva.
+	// Senza JS i pulsanti restano nascosti: restano i link «Vedi i blocchi».
+	const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-use-preset]')];
+	const select = (key: string) => document.querySelector<HTMLSelectElement>(`[data-theme-control="${key}"]`);
+
+	function refresh() {
+		for (const button of buttons) {
+			button.setAttribute('aria-pressed', String(select(button.dataset.usePreset!)?.value === button.value));
+		}
+	}
+
+	for (const button of buttons) {
+		const control = select(button.dataset.usePreset!);
+		if (!control) continue;
+		button.hidden = false;
+		button.addEventListener('click', () => {
+			control.value = button.value;
+			control.dispatchEvent(new Event('change'));
+		});
+		control.addEventListener('change', refresh);
+	}
+	refresh();
+</script>

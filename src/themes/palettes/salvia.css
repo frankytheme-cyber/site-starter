@@ -1,0 +1,34 @@
+/*
+ * Salvia: fresca, naturale. Verde salvia, avorio, accento sabbia.
+ *
+ * Contrasti WCAG (npm run check:contrast); le coppie su surface valgono per tone="muted":
+ *   fg / bg              14.03:1
+ *   fg-muted / bg         6.56:1
+ *   primary / bg          6.18:1
+ *   surface-fg / surface  12.45:1
+ *   fg-muted / surface    5.82:1
+ *   primary / surface     5.48:1
+ *   primary-fg / primary   6.61:1
+ *   primary-fg / primary-hover   8.83:1   (passaggio sui pulsanti pieni)
+ *   primary-hover / bg    8.26:1   (passaggio sui link)
+ *   primary-hover / surface   7.33:1
+ *   accent-fg / accent    6.53:1
+ *   accent-fg / accent-hover   5.38:1
+ *   ring / bg             6.18:1   (non testuale, minimo 3:1)
+ *   ring / surface        5.48:1   (non testuale, minimo 3:1)
+ */
+[data-palette="salvia"] {
+	--bg: #f6f8f4;
+	--fg: #1b2a21;
+	--fg-muted: #4c5d52;
+	--surface: #e5ece3;
+	--surface-fg: #1b2a21;
+	--primary: #3a6649;
+	--primary-fg: #ffffff;
+	--primary-hover: #2d5239;
+	--accent: #c9a66b;
+	--accent-fg: #1b2a21;
+	--accent-hover: #ba955a;
+	--border: #d2ddd0;
+	--ring: #3a6649;
+}

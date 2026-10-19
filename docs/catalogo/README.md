@@ -4,7 +4,7 @@
 
 **site-starter — libreria di blocchi per siti vetrina**, versione **v0.0.3** (`library.manifest.json`). Le fixture usano attività di esempio di settori diversi (artigiano, negozio, ristorante, studio professionale) con recapiti finti. Tutto quello che segue è generato da `npm run gen:catalog` a partire da schemi, schede e fixture; gli screenshot da `npm run screenshots`; gli stessi dati per le macchine sono in [`catalogo.json`](catalogo.json). `npm run check` fallisce se questa cartella non corrisponde agli schemi.
 
-Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/sfondi` (gli effetti di sfondo sui tre toni), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.
+Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/temi` (palette, font e forme a confronto), `/catalogo/sfondi` (gli effetti di sfondo sui tre toni), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.
 
 ## Regole d’oro delle ricette
 
@@ -125,7 +125,7 @@ L’aspetto si sceglie in `src/content/settings/theme.json` con cinque preset (`
 
 | Chiave | Valori | Note |
 | --- | --- | --- |
-| `palette` | `terracotta` · `ardesia` | «Palette» I colori del sito: ogni palette ha il contrasto AA verificato (check contrast) |
+| `palette` | `terracotta` · `ardesia` · `salvia` · `cipria` · `laguna` · `bordeaux` · `cobalto` · `antracite` · `prugna` · `notte` | «Palette» I colori del sito: ogni palette ha il contrasto AA verificato (check contrast) |
 | `fonts` | `moderno` · `classico` · `elegante` · `autorevole` · `fresco` · `amichevole` · `carattere` · `robusto` · `gourmet` · `preciso` | «Caratteri» La coppia di font per titoli (font-heading) e testo (font-body) |
 | `shape` | `squadrato` · `morbido` · `arrotondato` | «Forma» Il raggio degli angoli di card e riquadri (rounded-box) e dei pulsanti (rounded-button) |
 | `pattern` | `nessuno` · `punti` · `griglia` · `righe` · `onde` · `cerchi` · `arco` | «Decoro» Il motivo delle sezioni con background "decoro", uno per sito; con «nessuno» quelle sezioni restano piene |
@@ -137,9 +137,25 @@ L’aspetto si sceglie in `src/content/settings/theme.json` con cinque preset (`
 | --- | --- | --- | --- | --- |
 | `terracotta` | Terracotta | caldo, accogliente, artigianale | ristoranti e trattorie, agriturismi, botteghe artigiane, negozi di prodotti tipici, artigiani della casa e delle finiture | bg `#fbf6ef` · surface `#f2e6d7` · fg `#2e1f17` · primary `#a5452a` · accent `#56652b` |
 | `ardesia` | Ardesia | sobrio, moderno, professionale | impiantisti ed elettricisti, studi tecnici e professionali, officine e carrozzerie, pulizie e manutenzioni, servizi alle imprese | bg `#f8fafb` · surface `#eaeef1` · fg `#1b2228` · primary `#2d4a5e` · accent `#e5a13a` |
+| `salvia` | Salvia | fresco, naturale, rassicurante | studi medici e fisioterapisti, erboristerie e farmacie, centri benessere e yoga, vivai e giardinieri, prodotti biologici | bg `#f6f8f4` · surface `#e5ece3` · fg `#1b2a21` · primary `#3a6649` · accent `#c9a66b` |
+| `cipria` | Cipria | delicato, elegante, curato | estetiste e centri estetici, parrucchieri, fioristi, wedding planner e atelier sposa, negozi di abbigliamento | bg `#fcf7f6` · surface `#f4e5e4` · fg `#2b1d22` · primary `#94405b` · accent `#4a6766` |
+| `laguna` | Laguna | fresco, luminoso, solare | B&B e case vacanza, stabilimenti balneari, noleggi e nautica, pescherie e ristoranti di pesce, scuole di vela e sub | bg `#f5f9fb` · surface `#e1edf3` · fg `#0f2938` · primary `#0d5f80` · accent `#f2a65e` |
+| `bordeaux` | Bordeaux | raffinato, classico, caldo | enoteche e cantine, ristoranti gastronomici, hotel e dimore storiche, gioiellerie, notai e studi legali | bg `#faf7f4` · surface `#efe6df` · fg `#24171a` · primary `#7a1f33` · accent `#c49a45` |
+| `cobalto` | Cobalto | affidabile, nitido, dinamico | commercialisti e consulenti, assicurazioni, informatica e assistenza tecnica, ottici, autoscuole e scuole | bg `#f7f9fc` · surface `#e6ecf6` · fg `#141c2b` · primary `#1e48a6` · accent `#0d7a70` |
+| `antracite` | Antracite | solido, concreto, energico | imprese edili, serramentisti e fabbri, traslochi e logistica, noleggio attrezzature, ferramenta e colorifici | bg `#fafaf7` · surface `#ebeae3` · fg `#1e1f1c` · primary `#2e3336` · accent `#f2b705` |
+| `prugna` | Prugna | creativo, morbido, originale | fotografi e studi creativi, scuole di danza e musica, librerie e cartolerie, psicologi e counselor, negozi per bambini | bg `#faf8fc` · surface `#eee8f4` · fg `#221a2d` · primary `#5a3889` · accent `#e48a6a` |
+| `notte` | Notte | notturno, deciso, d’atmosfera | cocktail bar e locali serali, barbieri, tatuatori, palestre e box di crossfit, studi di registrazione | bg `#14161a` · surface `#1f2228` · fg `#eceae6` · primary `#e3b04b` · accent `#6cbfb3` |
 
 ![Hero con la palette Terracotta](img/hero-palette-terracotta-desktop.webp)
 ![Hero con la palette Ardesia](img/hero-palette-ardesia-desktop.webp)
+![Hero con la palette Salvia](img/hero-palette-salvia-desktop.webp)
+![Hero con la palette Cipria](img/hero-palette-cipria-desktop.webp)
+![Hero con la palette Laguna](img/hero-palette-laguna-desktop.webp)
+![Hero con la palette Bordeaux](img/hero-palette-bordeaux-desktop.webp)
+![Hero con la palette Cobalto](img/hero-palette-cobalto-desktop.webp)
+![Hero con la palette Antracite](img/hero-palette-antracite-desktop.webp)
+![Hero con la palette Prugna](img/hero-palette-prugna-desktop.webp)
+![Hero con la palette Notte](img/hero-palette-notte-desktop.webp)
 
 ### Font
 

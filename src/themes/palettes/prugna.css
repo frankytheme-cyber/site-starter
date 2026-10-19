@@ -1,0 +1,34 @@
+/*
+ * Prugna: creativa, morbida. Viola prugna, lilla, accento pesca.
+ *
+ * Contrasti WCAG (npm run check:contrast); le coppie su surface valgono per tone="muted":
+ *   fg / bg              15.87:1
+ *   fg-muted / bg         6.78:1
+ *   primary / bg          8.42:1
+ *   surface-fg / surface  13.94:1
+ *   fg-muted / surface    5.96:1
+ *   primary / surface     7.40:1
+ *   primary-fg / primary   8.89:1
+ *   primary-fg / primary-hover  11.25:1   (passaggio sui pulsanti pieni)
+ *   primary-hover / bg   10.66:1   (passaggio sui link)
+ *   primary-hover / surface   9.37:1
+ *   accent-fg / accent    6.49:1
+ *   accent-fg / accent-hover   5.32:1
+ *   ring / bg             8.42:1   (non testuale, minimo 3:1)
+ *   ring / surface        7.40:1   (non testuale, minimo 3:1)
+ */
+[data-palette="prugna"] {
+	--bg: #faf8fc;
+	--fg: #221a2d;
+	--fg-muted: #5d5468;
+	--surface: #eee8f4;
+	--surface-fg: #221a2d;
+	--primary: #5a3889;
+	--primary-fg: #ffffff;
+	--primary-hover: #482c6f;
+	--accent: #e48a6a;
+	--accent-fg: #221a2d;
+	--accent-hover: #db7553;
+	--border: #ddd4e7;
+	--ring: #5a3889;
+}
