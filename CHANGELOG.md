@@ -7,6 +7,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 ## Non rilasciato
 ### Novità
 
+- Email protetta dai bot dello spam: footer, form e contact non scrivono più l’indirizzo in chiaro nell’HTML. Il nuovo `EmailLink` (`src/core/ui`) lo tiene codificato e lo ricompone con JavaScript nel testo e nel `mailto:`; senza JavaScript si legge «nome chiocciola dominio». I pulsanti `@email` passano da `EmailLink` e compaiono solo con JavaScript. Il JSON-LD dell’attività non ha più l’email. Il check `interactive` ferma ogni pagina con un `mailto:` o l’email di `site.json` in chiaro. Blocchi `footer`, `form` e `contact` alla 1.0.1.
+
 - Dati strutturati dell’attività: `businessType` in `site.json` (facoltativo) sceglie il sottotipo schema.org di `LocalBusiness` (es. `HousePainter`, `Restaurant`, `Plumber`; elenco in `BUSINESS_TYPES`), `areaServed` (facoltativo) elenca le zone servite. Il JSON-LD ha anche un `@id` stabile e, senza logo, usa `defaultOgImage` come `image`. Dopo `blocks:sync` serve `npm run gen:decap` per vedere i due campi nel CMS.
 
 ### Correzioni

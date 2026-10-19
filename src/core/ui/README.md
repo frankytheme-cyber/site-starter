@@ -11,4 +11,5 @@ Componenti senza contenuto proprio, solo struttura e classi semantiche, con cui 
   - `cta.ts`: schema `cta` delle props dei blocchi e del menu, stili ammessi (`BUTTON_STYLES`) e link speciali (`SPECIAL_HREFS`).
 - `Icon`: SVG inline dagli alias di `core/icons.ts`, `sm`/`md`/`lg`, `label` per le icone non decorative.
 - `Img`: wrapper di `<Image>`, alt obbligatorio.
+- `EmailLink`: link email senza l’indirizzo in chiaro nell’HTML (né testo né `mailto:`): sta in `data-email-link`, al contrario e in base64, e lo script lo ricompone al caricamento. Senza JavaScript si legge «nome chiocciola dominio» come testo; con `showAddress={false}` (i pulsanti `@email` di `Button`) il link parte `hidden` con `data-js-only`. Lo usano footer, form e contact; il JSON-LD non ha l’email.
 - `Accordion` + `AccordionItem`, `Tabs`, `Carousel` + `CarouselSlide`: interattivi, regole e tastiera in `docs/blocchi-interattivi.md`.

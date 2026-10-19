@@ -11,7 +11,7 @@ export const meta: BlockMeta = {
 		'Nelle sezioni di una ricetta (la build lo rifiuta). Per chiudere una pagina con un invito diverso da chiamare o scrivere usa cta, e lascia ctaBand spento per non ripeterlo.',
 	category: 'piè di pagina',
 	scope: 'layout',
-	version: '1.0.0',
+	version: '1.0.1',
 	source: { from: 'originale' },
 	variants: {
 		colonne: {

@@ -2,7 +2,7 @@
 
 # form — Modulo di contatto
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.0.0 · contatti · interattivo · disegno originale · dal vivo `/catalogo/form/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.0.1 · contatti · interattivo · disegno originale · dal vivo `/catalogo/form/`
 
 Modulo di contatto o richiesta di preventivo, con invio tramite Resend su Vercel e collegamento all’informativa privacy.
 

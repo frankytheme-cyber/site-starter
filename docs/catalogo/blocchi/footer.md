@@ -2,7 +2,7 @@
 
 # footer — Footer
 
-[← Catalogo](../README.md) · blocco di layout (`layout`, in layout.json) · v1.0.0 · piè di pagina · non interattivo · disegno originale · dal vivo `/catalogo/footer/`
+[← Catalogo](../README.md) · blocco di layout (`layout`, in layout.json) · v1.0.1 · piè di pagina · non interattivo · disegno originale · dal vivo `/catalogo/footer/`
 
 Piede del sito: recapiti cliccabili, orari, social e i dati legali obbligatori (ragione sociale, sede, P.IVA, REA e capitale per le società), con i link a privacy e cookie. Tutto da site.json e navigation.json.
 

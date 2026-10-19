@@ -3592,7 +3592,7 @@
 			"name": "Contatti",
 			"scope": "page",
 			"category": "contatti",
-			"version": "1.0.0",
+			"version": "1.0.1",
 			"interactive": true,
 			"source": {
 				"from": "originale"
@@ -3998,7 +3998,7 @@
 			"name": "Modulo di contatto",
 			"scope": "page",
 			"category": "contatti",
-			"version": "1.0.0",
+			"version": "1.0.1",
 			"interactive": true,
 			"source": {
 				"from": "originale"
@@ -4286,7 +4286,7 @@
 			"name": "Footer",
 			"scope": "layout",
 			"category": "piè di pagina",
-			"version": "1.0.0",
+			"version": "1.0.1",
 			"interactive": false,
 			"source": {
 				"from": "originale"

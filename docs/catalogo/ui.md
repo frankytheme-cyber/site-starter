@@ -42,7 +42,8 @@ interface Props {
 Pulsante o link d'azione. Con href è un &lt;a>, altrimenti un &lt;button>. Aspetto e stati (hover,
 focus, active, disabled) stanno in button.css: .btn con data-variant e data-size.
 href accetta anche @telefono, @whatsapp, @email, @mappa (risolti da site.json, core/links.ts);
-i link esterni si aprono in una nuova scheda con rel="noopener".
+i link esterni si aprono in una nuova scheda con rel="noopener". Un mailto: (@email) passa da
+EmailLink: l'indirizzo non è in chiaro nell'HTML e il pulsante compare solo con JavaScript.
 disabled: &lt;button disabled>, o un &lt;a> senza href con aria-disabled (non si apre e non prende il focus).
 
 Tono: dentro una Section i token si adattano già al suo data-tone (base.css), quindi su
@@ -120,6 +121,29 @@ interface Props {
 	size?: 'sm' | 'md' | 'lg';
 	tone?: Tone;
 	class?: string;
+}
+```
+
+## EmailLink
+
+`src/core/ui/EmailLink.astro`
+
+Link email che non scrive l'indirizzo in chiaro nell'HTML: niente «nome@dominio» né «mailto:»
+per i bot che raccolgono indirizzi da riempire di spam. L'indirizzo sta in data-email-link,
+al contrario e in base64; lo script lo rimette nel testo e nell'href al caricamento.
+
+Senza JavaScript: con showAddress si legge «nome chiocciola dominio» come testo, senza link;
+senza showAddress (i pulsanti, dove il testo è lo slot) il link parte hidden con data-js-only e
+lo mostra lo script, come gli altri controlli che senza JS non funzionano.
+Non è una protezione assoluta: un bot che esegue JavaScript l'indirizzo lo trova.
+
+```ts
+interface Props {
+	email: string;
+	/** Scrive l'indirizzo dopo lo slot (link di testo). false: il testo è solo lo slot (pulsanti). */
+	showAddress?: boolean;
+	class?: string;
+	[attribute: `data-${string}` | `aria-${string}`]: string | boolean | undefined;
 }
 ```
 

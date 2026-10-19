@@ -2,7 +2,7 @@
 
 # contact — Contatti
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.0.0 · contatti · interattivo · disegno originale · dal vivo `/catalogo/contact/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.0.1 · contatti · interattivo · disegno originale · dal vivo `/catalogo/contact/`
 
 Recapiti, indirizzo e orari dell’attività, presi da «Dati attività», con la mappa o un invito all’azione.
 

@@ -1,0 +1,41 @@
+---
+/**
+ * Link email che non scrive l'indirizzo in chiaro nell'HTML: niente «nome@dominio» né «mailto:»
+ * per i bot che raccolgono indirizzi da riempire di spam. L'indirizzo sta in data-email-link,
+ * al contrario e in base64; lo script lo rimette nel testo e nell'href al caricamento.
+ *
+ * Senza JavaScript: con showAddress si legge «nome chiocciola dominio» come testo, senza link;
+ * senza showAddress (i pulsanti, dove il testo è lo slot) il link parte hidden con data-js-only e
+ * lo mostra lo script, come gli altri controlli che senza JS non funzionano.
+ * Non è una protezione assoluta: un bot che esegue JavaScript l'indirizzo lo trova.
+ */
+interface Props {
+	email: string;
+	/** Scrive l'indirizzo dopo lo slot (link di testo). false: il testo è solo lo slot (pulsanti). */
+	showAddress?: boolean;
+	class?: string;
+	[attribute: `data-${string}` | `aria-${string}`]: string | boolean | undefined;
+}
+
+const { email, showAddress = true, class: className, ...attributes } = Astro.props;
+
+const at = email.lastIndexOf('@');
+const reversed = [...email].reverse().join('');
+const encoded = btoa(String.fromCharCode(...new TextEncoder().encode(reversed)));
+---
+
+<a data-email-link={encoded} hidden={!showAddress} data-js-only={!showAddress || undefined} class={className} {...attributes}>
+	<slot />
+	{showAddress && <span data-email-link-address>{email.slice(0, at)} chiocciola {email.slice(at + 1)}</span>}
+</a>
+
+<script>
+	for (const link of document.querySelectorAll<HTMLAnchorElement>('a[data-email-link]')) {
+		const bytes = Uint8Array.from(atob(link.dataset.emailLink ?? ''), (char) => char.charCodeAt(0));
+		const email = [...new TextDecoder().decode(bytes)].reverse().join('');
+		link.href = `mailto:${email}`;
+		const address = link.querySelector('[data-email-link-address]');
+		if (address) address.textContent = email;
+		if (link.hasAttribute('data-js-only')) link.hidden = false;
+	}
+</script>

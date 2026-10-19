@@ -5,6 +5,7 @@ import { formatDays, formatSlots } from '@/core/opening-hours';
 import { getSiteSettings, phoneHref, whatsappHref, whatsappLabel } from '@/core/settings';
 import Button from '@/core/ui/button/Button.astro';
 import CtaButton from '@/core/ui/button/CtaButton.astro';
+import EmailLink from '@/core/ui/EmailLink.astro';
 import Icon from '@/core/ui/Icon.astro';
 import Section from '@/core/ui/Section.astro';
 import type { ContactProps } from './schema';
@@ -59,11 +60,10 @@ const headingClass = 'text-sm font-bold tracking-wider uppercase';
 								<span class="sr-only">{NEW_TAB}</span>
 							</a>
 						)}
-						<a href={`mailto:${site.email}`} class:list={[linkClass, 'break-all']}>
+						<EmailLink email={site.email} class:list={[linkClass, 'break-all']}>
 							<Icon name="email" />
 							<span class="sr-only">Email:</span>
-							{site.email}
-						</a>
+						</EmailLink>
 						<p class="mt-2 flex gap-2">
 							<Icon name="mappa-pin" class="mt-0.5" />
 							<span>
