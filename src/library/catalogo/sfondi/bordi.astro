@@ -1,0 +1,37 @@
+---
+/**
+ * I bordi tra sezioni da soli: la cta banner di _backgrounds.ts su quattro sezioni impilate, ognuna
+ * con un bordo dopo una di tone diverso (EDGE_SAMPLE), senza la barra del catalogo né header e
+ * footer del sito. La usano gli screenshot (npm run screenshots). Il tema si cambia con
+ * ?palette=&fonts=&shape=&pattern=&texture= (valori di presets.ts).
+ */
+import SectionFrame from '@/core/SectionFrame.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { fonts, palettes, patterns, shapes, textures } from '@/themes/presets';
+import { backgroundSample, EDGE_SAMPLE } from '../_backgrounds';
+import { catalogTitle, LIBRARY_DESCRIPTION } from '../_library';
+
+const { Component, fixture } = backgroundSample();
+const presets = { palette: palettes, fonts, shape: shapes, pattern: patterns, texture: textures };
+---
+
+<BaseLayout title={catalogTitle('Bordi tra sezioni')} description={LIBRARY_DESCRIPTION} noindex allFonts siteLayout={false}>
+	{/* Prima delle sezioni, così non si vede il cambio di tema: solo valori ammessi dai preset. */}
+	<script is:inline define:vars={{ presets }}>
+		const params = new URLSearchParams(location.search);
+		for (const [key, values] of Object.entries(presets)) {
+			const value = params.get(key);
+			if (value && values.includes(value)) document.documentElement.dataset[key] = value;
+		}
+	</script>
+	<main data-catalog-edges>
+		<h1 class="sr-only">Bordi tra sezioni: onda, diagonale e curva</h1>
+		{
+			EDGE_SAMPLE.map(({ tone, edge }) => (
+				<SectionFrame edge={edge}>
+					<Component {...fixture.props} tone={tone} site={fixture.site} />
+				</SectionFrame>
+			))
+		}
+	</main>
+</BaseLayout>

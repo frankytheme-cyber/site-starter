@@ -45,7 +45,7 @@ Presentazione dell’attività: titolo, da 1 a 3 paragrafi, foto e, se ci sono, 
 | `stats[].label` | testo | sì, se c’è `stats` | max 40 | «Cosa misura» |
 | `stats[].fonte` | testo | sì, se c’è `stats` | 3–80 | «Fonte» · Obbligatoria per ogni numero; compare sotto il numero. |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`about`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`about`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`), `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)), ed `edge`, il bordo in alto ([bordi tra sezioni](../README.md#bordi-tra-sezioni)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 

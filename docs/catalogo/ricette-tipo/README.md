@@ -4,7 +4,7 @@ Pagine già composte con i blocchi della libreria, da copiare in un sito cliente
 
 | File | Diventa | Sezioni |
 | --- | --- | --- |
-| `artigiano-home.json` | `src/content/pages/index.json` → `/` | hero split con l’effetto alone, servizi con icone, carosello dei lavori, domande frequenti, invito al preventivo con l’effetto aurora |
+| `artigiano-home.json` | `src/content/pages/index.json` → `/` | hero split con l’effetto alone, servizi con icone, carosello dei lavori, domande frequenti, invito al preventivo con l’effetto aurora e il bordo a curva |
 | `artigiano-servizi.json` | `src/content/pages/servizi.json` → `/servizi/` | hero centrato, servizi alternati con foto, come lavoriamo (schede), domande frequenti, invito al preventivo |
 | `artigiano-chi-siamo.json` | `src/content/pages/chi-siamo.json` → `/chi-siamo/` | hero split, storia in schede con foto, carosello di lavori, invito a contattarsi |
 | `artigiano-contatti.json` | `src/content/pages/contatti.json` → `/contatti/` | hero centrato con Chiama e Come arrivare, recapiti, domande sul primo contatto |

@@ -20,7 +20,7 @@ Per il Designer, nei siti cliente, dopo il cancello 1. Il sito si completa, non 
    cp docs/catalogo/ricette-tipo/artigiano-servizi.json src/content/pages/servizi.json
    ```
 
-   `"$schema": "../../../.astro/collections/pages.schema.json"`, `title` ≤ 60, `description` ≤ 160, sezioni piatte (`type`, `variant`, `id`, `tone`, `background` e i campi della scheda), toni alternati, effetti di sfondo su al massimo 3 sezioni non vicine (di solito apertura, un punto chiave, invito finale). Privacy e cookie con `"kind": "legale"` e i testi indicati nel brief.
+   `"$schema": "../../../.astro/collections/pages.schema.json"`, `title` ≤ 60, `description` ≤ 160, sezioni piatte (`type`, `variant`, `id`, `tone`, `background`, `edge` e i campi della scheda), toni alternati, effetti di sfondo su al massimo 3 sezioni non vicine (di solito apertura, un punto chiave, invito finale), bordi in alto su al massimo 2 sezioni, mai sulla prima e solo tra toni diversi. Privacy e cookie con `"kind": "legale"` e i testi indicati nel brief.
 7. **Testi e immagini.** Testi nel tono del brief, entro i limiti delle schede, solo con fatti del brief. Recapiti mai nei testi: nei link `@telefono`, `@whatsapp`, `@email`, `@mappa`, nelle cta `showContacts`. Recensioni e numeri solo dal brief, con `fonte`. Foto solo tra quelle in `src/assets/images/` (le carica il Builder; le foto di prova di `fixtures/` vanno sostituite), con un `alt` che dice cosa mostra; senza foto, la variante senza foto.
    Se il brief richiede una gallery con immagini da una fonte autorizzata da Simone,
    chiedi al PM la consegna del Builder prima della composizione: non omettere la

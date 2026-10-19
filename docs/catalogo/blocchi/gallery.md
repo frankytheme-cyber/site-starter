@@ -47,7 +47,7 @@ Le foto dei lavori svolti: una griglia che si ingrandisce al clic, coppie prima 
 | `items[].before.alt` | testo | sì, se c’è `items[].before` | min 5 | «Testo alternativo» |
 | `items[].caption` | testo | no | max 100 | «Didascalia» |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`gallery`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`gallery`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`), `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)), ed `edge`, il bordo in alto ([bordi tra sezioni](../README.md#bordi-tra-sezioni)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 

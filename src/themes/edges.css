@@ -1,0 +1,44 @@
+/*
+ * Bordi tra sezioni (campo edge delle ricette, schede in edges.ts). core/SectionFrame.astro mette
+ * data-edge sul wrapper senza box attorno al blocco; qui la radice <Section> si allunga in alto di
+ * --edge-height con un bordo trasparente (lo sfondo ci passa sotto) e un margine negativo uguale,
+ * così copre il fondo della sezione precedente senza spostare il contenuto. Una maschera dà la forma
+ * alla fascia: sopra la forma si vede la sezione precedente. Decoro e texture (::before, ::after) si
+ * allungano con la fascia. La fascia resta più bassa del padding delle sezioni (py-16, sm:py-24),
+ * quindi non copre mai il contenuto della precedente. Nessun colore: il contrasto non cambia.
+ */
+[data-edge] {
+	--edge-height: clamp(1.5rem, 4vw, 3rem);
+}
+
+[data-edge] > [data-tone] {
+	margin-top: calc(-1 * var(--edge-height));
+	border-top: var(--edge-height) solid transparent;
+	/* La forma in alto, alta un pixel in più per non lasciare una riga tra forma e sezione; sotto, tutto pieno. */
+	mask-size: 100% calc(var(--edge-height) + 1px), 100% 100%;
+	mask-position: top, top;
+	mask-repeat: no-repeat;
+}
+
+[data-edge] > [data-tone]::before,
+[data-edge] > [data-tone]::after {
+	top: calc(-1 * var(--edge-height));
+}
+
+[data-edge="onda"] > [data-tone] {
+	mask-image:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40V22C150 4 300 4 450 18S750 38 900 22 1100 8 1200 16V40Z'/%3E%3C/svg%3E"),
+		linear-gradient(transparent var(--edge-height), black var(--edge-height));
+}
+
+[data-edge="diagonale"] > [data-tone] {
+	mask-image:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 10L100 0V10Z'/%3E%3C/svg%3E"),
+		linear-gradient(transparent var(--edge-height), black var(--edge-height));
+}
+
+[data-edge="curva"] > [data-tone] {
+	mask-image:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 10Q50 -10 100 10Z'/%3E%3C/svg%3E"),
+		linear-gradient(transparent var(--edge-height), black var(--edge-height));
+}

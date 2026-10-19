@@ -878,6 +878,17 @@ collections:
                     pattern:
                       - ^[\s\S]{5,}$
                       - almeno 5 caratteri
+              - name: overlay
+                label: Velatura
+                hint: "Sopra la foto della variante full: scura (nera) o colorata (col colore principale del sito); il testo resta bianco e leggibile"
+                required: false
+                default: scura
+                widget: select
+                options:
+                  - label: Scura
+                    value: scura
+                  - label: Colorata
+                    value: colorata
               - name: id
                 label: Ancora
                 hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
@@ -913,6 +924,21 @@ collections:
                     value: aurora
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: accordion
             label: Accordion
             widget: object
@@ -1003,6 +1029,21 @@ collections:
                     value: pieno
                   - label: Sfumato
                     value: sfumato
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: carousel
             label: Carosello
             widget: object
@@ -1478,6 +1519,21 @@ collections:
                     value: alone
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: about
             label: Chi siamo
             widget: object
@@ -1971,6 +2027,21 @@ collections:
                     value: alone
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: process
             label: Come lavoriamo
             widget: object
@@ -2437,6 +2508,21 @@ collections:
                     value: alone
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: gallery
             label: Galleria
             widget: object
@@ -2562,6 +2648,21 @@ collections:
                     value: alone
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: features
             label: Punti di forza
             widget: object
@@ -2986,6 +3087,21 @@ collections:
                     value: alone
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: testimonials
             label: Recensioni
             widget: object
@@ -3099,6 +3215,21 @@ collections:
                     value: alone
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: tabs
             label: Schede
             widget: object
@@ -3571,6 +3702,21 @@ collections:
                     value: pieno
                   - label: Sfumato
                     value: sfumato
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: services
             label: Servizi
             widget: object
@@ -4383,6 +4529,21 @@ collections:
                     value: alone
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: contact
             label: Contatti
             widget: object
@@ -4812,6 +4973,21 @@ collections:
                     value: pieno
                   - label: Sfumato
                     value: sfumato
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: cta
             label: Invito all’azione
             widget: object
@@ -5611,6 +5787,21 @@ collections:
                     value: aurora
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: form
             label: Modulo di contatto
             widget: object
@@ -5699,6 +5890,21 @@ collections:
                     value: pieno
                   - label: Sfumato
                     value: sfumato
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
           - name: areas
             label: Zone servite
             widget: object
@@ -5783,6 +5989,21 @@ collections:
                     value: alone
                   - label: Decoro
                     value: decoro
+              - name: edge
+                label: Bordo in alto
+                hint: "Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso"
+                required: false
+                default: dritto
+                widget: select
+                options:
+                  - label: Dritto
+                    value: dritto
+                  - label: Onda
+                    value: onda
+                  - label: Diagonale
+                    value: diagonale
+                  - label: Curva
+                    value: curva
         min: 1
         collapsed: true
   - name: site

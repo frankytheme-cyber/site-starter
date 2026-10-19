@@ -35,7 +35,7 @@ Elenco delle zone coperte dal servizio, con un eventuale link alla mappa della s
 | `items[].name` | testo | sì | max 70 | «Zona» |
 | `items[].text` | testo | no | max 160 | «Dettaglio» |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`areas`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`areas`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`), `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)), ed `edge`, il bordo in alto ([bordi tra sezioni](../README.md#bordi-tra-sezioni)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 

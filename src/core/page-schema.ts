@@ -1,12 +1,13 @@
 import type { SchemaContext } from 'astro:content';
 import { z } from 'astro/zod';
 import { allowedBackgrounds, BACKGROUND_META, type Background } from '../themes/backgrounds';
+import { EDGE_META, EDGES } from '../themes/edges';
 import { blockMetas, blockSchemas, blockTypesOf } from './block-schemas';
 import { TONES } from './block-types';
 
 /*
  * Ricetta di una pagina (src/content/pages/*.json): metadati e sezioni in ordine.
- * Ogni sezione è PIATTA: le props del blocco stanno accanto a type, id, tone e background.
+ * Ogni sezione è PIATTA: le props del blocco stanno accanto a type, id, tone, background ed edge.
  *   { "type": "hero", "id": "inizio", "tone": "default", "background": "alone", "variant": "split", "title": "..." }
  */
 
@@ -28,6 +29,15 @@ const sectionBackground = (type: string) =>
 			'Effetto dello sfondo|Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine',
 		);
 
+/** Bordo in alto della sezione: la forma che copre il fondo della sezione precedente. */
+const sectionEdge = z
+	.enum(EDGES)
+	.meta({ optionLabels: Object.fromEntries(Object.entries(EDGE_META).map(([key, { name }]) => [key, name])) })
+	.default('dritto')
+	.describe(
+		'Bordo in alto|Forma del bordo superiore della sezione, nel suo colore: dritto, onda, diagonale, curva. Al massimo 2 per pagina, mai sulla prima sezione, solo dopo una sezione di sfondo diverso',
+	);
+
 /** Uno schema per blocco di pagina (scope "page"): le sue props più i campi della sezione. */
 function sectionSchemas(context: SchemaContext) {
 	const sections = blockTypesOf('page').map((type) =>
@@ -40,6 +50,7 @@ function sectionSchemas(context: SchemaContext) {
 				.default('default')
 				.describe('Sfondo|default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine'),
 			background: sectionBackground(type),
+			edge: sectionEdge,
 		}),
 	);
 	if (sections.length === 0) throw new Error('Nessun blocco di pagina in src/blocks/');

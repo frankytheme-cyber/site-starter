@@ -89,6 +89,7 @@
 			"id": "preventivo",
 			"tone": "primary",
 			"background": "aurora",
+			"edge": "curva",
 			"variant": "banner",
 			"title": "DA-COMPILARE: invito a chiedere un preventivo",
 			"text": "DA-COMPILARE: cosa succede dopo la richiesta (sopralluogo, tempi di risposta).",

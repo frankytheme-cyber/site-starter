@@ -8,7 +8,8 @@
  * - per ogni effetto di sfondo tranne pieno e decoro, uno scatto desktop di /catalogo/sfondi/<effetto>/
  *   (una cta sui tre toni): sfondo-<effetto>-desktop.webp;
  * - per ogni decoro tranne nessuno, /catalogo/sfondi/decoro/?pattern=: decoro-<decoro>-desktop.webp;
- * - per ogni texture tranne liscia, /catalogo/sfondi/aurora/?texture=: texture-<texture>-desktop.webp.
+ * - per ogni texture tranne liscia, /catalogo/sfondi/aurora/?texture=: texture-<texture>-desktop.webp;
+ * - i bordi tra sezioni, /catalogo/sfondi/bordi/: bordi-desktop.webp.
  * Prima di ogni scatto si aspettano i font e tutte le immagini (anche quelle lazy); movimento ridotto.
  * Gli screenshot che non corrispondono più a una variante vengono tolti.
  *
@@ -23,6 +24,7 @@ import { chromium, type Page } from 'playwright';
 import sharp from 'sharp';
 import {
 	backgroundScreenshotName,
+	EDGES_SCREENSHOT,
 	paletteScreenshotName,
 	patternScreenshotName,
 	SCREEN_WIDTHS,
@@ -114,6 +116,7 @@ try {
 			for (const background of backgrounds) await shoot(page, `/catalogo/sfondi/${background}/`, backgroundScreenshotName(background));
 			for (const pattern of patterns) await shoot(page, `/catalogo/sfondi/decoro/?pattern=${pattern}`, patternScreenshotName(pattern));
 			for (const texture of textures) await shoot(page, `/catalogo/sfondi/aurora/?texture=${texture}`, textureScreenshotName(texture));
+			await shoot(page, '/catalogo/sfondi/bordi/', EDGES_SCREENSHOT);
 		}
 		await context.close();
 	}

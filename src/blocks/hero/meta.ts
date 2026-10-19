@@ -11,7 +11,7 @@ export const meta: BlockMeta = {
 	category: 'apertura',
 	scope: 'page',
 	backgrounds: ['pieno', 'sfumato', 'alone', 'aurora', 'decoro'],
-	version: '1.1.1',
+	version: '1.2.0',
 	source: { from: 'originale' },
 	variants: {
 		split: {
@@ -19,7 +19,7 @@ export const meta: BlockMeta = {
 			whenToUse: 'Quasi sempre: equilibrata, va bene per la home di qualsiasi attività che ha una buona foto.',
 		},
 		full: {
-			description: 'Foto a tutta larghezza con velatura scura e testo chiaro sopra.',
+			description: 'Foto a tutta larghezza con velatura (scura o colorata, campo overlay) e testo chiaro sopra.',
 			whenToUse: 'Quando c’è una foto di grande qualità e si vuole impatto; non con foto piccole o confuse.',
 		},
 		centered: {
@@ -32,5 +32,6 @@ export const meta: BlockMeta = {
 	],
 	fieldRules: {
 		image: { requiredFor: ['split', 'full'], note: 'centered non la mostra.' },
+		overlay: { note: 'Solo per la variante full; nelle altre non ha effetto.' },
 	},
 };

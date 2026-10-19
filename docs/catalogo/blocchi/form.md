@@ -35,7 +35,7 @@ Modulo di contatto o richiesta di preventivo, con invio tramite Resend su Vercel
 | `privacyHref` | testo | sì | max 200; percorso interno dell’informativa, es. /privacy/ | «Informativa privacy» · Pagina interna esistente. La presa visione è obbligatoria e separata da eventuali consensi marketing, che il blocco non raccoglie. |
 | `submitLabel` | testo | no (predefinito `"Invia la richiesta"`) | max 25 | «Testo del pulsante» |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`form`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`form`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`), `background`, l’effetto dello sfondo (`pieno`, `sfumato`; [effetti di sfondo](../README.md#effetti-di-sfondo)), ed `edge`, il bordo in alto ([bordi tra sezioni](../README.md#bordi-tra-sezioni)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 

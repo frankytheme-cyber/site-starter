@@ -9,6 +9,9 @@ export const MAX_SECTIONS = 12;
 /** Oltre questo numero di sezioni con un effetto di sfondo (background diverso da pieno) il check recipes avvisa. */
 export const MAX_BACKGROUNDS = 3;
 
+/** Oltre questo numero di sezioni con un bordo in alto (edge diverso da dritto) il check recipes avvisa. */
+export const MAX_EDGES = 2;
+
 export interface RecipeRule {
 	rule: string;
 	/** Chi la verifica: la build (schema delle pagine), il check recipes (errore con --strict) o release. */
@@ -20,6 +23,7 @@ export const RECIPE_RULES: RecipeRule[] = [
 	{ rule: 'Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande); non nelle pagine legali ("kind": "legale").', check: 'recipes' },
 	{ rule: 'Due sezioni vicine non hanno lo stesso tone (default, muted, primary).', check: 'recipes' },
 	{ rule: `Effetto dello sfondo (background) su poche sezioni: al massimo ${MAX_BACKGROUNDS} per pagina, mai in due sezioni vicine.`, check: 'recipes' },
+	{ rule: `Bordo in alto (edge) al massimo su ${MAX_EDGES} sezioni per pagina, mai sulla prima e solo dopo una sezione di tone diverso, altrimenti non si vede.`, check: 'recipes' },
 	{ rule: 'Ogni blocco ammette solo gli effetti di sfondo della sua scheda: aurora solo in hero e cta, moduli, domande, schede e contatti solo pieno o sfumato.', check: 'build' },
 	{ rule: `Al massimo ${MAX_SECTIONS} sezioni: oltre, meglio dividere la pagina.`, check: 'recipes' },
 	{ rule: 'Al massimo un accordion faq per pagina: i dati strutturati FAQPage per Google sono uno solo.', check: 'recipes' },

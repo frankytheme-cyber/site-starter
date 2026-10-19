@@ -1,6 +1,6 @@
 /*
  * Effetti di sfondo delle sezioni (campo background delle ricette, schede in backgrounds.ts).
- * core/SectionBackground.astro mette data-background su un wrapper senza box attorno al blocco: qui
+ * core/SectionFrame.astro mette data-background su un wrapper senza box attorno al blocco: qui
  * l'effetto si dipinge con background-image sulla radice <Section> del blocco (data-tone), sopra il
  * colore del tono. Sulla radice i token sono quelli della palette (--bg, --surface, --primary...):
  * Section li ridefinisce solo per i figli.

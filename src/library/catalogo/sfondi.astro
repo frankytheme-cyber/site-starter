@@ -5,10 +5,11 @@
  */
 import { TONES } from '@/core/block-types';
 import { blocks } from '@/core/registry';
-import SectionBackground from '@/core/SectionBackground.astro';
+import SectionFrame from '@/core/SectionFrame.astro';
 import Container from '@/core/ui/Container.astro';
 import { allowedBackgrounds, BACKGROUND_META, BACKGROUNDS } from '@/themes/backgrounds';
-import { backgroundSample } from './_backgrounds';
+import { EDGE_META } from '@/themes/edges';
+import { backgroundSample, EDGE_SAMPLE } from './_backgrounds';
 import CatalogLayout from './_CatalogLayout.astro';
 import { catalogTitle } from './_library';
 
@@ -42,6 +43,9 @@ const effects = BACKGROUNDS.map((key) => ({
 								</li>
 							))
 						}
+						<li>
+							<a href="#bordi" class="text-primary underline underline-offset-4">Bordi</a>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -75,12 +79,44 @@ const effects = BACKGROUNDS.map((key) => ({
 						</div>
 					</Container>
 					{TONES.map((tone) => (
-						<SectionBackground background={effect.key}>
+						<SectionFrame background={effect.key}>
 							<Component {...fixture.props} tone={tone} site={fixture.site} />
-						</SectionBackground>
+						</SectionFrame>
 					))}
 				</article>
 			))
 		}
+
+		<article id="bordi" class="scroll-mt-20 border-t-4 border-border">
+			<Container>
+				<div class="py-8">
+					<h2 class="text-2xl font-bold">Bordi tra sezioni <code class="text-base font-normal">"edge"</code></h2>
+					<p class="mt-2 max-w-3xl">
+						Il bordo in alto di una sezione prende una forma nel suo colore e copre il fondo della sezione precedente. Si vede
+						solo dopo una sezione di tone diverso; al massimo 2 per pagina, mai sulla prima.
+					</p>
+					<dl class="mt-4 grid gap-4 md:grid-cols-3">
+						{
+							EDGE_SAMPLE.filter(({ edge }) => edge !== 'dritto').map(({ edge }) => (
+								<div>
+									<dt class="font-semibold">
+										{EDGE_META[edge].name} <code class="font-normal">"{edge}"</code>
+									</dt>
+									<dd class="mt-1 text-fg-muted">{EDGE_META[edge].whenToUse}</dd>
+								</div>
+							))
+						}
+					</dl>
+					<a href="/catalogo/sfondi/bordi/" class="mt-4 inline-block text-sm text-primary underline underline-offset-4">Da soli</a>
+				</div>
+			</Container>
+			{
+				EDGE_SAMPLE.map(({ tone, edge }) => (
+					<SectionFrame edge={edge}>
+						<Component {...fixture.props} tone={tone} site={fixture.site} />
+					</SectionFrame>
+				))
+			}
+		</article>
 	</main>
 </CatalogLayout>

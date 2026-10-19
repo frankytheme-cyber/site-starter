@@ -10,7 +10,7 @@ Motore della libreria:
 - `page-schema.ts`: schema delle ricette di pagina (sezioni = unione discriminata dei blocchi di pagina, per `type`).
 - `layout.ts`: schema di `src/content/settings/layout.json` (props di header e footer) e `getLayout()`.
 - `RenderSections.astro`: disegna le sezioni di una ricetta col componente del loro blocco.
-- `SectionBackground.astro`: l'effetto di sfondo di una sezione (`background`): un wrapper senza box con `data-background` attorno al blocco; il CSS è in `src/themes/backgrounds.css`.
+- `SectionFrame.astro`: la cornice di una sezione, effetto di sfondo (`background`) e bordo in alto (`edge`): un wrapper senza box con `data-background` e `data-edge` attorno al blocco; il CSS è in `src/themes/backgrounds.css` e `src/themes/edges.css`.
 - `images.ts`: `imageSchema(image)` per le immagini dei blocchi (percorso relativo al JSON, `alt` di almeno 5 caratteri).
 - `clean-data.ts`: `withoutEmpty()` toglie i campi vuoti che il CMS lascia (`""`, `{}`) prima della validazione.
 - `mode.ts`: modalità del progetto, libreria solo con `SITE_STARTER_LIBRARY=1`, altrimenti sito cliente (`isLibraryMode()`); la usano gli script e le integrazioni (`docs/siti-cliente.md`).
