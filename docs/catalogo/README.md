@@ -113,6 +113,7 @@ Accanto a `tone`, ogni sezione può avere `background`: un effetto dipinto sopra
 | `sfumato` | Sfumato | Sfumatura leggera in diagonale verso un velo di primary; sul tono primary verso primary-hover. | Per dare profondità a una sezione senza farla notare; va bene anche dietro a moduli e domande. | `hero`, `accordion`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `tabs`, `services`, `contact`, `cta`, `form`, `areas` |
 | `alone` | Alone | Due luci morbide in angoli opposti, in alto a destra e in basso a sinistra, con primary e accent molto diluiti. | Per scaldare una sezione da far notare: chi siamo, recensioni, invito finale. | `hero`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `services`, `cta`, `areas` |
 | `aurora` | Aurora | Tre aloni morbidi di primary, accent e del tono vicino, sparsi nella sezione (mesh gradient): l’effetto più scenografico. | Solo per l’apertura (hero) o l’invito finale (cta), una volta per pagina. | `hero`, `cta` |
+| `decoro` | Decoro | Il motivo del sito (pattern di theme.json: punti, griglia, righe, onde, cerchi o arco) che sfuma verso il centro della sezione. | Per dare carattere a una o due sezioni con lo stesso segno in tutto il sito; con pattern «nessuno» la sezione resta piena. | `hero`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `services`, `cta`, `areas` |
 
 ![Effetto Sfumato sui toni default, muted e primary](img/sfondo-sfumato-desktop.webp)
 ![Effetto Alone sui toni default, muted e primary](img/sfondo-alone-desktop.webp)
@@ -120,13 +121,15 @@ Accanto a `tone`, ogni sezione può avere `background`: un effetto dipinto sopra
 
 ## Temi
 
-L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`palette`, `fonts`, `shape`), ciascuno con la sua scheda `<nome>.meta.ts` accanto al CSS in `src/themes/`. Una variante da sola accetta `?palette=…&fonts=…&shape=…`.
+L’aspetto si sceglie in `src/content/settings/theme.json` con cinque preset (`palette`, `fonts`, `shape`, `pattern`, `texture`), ciascuno con la sua scheda `<nome>.meta.ts` accanto al CSS in `src/themes/`. `pattern` e `texture` hanno un valore di partenza (`nessuno`, `liscia`). Una variante da sola accetta `?palette=…&fonts=…&shape=…&pattern=…&texture=…`.
 
 | Chiave | Valori | Note |
 | --- | --- | --- |
 | `palette` | `terracotta` · `ardesia` | «Palette» I colori del sito: ogni palette ha il contrasto AA verificato (check contrast) |
 | `fonts` | `moderno` · `classico` · `elegante` · `autorevole` · `fresco` · `amichevole` · `carattere` · `robusto` · `gourmet` · `preciso` | «Caratteri» La coppia di font per titoli (font-heading) e testo (font-body) |
 | `shape` | `squadrato` · `morbido` · `arrotondato` | «Forma» Il raggio degli angoli di card e riquadri (rounded-box) e dei pulsanti (rounded-button) |
+| `pattern` | `nessuno` · `punti` · `griglia` · `righe` · `onde` · `cerchi` · `arco` | «Decoro» Il motivo delle sezioni con background "decoro", uno per sito; con «nessuno» quelle sezioni restano piene |
+| `texture` | `liscia` · `grana` · `carta` | «Texture» La grana sopra lo sfondo di ogni sezione, mai sopra il testo: liscia (nessuna), grana, carta |
 
 ### Palette
 
@@ -160,6 +163,40 @@ L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`pal
 | `squadrato` | Squadrato | rigoroso, tecnico, essenziale | studi tecnici e professionali, imprese edili e impiantisti, officine e carrozzerie, negozi di elettronica e ferramenta | card `0` · pulsanti `0` |
 | `morbido` | Morbido | equilibrato, cordiale | artigiani e imprese di servizi, negozi e botteghe, la maggior parte delle attività | card `0.75rem` · pulsanti `0.5rem` |
 | `arrotondato` | Arrotondato | amichevole, informale, giocoso | bar e pasticcerie, servizi alla persona (parrucchieri, estetica), attività per famiglie e bambini | card `1.5rem` · pulsanti `9999px` |
+
+### Decori
+
+Il motivo delle sezioni con `"background": "decoro"`, uno per sito: sfuma verso il centro della sezione, nei colori del tono (`--decor-ink`, `--decor-fill` in `src/themes/backgrounds.css`, contrasto verificato). Con `nessuno` quelle sezioni restano piene. Gli screenshot mostrano una cta con il decoro sui tre toni.
+
+| Preset | Nome | Mood | Adatta a |
+| --- | --- | --- | --- |
+| `nessuno` | Nessuno | pulito, essenziale | tutti i siti: le sezioni con background "decoro" restano piene |
+| `punti` | Punti | ordinato, moderno | studi professionali, consulenti, servizi tecnici |
+| `griglia` | Griglia | tecnico, progettuale | architetti e geometri, impiantisti, imprese edili |
+| `righe` | Righe | deciso, artigianale | officine, carpenterie e falegnamerie, barbieri |
+| `onde` | Onde | rilassante, marino | stabilimenti balneari, piscine, centri benessere, case vacanza al mare |
+| `cerchi` | Cerchi | morbido, dinamico | idraulici, lavanderie, scuole, associazioni sportive |
+| `arco` | Arco | mediterraneo, accogliente | agriturismi, ristoranti, case vacanza, matrimoni |
+
+![Decoro Punti sui toni default, muted e primary](img/decoro-punti-desktop.webp)
+![Decoro Griglia sui toni default, muted e primary](img/decoro-griglia-desktop.webp)
+![Decoro Righe sui toni default, muted e primary](img/decoro-righe-desktop.webp)
+![Decoro Onde sui toni default, muted e primary](img/decoro-onde-desktop.webp)
+![Decoro Cerchi sui toni default, muted e primary](img/decoro-cerchi-desktop.webp)
+![Decoro Arco sui toni default, muted e primary](img/decoro-arco-desktop.webp)
+
+### Texture
+
+Una grana sopra lo sfondo di ogni sezione, header e footer compresi, mai sopra il testo né sulle foto. Si vede soprattutto sui toni colorati (primary) e sulle sfumature, a cui toglie le bande; sui fondi chiari è appena percettibile, perché il contrasto dei testi è verificato anche sui punti schiariti e scuriti dalla grana. Gli screenshot mostrano una cta con l’effetto aurora sui tre toni.
+
+| Preset | Nome | Mood | Adatta a |
+| --- | --- | --- | --- |
+| `liscia` | Liscia | pulito, nitido | tutti i siti: colori pieni, come senza texture |
+| `grana` | Grana | materico, fotografico | fotografi, studi creativi, caffetterie, negozi |
+| `carta` | Carta | artigianale, caldo, naturale | botteghe artigiane, agriturismi, ristoranti e trattorie, prodotti tipici |
+
+![Texture Grana sull’effetto aurora](img/texture-grana-desktop.webp)
+![Texture Carta sull’effetto aurora](img/texture-carta-desktop.webp)
 
 ## Icone
 

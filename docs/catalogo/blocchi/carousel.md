@@ -44,7 +44,7 @@ Una fila di foto o di card che si scorre in orizzontale, col dito o con le frecc
 | `items[].cta.style` | scelta | no | `primary` · `secondary` · `ghost` · `link` | «Stile» |
 | `items[].cta.icon` | icona | no | [lista icone](../README.md#icone) | «Icona» |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`carousel`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`carousel`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 

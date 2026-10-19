@@ -5,11 +5,11 @@
  * per ogni palette e tono. Solo dati, senza import: lo usano anche gli script.
  */
 
-export const BACKGROUNDS = ['pieno', 'sfumato', 'alone', 'aurora'] as const;
+export const BACKGROUNDS = ['pieno', 'sfumato', 'alone', 'aurora', 'decoro'] as const;
 export type Background = (typeof BACKGROUNDS)[number];
 
 /** Effetti ammessi da un blocco che non ne elenca altri in meta.backgrounds (BlockMeta). */
-export const DEFAULT_BACKGROUNDS: readonly Background[] = ['pieno', 'sfumato', 'alone'];
+export const DEFAULT_BACKGROUNDS: readonly Background[] = ['pieno', 'sfumato', 'alone', 'decoro'];
 
 /** Effetti ammessi nelle sezioni di un blocco: meta.backgrounds o, senza, DEFAULT_BACKGROUNDS. */
 export const allowedBackgrounds = (meta: { backgrounds?: readonly Background[] }): readonly Background[] =>
@@ -45,5 +45,10 @@ export const BACKGROUND_META: Record<Background, BackgroundMeta> = {
 		name: 'Aurora',
 		description: 'Tre aloni morbidi di primary, accent e del tono vicino, sparsi nella sezione (mesh gradient): l’effetto più scenografico.',
 		whenToUse: 'Solo per l’apertura (hero) o l’invito finale (cta), una volta per pagina.',
+	},
+	decoro: {
+		name: 'Decoro',
+		description: 'Il motivo del sito (pattern di theme.json: punti, griglia, righe, onde, cerchi o arco) che sfuma verso il centro della sezione.',
+		whenToUse: 'Per dare carattere a una o due sezioni con lo stesso segno in tutto il sito; con pattern «nessuno» la sezione resta piena.',
 	},
 };

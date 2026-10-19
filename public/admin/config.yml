@@ -911,6 +911,8 @@ collections:
                     value: alone
                   - label: Aurora
                     value: aurora
+                  - label: Decoro
+                    value: decoro
           - name: accordion
             label: Accordion
             widget: object
@@ -1474,6 +1476,8 @@ collections:
                     value: sfumato
                   - label: Alone
                     value: alone
+                  - label: Decoro
+                    value: decoro
           - name: about
             label: Chi siamo
             widget: object
@@ -1965,6 +1969,8 @@ collections:
                     value: sfumato
                   - label: Alone
                     value: alone
+                  - label: Decoro
+                    value: decoro
           - name: process
             label: Come lavoriamo
             widget: object
@@ -2429,6 +2435,8 @@ collections:
                     value: sfumato
                   - label: Alone
                     value: alone
+                  - label: Decoro
+                    value: decoro
           - name: gallery
             label: Galleria
             widget: object
@@ -2552,6 +2560,8 @@ collections:
                     value: sfumato
                   - label: Alone
                     value: alone
+                  - label: Decoro
+                    value: decoro
           - name: features
             label: Punti di forza
             widget: object
@@ -2974,6 +2984,8 @@ collections:
                     value: sfumato
                   - label: Alone
                     value: alone
+                  - label: Decoro
+                    value: decoro
           - name: testimonials
             label: Recensioni
             widget: object
@@ -3085,6 +3097,8 @@ collections:
                     value: sfumato
                   - label: Alone
                     value: alone
+                  - label: Decoro
+                    value: decoro
           - name: tabs
             label: Schede
             widget: object
@@ -4367,6 +4381,8 @@ collections:
                     value: sfumato
                   - label: Alone
                     value: alone
+                  - label: Decoro
+                    value: decoro
           - name: contact
             label: Contatti
             widget: object
@@ -5593,6 +5609,8 @@ collections:
                     value: alone
                   - label: Aurora
                     value: aurora
+                  - label: Decoro
+                    value: decoro
           - name: form
             label: Modulo di contatto
             widget: object
@@ -5763,6 +5781,8 @@ collections:
                     value: sfumato
                   - label: Alone
                     value: alone
+                  - label: Decoro
+                    value: decoro
         min: 1
         collapsed: true
   - name: site

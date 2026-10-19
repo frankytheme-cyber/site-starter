@@ -80,7 +80,7 @@ export interface BlockMeta {
 	interactive?: boolean;
 	/**
 	 * Effetti di sfondo ammessi nelle sue sezioni (campo `background`, src/themes/backgrounds.ts),
-	 * "pieno" compreso. Senza: DEFAULT_BACKGROUNDS (pieno, sfumato, alone). aurora solo per apertura
+	 * "pieno" compreso. Senza: DEFAULT_BACKGROUNDS (pieno, sfumato, alone, decoro). aurora solo per apertura
 	 * e invito finale; pieno e sfumato soli per i blocchi con moduli o testi lunghi. Solo scope "page".
 	 */
 	backgrounds?: Background[];

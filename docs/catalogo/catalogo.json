@@ -980,6 +980,24 @@
 				"cta"
 			],
 			"screenshot": "img/sfondo-aurora-desktop.webp"
+		},
+		{
+			"key": "decoro",
+			"name": "Decoro",
+			"description": "Il motivo del sito (pattern di theme.json: punti, griglia, righe, onde, cerchi o arco) che sfuma verso il centro della sezione.",
+			"whenToUse": "Per dare carattere a una o due sezioni con lo stesso segno in tutto il sito; con pattern «nessuno» la sezione resta piena.",
+			"blocks": [
+				"hero",
+				"carousel",
+				"about",
+				"process",
+				"gallery",
+				"features",
+				"testimonials",
+				"services",
+				"cta",
+				"areas"
+			]
 		}
 	],
 	"themes": {
@@ -1034,6 +1052,42 @@
 				},
 				"label": "Forma",
 				"hint": "Il raggio degli angoli di card e riquadri (rounded-box) e dei pulsanti (rounded-button)"
+			},
+			{
+				"path": "pattern",
+				"type": "scelta",
+				"required": false,
+				"default": "nessuno",
+				"limits": "`nessuno` · `punti` · `griglia` · `righe` · `onde` · `cerchi` · `arco`",
+				"constraints": {
+					"values": [
+						"nessuno",
+						"punti",
+						"griglia",
+						"righe",
+						"onde",
+						"cerchi",
+						"arco"
+					]
+				},
+				"label": "Decoro",
+				"hint": "Il motivo delle sezioni con background \"decoro\", uno per sito; con «nessuno» quelle sezioni restano piene"
+			},
+			{
+				"path": "texture",
+				"type": "scelta",
+				"required": false,
+				"default": "liscia",
+				"limits": "`liscia` · `grana` · `carta`",
+				"constraints": {
+					"values": [
+						"liscia",
+						"grana",
+						"carta"
+					]
+				},
+				"label": "Texture",
+				"hint": "La grana sopra lo sfondo di ogni sezione, mai sopra il testo: liscia (nessuna), grana, carta"
 			}
 		],
 		"palettes": [
@@ -1307,6 +1361,150 @@
 				"boxRadius": "1.5rem",
 				"buttonRadius": "9999px"
 			}
+		],
+		"patterns": [
+			{
+				"key": "nessuno",
+				"name": "Nessuno",
+				"mood": [
+					"pulito",
+					"essenziale"
+				],
+				"adattoA": [
+					"tutti i siti: le sezioni con background \"decoro\" restano piene"
+				]
+			},
+			{
+				"key": "punti",
+				"name": "Punti",
+				"mood": [
+					"ordinato",
+					"moderno"
+				],
+				"adattoA": [
+					"studi professionali",
+					"consulenti",
+					"servizi tecnici"
+				],
+				"screenshot": "img/decoro-punti-desktop.webp"
+			},
+			{
+				"key": "griglia",
+				"name": "Griglia",
+				"mood": [
+					"tecnico",
+					"progettuale"
+				],
+				"adattoA": [
+					"architetti e geometri",
+					"impiantisti",
+					"imprese edili"
+				],
+				"screenshot": "img/decoro-griglia-desktop.webp"
+			},
+			{
+				"key": "righe",
+				"name": "Righe",
+				"mood": [
+					"deciso",
+					"artigianale"
+				],
+				"adattoA": [
+					"officine",
+					"carpenterie e falegnamerie",
+					"barbieri"
+				],
+				"screenshot": "img/decoro-righe-desktop.webp"
+			},
+			{
+				"key": "onde",
+				"name": "Onde",
+				"mood": [
+					"rilassante",
+					"marino"
+				],
+				"adattoA": [
+					"stabilimenti balneari",
+					"piscine",
+					"centri benessere",
+					"case vacanza al mare"
+				],
+				"screenshot": "img/decoro-onde-desktop.webp"
+			},
+			{
+				"key": "cerchi",
+				"name": "Cerchi",
+				"mood": [
+					"morbido",
+					"dinamico"
+				],
+				"adattoA": [
+					"idraulici",
+					"lavanderie",
+					"scuole",
+					"associazioni sportive"
+				],
+				"screenshot": "img/decoro-cerchi-desktop.webp"
+			},
+			{
+				"key": "arco",
+				"name": "Arco",
+				"mood": [
+					"mediterraneo",
+					"accogliente"
+				],
+				"adattoA": [
+					"agriturismi",
+					"ristoranti",
+					"case vacanza",
+					"matrimoni"
+				],
+				"screenshot": "img/decoro-arco-desktop.webp"
+			}
+		],
+		"textures": [
+			{
+				"key": "liscia",
+				"name": "Liscia",
+				"mood": [
+					"pulito",
+					"nitido"
+				],
+				"adattoA": [
+					"tutti i siti: colori pieni, come senza texture"
+				]
+			},
+			{
+				"key": "grana",
+				"name": "Grana",
+				"mood": [
+					"materico",
+					"fotografico"
+				],
+				"adattoA": [
+					"fotografi",
+					"studi creativi",
+					"caffetterie",
+					"negozi"
+				],
+				"screenshot": "img/texture-grana-desktop.webp"
+			},
+			{
+				"key": "carta",
+				"name": "Carta",
+				"mood": [
+					"artigianale",
+					"caldo",
+					"naturale"
+				],
+				"adattoA": [
+					"botteghe artigiane",
+					"agriturismi",
+					"ristoranti e trattorie",
+					"prodotti tipici"
+				],
+				"screenshot": "img/texture-carta-desktop.webp"
+			}
 		]
 	},
 	"blocks": [
@@ -1425,7 +1623,8 @@
 				"pieno",
 				"sfumato",
 				"alone",
-				"aurora"
+				"aurora",
+				"decoro"
 			],
 			"variants": [
 				{
@@ -1884,7 +2083,8 @@
 			"backgrounds": [
 				"pieno",
 				"sfumato",
-				"alone"
+				"alone",
+				"decoro"
 			],
 			"variants": [
 				{
@@ -2163,7 +2363,8 @@
 			"backgrounds": [
 				"pieno",
 				"sfumato",
-				"alone"
+				"alone",
+				"decoro"
 			],
 			"variants": [
 				{
@@ -2435,7 +2636,8 @@
 			"backgrounds": [
 				"pieno",
 				"sfumato",
-				"alone"
+				"alone",
+				"decoro"
 			],
 			"variants": [
 				{
@@ -2673,7 +2875,8 @@
 			"backgrounds": [
 				"pieno",
 				"sfumato",
-				"alone"
+				"alone",
+				"decoro"
 			],
 			"variants": [
 				{
@@ -2925,7 +3128,8 @@
 			"backgrounds": [
 				"pieno",
 				"sfumato",
-				"alone"
+				"alone",
+				"decoro"
 			],
 			"variants": [
 				{
@@ -3108,7 +3312,8 @@
 			"backgrounds": [
 				"pieno",
 				"sfumato",
-				"alone"
+				"alone",
+				"decoro"
 			],
 			"variants": [
 				{
@@ -3573,7 +3778,8 @@
 			"backgrounds": [
 				"pieno",
 				"sfumato",
-				"alone"
+				"alone",
+				"decoro"
 			],
 			"variants": [
 				{
@@ -4059,7 +4265,8 @@
 				"pieno",
 				"sfumato",
 				"alone",
-				"aurora"
+				"aurora",
+				"decoro"
 			],
 			"variants": [
 				{
@@ -4443,7 +4650,8 @@
 			"backgrounds": [
 				"pieno",
 				"sfumato",
-				"alone"
+				"alone",
+				"decoro"
 			],
 			"variants": [
 				{

@@ -37,7 +37,7 @@ Da 3 a 6 vantaggi o punti di forza dell’attività, ognuno con icona, titolo e 
 | `items[].title` | testo | sì | max 50 | «Titolo del punto» |
 | `items[].text` | testo | sì | max 160 | «Descrizione» |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`features`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`features`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
 
 **Esempio pronto** (fixture «3 colonne», una sezione per `sections`; immagini relative a `src/content/pages`):
 

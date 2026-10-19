@@ -57,11 +57,13 @@ I blocchi usano solo token semantici definiti in `@theme inline`, che puntano a 
 | Font | `heading`, `body` |
 | Raggi | `box`, `button` |
 
-**Preset**, scelti con attributi su `<html>` (`data-palette`, `data-fonts`, `data-shape`) letti da `src/content/settings/theme.json`:
+**Preset**, scelti con attributi su `<html>` (`data-palette`, `data-fonts`, `data-shape`, `data-pattern`, `data-texture`) letti da `src/content/settings/theme.json`:
 
 - **Palette** (`palettes/*.css`): ogni coppia testo/sfondo, compresi gli stati hover, ≥ 4,5:1. Metadati `mood` e `adattoA` con più settori, nessuna città o settore unico nel nome.
 - **Font** (`fonts/*.css`): coppie da `@fontsource-variable/*`, self-hosted. Il sito carica solo la coppia scelta, il catalogo tutte.
 - **Forma**: `squadrato`, `morbido`, `arrotondato` (raggi di box e bottoni).
+- **Decoro** (`patterns/*.css`, `pattern`, di partenza `nessuno`): il motivo delle sezioni con `background: "decoro"` (punti, griglia, righe, onde, cerchi, arco), nei colori del tono (`--decor-ink`, `--decor-fill` in `backgrounds.css`).
+- **Texture** (`textures/*.css`, `texture`, di partenza `liscia`): grana o carta in soft-light sopra lo sfondo di ogni sezione, mai sopra il testo; rumore SVG con limiti dichiarati, che `check:contrast` usa per verificare i testi.
 
 Il tema non è modificabile da Decap: lo sceglie il Designer, lo approvi tu.
 
@@ -76,7 +78,7 @@ Un blocco è una cartella con quattro file; il registry li raccoglie da solo, se
 | `fixtures.ts` | Almeno un esempio valido per variante; attività di esempio generica, recapiti palesemente finti |
 | `<Nome>.astro` | Radice `<Section>`; solo classi semantiche e primitive del core |
 
-**Campi comuni** aggiunti dal motore a ogni sezione: `id` (ancora, kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l'effetto di sfondo (`pieno`, `sfumato`, `alone`, `aurora`; ammessi per blocco in `meta.ts`, CSS solo con token in `src/themes/backgrounds.css`, contrasto verificato nel punto più carico).
+**Campi comuni** aggiunti dal motore a ogni sezione: `id` (ancora, kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l'effetto di sfondo (`pieno`, `sfumato`, `alone`, `aurora`, `decoro`; ammessi per blocco in `meta.ts`, CSS solo con token in `src/themes/backgrounds.css`, contrasto verificato nel punto più carico).
 
 **Primitive** (`src/core/ui/`, usate dai blocchi, mai nelle ricette):
 

@@ -2,7 +2,7 @@
 import Container from '@/core/ui/Container.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getTheme } from '@/core/settings';
-import { fonts, palettes, shapes } from '@/themes/presets';
+import { fonts, palettes, patterns, shapes, textures } from '@/themes/presets';
 import { LIBRARY_DESCRIPTION } from './_library';
 
 interface Props {
@@ -17,6 +17,8 @@ const controls = [
 	{ key: 'palette', label: 'Palette', options: palettes, value: theme.palette },
 	{ key: 'fonts', label: 'Font', options: fonts, value: theme.fonts },
 	{ key: 'shape', label: 'Forma', options: shapes, value: theme.shape },
+	{ key: 'pattern', label: 'Decoro', options: patterns, value: theme.pattern },
+	{ key: 'texture', label: 'Texture', options: textures, value: theme.texture },
 ];
 ---
 

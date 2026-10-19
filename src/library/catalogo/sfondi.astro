@@ -56,6 +56,9 @@ const effects = BACKGROUNDS.map((key) => ({
 								{effect.name} <code class="text-base font-normal">"background": "{effect.key}"</code>
 							</h2>
 							<p class="mt-2 max-w-3xl">{effect.description}</p>
+							{effect.key === 'decoro' && (
+								<p class="mt-2 max-w-3xl text-fg-muted">Scegli il decoro nella barra in alto: con «nessuno» le sezioni restano piene.</p>
+							)}
 							<dl class="mt-4 grid gap-4 md:grid-cols-2">
 								<div>
 									<dt class="font-semibold">Quando usarlo</dt>

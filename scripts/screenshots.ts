@@ -5,8 +5,10 @@
  *   WebP qualità 75;
  * - per l'hero, uno scatto desktop della prima variante con ogni palette (?palette=):
  *   hero-palette-<palette>-desktop.webp;
- * - per ogni effetto di sfondo tranne pieno, uno scatto desktop di /catalogo/sfondi/<effetto>/ (una
- *   cta sui tre toni): sfondo-<effetto>-desktop.webp.
+ * - per ogni effetto di sfondo tranne pieno e decoro, uno scatto desktop di /catalogo/sfondi/<effetto>/
+ *   (una cta sui tre toni): sfondo-<effetto>-desktop.webp;
+ * - per ogni decoro tranne nessuno, /catalogo/sfondi/decoro/?pattern=: decoro-<decoro>-desktop.webp;
+ * - per ogni texture tranne liscia, /catalogo/sfondi/aurora/?texture=: texture-<texture>-desktop.webp.
  * Prima di ogni scatto si aspettano i font e tutte le immagini (anche quelle lazy); movimento ridotto.
  * Gli screenshot che non corrispondono più a una variante vengono tolti.
  *
@@ -19,7 +21,15 @@ import { mkdirSync, readdirSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium, type Page } from 'playwright';
 import sharp from 'sharp';
-import { backgroundScreenshotName, paletteScreenshotName, SCREEN_WIDTHS, SCREENSHOT_QUALITY, screenshotName } from '../src/core/catalog.ts';
+import {
+	backgroundScreenshotName,
+	paletteScreenshotName,
+	patternScreenshotName,
+	SCREEN_WIDTHS,
+	SCREENSHOT_QUALITY,
+	screenshotName,
+	textureScreenshotName,
+} from '../src/core/catalog.ts';
 import { requireLibraryMode } from '../src/core/mode.ts';
 import { freePort, startPreview, stopPreview } from './checks/lib/preview.ts';
 import { ROOT } from './checks/lib/project.ts';
@@ -35,7 +45,7 @@ const IMAGE_TIMEOUT = 15_000;
 // Fotografa /catalogo, che esiste solo in modalità libreria; la build qui sotto eredita la variabile.
 requireLibraryMode('npm run screenshots');
 
-const { variants, palettes, backgrounds, images, problems } = await generateCatalog();
+const { variants, palettes, backgrounds, patterns, textures, images, problems } = await generateCatalog();
 if (problems.length > 0) {
 	console.error('Schede del catalogo da sistemare prima degli screenshot:');
 	for (const problem of problems) console.error(`  ✗ ${problem}`);
@@ -102,6 +112,8 @@ try {
 		}
 		if (size.name === 'desktop') {
 			for (const background of backgrounds) await shoot(page, `/catalogo/sfondi/${background}/`, backgroundScreenshotName(background));
+			for (const pattern of patterns) await shoot(page, `/catalogo/sfondi/decoro/?pattern=${pattern}`, patternScreenshotName(pattern));
+			for (const texture of textures) await shoot(page, `/catalogo/sfondi/aurora/?texture=${texture}`, textureScreenshotName(texture));
 		}
 		await context.close();
 	}

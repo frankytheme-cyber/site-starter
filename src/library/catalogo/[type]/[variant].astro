@@ -2,13 +2,13 @@
 /**
  * Una variante di un blocco da sola: la prima fixture che la usa, senza la barra del catalogo né
  * header e footer del sito. La usano gli screenshot (npm run screenshots) e chi vuole vedere il
- * blocco a tutta pagina. Il tema si cambia con ?palette=&fonts=&shape= (valori di presets.ts).
+ * blocco a tutta pagina. Il tema si cambia con ?palette=&fonts=&shape=&pattern=&texture= (valori di presets.ts).
  */
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { catalogVariants } from '@/core/catalog';
 import { blocks } from '@/core/registry';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { fonts, palettes, shapes } from '@/themes/presets';
+import { fonts, palettes, patterns, shapes, textures } from '@/themes/presets';
 import { catalogTitle, LIBRARY_DESCRIPTION } from '../_library';
 
 export const getStaticPaths = (() =>
@@ -23,7 +23,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { block, fixture, variant } = Astro.props;
 const { Component } = block;
-const presets = { palette: palettes, fonts, shape: shapes };
+const presets = { palette: palettes, fonts, shape: shapes, pattern: patterns, texture: textures };
 ---
 
 <BaseLayout title={catalogTitle(`${block.meta.name} · ${variant}`)} description={LIBRARY_DESCRIPTION} noindex allFonts siteLayout={false}>
