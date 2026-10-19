@@ -108,7 +108,7 @@ L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`pal
 | Chiave | Valori | Note |
 | --- | --- | --- |
 | `palette` | `terracotta` · `ardesia` | «Palette» I colori del sito: ogni palette ha il contrasto AA verificato (check contrast) |
-| `fonts` | `moderno` · `classico` | «Caratteri» La coppia di font per titoli (font-heading) e testo (font-body) |
+| `fonts` | `moderno` · `classico` · `elegante` · `autorevole` · `fresco` · `amichevole` · `carattere` · `robusto` · `gourmet` · `preciso` | «Caratteri» La coppia di font per titoli (font-heading) e testo (font-body) |
 | `shape` | `squadrato` · `morbido` · `arrotondato` | «Forma» Il raggio degli angoli di card e riquadri (rounded-box) e dei pulsanti (rounded-button) |
 
 ### Palette
@@ -127,6 +127,14 @@ L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`pal
 | --- | --- | --- | --- | --- | --- |
 | `moderno` | Moderno | pulito, tecnico, contemporaneo | impiantisti e servizi tecnici, studi professionali, officine, attività giovani | Manrope | Inter |
 | `classico` | Classico | caldo, tradizionale, leggibile | artigiani e botteghe, ristorazione, turismo e ospitalità, attività di tradizione | Fraunces | Source Sans 3 |
+| `elegante` | Elegante | raffinato, lussuoso, discreto | hotel e dimore storiche, matrimoni ed eventi, gioiellerie e boutique, centri estetici e spa | Cormorant | Jost |
+| `autorevole` | Autorevole | sobrio, affidabile, istituzionale | studi legali e notarili, commercialisti e consulenti, studi medici e dentistici, agenzie immobiliari | Newsreader | Public Sans |
+| `fresco` | Fresco | giovane, dinamico, diretto | palestre e personal trainer, scuole di danza e sport, eventi e intrattenimento, servizi digitali | Outfit | Figtree |
+| `amichevole` | Amichevole | morbido, rassicurante, gentile | asili e ludoteche, pediatri e logopedisti, veterinari e toelettature, negozi per bambini | Nunito | Nunito Sans |
+| `carattere` | Carattere | personale, vivace, contemporaneo | caffetterie e bistrot, birrifici e pub, barbieri e tatuatori, studi creativi | Bricolage Grotesque | Hanken Grotesk |
+| `robusto` | Robusto | deciso, industriale, solido | officine e carrozzerie, imprese edili, carpenterie e fabbri, traslochi e logistica | Big Shoulders | Archivo |
+| `gourmet` | Gourmet | ricercato, goloso, scenografico | ristoranti, enoteche e cantine, pasticcerie e gelaterie, gastronomie | Playfair Display | Work Sans |
+| `preciso` | Preciso | essenziale, tecnico, nitido | architetti e geometri, ingegneri e progettisti, fotografi, studi di design | Sora | Instrument Sans |
 
 ### Forme
 

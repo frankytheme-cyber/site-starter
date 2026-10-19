@@ -1,0 +1,53 @@
+/* Gourmet: Playfair Display per i titoli, Work Sans per il testo. */
+@import "@fontsource-variable/playfair-display";
+@import "@fontsource-variable/work-sans";
+@import "@fontsource-variable/work-sans/wght-italic.css";
+
+/*
+ * Ripieghi con le misure dei font veri, finché non sono scaricati (font-display: swap): lo scambio
+ * non sposta il testo (CLS). Generati da scripts/font-fallbacks.ts, non scritti a mano.
+ */
+/* Playfair Display Variable: ripiego Times New Roman con le sue misure (node scripts/font-fallbacks.ts playfair-display:serif). */
+@font-face {
+	font-family: "Playfair Display Variable ripiego";
+	font-weight: 100 549;
+	src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("Tinos");
+	size-adjust: 111.0%;
+	ascent-override: 97.5%;
+	descent-override: 22.6%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Playfair Display Variable ripiego";
+	font-weight: 550 900;
+	src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"), local("Tinos Bold");
+	size-adjust: 106.9%;
+	ascent-override: 101.2%;
+	descent-override: 23.5%;
+	line-gap-override: 0%;
+}
+
+/* Work Sans Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts work-sans:sans). */
+@font-face {
+	font-family: "Work Sans Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 111.5%;
+	ascent-override: 83.4%;
+	descent-override: 21.8%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Work Sans Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 103.8%;
+	ascent-override: 89.6%;
+	descent-override: 23.4%;
+	line-gap-override: 0%;
+}
+
+[data-fonts="gourmet"] {
+	--heading-font: "Playfair Display Variable", "Playfair Display Variable ripiego", Georgia, serif;
+	--body-font: "Work Sans Variable", "Work Sans Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+}

@@ -1,0 +1,53 @@
+/* Preciso: Sora per i titoli, Instrument Sans per il testo. */
+@import "@fontsource-variable/sora";
+@import "@fontsource-variable/instrument-sans";
+@import "@fontsource-variable/instrument-sans/wght-italic.css";
+
+/*
+ * Ripieghi con le misure dei font veri, finché non sono scaricati (font-display: swap): lo scambio
+ * non sposta il testo (CLS). Generati da scripts/font-fallbacks.ts, non scritti a mano.
+ */
+/* Sora Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts sora:sans). */
+@font-face {
+	font-family: "Sora Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 113.7%;
+	ascent-override: 85.3%;
+	descent-override: 25.5%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Sora Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 107.4%;
+	ascent-override: 90.3%;
+	descent-override: 27.0%;
+	line-gap-override: 0%;
+}
+
+/* Instrument Sans Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts instrument-sans:sans). */
+@font-face {
+	font-family: "Instrument Sans Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 101.8%;
+	ascent-override: 95.3%;
+	descent-override: 24.6%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Instrument Sans Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 98.2%;
+	ascent-override: 98.8%;
+	descent-override: 25.5%;
+	line-gap-override: 0%;
+}
+
+[data-fonts="preciso"] {
+	--heading-font: "Sora Variable", "Sora Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+	--body-font: "Instrument Sans Variable", "Instrument Sans Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+}

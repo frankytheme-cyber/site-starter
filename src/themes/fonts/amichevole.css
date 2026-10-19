@@ -1,0 +1,53 @@
+/* Amichevole: Nunito per i titoli, Nunito Sans per il testo. */
+@import "@fontsource-variable/nunito";
+@import "@fontsource-variable/nunito-sans";
+@import "@fontsource-variable/nunito-sans/wght-italic.css";
+
+/*
+ * Ripieghi con le misure dei font veri, finché non sono scaricati (font-display: swap): lo scambio
+ * non sposta il testo (CLS). Generati da scripts/font-fallbacks.ts, non scritti a mano.
+ */
+/* Nunito Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts nunito:sans). */
+@font-face {
+	font-family: "Nunito Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 100.9%;
+	ascent-override: 100.2%;
+	descent-override: 35.0%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Nunito Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 97.3%;
+	ascent-override: 103.9%;
+	descent-override: 36.3%;
+	line-gap-override: 0%;
+}
+
+/* Nunito Sans Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts nunito-sans:sans). */
+@font-face {
+	font-family: "Nunito Sans Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 100.9%;
+	ascent-override: 100.2%;
+	descent-override: 35.0%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Nunito Sans Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 97.2%;
+	ascent-override: 104.0%;
+	descent-override: 36.3%;
+	line-gap-override: 0%;
+}
+
+[data-fonts="amichevole"] {
+	--heading-font: "Nunito Variable", "Nunito Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+	--body-font: "Nunito Sans Variable", "Nunito Sans Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+}

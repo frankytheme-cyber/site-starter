@@ -1,0 +1,53 @@
+/* Carattere: Bricolage Grotesque per i titoli, Hanken Grotesk per il testo. */
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource-variable/hanken-grotesk";
+@import "@fontsource-variable/hanken-grotesk/wght-italic.css";
+
+/*
+ * Ripieghi con le misure dei font veri, finché non sono scaricati (font-display: swap): lo scambio
+ * non sposta il testo (CLS). Generati da scripts/font-fallbacks.ts, non scritti a mano.
+ */
+/* Bricolage Grotesque Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts bricolage-grotesque:sans). */
+@font-face {
+	font-family: "Bricolage Grotesque Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 105.0%;
+	ascent-override: 88.6%;
+	descent-override: 25.7%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Bricolage Grotesque Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 101.5%;
+	ascent-override: 91.6%;
+	descent-override: 26.6%;
+	line-gap-override: 0%;
+}
+
+/* Hanken Grotesk Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts hanken-grotesk:sans). */
+@font-face {
+	font-family: "Hanken Grotesk Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 101.0%;
+	ascent-override: 99.0%;
+	descent-override: 30.0%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Hanken Grotesk Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 95.0%;
+	ascent-override: 105.2%;
+	descent-override: 31.9%;
+	line-gap-override: 0%;
+}
+
+[data-fonts="carattere"] {
+	--heading-font: "Bricolage Grotesque Variable", "Bricolage Grotesque Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+	--body-font: "Hanken Grotesk Variable", "Hanken Grotesk Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+}

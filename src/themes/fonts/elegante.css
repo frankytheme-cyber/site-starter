@@ -1,0 +1,53 @@
+/* Elegante: Cormorant per i titoli, Jost per il testo. */
+@import "@fontsource-variable/cormorant";
+@import "@fontsource-variable/jost";
+@import "@fontsource-variable/jost/wght-italic.css";
+
+/*
+ * Ripieghi con le misure dei font veri, finché non sono scaricati (font-display: swap): lo scambio
+ * non sposta il testo (CLS). Generati da scripts/font-fallbacks.ts, non scritti a mano.
+ */
+/* Cormorant Variable: ripiego Times New Roman con le sue misure (node scripts/font-fallbacks.ts cormorant:serif). */
+@font-face {
+	font-family: "Cormorant Variable ripiego";
+	font-weight: 100 549;
+	src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("Tinos");
+	size-adjust: 97.1%;
+	ascent-override: 95.2%;
+	descent-override: 29.6%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Cormorant Variable ripiego";
+	font-weight: 550 900;
+	src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"), local("Tinos Bold");
+	size-adjust: 91.9%;
+	ascent-override: 100.5%;
+	descent-override: 31.2%;
+	line-gap-override: 0%;
+}
+
+/* Jost Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts jost:sans). */
+@font-face {
+	font-family: "Jost Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 97.0%;
+	ascent-override: 110.3%;
+	descent-override: 38.7%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Jost Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 98.6%;
+	ascent-override: 108.5%;
+	descent-override: 38.0%;
+	line-gap-override: 0%;
+}
+
+[data-fonts="elegante"] {
+	--heading-font: "Cormorant Variable", "Cormorant Variable ripiego", Georgia, serif;
+	--body-font: "Jost Variable", "Jost Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+}
