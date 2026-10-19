@@ -896,6 +896,21 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
+                  - label: Aurora
+                    value: aurora
           - name: accordion
             label: Accordion
             widget: object
@@ -975,6 +990,17 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
           - name: carousel
             label: Carosello
             widget: object
@@ -1435,6 +1461,19 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
           - name: about
             label: Chi siamo
             widget: object
@@ -1913,6 +1952,19 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
           - name: process
             label: Come lavoriamo
             widget: object
@@ -2364,6 +2416,19 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
           - name: gallery
             label: Galleria
             widget: object
@@ -2474,6 +2539,19 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
           - name: features
             label: Punti di forza
             widget: object
@@ -2883,6 +2961,19 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
           - name: testimonials
             label: Recensioni
             widget: object
@@ -2981,6 +3072,19 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
           - name: tabs
             label: Schede
             widget: object
@@ -3442,6 +3546,17 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
           - name: services
             label: Servizi
             widget: object
@@ -4239,6 +4354,19 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
           - name: contact
             label: Contatti
             widget: object
@@ -4657,6 +4785,17 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
           - name: cta
             label: Invito all’azione
             widget: object
@@ -5439,6 +5578,21 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
+                  - label: Aurora
+                    value: aurora
           - name: form
             label: Modulo di contatto
             widget: object
@@ -5516,6 +5670,17 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
           - name: areas
             label: Zone servite
             widget: object
@@ -5585,6 +5750,19 @@ collections:
                   - default
                   - muted
                   - primary
+              - name: background
+                label: Effetto dello sfondo
+                hint: "Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine"
+                required: false
+                default: pieno
+                widget: select
+                options:
+                  - label: Pieno
+                    value: pieno
+                  - label: Sfumato
+                    value: sfumato
+                  - label: Alone
+                    value: alone
         min: 1
         collapsed: true
   - name: site

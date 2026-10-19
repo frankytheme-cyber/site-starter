@@ -1,5 +1,6 @@
 import type { SchemaContext } from 'astro:content';
 import type { z } from 'astro/zod';
+import type { Background } from '../themes/backgrounds';
 import type { SiteSettings, siteSettingsSchema } from './settings';
 
 /**
@@ -77,6 +78,12 @@ export interface BlockMeta {
 		  };
 	/** true se il blocco ha un comportamento in JS: deve seguire docs/blocchi-interattivi.md. */
 	interactive?: boolean;
+	/**
+	 * Effetti di sfondo ammessi nelle sue sezioni (campo `background`, src/themes/backgrounds.ts),
+	 * "pieno" compreso. Senza: DEFAULT_BACKGROUNDS (pieno, sfumato, alone). aurora solo per apertura
+	 * e invito finale; pieno e sfumato soli per i blocchi con moduli o testi lunghi. Solo scope "page".
+	 */
+	backgrounds?: Background[];
 	/** Varianti: nome → com'è e quando usarla. I nomi sono i valori ammessi dalla prop `variant` dello schema. */
 	variants: Record<string, VariantMeta>;
 	/**

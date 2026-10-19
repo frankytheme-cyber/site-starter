@@ -15,6 +15,7 @@ import { z } from 'astro/zod';
 import { CATEGORIES } from '../../src/core/block-types.ts';
 import { fieldPath } from '../../src/core/content-validation.ts';
 import { icons } from '../../src/core/icons.ts';
+import { BACKGROUNDS, DEFAULT_BACKGROUNDS } from '../../src/themes/backgrounds.ts';
 import { checkCatalog } from './catalog.ts';
 import { type CheckContext, collector } from './lib/report.ts';
 import { withProjectModules } from './lib/vite.ts';
@@ -134,6 +135,19 @@ export async function blocks({ root }: CheckContext) {
 				error({ file: metaFile, where: 'scope', message: `"${meta.scope}" non è uno scope ammesso`, hint: "scope: 'page' per le sezioni delle ricette, 'layout' per header e footer (layout.json)" });
 			} else if (meta.scope === 'layout' && layoutShape && !(type in layoutShape)) {
 				error({ file: 'src/core/layout.ts', where: `blocco ${type}`, message: 'blocco di layout senza la sua chiave in layoutSchema', hint: `aggiungi ${type}: schema() del blocco a layoutSchema e a src/content/settings/layout.json` });
+			}
+			if (meta.backgrounds !== undefined) {
+				const values: unknown[] = Array.isArray(meta.backgrounds) ? meta.backgrounds : [];
+				const unknown = values.filter((value) => !(BACKGROUNDS as readonly unknown[]).includes(value));
+				if (!Array.isArray(meta.backgrounds) || unknown.length > 0 || !values.includes('pieno')) {
+					error({
+						file: metaFile,
+						where: 'backgrounds',
+						message: unknown.length > 0 ? `effetti sconosciuti: ${unknown.join(', ')}` : 'elenco senza "pieno"',
+						hint: `un elenco di ${BACKGROUNDS.join(', ')} (src/themes/backgrounds.ts) con "pieno", il valore di partenza; senza il campo valgono ${DEFAULT_BACKGROUNDS.join(', ')}`,
+					});
+				}
+				if (meta.scope === 'layout') error({ file: metaFile, where: 'backgrounds', message: 'un blocco di layout non è una sezione delle ricette', hint: 'togli backgrounds: vale solo per scope "page"' });
 			}
 			const variants = meta.variants && typeof meta.variants === 'object' ? Object.keys(meta.variants) : undefined;
 			if (!variants) error({ file: metaFile, where: 'variants', message: 'manca: usa {} se il blocco non ha varianti' });

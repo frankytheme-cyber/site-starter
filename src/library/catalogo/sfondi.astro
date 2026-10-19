@@ -1,0 +1,83 @@
+---
+/**
+ * Effetti di sfondo delle sezioni (src/themes/backgrounds.ts): per ognuno scheda, blocchi che lo
+ * ammettono e la cta di _backgrounds.ts sui tre toni, con i selettori di palette, font e forma.
+ */
+import { TONES } from '@/core/block-types';
+import { blocks } from '@/core/registry';
+import SectionBackground from '@/core/SectionBackground.astro';
+import Container from '@/core/ui/Container.astro';
+import { allowedBackgrounds, BACKGROUND_META, BACKGROUNDS } from '@/themes/backgrounds';
+import { backgroundSample } from './_backgrounds';
+import CatalogLayout from './_CatalogLayout.astro';
+import { catalogTitle } from './_library';
+
+const { Component, fixture } = backgroundSample();
+const pageBlocks = blocks.filter((block) => block.meta.scope === 'page');
+const effects = BACKGROUNDS.map((key) => ({
+	key,
+	...BACKGROUND_META[key],
+	blocks: pageBlocks.filter((block) => allowedBackgrounds(block.meta).includes(key)).map((block) => block.type),
+}));
+---
+
+<CatalogLayout title={catalogTitle('Sfondi')}>
+	<main>
+		<Container>
+			<div class="py-10">
+				<h1 class="text-3xl font-bold">Effetti di sfondo</h1>
+				<p class="mt-3 max-w-3xl text-lg">
+					Accanto a <code>tone</code>, ogni sezione può avere <code>background</code>: un effetto sopra il colore del tono,
+					con i colori della palette. Il valore di partenza è <code>pieno</code>; gli altri vanno su poche sezioni, al
+					massimo 3 per pagina e mai due vicine. Il contrasto dei testi è verificato su ogni palette e tono.
+				</p>
+				<nav aria-label="Effetti" class="mt-4">
+					<ul class="flex flex-wrap gap-x-6 gap-y-2">
+						{
+							effects.map((effect) => (
+								<li>
+									<a href={`#sfondo-${effect.key}`} class="text-primary underline underline-offset-4">
+										{effect.name}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+			</div>
+		</Container>
+
+		{
+			effects.map((effect) => (
+				<article id={`sfondo-${effect.key}`} class="scroll-mt-20 border-t-4 border-border">
+					<Container>
+						<div class="py-8">
+							<h2 class="text-2xl font-bold">
+								{effect.name} <code class="text-base font-normal">"background": "{effect.key}"</code>
+							</h2>
+							<p class="mt-2 max-w-3xl">{effect.description}</p>
+							<dl class="mt-4 grid gap-4 md:grid-cols-2">
+								<div>
+									<dt class="font-semibold">Quando usarlo</dt>
+									<dd class="mt-1 text-fg-muted">{effect.whenToUse}</dd>
+								</div>
+								<div>
+									<dt class="font-semibold">Blocchi</dt>
+									<dd class="mt-1 text-fg-muted">{effect.blocks.join(', ')}</dd>
+								</div>
+							</dl>
+							<a href={`/catalogo/sfondi/${effect.key}/`} class="mt-4 inline-block text-sm text-primary underline underline-offset-4">
+								Da solo
+							</a>
+						</div>
+					</Container>
+					{TONES.map((tone) => (
+						<SectionBackground background={effect.key}>
+							<Component {...fixture.props} tone={tone} site={fixture.site} />
+						</SectionBackground>
+					))}
+				</article>
+			))
+		}
+	</main>
+</CatalogLayout>

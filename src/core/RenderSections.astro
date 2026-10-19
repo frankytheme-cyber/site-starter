@@ -1,11 +1,14 @@
 ---
 /**
  * Disegna le sezioni di una ricetta: per ogni sezione prende dal registry il componente del
- * suo type e gli passa tutto il resto (props del blocco, id, tone). I dati arrivano già
- * validati dalla collezione "pages", con le immagini già risolte.
+ * suo type e gli passa tutto il resto (props del blocco, id, tone). L'effetto di sfondo
+ * (background) non arriva al blocco: lo mette SectionBackground attorno alla sezione. I dati
+ * arrivano già validati dalla collezione "pages", con le immagini già risolte.
  */
+import type { Background } from '@/themes/backgrounds';
 import type { SectionData } from './page-schema';
 import { blocksByType } from './registry';
+import SectionBackground from './SectionBackground.astro';
 
 interface Props {
 	sections: SectionData[];
@@ -15,10 +18,15 @@ const { sections } = Astro.props;
 ---
 
 {
-	sections.map(({ type, ...props }) => {
+	sections.map(({ type, background, ...props }) => {
 		const block = blocksByType.get(String(type));
 		if (!block) throw new Error(`Sezione di tipo "${type}": nessun blocco src/blocks/${type}/`);
 		const { Component } = block;
-		return <Component {...props} />;
+		// Già validato dallo schema della pagina: solo gli effetti ammessi dalla scheda del blocco.
+		return (
+			<SectionBackground background={background as Background | undefined}>
+				<Component {...props} />
+			</SectionBackground>
+		);
 	})
 }

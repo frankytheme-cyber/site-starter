@@ -10,6 +10,7 @@ export const meta: BlockMeta = {
 		'In apertura di pagina (lì va l’hero) o più di due volte nella stessa pagina: troppi inviti si annullano a vicenda.',
 	category: 'contatti',
 	scope: 'page',
+	backgrounds: ['pieno', 'sfumato', 'alone', 'aurora'],
 	version: '1.1.0',
 	source: { from: 'originale' },
 	variants: {

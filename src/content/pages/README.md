@@ -19,7 +19,7 @@ Schema in `src/core/page-schema.ts`; `"$schema"` in testa al file dà completame
 }
 ```
 
-- **Sezioni piatte:** `type` è il blocco (cartella in `src/blocks/`), `id` un'ancora facoltativa in kebab-case, `tone` uno tra `default`, `muted`, `primary` (default `default`); tutti gli altri campi sono le props del blocco, descritte in `/catalogo/<type>`.
+- **Sezioni piatte:** `type` è il blocco (cartella in `src/blocks/`), `id` un'ancora facoltativa in kebab-case, `tone` uno tra `default`, `muted`, `primary` (default `default`), `background` l'effetto sopra il colore del tono: `pieno` (default), `sfumato`, `alone` o `aurora`, solo quelli ammessi dalla scheda del blocco, al massimo 3 per pagina e mai in due sezioni vicine (`docs/catalogo/README.md`, «Effetti di sfondo»); tutti gli altri campi sono le props del blocco, descritte in `/catalogo/<type>`.
 - **Header e footer non sono sezioni:** sono blocchi di layout, uguali su tutte le pagine; si scelgono in `src/content/settings/layout.json` e li aggiunge `BaseLayout`. La ricetta contiene solo il contenuto della pagina (dentro `<main>`).
 - **Immagini:** percorso relativo a questo file, quindi `../../assets/images/...`; `alt` di almeno 5 caratteri che descrive la foto. `npm run check:recipes` e la build dicono pagina, sezione e campo di un'immagine che non c'è.
 - **Immagine per i social:** `ogImage` è facoltativa; senza, la pagina usa `defaultOgImage` di `site.json` («Dati attività»). Il template ha `og-DA-COMPILARE.jpg`: con `--strict` un nome che contiene `DA-COMPILARE` è un errore.

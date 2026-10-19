@@ -35,6 +35,8 @@ export const SCREEN_WIDTHS: Record<ScreenSize, number> = { desktop: 1280, mobile
 export const screenshotName = (type: string, variant: string, size: ScreenSize) => `${type}-${variant}-${size}.webp`;
 /** Screenshot desktop dell'hero con una palette, in docs/catalogo/img/. */
 export const paletteScreenshotName = (palette: string) => `hero-palette-${palette}-desktop.webp`;
+/** Screenshot desktop di un effetto di sfondo sui tre toni (/catalogo/sfondi/<effetto>/), in docs/catalogo/img/. */
+export const backgroundScreenshotName = (background: string) => `sfondo-${background}-desktop.webp`;
 /** Qualità WebP degli screenshot. */
 export const SCREENSHOT_QUALITY = 75;
 

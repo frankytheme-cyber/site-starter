@@ -64,8 +64,8 @@ Parti solo con `docs/brief.md` approvato (cancello 1). Scrivi:
   gruppo `footer` i link secondari e quelli legali (privacy, cookie).
 - **Pagine** (`src/content/pages/<slug>.json`): una ricetta per ogni pagina prevista dal
   brief, né una in più né una in meno, con tutti i testi.
-- **Nota di design** (`docs/nota-design.md`): per ogni pagina perché questi blocchi, varianti
-  e toni; tema scelto con il motivo e un'alternativa; immagini stock usate e dove; domande
+- **Nota di design** (`docs/nota-design.md`): per ogni pagina perché questi blocchi, varianti,
+  toni ed effetti di sfondo; tema scelto con il motivo e un'alternativa; immagini stock usate e dove; domande
   aperte per Simone.
 
 Non scrivi `site.json` (lo compila il Builder dal brief) e non aggiungi immagini: usi quelle
@@ -80,6 +80,10 @@ richiesta generica di autorizzazione già ricevuta.
 
 - Un solo `hero`, in apertura; di norma una `cta` per pagina (non nelle pagine `"kind": "legale"`).
 - Toni (`default`, `muted`, `primary`) alternati tra sezioni vicine; al massimo 12 sezioni.
+- Effetto di sfondo (`background`: `sfumato`, `alone`, `aurora`) solo dove serve a far notare
+  una sezione: di solito l'apertura, un punto chiave e l'invito finale. Al massimo 3 per pagina,
+  mai due vicine, solo quelli ammessi dalla scheda del blocco; senza motivo resta `pieno`.
+  Sezione «Effetti di sfondo» di `docs/catalogo/README.md`, dal vivo `/catalogo/sfondi`.
 - Titoli e testi entro i limiti dello schema, scritti con le lunghezze reali, nel tono del brief.
 - Recapiti, P.IVA, indirizzi: mai nei testi. Nei link `@telefono`, `@whatsapp`, `@email`,
   `@mappa`.

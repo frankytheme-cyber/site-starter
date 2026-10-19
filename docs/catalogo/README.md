@@ -4,21 +4,23 @@
 
 **site-starter — libreria di blocchi per siti vetrina**, versione **v0.0.3** (`library.manifest.json`). Le fixture usano attività di esempio di settori diversi (artigiano, negozio, ristorante, studio professionale) con recapiti finti. Tutto quello che segue è generato da `npm run gen:catalog` a partire da schemi, schede e fixture; gli screenshot da `npm run screenshots`; gli stessi dati per le macchine sono in [`catalogo.json`](catalogo.json). `npm run check` fallisce se questa cartella non corrisponde agli schemi.
 
-Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.
+Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/sfondi` (gli effetti di sfondo sui tre toni), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.
 
 ## Regole d’oro delle ricette
 
 1. Un solo hero per pagina, come prima sezione: contiene l’unico h1. *(controllo recipes)*
 2. Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande); non nelle pagine legali ("kind": "legale"). *(controllo recipes)*
 3. Due sezioni vicine non hanno lo stesso tone (default, muted, primary). *(controllo recipes)*
-4. Al massimo 12 sezioni: oltre, meglio dividere la pagina. *(controllo recipes)*
-5. Al massimo un accordion faq per pagina: i dati strutturati FAQPage per Google sono uno solo. *(controllo recipes)*
-6. Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json. *(build)*
-7. Recapiti mai nei testi: nei pulsanti i link speciali (@telefono, @whatsapp, @email, @mappa), nelle cta showContacts. *(controllo recipes)*
-8. Link interni solo a pagine e ancore che esistono; ogni id di sezione è in kebab-case e unico nella pagina. *(controllo recipes)*
-9. Ogni foto ha un alt che dice cosa mostra, non il nome del file. *(controllo recipes)*
-10. Testi entro i limiti dei campi (titoli 70 caratteri, pulsanti 25...): sono nelle schede dei blocchi. *(build)*
-11. Niente segnaposto (DA-COMPILARE, lorem, TODO) in una pagina pubblicata. *(controllo release)*
+4. Effetto dello sfondo (background) su poche sezioni: al massimo 3 per pagina, mai in due sezioni vicine. *(controllo recipes)*
+5. Ogni blocco ammette solo gli effetti di sfondo della sua scheda: aurora solo in hero e cta, moduli, domande, schede e contatti solo pieno o sfumato. *(build)*
+6. Al massimo 12 sezioni: oltre, meglio dividere la pagina. *(controllo recipes)*
+7. Al massimo un accordion faq per pagina: i dati strutturati FAQPage per Google sono uno solo. *(controllo recipes)*
+8. Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json. *(build)*
+9. Recapiti mai nei testi: nei pulsanti i link speciali (@telefono, @whatsapp, @email, @mappa), nelle cta showContacts. *(controllo recipes)*
+10. Link interni solo a pagine e ancore che esistono; ogni id di sezione è in kebab-case e unico nella pagina. *(controllo recipes)*
+11. Ogni foto ha un alt che dice cosa mostra, non il nome del file. *(controllo recipes)*
+12. Testi entro i limiti dei campi (titoli 70 caratteri, pulsanti 25...): sono nelle schede dei blocchi. *(build)*
+13. Niente segnaposto (DA-COMPILARE, lorem, TODO) in una pagina pubblicata. *(controllo release)*
 
 <!-- regole-di-composizione:inizio -->
 ## Regole di composizione
@@ -100,6 +102,21 @@ Nei link dei pulsanti (`href` delle cta e del menu) i recapiti non si scrivono: 
 | `@whatsapp` | chat `https://wa.me/` | `whatsapp` |
 | `@email` | `mailto:` | `email` |
 | `@mappa` | ricerca dell’indirizzo su Google Maps | `address` |
+
+## Effetti di sfondo
+
+Accanto a `tone`, ogni sezione può avere `background`: un effetto dipinto sopra il colore del tono, con i colori della palette (CSS in `src/themes/backgrounds.css`). Il valore di partenza è `pieno`; gli altri servono a far notare poche sezioni: al massimo 3 per pagina, mai due vicine (controllo recipes). Ogni blocco ammette solo gli effetti della sua scheda (build). Il contrasto dei testi nel punto più carico è verificato su ogni palette e tono (controllo contrast). Sotto una foto a tutta sezione l’effetto non si vede. Dal vivo su `/catalogo/sfondi`, ogni effetto da solo su `/catalogo/sfondi/<effetto>/`.
+
+| Effetto | Nome | Com’è | Quando usarlo | Blocchi |
+| --- | --- | --- | --- | --- |
+| `pieno` | Pieno | Solo il colore del tono, senza effetti. | La maggior parte delle sezioni: è il valore di partenza. | `hero`, `accordion`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `tabs`, `services`, `contact`, `cta`, `form`, `areas` |
+| `sfumato` | Sfumato | Sfumatura leggera in diagonale verso un velo di primary; sul tono primary verso primary-hover. | Per dare profondità a una sezione senza farla notare; va bene anche dietro a moduli e domande. | `hero`, `accordion`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `tabs`, `services`, `contact`, `cta`, `form`, `areas` |
+| `alone` | Alone | Due luci morbide in angoli opposti, in alto a destra e in basso a sinistra, con primary e accent molto diluiti. | Per scaldare una sezione da far notare: chi siamo, recensioni, invito finale. | `hero`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `services`, `cta`, `areas` |
+| `aurora` | Aurora | Tre aloni morbidi di primary, accent e del tono vicino, sparsi nella sezione (mesh gradient): l’effetto più scenografico. | Solo per l’apertura (hero) o l’invito finale (cta), una volta per pagina. | `hero`, `cta` |
+
+![Effetto Sfumato sui toni default, muted e primary](img/sfondo-sfumato-desktop.webp)
+![Effetto Alone sui toni default, muted e primary](img/sfondo-alone-desktop.webp)
+![Effetto Aurora sui toni default, muted e primary](img/sfondo-aurora-desktop.webp)
 
 ## Temi
 

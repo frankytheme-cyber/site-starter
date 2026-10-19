@@ -5,6 +5,7 @@
 	"sections": [
 		{
 			"type": "hero",
+			"background": "alone",
 			"variant": "split",
 			"eyebrow": "DA-COMPILARE",
 			"title": "DA-COMPILARE: cosa fa l’attività, detto in una riga",
@@ -46,6 +47,7 @@
 			"type": "cta",
 			"id": "preventivo",
 			"tone": "primary",
+			"background": "aurora",
 			"variant": "banner",
 			"title": "DA-COMPILARE: invito a chiedere un preventivo",
 			"text": "DA-COMPILARE: cosa succede dopo la richiesta (sopralluogo, tempi di risposta).",
