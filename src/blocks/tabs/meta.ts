@@ -10,6 +10,7 @@ export const meta: BlockMeta = {
 		'Per informazioni che tutti devono leggere (prezzi, condizioni, garanzie): nelle schede chiuse non le vede quasi nessuno, meglio un testo aperto o services. Per più di 6 voci o etichette lunghe, per confrontare elementi fianco a fianco (servono card o una tabella) e per passaggi in sequenza (meglio accordion o un elenco numerato).',
 	category: 'contenuti',
 	scope: 'page',
+	backgrounds: ['pieno', 'sfumato'],
 	version: '1.0.0',
 	source: { from: 'originale' },
 	interactive: true,

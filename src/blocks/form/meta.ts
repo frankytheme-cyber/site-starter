@@ -5,7 +5,7 @@ export const meta: BlockMeta = {
 	description: 'Modulo di contatto o richiesta di preventivo, con invio tramite Resend su Vercel e collegamento all’informativa privacy.',
 	whenToUse: 'Quando chi visita deve inviare una richiesta scritta. Configura Resend secondo docs/form.md; il destinatario è l’email di site.json. Il catalogo simula l’invio senza spedire email.',
 	avoidWhen: 'Per un semplice invito a chiamare (usa cta o contact), prenotazioni con calendario, pagamenti, allegati o raccolta di dati sensibili.',
-	category: 'contatti', scope: 'page', version: '1.0.1', source: { from: 'originale' }, interactive: true,
+	category: 'contatti', scope: 'page', version: '1.0.1', source: { from: 'originale' }, interactive: true, backgrounds: ['pieno', 'sfumato'],
 	variants: {
 		contatto: {
 			description: 'Introduzione e recapiti affiancati a nome, email, telefono facoltativo e messaggio; su mobile tutto in colonna.',

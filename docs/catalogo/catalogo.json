@@ -15,6 +15,14 @@
 			"check": "recipes"
 		},
 		{
+			"rule": "Effetto dello sfondo (background) su poche sezioni: al massimo 3 per pagina, mai in due sezioni vicine.",
+			"check": "recipes"
+		},
+		{
+			"rule": "Ogni blocco ammette solo gli effetti di sfondo della sua scheda: aurora solo in hero e cta, moduli, domande, schede e contatti solo pieno o sfumato.",
+			"check": "build"
+		},
+		{
 			"rule": "Al massimo 12 sezioni: oltre, meglio dividere la pagina.",
 			"check": "recipes"
 		},
@@ -897,6 +905,83 @@
 			"category": "Marchi"
 		}
 	],
+	"backgrounds": [
+		{
+			"key": "pieno",
+			"name": "Pieno",
+			"description": "Solo il colore del tono, senza effetti.",
+			"whenToUse": "La maggior parte delle sezioni: è il valore di partenza.",
+			"blocks": [
+				"hero",
+				"accordion",
+				"carousel",
+				"about",
+				"process",
+				"gallery",
+				"features",
+				"testimonials",
+				"tabs",
+				"services",
+				"contact",
+				"cta",
+				"form",
+				"areas"
+			]
+		},
+		{
+			"key": "sfumato",
+			"name": "Sfumato",
+			"description": "Sfumatura leggera in diagonale verso un velo di primary; sul tono primary verso primary-hover.",
+			"whenToUse": "Per dare profondità a una sezione senza farla notare; va bene anche dietro a moduli e domande.",
+			"blocks": [
+				"hero",
+				"accordion",
+				"carousel",
+				"about",
+				"process",
+				"gallery",
+				"features",
+				"testimonials",
+				"tabs",
+				"services",
+				"contact",
+				"cta",
+				"form",
+				"areas"
+			],
+			"screenshot": "img/sfondo-sfumato-desktop.webp"
+		},
+		{
+			"key": "alone",
+			"name": "Alone",
+			"description": "Due luci morbide in angoli opposti, in alto a destra e in basso a sinistra, con primary e accent molto diluiti.",
+			"whenToUse": "Per scaldare una sezione da far notare: chi siamo, recensioni, invito finale.",
+			"blocks": [
+				"hero",
+				"carousel",
+				"about",
+				"process",
+				"gallery",
+				"features",
+				"testimonials",
+				"services",
+				"cta",
+				"areas"
+			],
+			"screenshot": "img/sfondo-alone-desktop.webp"
+		},
+		{
+			"key": "aurora",
+			"name": "Aurora",
+			"description": "Tre aloni morbidi di primary, accent e del tono vicino, sparsi nella sezione (mesh gradient): l’effetto più scenografico.",
+			"whenToUse": "Solo per l’apertura (hero) o l’invito finale (cta), una volta per pagina.",
+			"blocks": [
+				"hero",
+				"cta"
+			],
+			"screenshot": "img/sfondo-aurora-desktop.webp"
+		}
+	],
 	"themes": {
 		"fields": [
 			{
@@ -1242,6 +1327,7 @@
 				"La variante con-cta richiede la cta in navigation.json.",
 				"Il logo immagine richiede il logo in site.json."
 			],
+			"backgrounds": [],
 			"variants": [
 				{
 					"name": "semplice",
@@ -1334,6 +1420,12 @@
 			"avoidWhen": "A metà pagina o più di una volta nella stessa pagina: contiene l’unico h1. Per inviti all’azione intermedi serve un blocco dedicato.",
 			"rules": [
 				"Le varianti split e full richiedono la foto (image)."
+			],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone",
+				"aurora"
 			],
 			"variants": [
 				{
@@ -1624,6 +1716,10 @@
 			"rules": [
 				"Al massimo un accordion faq per pagina: ognuno scrive i dati strutturati FAQPage, che Google vuole uno solo (il check recipes avvisa). Per altre sezioni da aprire si usa contenuti."
 			],
+			"backgrounds": [
+				"pieno",
+				"sfumato"
+			],
 			"variants": [
 				{
 					"name": "faq",
@@ -1784,6 +1880,11 @@
 			"avoidWhen": "Per contenuti importanti: le slide dopo la prima le guarda poca gente, quindi un messaggio da far leggere a tutti va in un hero o in un testo aperto. Con meno di 3 elementi (usa una griglia, come services) o con testi lunghi. Mai come apertura della pagina al posto dell’hero, e mai a scorrimento automatico (non è previsto).",
 			"rules": [
 				"La variante immagini-testo richiede titolo e testo in ogni elemento."
+			],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone"
 			],
 			"variants": [
 				{
@@ -2059,6 +2160,11 @@
 				"La variante immagine-testo richiede la foto (image).",
 				"La variante con-numeri richiede da 2 a 4 numeri (stats), ognuno con la sua fonte."
 			],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone"
+			],
 			"variants": [
 				{
 					"name": "immagine-testo",
@@ -2326,6 +2432,11 @@
 			"whenToUse": "Quando il cliente deve sapere cosa succede dopo averti contattato: preventivo, sopralluogo, lavoro, consegna.",
 			"avoidWhen": "Per un elenco di vantaggi senza ordine (lì va features) o per la storia dell’attività (about). Non inventare tempi: se non sono garantiti, lascia vuoto il campo.",
 			"rules": [],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone"
+			],
 			"variants": [
 				{
 					"name": "passi-numerati",
@@ -2558,6 +2669,11 @@
 			"avoidWhen": "Senza foto vere: non si riempie con immagini d’archivio o inventate, si usa un altro blocco. Con meno di 2 foto. Per foto che accompagnano un testo (about, services). Per una serie da sfogliare con testo e link (carousel).",
 			"rules": [
 				"La variante prima-dopo richiede la foto «prima» (before) in ogni elemento e al massimo 6 coppie."
+			],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone"
 			],
 			"variants": [
 				{
@@ -2806,6 +2922,11 @@
 			"whenToUse": "Per dire perché scegliere l’attività: garanzie, modo di lavorare, cosa la distingue. Di solito dopo i servizi o prima della cta.",
 			"avoidWhen": "Per elencare i servizi (lì va services) o per dare numeri e risultati (lì va about con-numeri, con la fonte). Non per promesse che non si possono dimostrare.",
 			"rules": [],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone"
+			],
 			"variants": [
 				{
 					"name": "3-colonne",
@@ -2983,6 +3104,11 @@
 			"avoidWhen": "Senza recensioni reali: non si inventano né si riassumono. Senza la fonte di ognuna. Per numeri e statistiche (about, con-numeri). Per voti medi o conteggi complessivi, che non sono nel blocco.",
 			"rules": [
 				"La variante singola vuole una sola recensione, cards da 2 a 6, slider da 3 a 10."
+			],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone"
 			],
 			"variants": [
 				{
@@ -3186,6 +3312,10 @@
 			"avoidWhen": "Per informazioni che tutti devono leggere (prezzi, condizioni, garanzie): nelle schede chiuse non le vede quasi nessuno, meglio un testo aperto o services. Per più di 6 voci o etichette lunghe, per confrontare elementi fianco a fianco (servono card o una tabella) e per passaggi in sequenza (meglio accordion o un elenco numerato).",
 			"rules": [
 				"La variante testo-immagine richiede la foto in ogni scheda."
+			],
+			"backgrounds": [
+				"pieno",
+				"sfumato"
 			],
 			"variants": [
 				{
@@ -3439,6 +3569,11 @@
 			"rules": [
 				"La variante cards-icone richiede l’icona in ogni servizio.",
 				"Le varianti cards-immagine e alternato richiedono la foto in ogni servizio."
+			],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone"
 			],
 			"variants": [
 				{
@@ -3747,6 +3882,10 @@
 			"rules": [
 				"La variante info-cta richiede il pulsante (cta)."
 			],
+			"backgrounds": [
+				"pieno",
+				"sfumato"
+			],
 			"variants": [
 				{
 					"name": "info-mappa",
@@ -3915,6 +4054,12 @@
 			"avoidWhen": "In apertura di pagina (lì va l’hero) o più di due volte nella stessa pagina: troppi inviti si annullano a vicenda.",
 			"rules": [
 				"Con showContacts il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp."
+			],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone",
+				"aurora"
 			],
 			"variants": [
 				{
@@ -4155,6 +4300,10 @@
 				"L’informativa privacy deve esistere ed essere approvata per il trattamento e il servizio di invio utilizzati.",
 				"Il destinatario arriva solo dall’email di site.json; chiave API e mittente Resend sono variabili server, mai campi del blocco."
 			],
+			"backgrounds": [
+				"pieno",
+				"sfumato"
+			],
 			"variants": [
 				{
 					"name": "contatto",
@@ -4290,6 +4439,11 @@
 			"avoidWhen": "Per recapiti e orari completi (usa contact), oppure per elencare servizi (usa services). Non aggiungere zone solo per posizionarsi sui motori di ricerca.",
 			"rules": [
 				"Nella variante mappa-link l’indirizzo e il link Maps della sede arrivano da site.json; la mappa non rappresenta i confini delle zone servite."
+			],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone"
 			],
 			"variants": [
 				{
@@ -4442,6 +4596,7 @@
 				"Il titolo della fascia (ctaBandTitle) conta solo con ctaBand attivo.",
 				"Il pulsante WhatsApp della fascia compare solo se site.json ha il numero WhatsApp."
 			],
+			"backgrounds": [],
 			"variants": [
 				{
 					"name": "colonne",

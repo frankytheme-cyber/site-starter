@@ -10,6 +10,7 @@ export const meta: BlockMeta = {
 		'Per informazioni che tutti devono leggere (prezzi, garanzie principali): nascoste in una voce chiusa le legge poca gente, meglio un testo aperto. Con una voce sola o più di 12: dividi in più blocchi.',
 	category: 'contenuti',
 	scope: 'page',
+	backgrounds: ['pieno', 'sfumato'],
 	version: '1.0.0',
 	source: { from: 'originale' },
 	interactive: true,

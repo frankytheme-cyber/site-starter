@@ -1,0 +1,82 @@
+/*
+ * Effetti di sfondo delle sezioni (campo background delle ricette, schede in backgrounds.ts).
+ * core/SectionBackground.astro mette data-background su un wrapper senza box attorno al blocco: qui
+ * l'effetto si dipinge con background-image sulla radice <Section> del blocco (data-tone), sopra il
+ * colore del tono. Sulla radice i token sono quelli della palette (--bg, --surface, --primary...):
+ * Section li ridefinisce solo per i figli.
+ *
+ * Solo token e color-mix. I veli scuri hanno intensità basse: la palette con meno margine
+ * (primary su bg e su surface) decide il massimo. Il check contrast legge questo file: per ogni
+ * palette, tono ed effetto verifica testo, testo secondario, link e anello di focus sul colore pieno
+ * di ogni velo composto sul fondo, e sui veli sovrapposti dove le ellissi si toccano. Formati che
+ * legge: var(--token), color-mix(in oklab, var(--token) N%, transparent | var(--token)) e
+ * radial-gradient(Rx% Ry% at X% Y%, ..., transparent N%).
+ */
+
+/* Sfumato: dal tono, in diagonale, verso un velo di primary (sul muted verso il bg, più chiaro). */
+[data-background="sfumato"] > [data-tone="default"] {
+	background-image: linear-gradient(160deg, transparent 30%, color-mix(in oklab, var(--primary) 10%, var(--bg)));
+}
+
+[data-background="sfumato"] > [data-tone="muted"] {
+	background-image: linear-gradient(160deg, transparent 30%, color-mix(in oklab, var(--primary) 6%, var(--bg)));
+}
+
+[data-background="sfumato"] > [data-tone="primary"] {
+	background-image: linear-gradient(160deg, transparent 30%, var(--primary-hover));
+}
+
+/*
+ * Alone: due luci morbide in angoli opposti, che non si toccano: primary in alto a destra, accent in
+ * basso a sinistra. Sul default sono veli leggeri; sul muted sono luci verso il bg, che alzano il
+ * contrasto invece di abbassarlo; sul primary sono di primary-hover, già AA con primary-fg.
+ */
+[data-background="alone"] > [data-tone="default"] {
+	background-image:
+		radial-gradient(75% 95% at 100% 0%, color-mix(in oklab, var(--primary) 13%, transparent), transparent 70%),
+		radial-gradient(60% 75% at 0% 100%, color-mix(in oklab, var(--accent) 13%, transparent), transparent 72%);
+}
+
+[data-background="alone"] > [data-tone="muted"] {
+	background-image:
+		radial-gradient(75% 95% at 100% 0%, color-mix(in oklab, var(--primary) 10%, var(--bg)), transparent 70%),
+		radial-gradient(60% 75% at 0% 100%, color-mix(in oklab, var(--accent) 10%, var(--bg)), transparent 72%);
+}
+
+[data-background="alone"] > [data-tone="primary"] {
+	background-image:
+		radial-gradient(75% 95% at 100% 0%, color-mix(in oklab, var(--primary-hover) 95%, transparent), transparent 70%),
+		radial-gradient(60% 75% at 0% 100%, color-mix(in oklab, var(--primary-hover) 60%, transparent), transparent 72%);
+}
+
+/*
+ * Aurora: tre aloni (mesh gradient), primary in alto a sinistra, accent a destra, il tono vicino in
+ * basso. Le ellissi non si toccano: il check contrast lo verifica, altrimenti somma i veli.
+ */
+[data-background="aurora"] > [data-tone="default"] {
+	background-image:
+		radial-gradient(55% 75% at 8% 0%, color-mix(in oklab, var(--primary) 14%, transparent), transparent 70%),
+		radial-gradient(50% 60% at 95% 20%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 70%),
+		radial-gradient(70% 70% at 55% 115%, color-mix(in oklab, var(--surface) 90%, transparent), transparent 70%);
+}
+
+[data-background="aurora"] > [data-tone="muted"] {
+	background-image:
+		radial-gradient(55% 75% at 8% 0%, color-mix(in oklab, var(--primary) 10%, var(--bg)), transparent 70%),
+		radial-gradient(50% 60% at 95% 20%, color-mix(in oklab, var(--accent) 12%, var(--bg)), transparent 70%),
+		radial-gradient(70% 70% at 55% 115%, color-mix(in oklab, var(--bg) 90%, transparent), transparent 70%);
+}
+
+[data-background="aurora"] > [data-tone="primary"] {
+	background-image:
+		radial-gradient(55% 75% at 8% 0%, var(--primary-hover), transparent 70%),
+		radial-gradient(50% 60% at 95% 20%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 70%),
+		radial-gradient(70% 70% at 55% 115%, color-mix(in oklab, var(--primary-hover) 70%, transparent), transparent 70%);
+}
+
+/* Chi chiede più contrasto, o usa i colori forzati di Windows, vede il tono pieno. */
+@media (prefers-contrast: more), (forced-colors: active) {
+	[data-background] > [data-tone] {
+		background-image: none;
+	}
+}

@@ -44,7 +44,7 @@ Contenuti alternativi in schede: se ne vede uno alla volta, da desktop con le li
 | `items[].cta.style` | scelta | no | `primary` · `secondary` · `ghost` · `link` | «Stile» |
 | `items[].cta.icon` | icona | no | [lista icone](../README.md#icone) | «Icona» |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`tabs`), `id` (ancora facoltativa, in kebab-case) e `tone` (`default`, `muted`, `primary`): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`tabs`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 

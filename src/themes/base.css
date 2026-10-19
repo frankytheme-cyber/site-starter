@@ -4,6 +4,7 @@
 @import "./shapes/squadrato.css";
 @import "./shapes/morbido.css";
 @import "./shapes/arrotondato.css";
+@import "./backgrounds.css";
 @import "../core/ui/button/button.css";
 
 /* La documentazione cita classi vietate come esempi: non deve generare CSS. */

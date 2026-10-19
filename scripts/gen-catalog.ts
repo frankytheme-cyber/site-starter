@@ -28,6 +28,7 @@ import { type BlockMeta, compareBlocks, type Tone } from '../src/core/block-type
 import * as catalog from '../src/core/catalog.ts';
 import { requireLibraryMode } from '../src/core/mode.ts';
 import { RECIPE_RULES } from '../src/core/recipe-rules.ts';
+import { allowedBackgrounds, BACKGROUND_META, BACKGROUNDS, type BackgroundMeta } from '../src/themes/backgrounds.ts';
 import type { PaletteMeta, PresetMeta } from '../src/themes/presets.ts';
 import { withProjectModules } from './checks/lib/vite.ts';
 import { unwrap, type ZodLike } from './gen-decap-config.ts';
@@ -91,6 +92,8 @@ export interface BlockInfo {
 	whenToUse: string;
 	avoidWhen: string;
 	rules: string[];
+	/** Effetti di sfondo ammessi nelle sue sezioni (meta.backgrounds); vuoto per i blocchi di layout. */
+	backgrounds: string[];
 	variants: VariantInfo[];
 	fields: FieldInfo[];
 	example: { fixture: string; target: 'sections' | 'layout.json'; json: unknown };
@@ -102,6 +105,8 @@ export interface CatalogData {
 	recipeRules: typeof RECIPE_RULES;
 	specialLinks: { href: string; becomes: string; from: string }[];
 	icons: { alias: string; icon: string; category: string; note?: string }[];
+	/** Effetti di sfondo delle sezioni (src/themes/backgrounds.ts), con i blocchi che li ammettono. */
+	backgrounds: (BackgroundMeta & { key: string; blocks: string[]; screenshot?: string })[];
 	themes: {
 		/** Le chiavi di theme.json (themeSchema). */
 		fields: FieldInfo[];
@@ -269,7 +274,7 @@ function blockPage(block: BlockInfo) {
 	const where =
 		block.scope === 'layout'
 			? `Le props si scrivono in \`src/content/settings/layout.json\`, sotto la chiave ${code(block.type)}; BaseLayout disegna il blocco su ogni pagina.`
-			: `Ogni sezione ha anche \`type\` (${code(block.type)}), \`id\` (ancora facoltativa, in kebab-case) e \`tone\` (\`default\`, \`muted\`, \`primary\`): vedi \`src/content/pages/README.md\`.`;
+			: `Ogni sezione ha anche \`type\` (${code(block.type)}), \`id\` (ancora facoltativa, in kebab-case), \`tone\` (\`default\`, \`muted\`, \`primary\`) e \`background\`, l’effetto dello sfondo (${block.backgrounds.map(code).join(', ')}; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi \`src/content/pages/README.md\`.`;
 	const variants = block.variants
 		.map((variant) =>
 			[
@@ -325,7 +330,7 @@ function readmePage(data: CatalogData, rules: string) {
 		GENERATED,
 		'# Catalogo dei blocchi',
 		`**${data.library} — libreria di blocchi per siti vetrina**, versione **v${data.version}** (\`library.manifest.json\`). Le fixture usano attività di esempio di settori diversi (artigiano, negozio, ristorante, studio professionale) con recapiti finti. Tutto quello che segue è generato da \`npm run gen:catalog\` a partire da schemi, schede e fixture; gli screenshot da \`npm run screenshots\`; gli stessi dati per le macchine sono in [\`catalogo.json\`](catalogo.json). \`npm run check\` fallisce se questa cartella non corrisponde agli schemi.`,
-		'Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.',
+		'Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/sfondi` (gli effetti di sfondo sui tre toni), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.',
 		'## Regole d’oro delle ricette',
 		data.recipeRules.map((rule, index) => `${index + 1}. ${rule.rule}${rule.check ? ` *(${checkLabel[rule.check]})*` : ''}`).join('\n'),
 		rules,
@@ -350,6 +355,16 @@ function readmePage(data: CatalogData, rules: string) {
 		'## Link speciali',
 		'Nei link dei pulsanti (`href` delle cta e del menu) i recapiti non si scrivono: si usano questi valori, che la build risolve con i dati di `src/content/settings/site.json` (e si ferma se il dato manca).',
 		table(['Link', 'Diventa', 'Dato di site.json'], data.specialLinks.map((link) => [code(link.href), link.becomes, code(link.from)])),
+		'## Effetti di sfondo',
+		'Accanto a `tone`, ogni sezione può avere `background`: un effetto dipinto sopra il colore del tono, con i colori della palette (CSS in `src/themes/backgrounds.css`). Il valore di partenza è `pieno`; gli altri servono a far notare poche sezioni: al massimo 3 per pagina, mai due vicine (controllo recipes). Ogni blocco ammette solo gli effetti della sua scheda (build). Il contrasto dei testi nel punto più carico è verificato su ogni palette e tono (controllo contrast). Sotto una foto a tutta sezione l’effetto non si vede. Dal vivo su `/catalogo/sfondi`, ogni effetto da solo su `/catalogo/sfondi/<effetto>/`.',
+		table(
+			['Effetto', 'Nome', 'Com’è', 'Quando usarlo', 'Blocchi'],
+			data.backgrounds.map((background) => [code(background.key), background.name, background.description, background.whenToUse, background.blocks.map(code).join(', ')]),
+		),
+		data.backgrounds
+			.filter((background) => background.screenshot)
+			.map((background) => `![Effetto ${background.name} sui toni default, muted e primary](${background.screenshot})`)
+			.join('\n'),
 		'## Temi',
 		'L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`palette`, `fonts`, `shape`), ciascuno con la sua scheda `<nome>.meta.ts` accanto al CSS in `src/themes/`. Una variante da sola accetta `?palette=…&fonts=…&shape=…`.',
 		table(
@@ -504,6 +519,8 @@ export async function generateCatalog() {
 	const variants: { type: string; variant: string }[] = [];
 	const images: string[] = [];
 	const palettes: string[] = [];
+	/** Effetti di sfondo da fotografare (tutti tranne pieno). */
+	const backgrounds: string[] = [];
 
 	await withProjectModules(async (load) => {
 		const { z } = await import('astro/zod');
@@ -579,6 +596,7 @@ export async function generateCatalog() {
 				whenToUse: meta.whenToUse,
 				avoidWhen: meta.avoidWhen,
 				rules: meta.rules ?? [],
+				backgrounds: meta.scope === 'page' ? [...allowedBackgrounds(meta)] : [],
 				variants: blockVariants,
 				fields,
 				example: {
@@ -602,6 +620,16 @@ export async function generateCatalog() {
 		palettes.push(...themes.palettes.map((palette) => palette.key));
 		images.push(...themes.palettes.map((palette) => basename(palette.screenshot)));
 
+		// Effetti di sfondo: uno screenshot desktop dei tre toni per ogni effetto oltre a pieno.
+		const backgroundData = BACKGROUNDS.map((key) => ({
+			key,
+			...BACKGROUND_META[key],
+			blocks: blocks.filter((block) => block.backgrounds.includes(key)).map((block) => block.type),
+			...(key !== 'pieno' && { screenshot: `img/${catalog.backgroundScreenshotName(key)}` }),
+		}));
+		backgrounds.push(...BACKGROUNDS.filter((key) => key !== 'pieno'));
+		images.push(...backgrounds.map((key) => catalog.backgroundScreenshotName(key)));
+
 		const data: CatalogData = {
 			library: 'site-starter',
 			version: String(manifest.version ?? '0.0.0'),
@@ -610,6 +638,7 @@ export async function generateCatalog() {
 			icons: Object.values(icons.iconGroups as Record<string, { label: string; icons: Record<string, string> }>).flatMap(({ label, icons: group }) =>
 				Object.entries(group).map(([alias, icon]) => ({ alias, icon, category: label, ...(iconNotes.has(alias) && { note: iconNotes.get(alias) }) })),
 			),
+			backgrounds: backgroundData,
 			themes,
 			blocks,
 		};
@@ -619,7 +648,7 @@ export async function generateCatalog() {
 		files['ui.md'] = uiPage();
 		files['catalogo.json'] = `${JSON.stringify(data, null, '\t')}\n`;
 	});
-	return { files, images, variants, palettes, problems };
+	return { files, images, variants, palettes, backgrounds, problems };
 }
 
 /** File .md e .json generati (in docs/catalogo e in blocchi/) che il generatore non produce più. */

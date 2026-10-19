@@ -10,6 +10,7 @@ export const meta: BlockMeta = {
 		'Per un semplice invito a chiamare o chiedere un preventivo (usa cta), oppure quando serve un modulo da compilare (usa form).',
 	category: 'contatti',
 	scope: 'page',
+	backgrounds: ['pieno', 'sfumato'],
 	version: '1.0.1',
 	source: { from: 'originale' },
 	interactive: true,

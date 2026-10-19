@@ -1,12 +1,13 @@
 import type { SchemaContext } from 'astro:content';
 import { z } from 'astro/zod';
-import { blockSchemas, blockTypesOf } from './block-schemas';
+import { allowedBackgrounds, BACKGROUND_META, type Background } from '../themes/backgrounds';
+import { blockMetas, blockSchemas, blockTypesOf } from './block-schemas';
 import { TONES } from './block-types';
 
 /*
  * Ricetta di una pagina (src/content/pages/*.json): metadati e sezioni in ordine.
- * Ogni sezione è PIATTA: le props del blocco stanno accanto a type, id e tone.
- *   { "type": "hero", "id": "inizio", "tone": "default", "variant": "split", "title": "..." }
+ * Ogni sezione è PIATTA: le props del blocco stanno accanto a type, id, tone e background.
+ *   { "type": "hero", "id": "inizio", "tone": "default", "background": "alone", "variant": "split", "title": "..." }
  */
 
 const sectionId = z
@@ -14,6 +15,18 @@ const sectionId = z
 	.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'id in kebab-case, solo minuscole, cifre e trattini (es. "preventivo-gratuito")')
 	.optional()
 	.describe('Ancora|Nome della sezione per i link (#nome): minuscole, cifre e trattini');
+
+const backgroundNames = Object.fromEntries(Object.entries(BACKGROUND_META).map(([key, { name }]) => [key, name]));
+
+/** Effetto di sfondo della sezione: solo quelli ammessi dalla scheda del blocco (meta.backgrounds). */
+const sectionBackground = (type: string) =>
+	z
+		.enum(allowedBackgrounds(blockMetas[type]) as [Background, ...Background[]])
+		.meta({ optionLabels: backgroundNames })
+		.default('pieno')
+		.describe(
+			'Effetto dello sfondo|Sopra il colore dello sfondo: sfumato (leggero), alone (luce negli angoli), aurora (più colori, solo apertura e invito finale). Al massimo 3 sezioni per pagina, mai due vicine',
+		);
 
 /** Uno schema per blocco di pagina (scope "page"): le sue props più i campi della sezione. */
 function sectionSchemas(context: SchemaContext) {
@@ -26,6 +39,7 @@ function sectionSchemas(context: SchemaContext) {
 				.enum(TONES)
 				.default('default')
 				.describe('Sfondo|default: chiaro · muted: tenue · primary: colore principale. Alterna gli sfondi tra sezioni vicine'),
+			background: sectionBackground(type),
 		}),
 	);
 	if (sections.length === 0) throw new Error('Nessun blocco di pagina in src/blocks/');

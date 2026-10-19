@@ -7,6 +7,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 ## Non rilasciato
 ### Novità
 
+- Effetti di sfondo delle sezioni: nelle ricette, accanto a `tone`, il campo `background` (`pieno` di partenza, `sfumato`, `alone`, `aurora`) aggiunge un effetto sopra il colore del tono, con i colori della palette e solo CSS. Ogni blocco ammette gli effetti del suo `meta.ts` (`backgrounds`: `aurora` solo in `hero` e `cta`, solo `pieno` e `sfumato` in `form`, `accordion`, `tabs` e `contact`). `check:contrast` verifica testi, link e anello di focus nel punto più carico di ogni effetto, per ogni palette e tono; `check:recipes` avvisa con più di 3 effetti per pagina o due sezioni vicine con effetto. Con `prefers-contrast: more` o i colori forzati resta il tono pieno. Dal vivo su `/catalogo/sfondi`, nel catalogo la sezione «Effetti di sfondo». Nei siti nulla cambia finché una sezione non sceglie un effetto; dopo `blocks:sync` serve `npm run gen:decap` per vedere il campo nel CMS.
+
 - Otto coppie di font nuove, da scegliere in `theme.json` (`fonts`) come le due di prima: `elegante` (Cormorant + Jost), `autorevole` (Newsreader + Public Sans), `fresco` (Outfit + Figtree), `amichevole` (Nunito + Nunito Sans), `carattere` (Bricolage Grotesque + Hanken Grotesk), `robusto` (Big Shoulders + Archivo), `gourmet` (Playfair Display + Work Sans) e `preciso` (Sora + Instrument Sans). Arrivano da `@fontsource-variable` e le serve il sito, con i ripieghi misurati contro il CLS; mood e settori sono nella sezione «Temi» del catalogo. Dopo `blocks:sync` serve `npm install` per i pacchetti nuovi.
 
 ## v0.0.3 (2026-10-19)

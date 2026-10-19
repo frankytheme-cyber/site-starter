@@ -52,7 +52,7 @@ Apertura della pagina: titolo principale, sottotitolo e invito all’azione.
 | `image.src` | immagine | sì, se c’è `image` | foto in src/assets/images | «File» |
 | `image.alt` | testo | sì, se c’è `image` | min 5 | «Testo alternativo» |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`hero`), `id` (ancora facoltativa, in kebab-case) e `tone` (`default`, `muted`, `primary`): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`hero`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `aurora`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 

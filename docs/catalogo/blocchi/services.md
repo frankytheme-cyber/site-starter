@@ -57,7 +57,7 @@ Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione br
 | `items[].link.style` | scelta | no | `primary` · `secondary` · `ghost` · `link` | «Stile» |
 | `items[].link.icon` | icona | no | [lista icone](../README.md#icone) | «Icona» |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`services`), `id` (ancora facoltativa, in kebab-case) e `tone` (`default`, `muted`, `primary`): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`services`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 
