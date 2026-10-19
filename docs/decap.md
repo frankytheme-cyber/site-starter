@@ -22,31 +22,46 @@ Il repository GitHub nella configurazione si ricava, in quest'ordine, da `--repo
 
 Decap accede a GitHub a nome del cliente: serve un piccolo servizio che faccia lo scambio OAuth tenendo segreto il client secret. Se ne usa **uno per tutta l'agenzia**, condiviso da tutti i siti cliente.
 
-### 1. GitHub OAuth App
-
-Nell'organizzazione GitHub dell'agenzia: **Settings → Developer settings → OAuth Apps → New OAuth App**.
-
-- **Application name**: es. «Gestione contenuti».
-- **Homepage URL**: l'indirizzo del worker, es. `https://decap-oauth.<agenzia>.workers.dev`.
-- **Authorization callback URL**: lo stesso indirizzo seguito da `/callback`.
-
-Annota il **Client ID** e genera un **Client secret**.
-
-### 2. Worker
-
-Un Cloudflare Worker (o una funzione serverless equivalente) con due indirizzi:
+Il servizio in uso è `https://sveltia-cms-auth.frankytheme.workers.dev`: un Cloudflare Worker pubblicato dal fork `frankytheme-cyber/sveltia-cms-auth` del progetto open source `sveltia-cms-auth`, compatibile con Decap. Ha due indirizzi:
 
 - `/auth`: manda a GitHub a chiedere l'autorizzazione (scope `repo`, necessario anche per i repository privati);
 - `/callback`: riceve il codice da GitHub, lo scambia con un token e lo passa alla finestra di Decap.
 
-Si può usare un progetto open source già pronto e compatibile con Decap, ad esempio `sveltia-cms-auth`: si pubblica con `wrangler deploy` e si configurano i segreti:
+La radice `/` risponde 404: è normale.
+
+### 1. Worker
+
+Prima il worker, perché il suo indirizzo serve alla OAuth App.
+
+1. Fork di `sveltia/sveltia-cms-auth` su GitHub, poi su Cloudflare **Workers & Pages → Create → Import a repository**. All'app GitHub di Cloudflare dai accesso **solo** al fork, mai ai repository dei siti (stanno su Vercel, Cloudflare non li deve vedere).
+2. Impostazioni di build predefinite (`npx wrangler deploy`), preview builds e Cloudflare Access spenti.
+3. In **Settings → Builds → Variables and secrets** aggiungi `PNPM_VERSION` = `10`: il progetto tiene gli `overrides` in `pnpm-workspace.yaml`, che pnpm 9 (il predefinito di Cloudflare) non legge, e l'installazione fallisce con `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`.
+4. In **Domains** accendi l'indirizzo `workers.dev` di **Production** (`Preview` resta spento).
+
+### 2. GitHub OAuth App
+
+Su GitHub: **Settings → Developer settings → OAuth Apps → New OAuth App**.
+
+- **Application name**: es. «Gestione contenuti CMS» (lo vede il cliente al primo accesso).
+- **Homepage URL**: l'indirizzo del worker.
+- **Redirect URI** (prima si chiamava «Authorization callback URL»): l'indirizzo del worker seguito da `/callback`. Senza wildcard.
+- **Enable Device Flow**: spento.
+- **Expire user access tokens**: **spento**. Decap non rinnova il token: con la scadenza il cliente verrebbe disconnesso dopo qualche ora, anche a metà di una modifica.
+
+Annota il **Client ID** e genera un **Client secret** (si vede una volta sola).
+
+### 3. Segreti del worker
+
+In **Settings → Runtime variables and secrets** del worker, tutti di tipo **Secret** (le variabili in chiaro messe dalla dashboard le cancella il prossimo `wrangler deploy`, i secret restano):
 
 - `GITHUB_CLIENT_ID` e `GITHUB_CLIENT_SECRET` dalla OAuth App;
-- l'elenco dei domini dei siti cliente autorizzati a usarlo (es. `ALLOWED_DOMAINS`), da aggiornare a ogni nuovo cliente.
+- `ALLOWED_DOMAINS`: i domini dei siti cliente autorizzati, separati da virgola, senza `https://` (es. `cliente.vercel.app, www.cliente.it`). Da aggiornare a ogni nuovo cliente e quando un sito passa al dominio vero. Mai `*.vercel.app`: autorizzerebbe qualsiasi sito su Vercel.
 
-### 3. Collegamento ai siti
+Prova: `<worker>/auth?provider=github&site_id=<dominio>` rimanda a GitHub per un dominio autorizzato e risponde `UNSUPPORTED_DOMAIN` per gli altri.
 
-In `src/site.config.ts` metti l'indirizzo del worker in `cms.oauthBaseUrl` (Decap chiama `<oauthBaseUrl>/auth`). Nel template va impostato una volta: i siti cliente lo ereditano.
+### 4. Collegamento ai siti
+
+In `src/site.config.ts` c'è l'indirizzo del worker in `cms.oauthBaseUrl` (Decap chiama `<oauthBaseUrl>/auth`). È impostato nel template, quindi i siti creati da qui in poi lo ereditano. `src/site.config.ts` però è un file del sito: `blocks:sync` non lo aggiorna, e nei siti nati prima va cambiato a mano (poi `npm run gen:decap`).
 
 ## Per ogni sito cliente
 
