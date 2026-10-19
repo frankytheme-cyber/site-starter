@@ -2,7 +2,7 @@
   "name": "site-starter",
   "description": "site-starter — libreria di blocchi per siti vetrina",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "node": ">=22.18.0"
   },

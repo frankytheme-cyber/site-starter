@@ -4,7 +4,7 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
-## Non rilasciato
+## v0.0.3 (2026-10-19)
 ### Novità
 
 - Email protetta dai bot dello spam: footer, form e contact non scrivono più l’indirizzo in chiaro nell’HTML. Il nuovo `EmailLink` (`src/core/ui`) lo tiene codificato e lo ricompone con JavaScript nel testo e nel `mailto:`; senza JavaScript si legge «nome chiocciola dominio». I pulsanti `@email` passano da `EmailLink` e compaiono solo con JavaScript. Il JSON-LD dell’attività non ha più l’email. Il check `interactive` ferma ogni pagina con un `mailto:` o l’email di `site.json` in chiaro. Blocchi `footer`, `form` e `contact` alla 1.0.1.
