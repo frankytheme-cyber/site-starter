@@ -39,7 +39,7 @@ La stessa repo vive in due modi, e la modalità la decide solo `SITE_STARTER_LIB
 
 ## Tema
 
-L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `fonts`, `shape`) tra i preset di `src/themes/presets.ts`. Token disponibili:
+L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `fonts`, `shape`, `pattern`, `texture`) tra i preset di `src/themes/presets.ts`: `pattern` è il decoro delle sezioni con `"background": "decoro"` (`nessuno` di partenza), `texture` la grana sopra lo sfondo di ogni sezione (`liscia` di partenza). Token disponibili:
 
 - **Colori:** `bg`, `fg`, `fg-muted`, `surface`, `surface-fg`, `primary`, `primary-fg`, `primary-hover`, `accent`, `accent-fg`, `accent-hover`, `border`, `ring` (+ `white`, `black`, `transparent`, `current`)
 - **Font:** `font-heading`, `font-body`
@@ -62,7 +62,7 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 
 - Ogni pagina è una ricetta JSON in `src/content/pages/` (`index.json` → `/`, `chi-siamo.json` → `/chi-siamo/`), con `"$schema"` per il completamento nell'editor. Formato in `src/content/pages/README.md`, schema in `src/core/page-schema.ts`.
 - Le sezioni sono piatte: `type` (il blocco), `id` facoltativo (ancora in kebab-case), `tone` (`default`, `muted`, `primary`) e accanto le props del blocco. Alterna i toni tra sezioni vicine.
-- Effetto di sfondo: `background` accanto a `tone` (`pieno` di partenza, `sfumato`, `alone`, `aurora`; CSS in `src/themes/backgrounds.css`, solo token). Ogni blocco ammette quelli del suo `meta.ts` (`backgrounds`); al massimo 3 sezioni con effetto per pagina, mai due vicine. `check:contrast` verifica i testi nel punto più carico di ogni effetto, per ogni palette e tono.
+- Effetto di sfondo: `background` accanto a `tone` (`pieno` di partenza, `sfumato`, `alone`, `aurora`, `decoro` con il motivo scelto in `theme.json`; CSS in `src/themes/backgrounds.css`, solo token). Ogni blocco ammette quelli del suo `meta.ts` (`backgrounds`); al massimo 3 sezioni con effetto per pagina, mai due vicine. `check:contrast` verifica i testi nel punto più carico di ogni effetto, per ogni palette, tono e texture.
 - Nei link dei pulsanti i recapiti si scrivono `@telefono`, `@whatsapp`, `@email`, `@mappa`: la build li risolve da `site.json`, mai `tel:` o numeri scritti a mano.
 - Una pagina ha un solo `hero`, in apertura, e di norma una `cta`; le pagine legali (privacy, cookie) hanno `"kind": "legale"` e la cta non serve. Header e footer non sono sezioni. Link interni solo a pagine e ancore che esistono.
 - Prima di pubblicare un sito: `npm run qa -- --strict` (recipes come errori e release: segnaposto `DA-COMPILARE` e `og-DA-COMPILARE`, recapiti scritti a mano, link rotti, bozze linkate, dati legali e link a privacy e cookie nel footer, Open Graph...). Nella libreria `--strict` ferma le regole strutturali e lascia ad avviso i segnaposto del template.

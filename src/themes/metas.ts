@@ -1,4 +1,4 @@
-import { fonts, palettes, type PaletteMeta, type PresetMeta, shapes } from './presets';
+import { fonts, palettes, type PaletteMeta, patterns, type PresetMeta, shapes, textures } from './presets';
 
 /*
  * Schede dei preset (<nome>.meta.ts accanto al CSS), per nome. Un preset senza scheda, o una
@@ -20,4 +20,6 @@ export const presetMetas = {
 	palettes: byName('palettes', palettes, import.meta.glob<PaletteMeta>('./palettes/*.meta.ts', { eager: true, import: 'meta' })),
 	fonts: byName('fonts', fonts, import.meta.glob<PresetMeta>('./fonts/*.meta.ts', { eager: true, import: 'meta' })),
 	shapes: byName('shapes', shapes, import.meta.glob<PresetMeta>('./shapes/*.meta.ts', { eager: true, import: 'meta' })),
+	patterns: byName('patterns', patterns, import.meta.glob<PresetMeta>('./patterns/*.meta.ts', { eager: true, import: 'meta' })),
+	textures: byName('textures', textures, import.meta.glob<PresetMeta>('./textures/*.meta.ts', { eager: true, import: 'meta' })),
 };

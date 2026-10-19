@@ -45,7 +45,7 @@ Le parole dei clienti: recensioni vere con autore e fonte, in griglia, una sola 
 | `items[].fonte` | testo | sì | 2–60 | «Fonte» · Obbligatoria per ogni recensione; compare sotto l’autore. |
 | `items[].href` | testo | no | https://… | «Link alla recensione» · Se c’è, la fonte diventa un link alla recensione originale. |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`testimonials`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`testimonials`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
 
 **Regole:**
 

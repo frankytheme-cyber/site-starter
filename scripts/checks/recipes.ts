@@ -13,7 +13,7 @@
  * - segnaposto (DA-COMPILARE, og-DA-COMPILARE, lorem, TODO, […]): errori nei siti cliente, avvisi
  *   nella libreria, dove il template li contiene per scelta.
  * Sempre avvisi: due sezioni consecutive con lo stesso tone; più di 3 sezioni con un effetto di
- * sfondo, o due vicine; più di 12 sezioni; prima sezione che non è un hero; più di un accordion faq
+ * sfondo, o due vicine; background "decoro" con pattern "nessuno" in theme.json; più di 12 sezioni; prima sezione che non è un hero; più di un accordion faq
  * (i dati strutturati FAQPage sarebbero più di uno); nessuna cta (non nelle pagine legali,
  * "kind": "legale", né in quelle con noindex).
  *
@@ -21,7 +21,7 @@
  * docs/catalogo: le fixture hanno recapiti di prova palesemente finti, le ricette tipo le valida il
  * check blocks.
  */
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { CONTENT_HINT, type ContentSchema, contentProblems, fieldLocation, sectionLabel } from '../../src/core/content-validation.ts';
 import { MAX_BACKGROUNDS, MAX_SECTIONS } from '../../src/core/recipe-rules.ts';
@@ -114,6 +114,8 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 		placeholderRule({ ...finding, placeholder: label });
 
 	const all = loadRecipes(root, (file, message) => rule({ file, message }));
+	// Il decoro del sito (theme.json): senza, le sezioni con background "decoro" restano piene.
+	const pattern = themePattern(root);
 	const resolve = linkResolver(root, all);
 	if (all.length === 0) rule({ file: 'src/content/pages', message: 'nessuna ricetta', hint: 'serve almeno index.json' });
 
@@ -272,6 +274,16 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 				});
 			}
 		}
+		if (pattern === 'nessuno') {
+			for (const { section, index } of content.filter(({ section }) => effectOf(section) === 'decoro')) {
+				warning({
+					file,
+					where: sectionLabel(section, index),
+					message: 'background "decoro" ma il sito non ha un decoro (pattern "nessuno" in theme.json)',
+					hint: 'scegli pattern in src/content/settings/theme.json (punti, griglia, righe, onde, cerchi, arco) o usa un altro effetto',
+				});
+			}
+		}
 		const withEffect = content.filter(({ section }) => effectOf(section) !== 'pieno');
 		if (withEffect.length > MAX_BACKGROUNDS) {
 			warning({
@@ -313,5 +325,15 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 				}
 			});
 		}
+	}
+}
+
+/** Il decoro di theme.json ("nessuno" se manca o il file non si legge: gli errori di schema li dà checkSchemas). */
+function themePattern(root: string): string {
+	try {
+		const theme = JSON.parse(readFileSync(join(root, 'src/content/settings/theme.json'), 'utf8'));
+		return typeof theme.pattern === 'string' ? theme.pattern : 'nessuno';
+	} catch {
+		return 'nessuno';
 	}
 }

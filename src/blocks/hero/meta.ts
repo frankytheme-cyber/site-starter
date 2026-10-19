@@ -10,7 +10,7 @@ export const meta: BlockMeta = {
 		'A metà pagina o più di una volta nella stessa pagina: contiene l’unico h1. Per inviti all’azione intermedi serve un blocco dedicato.',
 	category: 'apertura',
 	scope: 'page',
-	backgrounds: ['pieno', 'sfumato', 'alone', 'aurora'],
+	backgrounds: ['pieno', 'sfumato', 'alone', 'aurora', 'decoro'],
 	version: '1.1.1',
 	source: { from: 'originale' },
 	variants: {

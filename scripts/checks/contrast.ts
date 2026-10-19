@@ -10,7 +10,12 @@
  * sezione (testo, testo secondario, link e il loro passaggio) e l'anello di focus sul colore pieno
  * di ogni velo composto sul fondo del tono e, dove due veli possono toccarsi, sui veli sovrapposti:
  * il punto più carico possibile. Veli e geometria si leggono dal CSS (var(--token), color-mix in
- * oklab, radial-gradient con misure in %), quindi il controllo segue il file.
+ * oklab, radial-gradient con misure in %), quindi il controllo segue il file; i colori del decoro
+ * (--decor-*) coprono tutta la sezione e sono alternativi: ogni disegno ne usa uno.
+ *
+ * Texture (src/themes/textures/): una grana grigia in soft-light sopra ogni sfondo. Dal CSS si
+ * leggono i limiti del rumore (tableValues) e l'opacità: ogni punto qui sopra si verifica anche
+ * schiarito e scurito al massimo dalla grana, per ogni texture.
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -48,6 +53,7 @@ const TONE_TEXT: Record<Tone, [string, number][]> = {
 };
 
 const BACKGROUNDS_FILE = 'src/themes/backgrounds.css';
+const TEXTURES_DIR = 'src/themes/textures';
 
 type Rgb = [number, number, number];
 
@@ -108,6 +114,45 @@ function mixOklab(a: Rgb, b: Rgb, p: number): Rgb {
 
 /** Un colore con trasparenza sopra un fondo pieno, come lo compone il browser (in sRGB). */
 const over = (top: Rgb, bottom: Rgb, alpha: number) => top.map((value, i) => value * alpha + bottom[i] * (1 - alpha)) as Rgb;
+
+/** mix-blend-mode: soft-light (Compositing and Blending Level 1) di un grigio s su un canale b. */
+function softLight(b: number, s: number): number {
+	if (s <= 0.5) return b - (1 - 2 * s) * b * (1 - b);
+	const d = b <= 0.25 ? ((16 * b - 12) * b + 4) * b : Math.sqrt(b);
+	return b + (2 * s - 1) * (d - b);
+}
+
+/** Una texture: rumore grigio tra low e high, in soft-light con questa opacità. */
+interface Texture {
+	name: string;
+	low: number;
+	high: number;
+	opacity: number;
+}
+
+/** Le texture di src/themes/textures/ con una regola ::after: limiti del rumore (tableValues) e opacità. */
+function readTextures(dir: string, error: (finding: { file: string; where?: string; message: string; hint?: string }) => void): Texture[] {
+	if (!existsSync(dir)) return [];
+	const textures: Texture[] = [];
+	for (const file of readdirSync(dir).filter((name) => name.endsWith('.css'))) {
+		const css = readFileSync(join(dir, file), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+		const name = /\[data-texture="([\w-]+)"\]/.exec(css)?.[1];
+		if (!name) continue;
+		const bounds = [...css.matchAll(/tableValues='([\d.]+)\s+([\d.]+)'/g)].map(([, low, high]) => [Number(low), Number(high)]);
+		const opacity = Number(/opacity\s*:\s*([\d.]+)/.exec(css)?.[1]);
+		if (bounds.length === 0 || !Number.isFinite(opacity) || !/mix-blend-mode\s*:\s*soft-light/.test(css)) {
+			error({
+				file: `${TEXTURES_DIR}/${file}`,
+				where: name,
+				message: 'rumore non verificabile',
+				hint: "serve un rumore grigio limitato da feComponentTransfer con tableValues='min max', mix-blend-mode: soft-light e un'opacity",
+			});
+			continue;
+		}
+		textures.push({ name, low: Math.min(...bounds.map(([low]) => low)), high: Math.max(...bounds.map(([, high]) => high)), opacity });
+	}
+	return textures;
+}
 
 /** { nome palette → { token → valore } } dai blocchi [data-palette="..."] { ... }. */
 function readPalettes(css: string): Map<string, Map<string, string>> {
@@ -177,15 +222,19 @@ function readEffects(css: string): EffectRule[] {
 	const source = css.replace(/\/\*[\s\S]*?\*\//g, '');
 	for (const [, selectorList, body] of source.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
 		const value = /background-image\s*:\s*([^;]+);/.exec(body)?.[1];
-		if (!value || value.trim() === 'none') continue;
-		const veils: Veil[] = topLevelFunctions(value).map((gradient) => ({
-			box: boxOf(gradient),
-			colors: [...gradient.matchAll(COLOR)].map(([, mixed, percent, transparent, other, plain]) => {
+		const decor = [...body.matchAll(/--decor-[\w-]+\s*:\s*([^;]+);/g)].map(([, color]) => color);
+		if ((!value || value.trim() === 'none') && decor.length === 0) continue;
+		const colorsIn = (text: string): Layer[] =>
+			[...text.matchAll(COLOR)].map(([, mixed, percent, transparent, other, plain]) => {
 				if (plain) return { token: plain, alpha: 1 };
 				if (transparent) return { token: mixed, alpha: Number(percent) / 100 };
 				return { token: mixed, alpha: 1, mix: { with: other, percent: Number(percent) / 100 } };
-			}),
-		}));
+			});
+		const veils: Veil[] = [
+			...(value && value.trim() !== 'none' ? topLevelFunctions(value).map((gradient) => ({ box: boxOf(gradient), colors: colorsIn(gradient) })) : []),
+			// Ogni disegno del decoro usa uno solo dei colori --decor-*: alternative nello stesso velo, mai sovrapposte.
+			...(decor.length > 0 ? [{ box: WHOLE, colors: decor.flatMap(colorsIn) }] : []),
+		];
 		for (const selector of selectorList.split(',').map((item) => item.trim())) {
 			const match = /^\[data-background="([\w-]+)"\]\s*>\s*\[data-tone="([\w-]+)"\]$/.exec(selector);
 			if (match) rules.push({ background: match[1], tone: match[2] as Tone, veils });
@@ -284,27 +333,39 @@ export function contrast({ root }: CheckContext) {
 	}
 	if (!usable) return findings;
 
+	const textures = readTextures(join(root, TEXTURES_DIR), error);
+	/** Il colore di un punto schiarito e scurito al massimo dalla texture (senza texture, il punto com'è). */
+	const textured = (point: Rgb, texture?: Texture): Rgb[] =>
+		texture ? [texture.low, texture.high].map((gray) => over(point.map((channel) => softLight(channel, gray)) as Rgb, point, texture.opacity)) : [point];
+
 	for (const { palette, vars } of complete) {
 		const color = (token: string) => parseHex(vars.get(token)!);
-		for (const { background, tone, veils } of effects) {
-			const base = color(TONE_BASE[tone]);
-			const colorOf = (layer: Layer) => (layer.mix ? mixOklab(color(layer.token), color(layer.mix.with), layer.mix.percent) : color(layer.token));
-			const stack = (layers: Layer[], below: Rgb) => layers.reduceRight((under, layer) => over(colorOf(layer), under, layer.alpha), below);
-			// Ogni colore di ogni velo sul fondo; poi i veli che si toccano, uno sull'altro (il primo di background-image sta sopra).
-			const points = veils.flatMap((veil) => veil.colors.map((layer) => stack([layer], base)));
-			for (const group of overlappingGroups(veils)) {
-				const combinations = group.reduce<Layer[][]>((all, veil) => all.flatMap((chosen) => veil.colors.map((layer) => [...chosen, layer])), [[]]);
-				points.push(...combinations.map((layers) => stack(layers, base)));
-			}
-			for (const [fg, min] of TONE_TEXT[tone]) {
-				const worst = Math.min(...points.map((point) => ratioOf(color(fg), point)));
-				if (worst < min) {
-					error({
-						file: BACKGROUNDS_FILE,
-						where: `${background} › tone ${tone} › ${palette} › ${fg}`,
-						message: `contrasto ${shown(worst)}:1 nel punto più carico dell’effetto, minimo ${min}:1 (WCAG AA)`,
-						hint: `abbassa le percentuali di color-mix di "${background}" sul tono ${tone}, o rivedi --${fg} della palette ${palette}`,
-					});
+		// Le sezioni senza effetto (pieno) prendono anche loro la texture.
+		const plain: EffectRule[] = TONES.map((tone) => ({ background: 'pieno', tone, veils: [] }));
+		for (const texture of [undefined, ...textures]) {
+			for (const { background, tone, veils } of texture ? [...plain, ...effects] : effects) {
+				const base = color(TONE_BASE[tone]);
+				const colorOf = (layer: Layer) => (layer.mix ? mixOklab(color(layer.token), color(layer.mix.with), layer.mix.percent) : color(layer.token));
+				const stack = (layers: Layer[], below: Rgb) => layers.reduceRight((under, layer) => over(colorOf(layer), under, layer.alpha), below);
+				// Ogni colore di ogni velo sul fondo; poi i veli che si toccano, uno sull'altro (il primo di background-image sta sopra).
+				const points = veils.length === 0 ? [base] : veils.flatMap((veil) => veil.colors.map((layer) => stack([layer], base)));
+				for (const group of overlappingGroups(veils)) {
+					const combinations = group.reduce<Layer[][]>((all, veil) => all.flatMap((chosen) => veil.colors.map((layer) => [...chosen, layer])), [[]]);
+					points.push(...combinations.map((layers) => stack(layers, base)));
+				}
+				const shaded = points.flatMap((point) => textured(point, texture));
+				for (const [fg, min] of TONE_TEXT[tone]) {
+					const worst = Math.min(...shaded.map((point) => ratioOf(color(fg), point)));
+					if (worst < min) {
+						error({
+							file: texture ? `${TEXTURES_DIR}/${texture.name}.css` : BACKGROUNDS_FILE,
+							where: `${background} › tone ${tone} › ${palette} › ${fg}${texture ? ` › texture ${texture.name}` : ''}`,
+							message: `contrasto ${shown(worst)}:1 nel punto più carico${background === 'pieno' ? '' : ' dell’effetto'}, minimo ${min}:1 (WCAG AA)`,
+							hint: texture
+								? `abbassa l’opacità della texture ${texture.name} o restringi i suoi tableValues verso 0.5`
+								: `abbassa le percentuali di color-mix di "${background}" sul tono ${tone}, o rivedi --${fg} della palette ${palette}`,
+						});
+					}
 				}
 			}
 		}

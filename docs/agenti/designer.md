@@ -55,7 +55,7 @@ installate sul computer (WordPress, graphify, design...): non fanno parte di que
 
 Parti solo con `docs/brief.md` approvato (cancello 1). Scrivi:
 
-- **Tema** (`src/content/settings/theme.json`): palette, coppia di font e forma tra i preset,
+- **Tema** (`src/content/settings/theme.json`): palette, coppia di font, forma, decoro e texture tra i preset,
   per affinità tra il brief (settore, tono, preferenze) e `mood`/`adattoA`. Non crei colori o
   font: i preset sono già verificati WCAG AA.
 - **Layout** (`src/content/settings/layout.json`): varianti di header e footer, `sticky`,
@@ -80,9 +80,10 @@ richiesta generica di autorizzazione già ricevuta.
 
 - Un solo `hero`, in apertura; di norma una `cta` per pagina (non nelle pagine `"kind": "legale"`).
 - Toni (`default`, `muted`, `primary`) alternati tra sezioni vicine; al massimo 12 sezioni.
-- Effetto di sfondo (`background`: `sfumato`, `alone`, `aurora`) solo dove serve a far notare
+- Effetto di sfondo (`background`: `sfumato`, `alone`, `aurora`, `decoro`) solo dove serve a far notare
   una sezione: di solito l'apertura, un punto chiave e l'invito finale. Al massimo 3 per pagina,
   mai due vicine, solo quelli ammessi dalla scheda del blocco; senza motivo resta `pieno`.
+  `decoro` usa il `pattern` del tema: sceglilo solo se il tema ne ha uno.
   Sezione «Effetti di sfondo» di `docs/catalogo/README.md`, dal vivo `/catalogo/sfondi`.
 - Titoli e testi entro i limiti dello schema, scritti con le lunghezze reali, nel tono del brief.
 - Recapiti, P.IVA, indirizzi: mai nei testi. Nei link `@telefono`, `@whatsapp`, `@email`,

@@ -42,7 +42,7 @@ Il percorso dal primo contatto al lavoro finito, in 3-6 passi numerati, con temp
 | `cta.style` | scelta | no | `primary` · `secondary` · `ghost` · `link` | «Stile» |
 | `cta.icon` | icona | no | [lista icone](../README.md#icone) | «Icona» |
 
-Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`process`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
+Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`process`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`) e `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)): vedi `src/content/pages/README.md`.
 
 **Esempio pronto** (fixture «Passi numerati», una sezione per `sections`; immagini relative a `src/content/pages`):
 

@@ -47,7 +47,13 @@ Sezione scritta a mano: \`npm run gen:catalog\` la ricopia com'è.
 ${RULES_END}`;
 
 type Fixture = { name: string; tone?: Tone; props: Record<string, unknown> };
-type PresetMetas = { palettes: Record<string, PaletteMeta>; fonts: Record<string, PresetMeta>; shapes: Record<string, PresetMeta> };
+type PresetMetas = {
+	palettes: Record<string, PaletteMeta>;
+	fonts: Record<string, PresetMeta>;
+	shapes: Record<string, PresetMeta>;
+	patterns: Record<string, PresetMeta>;
+	textures: Record<string, PresetMeta>;
+};
 
 // ---------------------------------------------------------------------------- dati (catalogo.json)
 
@@ -113,6 +119,10 @@ export interface CatalogData {
 		palettes: (PresetMeta & { key: string; colors: Record<string, string>; screenshot: string })[];
 		fonts: (PresetMeta & { key: string; heading: string; body: string })[];
 		shapes: (PresetMeta & { key: string; boxRadius: string; buttonRadius: string })[];
+		/** Decori; screenshot di /catalogo/sfondi/decoro/ con il decoro, tranne «nessuno». */
+		patterns: (PresetMeta & { key: string; screenshot?: string })[];
+		/** Texture; screenshot di /catalogo/sfondi/aurora/ con la texture, tranne «liscia». */
+		textures: (PresetMeta & { key: string; screenshot?: string })[];
 	};
 	blocks: BlockInfo[];
 }
@@ -366,7 +376,7 @@ function readmePage(data: CatalogData, rules: string) {
 			.map((background) => `![Effetto ${background.name} sui toni default, muted e primary](${background.screenshot})`)
 			.join('\n'),
 		'## Temi',
-		'L’aspetto si sceglie in `src/content/settings/theme.json` con tre preset (`palette`, `fonts`, `shape`), ciascuno con la sua scheda `<nome>.meta.ts` accanto al CSS in `src/themes/`. Una variante da sola accetta `?palette=…&fonts=…&shape=…`.',
+		'L’aspetto si sceglie in `src/content/settings/theme.json` con cinque preset (`palette`, `fonts`, `shape`, `pattern`, `texture`), ciascuno con la sua scheda `<nome>.meta.ts` accanto al CSS in `src/themes/`. `pattern` e `texture` hanno un valore di partenza (`nessuno`, `liscia`). Una variante da sola accetta `?palette=…&fonts=…&shape=…&pattern=…&texture=…`.',
 		table(
 			['Chiave', 'Valori', 'Note'],
 			data.themes.fields.map((field) => [code(field.path), field.limits, [field.label && `«${field.label}»`, field.hint].filter(Boolean).join(' ')]),
@@ -384,6 +394,20 @@ function readmePage(data: CatalogData, rules: string) {
 			['Preset', 'Nome', 'Mood', 'Adatta a', 'Raggi'],
 			data.themes.shapes.map((shape) => [...presetCells(shape), `card ${code(shape.boxRadius)} · pulsanti ${code(shape.buttonRadius)}`]),
 		),
+		'### Decori',
+		'Il motivo delle sezioni con `"background": "decoro"`, uno per sito: sfuma verso il centro della sezione, nei colori del tono (`--decor-ink`, `--decor-fill` in `src/themes/backgrounds.css`, contrasto verificato). Con `nessuno` quelle sezioni restano piene. Gli screenshot mostrano una cta con il decoro sui tre toni.',
+		table(['Preset', 'Nome', 'Mood', 'Adatta a'], data.themes.patterns.map(presetCells)),
+		data.themes.patterns
+			.filter((pattern) => pattern.screenshot)
+			.map((pattern) => `![Decoro ${pattern.name} sui toni default, muted e primary](${pattern.screenshot})`)
+			.join('\n'),
+		'### Texture',
+		'Una grana sopra lo sfondo di ogni sezione, header e footer compresi, mai sopra il testo né sulle foto. Si vede soprattutto sui toni colorati (primary) e sulle sfumature, a cui toglie le bande; sui fondi chiari è appena percettibile, perché il contrasto dei testi è verificato anche sui punti schiariti e scuriti dalla grana. Gli screenshot mostrano una cta con l’effetto aurora sui tre toni.',
+		table(['Preset', 'Nome', 'Mood', 'Adatta a'], data.themes.textures.map(presetCells)),
+		data.themes.textures
+			.filter((texture) => texture.screenshot)
+			.map((texture) => `![Texture ${texture.name} sull’effetto aurora](${texture.screenshot})`)
+			.join('\n'),
 		'## Icone',
 		`${data.icons.length} alias in ${iconCategories.length} categorie, in \`src/core/icons.ts\`: nei componenti \`<Icon name="casa" />\`, negli schemi \`iconSchema()\`. Il colore è quello del testo intorno. Dal vivo, con la ricerca, su \`/catalogo/icone\`. Licenze in \`docs/THIRD_PARTY_LICENSES.md\`.`,
 		table(['Categoria', 'Icone'], iconCategories.map((category) => [category, String(data.icons.filter((icon) => icon.category === category).length)])),
@@ -493,6 +517,16 @@ function themesData(metas: PresetMetas, problems: string[]): Omit<CatalogData['t
 			boxRadius: shapesCss.get(key)?.get('box-radius') ?? '?',
 			buttonRadius: shapesCss.get(key)?.get('button-radius') ?? '?',
 		})),
+		patterns: Object.entries(metas.patterns).map(([key, meta]) => ({
+			key,
+			...meta,
+			...(key !== 'nessuno' && { screenshot: `img/${catalog.patternScreenshotName(key)}` }),
+		})),
+		textures: Object.entries(metas.textures).map(([key, meta]) => ({
+			key,
+			...meta,
+			...(key !== 'liscia' && { screenshot: `img/${catalog.textureScreenshotName(key)}` }),
+		})),
 	};
 }
 
@@ -519,8 +553,11 @@ export async function generateCatalog() {
 	const variants: { type: string; variant: string }[] = [];
 	const images: string[] = [];
 	const palettes: string[] = [];
-	/** Effetti di sfondo da fotografare (tutti tranne pieno). */
+	/** Effetti di sfondo da fotografare (tutti tranne pieno e decoro). */
 	const backgrounds: string[] = [];
+	/** Decori e texture da fotografare (tranne nessuno e liscia). */
+	const patterns: string[] = [];
+	const textures: string[] = [];
 
 	await withProjectModules(async (load) => {
 		const { z } = await import('astro/zod');
@@ -619,15 +656,19 @@ export async function generateCatalog() {
 		const themes = { fields: themeFields, ...themesData(metas, problems) };
 		palettes.push(...themes.palettes.map((palette) => palette.key));
 		images.push(...themes.palettes.map((palette) => basename(palette.screenshot)));
+		for (const preset of [...themes.patterns, ...themes.textures]) if (preset.screenshot) images.push(basename(preset.screenshot));
+		patterns.push(...themes.patterns.filter((pattern) => pattern.screenshot).map((pattern) => pattern.key));
+		textures.push(...themes.textures.filter((texture) => texture.screenshot).map((texture) => texture.key));
 
 		// Effetti di sfondo: uno screenshot desktop dei tre toni per ogni effetto oltre a pieno.
 		const backgroundData = BACKGROUNDS.map((key) => ({
 			key,
 			...BACKGROUND_META[key],
 			blocks: blocks.filter((block) => block.backgrounds.includes(key)).map((block) => block.type),
-			...(key !== 'pieno' && { screenshot: `img/${catalog.backgroundScreenshotName(key)}` }),
+			// pieno è il tono com'è; decoro dipende dal pattern del sito, fotografato con ogni decoro in «Temi».
+			...(key !== 'pieno' && key !== 'decoro' && { screenshot: `img/${catalog.backgroundScreenshotName(key)}` }),
 		}));
-		backgrounds.push(...BACKGROUNDS.filter((key) => key !== 'pieno'));
+		backgrounds.push(...BACKGROUNDS.filter((key) => key !== 'pieno' && key !== 'decoro'));
 		images.push(...backgrounds.map((key) => catalog.backgroundScreenshotName(key)));
 
 		const data: CatalogData = {
@@ -648,7 +689,7 @@ export async function generateCatalog() {
 		files['ui.md'] = uiPage();
 		files['catalogo.json'] = `${JSON.stringify(data, null, '\t')}\n`;
 	});
-	return { files, images, variants, palettes, backgrounds, problems };
+	return { files, images, variants, palettes, backgrounds, patterns, textures, problems };
 }
 
 /** File .md e .json generati (in docs/catalogo e in blocchi/) che il generatore non produce più. */

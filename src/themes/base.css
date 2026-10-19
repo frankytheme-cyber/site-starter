@@ -5,6 +5,14 @@
 @import "./shapes/morbido.css";
 @import "./shapes/arrotondato.css";
 @import "./backgrounds.css";
+@import "./patterns/punti.css";
+@import "./patterns/griglia.css";
+@import "./patterns/righe.css";
+@import "./patterns/onde.css";
+@import "./patterns/cerchi.css";
+@import "./patterns/arco.css";
+@import "./textures/grana.css";
+@import "./textures/carta.css";
 @import "../core/ui/button/button.css";
 
 /* La documentazione cita classi vietate come esempi: non deve generare CSS. */

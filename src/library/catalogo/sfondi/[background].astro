@@ -2,14 +2,14 @@
 /**
  * Un effetto di sfondo da solo, sui tre toni (default, muted, primary): la cta banner di
  * _backgrounds.ts, senza la barra del catalogo né header e footer del sito. La usano gli screenshot
- * (npm run screenshots). Il tema si cambia con ?palette=&fonts=&shape= (valori di presets.ts).
+ * (npm run screenshots). Il tema si cambia con ?palette=&fonts=&shape=&pattern=&texture= (valori di presets.ts).
  */
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { TONES } from '@/core/block-types';
 import SectionBackground from '@/core/SectionBackground.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { BACKGROUND_META, BACKGROUNDS } from '@/themes/backgrounds';
-import { fonts, palettes, shapes } from '@/themes/presets';
+import { fonts, palettes, patterns, shapes, textures } from '@/themes/presets';
 import { backgroundSample } from '../_backgrounds';
 import { catalogTitle, LIBRARY_DESCRIPTION } from '../_library';
 
@@ -20,7 +20,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { background } = Astro.props;
 const { name } = BACKGROUND_META[background];
 const { Component, fixture } = backgroundSample();
-const presets = { palette: palettes, fonts, shape: shapes };
+const presets = { palette: palettes, fonts, shape: shapes, pattern: patterns, texture: textures };
 ---
 
 <BaseLayout title={catalogTitle(`Sfondo ${name}`)} description={LIBRARY_DESCRIPTION} noindex allFonts siteLayout={false}>
