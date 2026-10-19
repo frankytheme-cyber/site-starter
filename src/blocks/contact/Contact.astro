@@ -2,7 +2,7 @@
 import { nextId } from '@/core/ids';
 import { mapsHref } from '@/core/links';
 import { formatDays, formatSlots } from '@/core/opening-hours';
-import { getSiteSettings, phoneHref, whatsappHref } from '@/core/settings';
+import { getSiteSettings, phoneHref, whatsappHref, whatsappLabel } from '@/core/settings';
 import Button from '@/core/ui/button/Button.astro';
 import CtaButton from '@/core/ui/button/CtaButton.astro';
 import Icon from '@/core/ui/Icon.astro';
@@ -55,7 +55,7 @@ const headingClass = 'text-sm font-bold tracking-wider uppercase';
 							<a href={whatsappHref(site.whatsapp)} target="_blank" rel="noopener" class={linkClass}>
 								<Icon name="whatsapp" />
 								<span class="sr-only">WhatsApp:</span>
-								{site.whatsapp}
+								{whatsappLabel(site.whatsapp)}
 								<span class="sr-only">{NEW_TAB}</span>
 							</a>
 						)}

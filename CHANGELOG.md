@@ -4,6 +4,15 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
+## Non rilasciato
+### Novità
+
+- Dati strutturati dell’attività: `businessType` in `site.json` (facoltativo) sceglie il sottotipo schema.org di `LocalBusiness` (es. `HousePainter`, `Restaurant`, `Plumber`; elenco in `BUSINESS_TYPES`), `areaServed` (facoltativo) elenca le zone servite. Il JSON-LD ha anche un `@id` stabile e, senza logo, usa `defaultOgImage` come `image`. Dopo `blocks:sync` serve `npm run gen:decap` per vedere i due campi nel CMS.
+
+### Correzioni
+
+- Footer e blocco `contact` mostrano il numero WhatsApp scritto tutto attaccato (`+393331234567`) nel formato `+39 333 123 4567`; i numeri con gli spazi restano com’erano.
+
 ## v0.0.2 (2026-10-18)
 ### Breaking
 

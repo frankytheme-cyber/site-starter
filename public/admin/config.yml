@@ -5603,6 +5603,60 @@ collections:
             label: Nome dell’attività
             hint: Come compare sul sito e su Google
             widget: string
+          - name: businessType
+            label: Tipo di attività
+            hint: Il mestiere per Google e i motori di ricerca; vuoto = attività locale generica
+            required: false
+            widget: select
+            options:
+              - label: Attività locale (generico)
+                value: LocalBusiness
+              - label: Casa ed edilizia (generico)
+                value: HomeAndConstructionBusiness
+              - label: Imbianchino
+                value: HousePainter
+              - label: Impresa edile
+                value: GeneralContractor
+              - label: Elettricista
+                value: Electrician
+              - label: Idraulico
+                value: Plumber
+              - label: Riscaldamento e climatizzazione
+                value: HVACBusiness
+              - label: Coperture e tetti
+                value: RoofingContractor
+              - label: Fabbro e serrature
+                value: Locksmith
+              - label: Traslochi
+                value: MovingCompany
+              - label: Officina
+                value: AutoRepair
+              - label: Ristorante
+                value: Restaurant
+              - label: Caffetteria
+                value: CafeOrCoffeeShop
+              - label: Bar o pub
+                value: BarOrPub
+              - label: Panificio o pasticceria
+                value: Bakery
+              - label: Gelateria
+                value: IceCreamShop
+              - label: Negozio
+                value: Store
+              - label: Parrucchiere
+                value: HairSalon
+              - label: Centro estetico
+                value: BeautySalon
+              - label: Dentista
+                value: Dentist
+              - label: Commercialista
+                value: AccountingService
+              - label: Studio legale
+                value: LegalService
+              - label: Agenzia immobiliare
+                value: RealEstateAgent
+              - label: Alloggio (B&B, affittacamere)
+                value: LodgingBusiness
           - name: description
             label: Descrizione dell’attività
             hint: "Una frase su cosa fa e dove: compare nel footer e su Google, al massimo 160 caratteri"
@@ -5778,6 +5832,20 @@ collections:
             min: 1
             max: 7
             collapsed: false
+          - name: areaServed
+            label: Zone servite
+            hint: Comuni o province in cui lavori, per Google e i motori di ricerca; vuoto se servi solo la sede
+            required: false
+            widget: list
+            field:
+              name: item
+              label: Zona
+              hint: Comune, provincia o quartiere, es. Bologna
+              widget: string
+              pattern:
+                - ^[\s\S]{2,70}$
+                - tra 2 e 70 caratteri
+            max: 20
           - name: social
             label: Profili social
             hint: Lascia vuoti quelli che non usi

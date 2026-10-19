@@ -49,13 +49,18 @@ const canonical = absolute(Astro.url.pathname);
 const ogSource = ogImage ?? site.defaultOgImage;
 const og = ogSource && (await getImage({ src: ogSource, width: 1200, height: 630, fit: 'cover', format: 'jpg' }));
 const logo = site.logo && (await getImage({ src: site.logo, width: 512, format: 'png' }));
+// Immagine della scheda: il logo se c'è, altrimenti l'immagine per i social del sito (Google la chiede).
+const businessImage =
+	logo || (site.defaultOgImage && (await getImage({ src: site.defaultOgImage, width: 1200, height: 630, fit: 'cover', format: 'jpg' })));
 
-// Scheda dell'attività per i motori di ricerca (schema.org/LocalBusiness), tutta da site.json.
+// Scheda dell'attività per i motori di ricerca (schema.org/LocalBusiness o il sottotipo scelto), tutta da site.json.
 const { street, postalCode, city, province } = site.address;
 const openingHours = openingHoursSpecification(site.openingHours);
 const localBusiness = {
 	'@context': 'https://schema.org',
-	'@type': 'LocalBusiness',
+	'@type': site.businessType ?? 'LocalBusiness',
+	// Identificativo stabile della scheda: le altre pagine e i motori possono riferirsi a questa.
+	'@id': new URL('/#attivita', site.url).href,
 	name: site.businessName,
 	legalName: site.legalName,
 	description: site.description,
@@ -72,7 +77,9 @@ const localBusiness = {
 		addressCountry: 'IT',
 	},
 	...(openingHours.length > 0 && { openingHoursSpecification: openingHours }),
-	...(logo && { logo: absolute(logo.src), image: absolute(logo.src) }),
+	...(site.areaServed && site.areaServed.length > 0 && { areaServed: site.areaServed }),
+	...(logo && { logo: absolute(logo.src) }),
+	...(businessImage && { image: absolute(businessImage.src) }),
 	...(site.social && { sameAs: Object.values(site.social) }),
 };
 // "<" diventa <: un testo con </script> non può chiudere il tag.
