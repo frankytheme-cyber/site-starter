@@ -917,11 +917,19 @@
 				"path": "fonts",
 				"type": "scelta",
 				"required": true,
-				"limits": "`moderno` · `classico`",
+				"limits": "`moderno` · `classico` · `elegante` · `autorevole` · `fresco` · `amichevole` · `carattere` · `robusto` · `gourmet` · `preciso`",
 				"constraints": {
 					"values": [
 						"moderno",
-						"classico"
+						"classico",
+						"elegante",
+						"autorevole",
+						"fresco",
+						"amichevole",
+						"carattere",
+						"robusto",
+						"gourmet",
+						"preciso"
 					]
 				},
 				"label": "Caratteri",
@@ -1027,6 +1035,142 @@
 				],
 				"heading": "Fraunces",
 				"body": "Source Sans 3"
+			},
+			{
+				"key": "elegante",
+				"name": "Elegante",
+				"mood": [
+					"raffinato",
+					"lussuoso",
+					"discreto"
+				],
+				"adattoA": [
+					"hotel e dimore storiche",
+					"matrimoni ed eventi",
+					"gioiellerie e boutique",
+					"centri estetici e spa"
+				],
+				"heading": "Cormorant",
+				"body": "Jost"
+			},
+			{
+				"key": "autorevole",
+				"name": "Autorevole",
+				"mood": [
+					"sobrio",
+					"affidabile",
+					"istituzionale"
+				],
+				"adattoA": [
+					"studi legali e notarili",
+					"commercialisti e consulenti",
+					"studi medici e dentistici",
+					"agenzie immobiliari"
+				],
+				"heading": "Newsreader",
+				"body": "Public Sans"
+			},
+			{
+				"key": "fresco",
+				"name": "Fresco",
+				"mood": [
+					"giovane",
+					"dinamico",
+					"diretto"
+				],
+				"adattoA": [
+					"palestre e personal trainer",
+					"scuole di danza e sport",
+					"eventi e intrattenimento",
+					"servizi digitali"
+				],
+				"heading": "Outfit",
+				"body": "Figtree"
+			},
+			{
+				"key": "amichevole",
+				"name": "Amichevole",
+				"mood": [
+					"morbido",
+					"rassicurante",
+					"gentile"
+				],
+				"adattoA": [
+					"asili e ludoteche",
+					"pediatri e logopedisti",
+					"veterinari e toelettature",
+					"negozi per bambini"
+				],
+				"heading": "Nunito",
+				"body": "Nunito Sans"
+			},
+			{
+				"key": "carattere",
+				"name": "Carattere",
+				"mood": [
+					"personale",
+					"vivace",
+					"contemporaneo"
+				],
+				"adattoA": [
+					"caffetterie e bistrot",
+					"birrifici e pub",
+					"barbieri e tatuatori",
+					"studi creativi"
+				],
+				"heading": "Bricolage Grotesque",
+				"body": "Hanken Grotesk"
+			},
+			{
+				"key": "robusto",
+				"name": "Robusto",
+				"mood": [
+					"deciso",
+					"industriale",
+					"solido"
+				],
+				"adattoA": [
+					"officine e carrozzerie",
+					"imprese edili",
+					"carpenterie e fabbri",
+					"traslochi e logistica"
+				],
+				"heading": "Big Shoulders",
+				"body": "Archivo"
+			},
+			{
+				"key": "gourmet",
+				"name": "Gourmet",
+				"mood": [
+					"ricercato",
+					"goloso",
+					"scenografico"
+				],
+				"adattoA": [
+					"ristoranti",
+					"enoteche e cantine",
+					"pasticcerie e gelaterie",
+					"gastronomie"
+				],
+				"heading": "Playfair Display",
+				"body": "Work Sans"
+			},
+			{
+				"key": "preciso",
+				"name": "Preciso",
+				"mood": [
+					"essenziale",
+					"tecnico",
+					"nitido"
+				],
+				"adattoA": [
+					"architetti e geometri",
+					"ingegneri e progettisti",
+					"fotografi",
+					"studi di design"
+				],
+				"heading": "Sora",
+				"body": "Instrument Sans"
 			}
 		],
 		"shapes": [

@@ -5,7 +5,7 @@ import { z } from 'astro/zod';
  * sua scheda <nome>.meta.ts (PresetMeta, PaletteMeta per le palette) per il catalogo.
  */
 export const palettes = ['terracotta', 'ardesia'] as const;
-export const fonts = ['moderno', 'classico'] as const;
+export const fonts = ['moderno', 'classico', 'elegante', 'autorevole', 'fresco', 'amichevole', 'carattere', 'robusto', 'gourmet', 'preciso'] as const;
 export const shapes = ['squadrato', 'morbido', 'arrotondato'] as const;
 
 export type Palette = (typeof palettes)[number];

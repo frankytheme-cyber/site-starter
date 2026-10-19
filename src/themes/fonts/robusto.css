@@ -1,0 +1,53 @@
+/* Robusto: Big Shoulders per i titoli, Archivo per il testo. */
+@import "@fontsource-variable/big-shoulders";
+@import "@fontsource-variable/archivo";
+@import "@fontsource-variable/archivo/wght-italic.css";
+
+/*
+ * Ripieghi con le misure dei font veri, finché non sono scaricati (font-display: swap): lo scambio
+ * non sposta il testo (CLS). Generati da scripts/font-fallbacks.ts, non scritti a mano.
+ */
+/* Big Shoulders Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts big-shoulders:sans). */
+@font-face {
+	font-family: "Big Shoulders Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 75.6%;
+	ascent-override: 130.5%;
+	descent-override: 28.3%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Big Shoulders Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 81.5%;
+	ascent-override: 121.0%;
+	descent-override: 26.3%;
+	line-gap-override: 0%;
+}
+
+/* Archivo Variable: ripiego Arial con le sue misure (node scripts/font-fallbacks.ts archivo:sans). */
+@font-face {
+	font-family: "Archivo Variable ripiego";
+	font-weight: 100 549;
+	src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+	size-adjust: 98.5%;
+	ascent-override: 89.2%;
+	descent-override: 21.3%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Archivo Variable ripiego";
+	font-weight: 550 900;
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold");
+	size-adjust: 98.0%;
+	ascent-override: 89.6%;
+	descent-override: 21.4%;
+	line-gap-override: 0%;
+}
+
+[data-fonts="robusto"] {
+	--heading-font: "Big Shoulders Variable", "Big Shoulders Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+	--body-font: "Archivo Variable", "Archivo Variable ripiego", ui-sans-serif, system-ui, sans-serif;
+}

@@ -4,6 +4,11 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
+## Non rilasciato
+### Novità
+
+- Otto coppie di font nuove, da scegliere in `theme.json` (`fonts`) come le due di prima: `elegante` (Cormorant + Jost), `autorevole` (Newsreader + Public Sans), `fresco` (Outfit + Figtree), `amichevole` (Nunito + Nunito Sans), `carattere` (Bricolage Grotesque + Hanken Grotesk), `robusto` (Big Shoulders + Archivo), `gourmet` (Playfair Display + Work Sans) e `preciso` (Sora + Instrument Sans). Arrivano da `@fontsource-variable` e le serve il sito, con i ripieghi misurati contro il CLS; mood e settori sono nella sezione «Temi» del catalogo. Dopo `blocks:sync` serve `npm install` per i pacchetti nuovi.
+
 ## v0.0.3 (2026-10-19)
 ### Novità
 
