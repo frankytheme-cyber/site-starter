@@ -4,7 +4,7 @@ backend:
   name: github
   repo: frankytheme-cyber/site-starter
   branch: main
-  base_url: https://decap-oauth.da-compilare.workers.dev
+  base_url: https://sveltia-cms-auth.frankytheme.workers.dev
   auth_endpoint: auth
   commit_messages:
     create: Crea {{collection}} «{{slug}}»

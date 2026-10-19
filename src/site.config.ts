@@ -28,7 +28,7 @@ export interface SiteConfig {
 
 const config: SiteConfig = {
 	cms: {
-		oauthBaseUrl: 'https://decap-oauth.da-compilare.workers.dev',
+		oauthBaseUrl: 'https://sveltia-cms-auth.frankytheme.workers.dev',
 		branch: 'main',
 	},
 	// credit: { label: 'Sito realizzato da …', href: 'https://…' },
