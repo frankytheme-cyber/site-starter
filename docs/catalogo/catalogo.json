@@ -1039,11 +1039,19 @@
 				"path": "palette",
 				"type": "scelta",
 				"required": true,
-				"limits": "`terracotta` · `ardesia`",
+				"limits": "`terracotta` · `ardesia` · `salvia` · `cipria` · `laguna` · `bordeaux` · `cobalto` · `antracite` · `prugna` · `notte`",
 				"constraints": {
 					"values": [
 						"terracotta",
-						"ardesia"
+						"ardesia",
+						"salvia",
+						"cipria",
+						"laguna",
+						"bordeaux",
+						"cobalto",
+						"antracite",
+						"prugna",
+						"notte"
 					]
 				},
 				"label": "Palette",
@@ -1171,6 +1179,198 @@
 					"accent": "#e5a13a"
 				},
 				"screenshot": "img/hero-palette-ardesia-desktop.webp"
+			},
+			{
+				"key": "salvia",
+				"name": "Salvia",
+				"mood": [
+					"fresco",
+					"naturale",
+					"rassicurante"
+				],
+				"adattoA": [
+					"studi medici e fisioterapisti",
+					"erboristerie e farmacie",
+					"centri benessere e yoga",
+					"vivai e giardinieri",
+					"prodotti biologici"
+				],
+				"colors": {
+					"bg": "#f6f8f4",
+					"surface": "#e5ece3",
+					"fg": "#1b2a21",
+					"primary": "#3a6649",
+					"accent": "#c9a66b"
+				},
+				"screenshot": "img/hero-palette-salvia-desktop.webp"
+			},
+			{
+				"key": "cipria",
+				"name": "Cipria",
+				"mood": [
+					"delicato",
+					"elegante",
+					"curato"
+				],
+				"adattoA": [
+					"estetiste e centri estetici",
+					"parrucchieri",
+					"fioristi",
+					"wedding planner e atelier sposa",
+					"negozi di abbigliamento"
+				],
+				"colors": {
+					"bg": "#fcf7f6",
+					"surface": "#f4e5e4",
+					"fg": "#2b1d22",
+					"primary": "#94405b",
+					"accent": "#4a6766"
+				},
+				"screenshot": "img/hero-palette-cipria-desktop.webp"
+			},
+			{
+				"key": "laguna",
+				"name": "Laguna",
+				"mood": [
+					"fresco",
+					"luminoso",
+					"solare"
+				],
+				"adattoA": [
+					"B&B e case vacanza",
+					"stabilimenti balneari",
+					"noleggi e nautica",
+					"pescherie e ristoranti di pesce",
+					"scuole di vela e sub"
+				],
+				"colors": {
+					"bg": "#f5f9fb",
+					"surface": "#e1edf3",
+					"fg": "#0f2938",
+					"primary": "#0d5f80",
+					"accent": "#f2a65e"
+				},
+				"screenshot": "img/hero-palette-laguna-desktop.webp"
+			},
+			{
+				"key": "bordeaux",
+				"name": "Bordeaux",
+				"mood": [
+					"raffinato",
+					"classico",
+					"caldo"
+				],
+				"adattoA": [
+					"enoteche e cantine",
+					"ristoranti gastronomici",
+					"hotel e dimore storiche",
+					"gioiellerie",
+					"notai e studi legali"
+				],
+				"colors": {
+					"bg": "#faf7f4",
+					"surface": "#efe6df",
+					"fg": "#24171a",
+					"primary": "#7a1f33",
+					"accent": "#c49a45"
+				},
+				"screenshot": "img/hero-palette-bordeaux-desktop.webp"
+			},
+			{
+				"key": "cobalto",
+				"name": "Cobalto",
+				"mood": [
+					"affidabile",
+					"nitido",
+					"dinamico"
+				],
+				"adattoA": [
+					"commercialisti e consulenti",
+					"assicurazioni",
+					"informatica e assistenza tecnica",
+					"ottici",
+					"autoscuole e scuole"
+				],
+				"colors": {
+					"bg": "#f7f9fc",
+					"surface": "#e6ecf6",
+					"fg": "#141c2b",
+					"primary": "#1e48a6",
+					"accent": "#0d7a70"
+				},
+				"screenshot": "img/hero-palette-cobalto-desktop.webp"
+			},
+			{
+				"key": "antracite",
+				"name": "Antracite",
+				"mood": [
+					"solido",
+					"concreto",
+					"energico"
+				],
+				"adattoA": [
+					"imprese edili",
+					"serramentisti e fabbri",
+					"traslochi e logistica",
+					"noleggio attrezzature",
+					"ferramenta e colorifici"
+				],
+				"colors": {
+					"bg": "#fafaf7",
+					"surface": "#ebeae3",
+					"fg": "#1e1f1c",
+					"primary": "#2e3336",
+					"accent": "#f2b705"
+				},
+				"screenshot": "img/hero-palette-antracite-desktop.webp"
+			},
+			{
+				"key": "prugna",
+				"name": "Prugna",
+				"mood": [
+					"creativo",
+					"morbido",
+					"originale"
+				],
+				"adattoA": [
+					"fotografi e studi creativi",
+					"scuole di danza e musica",
+					"librerie e cartolerie",
+					"psicologi e counselor",
+					"negozi per bambini"
+				],
+				"colors": {
+					"bg": "#faf8fc",
+					"surface": "#eee8f4",
+					"fg": "#221a2d",
+					"primary": "#5a3889",
+					"accent": "#e48a6a"
+				},
+				"screenshot": "img/hero-palette-prugna-desktop.webp"
+			},
+			{
+				"key": "notte",
+				"name": "Notte",
+				"mood": [
+					"notturno",
+					"deciso",
+					"d’atmosfera"
+				],
+				"adattoA": [
+					"cocktail bar e locali serali",
+					"barbieri",
+					"tatuatori",
+					"palestre e box di crossfit",
+					"studi di registrazione"
+				],
+				"colors": {
+					"bg": "#14161a",
+					"surface": "#1f2228",
+					"fg": "#eceae6",
+					"primary": "#e3b04b",
+					"accent": "#6cbfb3"
+				},
+				"screenshot": "img/hero-palette-notte-desktop.webp"
 			}
 		],
 		"fonts": [

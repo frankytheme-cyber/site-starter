@@ -1,20 +1,52 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { blocks } from '@/core/registry';
+import Container from '@/core/ui/Container.astro';
 import BlockEntry from './_BlockEntry.astro';
 import CatalogLayout from './_CatalogLayout.astro';
 import { catalogTitle } from './_library';
 
+// Precedente e successivo nell'ordine del catalogo (compareBlocks): si scorrono i blocchi uno alla volta.
 export const getStaticPaths = (() =>
-	blocks.map((block) => ({ params: { type: block.type }, props: { block } }))) satisfies GetStaticPaths;
+	blocks.map((block, index) => ({
+		params: { type: block.type },
+		props: { block, previous: blocks[index - 1], next: blocks[index + 1] },
+	}))) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { block } = Astro.props;
+const { block, previous, next } = Astro.props;
 ---
 
 <CatalogLayout title={catalogTitle(block.meta.name)}>
 	<main>
 		<BlockEntry block={block} />
 	</main>
+	<nav aria-label="Altri blocchi" class="border-t-4 border-border">
+		<Container>
+			<ul class="flex flex-wrap justify-between gap-4 py-8">
+				<li>
+					{
+						previous && (
+							<a href={`/catalogo/${previous.type}/`} rel="prev" class="text-primary underline underline-offset-4">
+								← {previous.meta.name}
+							</a>
+						)
+					}
+				</li>
+				<li>
+					<a href={`/catalogo/#${block.type}`} class="text-primary underline underline-offset-4">Tutti i blocchi</a>
+				</li>
+				<li>
+					{
+						next && (
+							<a href={`/catalogo/${next.type}/`} rel="next" class="text-primary underline underline-offset-4">
+								{next.meta.name} →
+							</a>
+						)
+					}
+				</li>
+			</ul>
+		</Container>
+	</nav>
 </CatalogLayout>

@@ -1,0 +1,34 @@
+/*
+ * Cobalto: nitida, professionale. Blu cobalto, bianco, accento verde petrolio.
+ *
+ * Contrasti WCAG (npm run check:contrast); le coppie su surface valgono per tone="muted":
+ *   fg / bg              16.17:1
+ *   fg-muted / bg         6.81:1
+ *   primary / bg          7.86:1
+ *   surface-fg / surface  14.37:1
+ *   fg-muted / surface    6.05:1
+ *   primary / surface     6.98:1
+ *   primary-fg / primary   8.29:1
+ *   primary-fg / primary-hover  10.33:1   (passaggio sui pulsanti pieni)
+ *   primary-hover / bg    9.80:1   (passaggio sui link)
+ *   primary-hover / surface   8.70:1
+ *   accent-fg / accent    5.20:1
+ *   accent-fg / accent-hover   6.92:1
+ *   ring / bg             7.86:1   (non testuale, minimo 3:1)
+ *   ring / surface        6.98:1   (non testuale, minimo 3:1)
+ */
+[data-palette="cobalto"] {
+	--bg: #f7f9fc;
+	--fg: #141c2b;
+	--fg-muted: #4d586b;
+	--surface: #e6ecf6;
+	--surface-fg: #141c2b;
+	--primary: #1e48a6;
+	--primary-fg: #ffffff;
+	--primary-hover: #183b8a;
+	--accent: #0d7a70;
+	--accent-fg: #ffffff;
+	--accent-hover: #0a655d;
+	--border: #d3dcea;
+	--ring: #1e48a6;
+}

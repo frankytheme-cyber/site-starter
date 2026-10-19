@@ -5,7 +5,7 @@ import { z } from 'astro/zod';
  * (<nome>.css), con accanto la sua scheda <nome>.meta.ts (PresetMeta, PaletteMeta per le palette)
  * per il catalogo.
  */
-export const palettes = ['terracotta', 'ardesia'] as const;
+export const palettes = ['terracotta', 'ardesia', 'salvia', 'cipria', 'laguna', 'bordeaux', 'cobalto', 'antracite', 'prugna', 'notte'] as const;
 export const fonts = ['moderno', 'classico', 'elegante', 'autorevole', 'fresco', 'amichevole', 'carattere', 'robusto', 'gourmet', 'preciso'] as const;
 export const shapes = ['squadrato', 'morbido', 'arrotondato'] as const;
 /** Decoro: il motivo delle sezioni con background "decoro" (patterns/). */

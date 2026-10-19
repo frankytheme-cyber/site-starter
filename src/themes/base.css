@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "./palettes/terracotta.css";
 @import "./palettes/ardesia.css";
+@import "./palettes/salvia.css";
+@import "./palettes/cipria.css";
+@import "./palettes/laguna.css";
+@import "./palettes/bordeaux.css";
+@import "./palettes/cobalto.css";
+@import "./palettes/antracite.css";
+@import "./palettes/prugna.css";
+@import "./palettes/notte.css";
 @import "./shapes/squadrato.css";
 @import "./shapes/morbido.css";
 @import "./shapes/arrotondato.css";

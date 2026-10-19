@@ -1,0 +1,35 @@
+/*
+ * Notte: scura, d’atmosfera. Grafite, avorio, accento oro e verde acqua.
+ * È l’unica palette scura: gli -hover schiariscono invece di scurire.
+ *
+ * Contrasti WCAG (npm run check:contrast); le coppie su surface valgono per tone="muted":
+ *   fg / bg              15.07:1
+ *   fg-muted / bg         7.37:1
+ *   primary / bg          9.12:1
+ *   surface-fg / surface  13.26:1
+ *   fg-muted / surface    6.49:1
+ *   primary / surface     8.02:1
+ *   primary-fg / primary   9.12:1
+ *   primary-fg / primary-hover  11.02:1   (passaggio sui pulsanti pieni)
+ *   primary-hover / bg   11.02:1   (passaggio sui link)
+ *   primary-hover / surface   9.70:1
+ *   accent-fg / accent    8.40:1
+ *   accent-fg / accent-hover  10.21:1
+ *   ring / bg             9.12:1   (non testuale, minimo 3:1)
+ *   ring / surface        8.02:1   (non testuale, minimo 3:1)
+ */
+[data-palette="notte"] {
+	--bg: #14161a;
+	--fg: #eceae6;
+	--fg-muted: #a9a59d;
+	--surface: #1f2228;
+	--surface-fg: #eceae6;
+	--primary: #e3b04b;
+	--primary-fg: #14161a;
+	--primary-hover: #efc46c;
+	--accent: #6cbfb3;
+	--accent-fg: #14161a;
+	--accent-hover: #8ccfc5;
+	--border: #343840;
+	--ring: #e3b04b;
+}

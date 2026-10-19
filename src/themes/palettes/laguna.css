@@ -1,0 +1,34 @@
+/*
+ * Laguna: luminosa, marina. Blu petrolio, azzurro, accento corallo.
+ *
+ * Contrasti WCAG (npm run check:contrast); le coppie su surface valgono per tone="muted":
+ *   fg / bg              14.21:1
+ *   fg-muted / bg         6.34:1
+ *   primary / bg          6.68:1
+ *   surface-fg / surface  12.62:1
+ *   fg-muted / surface    5.63:1
+ *   primary / surface     5.93:1
+ *   primary-fg / primary   7.08:1
+ *   primary-fg / primary-hover   9.36:1   (passaggio sui pulsanti pieni)
+ *   primary-hover / bg    8.84:1   (passaggio sui link)
+ *   primary-hover / surface   7.85:1
+ *   accent-fg / accent    7.45:1
+ *   accent-fg / accent-hover   6.32:1
+ *   ring / bg             6.68:1   (non testuale, minimo 3:1)
+ *   ring / surface        5.93:1   (non testuale, minimo 3:1)
+ */
+[data-palette="laguna"] {
+	--bg: #f5f9fb;
+	--fg: #0f2938;
+	--fg-muted: #475f6d;
+	--surface: #e1edf3;
+	--surface-fg: #0f2938;
+	--primary: #0d5f80;
+	--primary-fg: #ffffff;
+	--primary-hover: #0a4c67;
+	--accent: #f2a65e;
+	--accent-fg: #0f2938;
+	--accent-hover: #ea9447;
+	--border: #cfdfe8;
+	--ring: #0d5f80;
+}
