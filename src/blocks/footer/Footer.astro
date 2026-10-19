@@ -5,7 +5,7 @@ import { isExternal, mapsHref, resolveSpecialHref } from '@/core/links';
 import { getNavigation, isCurrentPage, type NavLink } from '@/core/navigation';
 import { formatDays, formatSlots } from '@/core/opening-hours';
 import type { ButtonStyle } from '@/core/ui/button/cta';
-import { getSiteSettings, phoneHref, type SocialNetwork, whatsappHref } from '@/core/settings';
+import { getSiteSettings, phoneHref, type SocialNetwork, whatsappHref, whatsappLabel } from '@/core/settings';
 import Button from '@/core/ui/button/Button.astro';
 import Icon from '@/core/ui/Icon.astro';
 import Img from '@/core/ui/Img.astro';
@@ -146,7 +146,7 @@ const socialClass = 'inline-flex size-11 items-center justify-center rounded-but
 							<a href={whatsappHref(site.whatsapp)} target="_blank" rel="noopener" class:list={[linkClass, 'gap-2']}>
 								<Icon name="whatsapp" />
 								<span class="sr-only">WhatsApp:</span>
-								{site.whatsapp}
+								{whatsappLabel(site.whatsapp)}
 								<span class="sr-only">{NEW_TAB}</span>
 							</a>
 						)}

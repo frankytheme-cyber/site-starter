@@ -29,6 +29,64 @@ export const LEGAL_FORM_NAMES: Record<LegalForm, string> = {
 export const COMPANY_FORMS: readonly LegalForm[] = ['srl', 'srls', 'snc', 'sas'];
 export const isCompany = (form: LegalForm) => COMPANY_FORMS.includes(form);
 
+/**
+ * Tipo di attività per i dati strutturati (schema.org): sottotipi di LocalBusiness che Google
+ * riconosce, per i mestieri tipici dei siti vetrina. Vuoto = LocalBusiness generico.
+ */
+export const BUSINESS_TYPES = [
+	'LocalBusiness',
+	'HomeAndConstructionBusiness',
+	'HousePainter',
+	'GeneralContractor',
+	'Electrician',
+	'Plumber',
+	'HVACBusiness',
+	'RoofingContractor',
+	'Locksmith',
+	'MovingCompany',
+	'AutoRepair',
+	'Restaurant',
+	'CafeOrCoffeeShop',
+	'BarOrPub',
+	'Bakery',
+	'IceCreamShop',
+	'Store',
+	'HairSalon',
+	'BeautySalon',
+	'Dentist',
+	'AccountingService',
+	'LegalService',
+	'RealEstateAgent',
+	'LodgingBusiness',
+] as const;
+export type BusinessType = (typeof BUSINESS_TYPES)[number];
+export const BUSINESS_TYPE_NAMES: Record<BusinessType, string> = {
+	LocalBusiness: 'Attività locale (generico)',
+	HomeAndConstructionBusiness: 'Casa ed edilizia (generico)',
+	HousePainter: 'Imbianchino',
+	GeneralContractor: 'Impresa edile',
+	Electrician: 'Elettricista',
+	Plumber: 'Idraulico',
+	HVACBusiness: 'Riscaldamento e climatizzazione',
+	RoofingContractor: 'Coperture e tetti',
+	Locksmith: 'Fabbro e serrature',
+	MovingCompany: 'Traslochi',
+	AutoRepair: 'Officina',
+	Restaurant: 'Ristorante',
+	CafeOrCoffeeShop: 'Caffetteria',
+	BarOrPub: 'Bar o pub',
+	Bakery: 'Panificio o pasticceria',
+	IceCreamShop: 'Gelateria',
+	Store: 'Negozio',
+	HairSalon: 'Parrucchiere',
+	BeautySalon: 'Centro estetico',
+	Dentist: 'Dentista',
+	AccountingService: 'Commercialista',
+	LegalService: 'Studio legale',
+	RealEstateAgent: 'Agenzia immobiliare',
+	LodgingBusiness: 'Alloggio (B&B, affittacamere)',
+};
+
 /** Partita IVA italiana: 11 cifre, l'ultima è il controllo (Luhn) sulle prime 10. */
 export function isValidVatNumber(value: string): boolean {
 	if (!/^\d{11}$/.test(value) || /^0+$/.test(value)) return false;
@@ -99,6 +157,12 @@ export const siteSettingsSchema = ({ image }: SchemaContext) =>
 	z
 		.object({
 			businessName: z.string().min(1).describe('Nome dell’attività|Come compare sul sito e su Google'),
+			/** Solo per il JSON-LD di BaseLayout: non cambia nulla di visibile. */
+			businessType: z
+				.enum(BUSINESS_TYPES)
+				.meta({ optionLabels: BUSINESS_TYPE_NAMES })
+				.optional()
+				.describe('Tipo di attività|Il mestiere per Google e i motori di ricerca; vuoto = attività locale generica'),
 			description: z
 				.string()
 				.min(1)
@@ -176,6 +240,12 @@ export const siteSettingsSchema = ({ image }: SchemaContext) =>
 				.optional()
 				.describe('Capitale sociale|Quello versato, come va mostrato: es. 10.000 € i.v.; obbligatorio per le società'),
 			openingHours,
+			/** Solo per il JSON-LD (areaServed): le zone mostrate nelle pagine restano nel blocco areas. */
+			areaServed: z
+				.array(z.string().min(2).max(70).describe('Zona|Comune, provincia o quartiere, es. Bologna'))
+				.max(20)
+				.optional()
+				.describe('Zone servite|Comuni o province in cui lavori, per Google e i motori di ricerca; vuoto se servi solo la sede'),
 			/** Le chiavi sono anche alias di core/icons.ts. */
 			social: z
 				.object({
@@ -223,3 +293,13 @@ export const phoneHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}
 
 /** Link a una chat WhatsApp: wa.me vuole il numero internazionale senza "+" e senza spazi. */
 export const whatsappHref = (number: string) => `https://wa.me/${number.replace(/\D/g, '')}`;
+
+/**
+ * Numero WhatsApp da mostrare: com'è scritto se ha già gli spazi; tutto attaccato, un cellulare
+ * italiano diventa «+39 333 123 4567» (gli altri numeri restano come sono).
+ */
+export function whatsappLabel(number: string): string {
+	if (/\s/.test(number)) return number;
+	const mobile = /^\+39(3\d{2})(\d{3})(\d{3,4})$/.exec(number);
+	return mobile ? `+39 ${mobile[1]} ${mobile[2]} ${mobile[3]}` : number;
+}

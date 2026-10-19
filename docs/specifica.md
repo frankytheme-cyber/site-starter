@@ -137,7 +137,7 @@ Una “ricetta” è un insieme di JSON validati: quattro impostazioni per sito 
 | --- | --- | --- | --- |
 | `settings/theme.json` | palette, font, forma | Designer | No |
 | `settings/layout.json` | varianti di header e footer, `sticky`, `ctaBand` | Designer | No |
-| `settings/site.json` | nome, forma giuridica, P.IVA, REA e capitale (società), indirizzo, orari, recapiti, social, `defaultOgImage` | Builder dal brief | Sì |
+| `settings/site.json` | nome, tipo di attività (`businessType`) e zone servite (`areaServed`) per i dati strutturati, forma giuridica, P.IVA, REA e capitale (società), indirizzo, orari, recapiti, social, `defaultOgImage` | Builder dal brief | Sì |
 | `settings/navigation.json` | menu principale e gruppo `footer` | Designer | Sì |
 | `pages/<slug>.json` | `title` ≤ 60, `description` ≤ 160, `draft`, `ogImage?`, `noindex?`, `kind?` (`legale`), `sections` | Designer | Sì |
 
