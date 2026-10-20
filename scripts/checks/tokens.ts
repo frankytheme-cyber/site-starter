@@ -1,5 +1,6 @@
 /**
- * tokens: in src/blocks, src/core e src/layouts (.astro, .css, .ts) solo token semantici. Vieta le
+ * tokens: in src/blocks, src/core, src/layouts e src/pages (.astro, .css, .ts) solo token semantici: anche
+ * le pagine scritte a mano in un sito cliente usano i colori della palette. Vieta le
  * classi della palette di Tailwind (bg-blue-600, text-gray-500, fill-*, ring-*, from-/via-/to-*...)
  * anche se con la palette disattivata non generano CSS, i valori arbitrari di colore (bg-[#..],
  * text-[rgb(..)]), i colori letterali (hex, rgb, hsl, oklch...), gli attributi style con
@@ -10,7 +11,7 @@ import { join } from 'node:path';
 import { type CheckContext, collector } from './lib/report.ts';
 import { rel, walk } from './lib/project.ts';
 
-const DIRS = ['src/blocks', 'src/core', 'src/layouts'];
+const DIRS = ['src/blocks', 'src/core', 'src/layouts', 'src/pages'];
 const EXTENSIONS = ['.astro', '.css', '.ts'];
 const COLOR_FUNCTION = String.raw`(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(`;
 const HEX = String.raw`#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})`;

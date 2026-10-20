@@ -78,12 +78,12 @@ async function checkRecipes(root: string, error: ReturnType<typeof collector>['e
 		.flatMap((name) => {
 			const file = `${RECIPES_DIR}/${name}`;
 			const data = readJsonFile(join(dir, name), (message) => error({ file, message }));
-			const page = /^.+?-(.+)\.json$/.exec(name)?.[1];
+			const [, set, page] = /^(.+?)-(.+)\.json$/.exec(name) ?? [];
 			if (!page) {
 				error({ file, message: 'nome non valido', hint: 'usa <insieme>-<pagina>.json, es. artigiano-servizi.json (home = la pagina iniziale)' });
 				return [];
 			}
-			return data === undefined ? [] : [{ file, data, route: page === 'home' ? '/' : `/${page}` }];
+			return data === undefined ? [] : [{ file, data, set, route: page === 'home' ? '/' : `/${page}` }];
 		});
 
 	await withProjectModules(async (load) => {
@@ -98,17 +98,18 @@ async function checkRecipes(root: string, error: ReturnType<typeof collector>['e
 	});
 
 	// Link interni: pagine dell'insieme (più le pagine legali del template, linkate dal footer) e loro ancore.
+	// Ogni insieme ha la sua home "/": le pagine si cercano dentro l'insieme della ricetta.
 	const sections = (data: Json) => (data && typeof data === 'object' && !Array.isArray(data) && Array.isArray(data.sections) ? data.sections : []);
 	const idsOf = (data: Json) =>
 		new Set(sections(data).flatMap((section) => (section && typeof section === 'object' && !Array.isArray(section) && typeof section.id === 'string' ? [section.id] : [])));
-	const byRoute = new Map(recipes.map((recipe) => [recipe.route, idsOf(recipe.data)]));
+	const byRoute = new Map(recipes.map((recipe) => [`${recipe.set} ${recipe.route}`, idsOf(recipe.data)]));
 	const legal = existsSync(pagesDir) ? readdirSync(pagesDir).filter((name) => /^(privacy|cookie)\.json$/.test(name)).map((name) => `/${basename(name, '.json')}`) : [];
-	for (const { file, data, route } of recipes) {
+	for (const { file, data, set, route } of recipes) {
 		eachString(data, [], (path, href) => {
 			if (lastKey(path) !== 'href' || !(href.startsWith('/') || href.startsWith('#'))) return;
 			const [target, anchor] = href.split('#');
 			const targetRoute = target ? trimSlash(target.split('?')[0]) : route;
-			const ids = byRoute.get(targetRoute);
+			const ids = byRoute.get(`${set} ${targetRoute}`);
 			if (!ids && !legal.includes(targetRoute)) {
 				error({ file, where: fieldPath(path), message: `link a "${href}": nessuna ricetta tipo per ${targetRoute}`, hint: 'usa le pagine dell’insieme (home, servizi, chi-siamo, contatti...)' });
 			} else if (anchor && ids && !ids.has(anchor)) {

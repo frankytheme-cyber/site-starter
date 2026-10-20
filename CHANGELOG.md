@@ -4,6 +4,20 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
+## Non rilasciato
+### Breaking
+
+- `check:tokens` controlla anche `src/pages`: in un sito cliente una pagina `.astro` scritta a mano con classi della palette di Tailwind, colori fissi, `style` con colori o `!important` ora è un errore. Va riscritta con i token semantici (`bg-primary`, `text-fg-muted`...), o meglio come ricetta in `src/content/pages`.
+
+### Novità
+
+- Regole di composizione definitive nel catalogo (`docs/catalogo/README.md`), le stesse della skill `composizione`: il materiale decide le varianti, una sezione vuota si toglie, effetti e bordi con misura, ritmo vario, almeno una cta per pagina.
+- Tre ricette tipo nuove, la home di un ristorante, di un negozio e di uno studio professionale (`docs/catalogo/ricette-tipo/ristorante-home.json`, `negozio-home.json`, `studio-home.json`), con le foto di prova delle fixture.
+
+### Correzioni
+
+- Il check `blocks` verifica i link delle ricette tipo dentro il loro insieme: con più insiemi, ognuno con la sua home `/`, le ancore delle altre home risultavano mancanti.
+
 ## v0.0.4 (2026-10-20)
 ### Novità
 

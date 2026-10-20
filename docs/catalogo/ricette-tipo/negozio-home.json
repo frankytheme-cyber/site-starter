@@ -1,0 +1,137 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "DA-COMPILARE: cosa vende e città · nome del negozio",
+	"description": "DA-COMPILARE: cosa trovi, dove, quando è aperto, in una frase.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "split",
+			"background": "sfumato",
+			"eyebrow": "DA-COMPILARE: tipo di negozio",
+			"title": "DA-COMPILARE: cosa trovi, detto in una riga",
+			"subtitle": "DA-COMPILARE: per chi, che marche o prodotti, cosa lo distingue.",
+			"primaryCta": {
+				"label": "Come arrivare",
+				"href": "@mappa"
+			},
+			"secondaryCta": {
+				"label": "Cosa trovi",
+				"href": "#prodotti"
+			},
+			"image": {
+				"src": "../../assets/images/fixtures/negozio-vetrina.jpg",
+				"alt": "DA-COMPILARE: cosa mostra la foto"
+			}
+		},
+		{
+			"type": "services",
+			"id": "prodotti",
+			"tone": "muted",
+			"variant": "cards-immagine",
+			"eyebrow": "In negozio",
+			"title": "DA-COMPILARE: i reparti o le categorie",
+			"items": [
+				{
+					"title": "DA-COMPILARE: categoria 1",
+					"text": "DA-COMPILARE: cosa comprende.",
+					"image": {
+						"src": "../../assets/images/fixtures/negozio-scaffali.jpg",
+						"alt": "DA-COMPILARE: cosa mostra la foto"
+					}
+				},
+				{
+					"title": "DA-COMPILARE: categoria 2",
+					"text": "DA-COMPILARE: cosa comprende.",
+					"image": {
+						"src": "../../assets/images/fixtures/negozio-regalo.jpg",
+						"alt": "DA-COMPILARE: cosa mostra la foto"
+					}
+				},
+				{
+					"title": "DA-COMPILARE: categoria 3",
+					"text": "DA-COMPILARE: cosa comprende.",
+					"image": {
+						"src": "../../assets/images/fixtures/negozio-vetrina.jpg",
+						"alt": "DA-COMPILARE: cosa mostra la foto"
+					}
+				}
+			]
+		},
+		{
+			"type": "features",
+			"variant": "3-colonne",
+			"eyebrow": "Perché da noi",
+			"title": "DA-COMPILARE: cosa trovi solo qui",
+			"items": [
+				{
+					"icon": "regalo",
+					"title": "DA-COMPILARE: un fatto",
+					"text": "DA-COMPILARE: spiegato in una frase."
+				},
+				{
+					"icon": "etichetta",
+					"title": "DA-COMPILARE: un fatto",
+					"text": "DA-COMPILARE: spiegato in una frase."
+				},
+				{
+					"icon": "stretta-di-mano",
+					"title": "DA-COMPILARE: un fatto",
+					"text": "DA-COMPILARE: spiegato in una frase."
+				}
+			]
+		},
+		{
+			"type": "about",
+			"tone": "muted",
+			"variant": "immagine-testo",
+			"eyebrow": "Chi siamo",
+			"title": "DA-COMPILARE: la storia del negozio",
+			"paragraphs": [
+				"DA-COMPILARE: da quando, chi, dove."
+			],
+			"image": {
+				"src": "../../assets/images/fixtures/negozio-scaffali.jpg",
+				"alt": "DA-COMPILARE: cosa mostra la foto"
+			}
+		},
+		{
+			"type": "testimonials",
+			"variant": "singola",
+			"title": "DA-COMPILARE: una recensione",
+			"items": [
+				{
+					"quote": "DA-COMPILARE: testo della recensione, copiato dalla fonte.",
+					"author": "DA-COMPILARE: nome",
+					"fonte": "DA-COMPILARE: Google, mese e anno"
+				}
+			]
+		},
+		{
+			"type": "contact",
+			"id": "dove-siamo",
+			"tone": "muted",
+			"variant": "info-mappa",
+			"title": "Dove siamo e orari",
+			"text": "DA-COMPILARE: come arrivare, parcheggio.",
+			"showHours": true
+		},
+		{
+			"type": "cta",
+			"id": "contatti",
+			"tone": "primary",
+			"background": "aurora",
+			"variant": "banner",
+			"title": "DA-COMPILARE: invito a passare o a chiedere",
+			"text": "DA-COMPILARE: ordini, ritiro, regali.",
+			"primary": {
+				"label": "Chiama il negozio",
+				"href": "@telefono"
+			},
+			"secondary": {
+				"label": "Come arrivare",
+				"href": "@mappa"
+			},
+			"showContacts": false
+		}
+	]
+}

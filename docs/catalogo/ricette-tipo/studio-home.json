@@ -1,0 +1,157 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "DA-COMPILARE: servizio e città · nome dello studio",
+	"description": "DA-COMPILARE: cosa fa lo studio, per chi, dove, in una frase.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "split",
+			"background": "sfumato",
+			"eyebrow": "DA-COMPILARE: la professione",
+			"title": "DA-COMPILARE: cosa fa lo studio, in una riga",
+			"subtitle": "DA-COMPILARE: per chi lavora e come.",
+			"primaryCta": {
+				"label": "Prendi un appuntamento",
+				"href": "#contatto"
+			},
+			"secondaryCta": {
+				"label": "I servizi",
+				"href": "#servizi"
+			},
+			"image": {
+				"src": "../../assets/images/fixtures/studio-scrivania.jpg",
+				"alt": "DA-COMPILARE: cosa mostra la foto"
+			}
+		},
+		{
+			"type": "services",
+			"id": "servizi",
+			"tone": "muted",
+			"variant": "cards-icone",
+			"eyebrow": "Servizi",
+			"title": "DA-COMPILARE: di cosa ci occupiamo",
+			"items": [
+				{
+					"icon": "calcolatrice",
+					"title": "DA-COMPILARE: servizio 1",
+					"text": "DA-COMPILARE: cosa comprende e per chi."
+				},
+				{
+					"icon": "preventivo",
+					"title": "DA-COMPILARE: servizio 2",
+					"text": "DA-COMPILARE: cosa comprende e per chi."
+				},
+				{
+					"icon": "valigetta",
+					"title": "DA-COMPILARE: servizio 3",
+					"text": "DA-COMPILARE: cosa comprende e per chi."
+				}
+			]
+		},
+		{
+			"type": "features",
+			"variant": "3-colonne",
+			"eyebrow": "Come lavoriamo",
+			"title": "DA-COMPILARE: cosa aspettarti dallo studio",
+			"items": [
+				{
+					"icon": "orologio",
+					"title": "DA-COMPILARE: un fatto",
+					"text": "DA-COMPILARE: spiegato in una frase."
+				},
+				{
+					"icon": "garanzia",
+					"title": "DA-COMPILARE: un fatto",
+					"text": "DA-COMPILARE: spiegato in una frase."
+				},
+				{
+					"icon": "stretta-di-mano",
+					"title": "DA-COMPILARE: un fatto",
+					"text": "DA-COMPILARE: spiegato in una frase."
+				}
+			]
+		},
+		{
+			"type": "about",
+			"tone": "muted",
+			"background": "alone",
+			"variant": "con-numeri",
+			"eyebrow": "Lo studio",
+			"title": "DA-COMPILARE: chi siamo",
+			"paragraphs": [
+				"DA-COMPILARE: chi sono i professionisti, da quando, dove."
+			],
+			"image": {
+				"src": "../../assets/images/fixtures/studio-riunione.jpg",
+				"alt": "DA-COMPILARE: cosa mostra la foto"
+			},
+			"stats": [
+				{
+					"value": "00",
+					"label": "DA-COMPILARE: anni di attività",
+					"fonte": "DA-COMPILARE: da dove viene il numero"
+				},
+				{
+					"value": "00",
+					"label": "DA-COMPILARE: clienti seguiti",
+					"fonte": "DA-COMPILARE: da dove viene il numero"
+				}
+			]
+		},
+		{
+			"type": "process",
+			"variant": "timeline",
+			"eyebrow": "Il primo incontro",
+			"title": "DA-COMPILARE: cosa succede dopo che ci contatti",
+			"steps": [
+				{
+					"title": "DA-COMPILARE: passo 1",
+					"text": "DA-COMPILARE: cosa succede e cosa porti."
+				},
+				{
+					"title": "DA-COMPILARE: passo 2",
+					"text": "DA-COMPILARE: cosa succede e cosa porti."
+				},
+				{
+					"title": "DA-COMPILARE: passo 3",
+					"text": "DA-COMPILARE: cosa succede e cosa porti."
+				}
+			]
+		},
+		{
+			"type": "accordion",
+			"id": "domande",
+			"tone": "muted",
+			"variant": "faq",
+			"eyebrow": "Domande frequenti",
+			"title": "DA-COMPILARE: le domande più frequenti",
+			"items": [
+				{
+					"title": "DA-COMPILARE: domanda 1?",
+					"text": "DA-COMPILARE: risposta breve."
+				},
+				{
+					"title": "DA-COMPILARE: domanda 2?",
+					"text": "DA-COMPILARE: risposta breve."
+				},
+				{
+					"title": "DA-COMPILARE: domanda 3?",
+					"text": "DA-COMPILARE: risposta breve."
+				}
+			]
+		},
+		{
+			"type": "cta",
+			"id": "contatto",
+			"tone": "primary",
+			"variant": "split-contatto",
+			"title": "DA-COMPILARE: invito a fissare un appuntamento",
+			"text": "DA-COMPILARE: come si fissa e cosa portare.",
+			"primary": {
+				"label": "Scrivi una email",
+				"href": "@email"
+			},
+			"showContacts": true
+		}
+	]
+}
