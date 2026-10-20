@@ -11,7 +11,9 @@
  * di ogni velo composto sul fondo del tono e, dove due veli possono toccarsi, sui veli sovrapposti:
  * il punto più carico possibile. Veli e geometria si leggono dal CSS (var(--token), color-mix in
  * oklab, radial-gradient con misure in %), quindi il controllo segue il file; i colori del decoro
- * (--decor-*) coprono tutta la sezione e sono alternativi: ogni disegno ne usa uno.
+ * (--decor-*) coprono tutta la sezione e sono alternativi: ogni disegno ne usa uno. Le intensità
+ * scritte calc(N% * var(--fx-default)) o --fx-muted si moltiplicano per il valore della palette
+ * (scripts/effect-strength.ts lo calcola); --fx-glow è il colore di luce della palette.
  *
  * Velature delle foto (src/themes/overlays.css): il testo bianco della variante full dell'hero sul
  * colore della velatura composto su una foto tutta bianca, il caso peggiore, per ogni palette.
@@ -27,6 +29,9 @@ import { BACKGROUNDS } from '../../src/themes/backgrounds.ts';
 import { type CheckContext, collector } from './lib/report.ts';
 
 const TOKENS = ['bg', 'fg', 'fg-muted', 'surface', 'surface-fg', 'primary', 'primary-fg', 'primary-hover', 'accent', 'accent-fg', 'accent-hover', 'border', 'ring'];
+/** Variabili degli effetti in ogni palette: intensità per tono e colore di luce. */
+export const FX_SCALES = ['fx-default', 'fx-muted'] as const;
+const FX_COLORS = ['fx-glow'];
 
 /** [primo piano, sfondo, rapporto minimo] */
 const PAIRS: [string, string, number][] = [
@@ -55,12 +60,15 @@ const TONE_TEXT: Record<Tone, [string, number][]> = {
 	primary: [['primary-fg', 4.5]],
 };
 
+export const PALETTES_DIR = 'src/themes/palettes';
 const BACKGROUNDS_FILE = 'src/themes/backgrounds.css';
 const TEXTURES_DIR = 'src/themes/textures';
 const OVERLAYS_FILE = 'src/themes/overlays.css';
 const WHITE: Rgb = [1, 1, 1];
 
 type Rgb = [number, number, number];
+type Vars = Map<string, string>;
+type Report = (finding: { file: string; where?: string; message: string; hint?: string }) => void;
 
 function parseHex(hex: string): Rgb {
 	const match = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex);
@@ -128,7 +136,7 @@ function softLight(b: number, s: number): number {
 }
 
 /** Una texture: rumore grigio tra low e high, in soft-light con questa opacità. */
-interface Texture {
+export interface Texture {
 	name: string;
 	low: number;
 	high: number;
@@ -136,7 +144,8 @@ interface Texture {
 }
 
 /** Le texture di src/themes/textures/ con una regola ::after: limiti del rumore (tableValues) e opacità. */
-function readTextures(dir: string, error: (finding: { file: string; where?: string; message: string; hint?: string }) => void): Texture[] {
+export function readTextures(root: string, error: Report = () => {}): Texture[] {
+	const dir = join(root, TEXTURES_DIR);
 	if (!existsSync(dir)) return [];
 	const textures: Texture[] = [];
 	for (const file of readdirSync(dir).filter((name) => name.endsWith('.css'))) {
@@ -160,22 +169,27 @@ function readTextures(dir: string, error: (finding: { file: string; where?: stri
 }
 
 /** { nome palette → { token → valore } } dai blocchi [data-palette="..."] { ... }. */
-function readPalettes(css: string): Map<string, Map<string, string>> {
-	const palettes = new Map<string, Map<string, string>>();
+export function readPalettes(css: string): Map<string, Vars> {
+	const palettes = new Map<string, Vars>();
 	const source = css.replace(/\/\*[\s\S]*?\*\//g, '');
 	for (const [, name, body] of source.matchAll(/\[data-palette="([^"]+)"\]\s*\{([^}]*)\}/g)) {
-		const vars = new Map<string, string>();
+		const vars: Vars = new Map();
 		for (const [, token, value] of body.matchAll(/--([\w-]+)\s*:\s*([^;]+);/g)) vars.set(token, value.trim());
 		palettes.set(name, vars);
 	}
 	return palettes;
 }
 
-/** Un colore di un velo: un token, mescolato in oklab con un altro (mix) o con il trasparente (alpha < 1). */
+/**
+ * Un colore di un velo: un token pieno, mescolato in oklab col trasparente (alpha) o con un altro
+ * colore (mix). amount è la percentuale scritta; con scale si moltiplica per --fx-default o --fx-muted.
+ */
 interface Layer {
 	token: string;
-	alpha: number;
-	mix?: { with: string; percent: number };
+	kind: 'solid' | 'alpha' | 'mix';
+	amount: number;
+	with?: string;
+	scale?: { name: string; fallback: number };
 }
 
 /** Un gradiente di background-image: i suoi colori e il riquadro, in % della sezione, dove non è trasparente. */
@@ -184,25 +198,34 @@ interface Veil {
 	box: [left: number, right: number, top: number, bottom: number];
 }
 
-interface EffectRule {
+export interface EffectRule {
 	background: string;
 	tone: Tone;
 	veils: Veil[];
 }
 
-const COLOR = /color-mix\(\s*in oklab\s*,\s*var\(--([\w-]+)\)\s+([\d.]+)%\s*,\s*(?:(transparent)|var\(--([\w-]+)\)|(black|white))\s*\)|var\(--([\w-]+)\)/g;
+const PERCENT = String.raw`(?:([\d.]+)%|calc\(\s*([\d.]+)%\s*\*\s*var\(--([\w-]+)(?:\s*,\s*([\d.]+))?\)\s*\))`;
+const COLOR = new RegExp(
+	String.raw`color-mix\(\s*in oklab\s*,\s*var\(--([\w-]+)\)\s+${PERCENT}\s*,\s*(?:(transparent)|var\(--([\w-]+)\)|(black|white))\s*\)|var\(--([\w-]+)\)`,
+	'g',
+);
 
-/** I colori di un testo CSS: var(--token), color-mix(in oklab, var(--token) N%, transparent | var(--token) | black | white). */
+/**
+ * I colori di un testo CSS: var(--token) e color-mix(in oklab, var(--token) P, transparent |
+ * var(--token) | black | white), con P una percentuale o calc(N% * var(--fx-…, 1)).
+ */
 const colorsIn = (text: string): Layer[] =>
-	[...text.matchAll(COLOR)].map(([, mixed, percent, transparent, other, keyword, plain]) => {
-		if (plain) return { token: plain, alpha: 1 };
-		if (transparent) return { token: mixed, alpha: Number(percent) / 100 };
-		return { token: mixed, alpha: 1, mix: { with: other ?? keyword, percent: Number(percent) / 100 } };
+	[...text.matchAll(COLOR)].map(([, mixed, percent, scaled, scaleName, fallback, transparent, other, keyword, plain]) => {
+		if (plain) return { token: plain, kind: 'solid', amount: 1 };
+		const amount = Number(percent ?? scaled) / 100;
+		const scale = scaleName ? { name: scaleName, fallback: Number(fallback ?? 1) } : undefined;
+		return transparent ? { token: mixed, kind: 'alpha', amount, scale } : { token: mixed, kind: 'mix', amount, with: other ?? keyword, scale };
 	});
 
 /** --palette-<token> (salvati su <html> da base.css) vale il token della palette; black e white sono loro. */
 const tokenName = (token: string) => token.replace(/^palette-/, '');
 const KEYWORDS: Record<string, Rgb> = { black: [0, 0, 0], white: [1, 1, 1] };
+const known = (token: string) => [...TOKENS, ...FX_COLORS].includes(tokenName(token)) || token in KEYWORDS;
 const WHOLE: Veil['box'] = [0, 100, 0, 100];
 
 /** Le funzioni di primo livello di un valore CSS ("radial-gradient(...), linear-gradient(...)"). */
@@ -233,10 +256,12 @@ function boxOf(gradient: string): Veil['box'] {
 
 const touch = (a: Veil, b: Veil) => a.box[0] < b.box[1] && b.box[0] < a.box[1] && a.box[2] < b.box[3] && b.box[2] < a.box[3];
 
-/** Le regole [data-background="..."] > [data-tone="..."] { background-image: ... } con i loro veli. */
-function readEffects(css: string): EffectRule[] {
+/** Le regole [data-background="..."] > [data-tone="..."] { background-image: ... } di backgrounds.css, con i loro veli. */
+export function readEffects(root: string): EffectRule[] {
+	const file = join(root, BACKGROUNDS_FILE);
+	if (!existsSync(file)) return [];
 	const rules: EffectRule[] = [];
-	const source = css.replace(/\/\*[\s\S]*?\*\//g, '');
+	const source = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
 	for (const [, selectorList, body] of source.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
 		const value = /background-image\s*:\s*([^;]+);/.exec(body)?.[1];
 		const decor = [...body.matchAll(/--decor-[\w-]+\s*:\s*([^;]+);/g)].map(([, color]) => color);
@@ -273,30 +298,96 @@ function readOverlays(css: string): { name: string; layer: Layer; opacity: numbe
 	});
 }
 
+/** Il colore di un token della palette (o black, white). */
+const colorFrom = (vars: Vars) => (token: string) => KEYWORDS[token] ?? parseHex(vars.get(tokenName(token))!);
+
+/** Un velo risolto con la palette: colore pieno e opacità, con le intensità --fx-* della palette. */
+function resolve(layer: Layer, vars: Vars): { rgb: Rgb; alpha: number } {
+	const color = colorFrom(vars);
+	const factor = layer.scale ? Number(vars.get(layer.scale.name) ?? layer.scale.fallback) : 1;
+	const amount = Math.min(1, layer.amount * factor);
+	if (layer.kind === 'solid') return { rgb: color(layer.token), alpha: 1 };
+	if (layer.kind === 'alpha') return { rgb: color(layer.token), alpha: amount };
+	return { rgb: mixOklab(color(layer.token), color(layer.with!), amount), alpha: 1 };
+}
+
+/** Un testo sotto il minimo in un effetto (o in una sezione piena con una texture). */
+export interface EffectFailure {
+	background: string;
+	tone: Tone;
+	fg: string;
+	worst: number;
+	min: number;
+	texture?: string;
+}
+
+/**
+ * I testi sotto AA di una palette negli effetti di sfondo, con e senza ogni texture. La usano il
+ * check e scripts/effect-strength.ts (che prova le intensità --fx-* più alte).
+ */
+export function effectFailures(vars: Vars, effects: EffectRule[], textures: Texture[]): EffectFailure[] {
+	const failures: EffectFailure[] = [];
+	const color = colorFrom(vars);
+	/** Il colore di un punto schiarito e scurito al massimo dalla texture (senza texture, il punto com'è). */
+	const textured = (point: Rgb, texture?: Texture): Rgb[] =>
+		texture ? [texture.low, texture.high].map((gray) => over(point.map((channel) => softLight(channel, gray)) as Rgb, point, texture.opacity)) : [point];
+	// Le sezioni senza effetto (pieno) prendono anche loro la texture.
+	const plain: EffectRule[] = TONES.map((tone) => ({ background: 'pieno', tone, veils: [] }));
+	for (const texture of [undefined, ...textures]) {
+		for (const { background, tone, veils } of texture ? [...plain, ...effects] : effects) {
+			const base = color(TONE_BASE[tone]);
+			const stack = (layers: Layer[], below: Rgb) =>
+				layers.reduceRight((under, layer) => {
+					const { rgb, alpha } = resolve(layer, vars);
+					return over(rgb, under, alpha);
+				}, below);
+			// Ogni colore di ogni velo sul fondo; poi i veli che si toccano, uno sull'altro (il primo di background-image sta sopra).
+			const points = veils.length === 0 ? [base] : veils.flatMap((veil) => veil.colors.map((layer) => stack([layer], base)));
+			for (const group of overlappingGroups(veils)) {
+				const combinations = group.reduce<Layer[][]>((all, veil) => all.flatMap((chosen) => veil.colors.map((layer) => [...chosen, layer])), [[]]);
+				points.push(...combinations.map((layers) => stack(layers, base)));
+			}
+			const shaded = points.flatMap((point) => textured(point, texture));
+			for (const [fg, min] of TONE_TEXT[tone]) {
+				const worst = Math.min(...shaded.map((point) => ratioOf(color(fg), point)));
+				if (worst < min) failures.push({ background, tone, fg, worst, min, texture: texture?.name });
+			}
+		}
+	}
+	return failures;
+}
+
 // Arrotonda per difetto: 4.499 non deve comparire come 4.50.
 const shown = (ratio: number) => (Math.floor(ratio * 100) / 100).toFixed(2);
 
 export function contrast({ root }: CheckContext) {
 	const { findings, error } = collector('contrast');
-	const dir = join(root, 'src/themes/palettes');
+	const dir = join(root, PALETTES_DIR);
 	const files = readdirSync(dir).filter((file) => file.endsWith('.css'));
-	if (files.length === 0) error({ file: 'src/themes/palettes', message: 'nessuna palette' });
+	if (files.length === 0) error({ file: PALETTES_DIR, message: 'nessuna palette' });
 
 	/** Le palette complete, per gli effetti di sfondo. */
-	const complete: { palette: string; vars: Map<string, string> }[] = [];
+	const complete: { palette: string; file: string; vars: Vars }[] = [];
 
 	for (const name of files) {
-		const file = `src/themes/palettes/${name}`;
+		const file = `${PALETTES_DIR}/${name}`;
 		const palettes = readPalettes(readFileSync(join(dir, name), 'utf8'));
 		if (palettes.size === 0) error({ file, message: 'nessun blocco [data-palette="..."]' });
 
 		for (const [palette, vars] of palettes) {
-			const missing = TOKENS.filter((token) => !vars.has(token));
+			const missing = [...TOKENS, ...FX_COLORS].filter((token) => !vars.has(token));
 			if (missing.length > 0) {
-				error({ file, where: palette, message: `token mancanti: ${missing.join(', ')}`, hint: 'ogni palette definisce tutti i token di base.css' });
+				error({ file, where: palette, message: `token mancanti: ${missing.join(', ')}`, hint: 'ogni palette definisce tutti i token di base.css e il colore di luce --fx-glow' });
 				continue;
 			}
 			let valid = true;
+			for (const scale of FX_SCALES) {
+				const value = vars.has(scale) ? Number(vars.get(scale)) : 1;
+				if (!(value >= 0 && value <= 2)) {
+					valid = false;
+					error({ file, where: `${palette} › --${scale}`, message: `"${vars.get(scale)}" non è un numero tra 0 e 2`, hint: 'calcola il valore con node scripts/effect-strength.ts' });
+				}
+			}
 			for (const [fg, bg, min] of PAIRS) {
 				try {
 					const ratio = contrastRatio(vars.get(fg)!, vars.get(bg)!);
@@ -313,7 +404,13 @@ export function contrast({ root }: CheckContext) {
 					error({ file, where: `${palette} › ${fg} / ${bg}`, message: (cause as Error).message });
 				}
 			}
-			if (valid) complete.push({ palette, vars });
+			try {
+				parseHex(vars.get('fx-glow')!);
+			} catch (cause) {
+				valid = false;
+				error({ file, where: `${palette} › --fx-glow`, message: (cause as Error).message, hint: 'il colore di luce degli effetti: #ffffff per le palette chiare, #000000 per quelle scure' });
+			}
+			if (valid) complete.push({ palette, file, vars });
 		}
 	}
 
@@ -321,7 +418,7 @@ export function contrast({ root }: CheckContext) {
 		error({ file: BACKGROUNDS_FILE, message: 'file mancante', hint: 'gli effetti di sfondo di src/themes/backgrounds.ts vivono qui' });
 		return findings;
 	}
-	const effects = readEffects(readFileSync(join(root, BACKGROUNDS_FILE), 'utf8'));
+	const effects = readEffects(root);
 	let usable = true;
 	for (const effect of effects) {
 		const where = `${effect.background} › tone ${effect.tone}`;
@@ -333,13 +430,15 @@ export function contrast({ root }: CheckContext) {
 			usable = false;
 		}
 		const layers = effect.veils.flatMap((veil) => veil.colors);
-		const unknown = layers.flatMap((layer) => [layer.token, layer.mix?.with ?? []].flat()).filter((token) => !TOKENS.includes(tokenName(token)) && !(token in KEYWORDS));
-		if (layers.length === 0 || unknown.length > 0) {
+		const unknown = layers.flatMap((layer) => [layer.token, layer.with ?? []].flat()).filter((token) => !known(token));
+		const badScale = layers.filter((layer) => layer.scale && !(FX_SCALES as readonly string[]).includes(layer.scale.name)).map((layer) => layer.scale!.name);
+		if (layers.length === 0 || unknown.length > 0 || badScale.length > 0) {
 			error({
 				file: BACKGROUNDS_FILE,
 				where,
-				message: unknown.length > 0 ? `token sconosciuti: ${unknown.join(', ')}` : 'nessun colore letto in background-image',
-				hint: 'usa solo var(--token) e color-mix(in oklab, var(--token) N%, transparent | var(--token)) con i token delle palette',
+				message:
+					unknown.length > 0 ? `token sconosciuti: ${unknown.join(', ')}` : badScale.length > 0 ? `intensità sconosciute: ${badScale.join(', ')}` : 'nessun colore letto in background-image',
+				hint: 'usa solo var(--token) e color-mix(in oklab, var(--token) N% | calc(N% * var(--fx-default | --fx-muted, 1)), transparent | var(--token)) con i token delle palette',
 			});
 			usable = false;
 		}
@@ -353,56 +452,35 @@ export function contrast({ root }: CheckContext) {
 	}
 	if (!usable) return findings;
 
-	const textures = readTextures(join(root, TEXTURES_DIR), error);
-	/** Il colore di un punto schiarito e scurito al massimo dalla texture (senza texture, il punto com'è). */
-	const textured = (point: Rgb, texture?: Texture): Rgb[] =>
-		texture ? [texture.low, texture.high].map((gray) => over(point.map((channel) => softLight(channel, gray)) as Rgb, point, texture.opacity)) : [point];
-
-	for (const { palette, vars } of complete) {
-		const color = (token: string) => KEYWORDS[token] ?? parseHex(vars.get(tokenName(token))!);
-		// Le sezioni senza effetto (pieno) prendono anche loro la texture.
-		const plain: EffectRule[] = TONES.map((tone) => ({ background: 'pieno', tone, veils: [] }));
-		for (const texture of [undefined, ...textures]) {
-			for (const { background, tone, veils } of texture ? [...plain, ...effects] : effects) {
-				const base = color(TONE_BASE[tone]);
-				const colorOf = (layer: Layer) => (layer.mix ? mixOklab(color(layer.token), color(layer.mix.with), layer.mix.percent) : color(layer.token));
-				const stack = (layers: Layer[], below: Rgb) => layers.reduceRight((under, layer) => over(colorOf(layer), under, layer.alpha), below);
-				// Ogni colore di ogni velo sul fondo; poi i veli che si toccano, uno sull'altro (il primo di background-image sta sopra).
-				const points = veils.length === 0 ? [base] : veils.flatMap((veil) => veil.colors.map((layer) => stack([layer], base)));
-				for (const group of overlappingGroups(veils)) {
-					const combinations = group.reduce<Layer[][]>((all, veil) => all.flatMap((chosen) => veil.colors.map((layer) => [...chosen, layer])), [[]]);
-					points.push(...combinations.map((layers) => stack(layers, base)));
-				}
-				const shaded = points.flatMap((point) => textured(point, texture));
-				for (const [fg, min] of TONE_TEXT[tone]) {
-					const worst = Math.min(...shaded.map((point) => ratioOf(color(fg), point)));
-					if (worst < min) {
-						error({
-							file: texture ? `${TEXTURES_DIR}/${texture.name}.css` : BACKGROUNDS_FILE,
-							where: `${background} › tone ${tone} › ${palette} › ${fg}${texture ? ` › texture ${texture.name}` : ''}`,
-							message: `contrasto ${shown(worst)}:1 nel punto più carico${background === 'pieno' ? '' : ' dell’effetto'}, minimo ${min}:1 (WCAG AA)`,
-							hint: texture
-								? `abbassa l’opacità della texture ${texture.name} o restringi i suoi tableValues verso 0.5`
-								: `abbassa le percentuali di color-mix di "${background}" sul tono ${tone}, o rivedi --${fg} della palette ${palette}`,
-						});
-					}
-				}
-			}
+	const textures = readTextures(root, error);
+	for (const { palette, file, vars } of complete) {
+		for (const failure of effectFailures(vars, effects, textures)) {
+			const { background, tone, fg, worst, min, texture } = failure;
+			const scaled = tone !== 'primary' && background !== 'pieno';
+			error({
+				file: texture && !scaled ? `${TEXTURES_DIR}/${texture}.css` : scaled ? file : BACKGROUNDS_FILE,
+				where: `${background} › tone ${tone} › ${palette} › ${fg}${texture ? ` › texture ${texture}` : ''}`,
+				message: `contrasto ${shown(worst)}:1 nel punto più carico${background === 'pieno' ? '' : ' dell’effetto'}, minimo ${min}:1 (WCAG AA)`,
+				hint: scaled
+					? `abbassa --fx-${tone} della palette ${palette}: node scripts/effect-strength.ts calcola il valore più alto che resta AA`
+					: texture
+						? `abbassa l’opacità della texture ${texture} o restringi i suoi tableValues verso 0.5`
+						: `abbassa le percentuali di color-mix di "${background}" sul tono ${tone}, o rivedi --${fg} della palette ${palette}`,
+			});
 		}
 	}
+
 	// Velature delle foto: il testo bianco sulla velatura, sopra una foto tutta bianca.
 	const overlays = existsSync(join(root, OVERLAYS_FILE)) ? readOverlays(readFileSync(join(root, OVERLAYS_FILE), 'utf8')) : [];
 	for (const overlay of overlays) {
-		const unknown = [overlay.layer.token, overlay.layer.mix?.with ?? []].flat().filter((token) => !TOKENS.includes(tokenName(token)) && !(token in KEYWORDS));
+		const unknown = [overlay.layer.token, overlay.layer.with ?? []].flat().filter((token) => !known(token));
 		if (unknown.length > 0 || !Number.isFinite(overlay.opacity)) {
 			error({ file: OVERLAYS_FILE, where: overlay.name, message: unknown.length > 0 ? `token sconosciuti: ${unknown.join(', ')}` : 'opacity mancante', hint: 'background-color: color-mix(in oklab, var(--token) N%, black) e opacity: N' });
 			continue;
 		}
 		for (const { palette, vars } of complete) {
-			const color = (token: string) => KEYWORDS[token] ?? parseHex(vars.get(tokenName(token))!);
-			const { layer } = overlay;
-			const fill = layer.mix ? mixOklab(color(layer.token), color(layer.mix.with), layer.mix.percent) : color(layer.token);
-			const ratio = ratioOf(WHITE, over(fill, WHITE, overlay.opacity * layer.alpha));
+			const { rgb, alpha } = resolve(overlay.layer, vars);
+			const ratio = ratioOf(WHITE, over(rgb, WHITE, overlay.opacity * alpha));
 			if (ratio < 4.5) {
 				error({
 					file: OVERLAYS_FILE,

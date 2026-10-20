@@ -1,5 +1,5 @@
 /* Cerchi: cerchi concentrici che partono dall'angolo in alto a destra, come onde nell'acqua. */
 [data-pattern="cerchi"] [data-background="decoro"] > [data-tone]::before {
-	background-image: repeating-radial-gradient(circle at 100% 0%, var(--decor-ink) 0 1px, transparent 1.6px 22px);
-	mask-image: radial-gradient(circle at 100% 0%, black 20%, transparent 68%);
+	background-image: repeating-radial-gradient(circle at 100% 0%, var(--decor-ink) 0 2px, transparent 2.6px 24px);
+	mask-image: radial-gradient(circle at 100% 0%, black 35%, transparent 85%);
 }

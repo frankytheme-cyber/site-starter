@@ -1,6 +1,6 @@
 /* Punti: una griglia di punti che sfuma dall'angolo in alto a destra verso il centro. */
 [data-pattern="punti"] [data-background="decoro"] > [data-tone]::before {
-	background-image: radial-gradient(circle, var(--decor-ink) 1.25px, transparent 1.75px);
-	background-size: 18px 18px;
-	mask-image: radial-gradient(ellipse 75% 95% at 100% 0%, black 15%, transparent 75%);
+	background-image: radial-gradient(circle, var(--decor-ink) 2px, transparent 2.5px);
+	background-size: 20px 20px;
+	mask-image: radial-gradient(ellipse 90% 120% at 100% 0%, black 30%, transparent 90%);
 }
