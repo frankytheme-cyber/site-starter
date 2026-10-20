@@ -11,6 +11,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
+- Il resto del flusso per un agente solo, al posto delle procedure di Paperclip: skill `nuovo-sito` (inizializzazione, brief con Simone, `site.json`, foto), `redirect`, `messa-online` (controlli strict, confronto col brief, SEO, riepilogo per Simone), `aggiornamento-libreria` (`blocks:sync`) e, nella libreria, `nuovo-blocco` (blocco o variante nuova). `AGENTS.md` le elenca nell'ordine del lavoro, con le regole su branch e PR.
+- `npm run images`: senza argomenti elenca le foto del sito con dimensioni e orientamento; con file o cartelle le prepara in `src/assets/images` (raddrizzate secondo l'EXIF, lato lungo al massimo 2400 px, senza metadati né posizione GPS, nomi in kebab-case senza accenti).
 - Regole di composizione definitive nel catalogo (`docs/catalogo/README.md`), le stesse della skill `composizione`: il materiale decide le varianti, una sezione vuota si toglie, effetti e bordi con misura, ritmo vario, almeno una cta per pagina.
 - Tre ricette tipo nuove, la home di un ristorante, di un negozio e di uno studio professionale (`docs/catalogo/ricette-tipo/ristorante-home.json`, `negozio-home.json`, `studio-home.json`), con le foto di prova delle fixture.
 
