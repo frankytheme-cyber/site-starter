@@ -4,7 +4,7 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
-## Non rilasciato
+## v0.0.5 (2026-10-20)
 ### Breaking
 
 - `check:tokens` controlla anche `src/pages`: in un sito cliente una pagina `.astro` scritta a mano con classi della palette di Tailwind, colori fissi, `style` con colori o `!important` ora è un errore. Va riscritta con i token semantici (`bg-primary`, `text-fg-muted`...), o meglio come ricetta in `src/content/pages`.
