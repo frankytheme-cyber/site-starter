@@ -26,14 +26,18 @@ Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma 
 <!-- regole-di-composizione:inizio -->
 ## Regole di composizione
 
-<!-- Scritta a mano: npm run gen:catalog ricopia questa sezione com'è. Elenco provvisorio: le regole verificate dai controlli sono le «Regole d'oro» qui sopra (src/core/recipe-rules.ts); qui vanno le scelte di composizione, da sostituire con l'elenco definitivo. -->
+<!-- Scritta a mano: npm run gen:catalog ricopia questa sezione com'è. Le regole verificate dai controlli sono le «Regole d'oro» qui sopra (src/core/recipe-rules.ts); qui le scelte di composizione, le stesse della skill composizione (.agents/skills/composizione/SKILL.md). -->
 
 Oltre alle regole d'oro, che i controlli verificano, le scelte di composizione:
 
-1. **Varianti con foto solo se le foto ci sono.** hero `split`/`full`, servizi `cards-immagine`/`alternato`, schede `testo-immagine` e carosello vogliono foto vere dell'attività; senza, si usa la variante senza foto (hero `centered`, servizi `cards-icone`, schede `testo`).
-2. **Informazioni importanti in vista.** Prezzi, garanzie e ciò che tutti devono leggere non vanno dentro voci chiuse (accordion, schede): meglio un testo aperto.
-3. **Il tono più forte con misura.** `primary` una o due volte per pagina, di solito per la cta; se la pagina chiude con una cta, nel footer la fascia di contatto (`ctaBand`) resta spenta.
-4. **Un invito alla volta.** Mai più di due cta per pagina, e al massimo una `banner`.
+1. **Il materiale decide le varianti.** Prima di scegliere i blocchi si guarda cosa c'è: foto, recensioni, numeri con la fonte, recapiti di `site.json`. Hero `split`/`full`, servizi `cards-immagine`/`alternato`, about `immagine-testo`, gallery, schede `testo-immagine` e carosello vogliono foto vere dell'attività; senza, si usa la variante senza foto (hero `centered`, servizi `cards-icone`) o si toglie la sezione. Recensioni e numeri solo reali e con la fonte, altrimenti il blocco non c'è.
+2. **Una sezione senza contenuto si toglie, non si riempie.** Meglio una home di 6 sezioni piene che di 10 con testi generici.
+3. **Informazioni importanti in vista.** Prezzi, garanzie e ciò che tutti devono leggere non vanno dentro voci chiuse (accordion, schede): meglio un testo aperto.
+4. **Il tono più forte con misura.** `primary` una o due volte per pagina, di solito per la cta; se la pagina chiude con una cta, nel footer la fascia di contatto (`ctaBand`) resta spenta.
+5. **Un invito alla volta.** Mai più di due cta per pagina, e al massimo una `banner`; ogni pagina non legale ne ha almeno una, verso la fine.
+6. **Effetti e bordi dove servono.** Gli effetti di sfondo vanno all'apertura, a un punto chiave e all'invito finale; sotto una hero `full` non si vedono. Un solo tipo di bordo (`edge`) per sito, scelto col carattere del tema: `onda` morbido, `diagonale` deciso, `curva` per l'invito finale.
+7. **Ritmo vario.** Sezioni dense (griglie di card) e leggere (un testo, una recensione, un invito) si alternano: mai tre griglie di card di fila. La home ha di solito da 6 a 9 sezioni, le pagine interne da 4 a 6.
+8. **Strutture di partenza.** Per tipo di pagina e settore (lavori a domicilio, locali, studi professionali, ospitalità) in `.agents/skills/composizione/strutture.md`; pagine pronte in `ricette-tipo/`.
 <!-- regole-di-composizione:fine -->
 
 ## Blocchi

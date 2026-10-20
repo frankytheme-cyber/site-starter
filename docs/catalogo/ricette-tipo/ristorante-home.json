@@ -1,0 +1,149 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "DA-COMPILARE: cucina e città · nome del locale",
+	"description": "DA-COMPILARE: che cucina, dove, per chi e come prenotare, in una frase.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "full",
+			"overlay": "scura",
+			"eyebrow": "DA-COMPILARE: tipo di cucina",
+			"title": "DA-COMPILARE: il locale in una riga",
+			"subtitle": "DA-COMPILARE: cosa si mangia, da quando, cosa lo distingue.",
+			"primaryCta": {
+				"label": "Prenota un tavolo",
+				"href": "@telefono"
+			},
+			"secondaryCta": {
+				"label": "Guarda il menù",
+				"href": "#menu"
+			},
+			"image": {
+				"src": "../../assets/images/fixtures/ristorante-sala.jpg",
+				"alt": "DA-COMPILARE: cosa mostra la foto"
+			}
+		},
+		{
+			"type": "about",
+			"tone": "muted",
+			"variant": "immagine-testo",
+			"eyebrow": "Chi siamo",
+			"title": "DA-COMPILARE: chi c'è in cucina e in sala",
+			"paragraphs": [
+				"DA-COMPILARE: la storia del locale, con fatti (da quando, chi, dove).",
+				"DA-COMPILARE: come si cucina: materie prime, fornitori, stagionalità."
+			],
+			"image": {
+				"src": "../../assets/images/fixtures/ristorante-cucina.jpg",
+				"alt": "DA-COMPILARE: cosa mostra la foto"
+			}
+		},
+		{
+			"type": "tabs",
+			"id": "menu",
+			"variant": "testo-immagine",
+			"eyebrow": "Il menù",
+			"title": "DA-COMPILARE: cosa si mangia",
+			"items": [
+				{
+					"label": "Pranzo",
+					"text": "DA-COMPILARE: cosa offre il pranzo, orari e prezzi se il cliente li dà.",
+					"image": {
+						"src": "../../assets/images/fixtures/ristorante-piatto.jpg",
+						"alt": "DA-COMPILARE: cosa mostra la foto"
+					}
+				},
+				{
+					"label": "Cena",
+					"text": "DA-COMPILARE: cosa offre la cena.",
+					"image": {
+						"src": "../../assets/images/fixtures/ristorante-sala.jpg",
+						"alt": "DA-COMPILARE: cosa mostra la foto"
+					}
+				}
+			]
+		},
+		{
+			"type": "gallery",
+			"tone": "muted",
+			"background": "alone",
+			"variant": "griglia-popup",
+			"eyebrow": "Il locale",
+			"title": "DA-COMPILARE: sala, cucina e piatti",
+			"items": [
+				{
+					"image": {
+						"src": "../../assets/images/fixtures/ristorante-sala.jpg",
+						"alt": "DA-COMPILARE: cosa mostra la foto"
+					},
+					"caption": "DA-COMPILARE: didascalia"
+				},
+				{
+					"image": {
+						"src": "../../assets/images/fixtures/ristorante-piatto.jpg",
+						"alt": "DA-COMPILARE: cosa mostra la foto"
+					},
+					"caption": "DA-COMPILARE: didascalia"
+				},
+				{
+					"image": {
+						"src": "../../assets/images/fixtures/ristorante-cucina.jpg",
+						"alt": "DA-COMPILARE: cosa mostra la foto"
+					},
+					"caption": "DA-COMPILARE: didascalia"
+				}
+			]
+		},
+		{
+			"type": "testimonials",
+			"variant": "cards",
+			"eyebrow": "Recensioni",
+			"title": "DA-COMPILARE: cosa dicono i clienti",
+			"items": [
+				{
+					"quote": "DA-COMPILARE: testo della recensione, copiato dalla fonte.",
+					"author": "DA-COMPILARE: nome",
+					"fonte": "DA-COMPILARE: Google, mese e anno"
+				},
+				{
+					"quote": "DA-COMPILARE: testo della recensione, copiato dalla fonte.",
+					"author": "DA-COMPILARE: nome",
+					"fonte": "DA-COMPILARE: Google, mese e anno"
+				},
+				{
+					"quote": "DA-COMPILARE: testo della recensione, copiato dalla fonte.",
+					"author": "DA-COMPILARE: nome",
+					"fonte": "DA-COMPILARE: Google, mese e anno"
+				}
+			]
+		},
+		{
+			"type": "contact",
+			"id": "dove-siamo",
+			"tone": "muted",
+			"variant": "info-mappa",
+			"title": "Dove siamo e orari",
+			"text": "DA-COMPILARE: come arrivare, parcheggio.",
+			"showHours": true
+		},
+		{
+			"type": "cta",
+			"id": "prenota",
+			"tone": "primary",
+			"background": "aurora",
+			"edge": "curva",
+			"variant": "banner",
+			"title": "DA-COMPILARE: invito a prenotare",
+			"text": "DA-COMPILARE: come si prenota e con quanto anticipo.",
+			"primary": {
+				"label": "Prenota un tavolo",
+				"href": "@telefono"
+			},
+			"secondary": {
+				"label": "Scrivici su WhatsApp",
+				"href": "@whatsapp"
+			},
+			"showContacts": false
+		}
+	]
+}
