@@ -219,6 +219,8 @@ Fonti: [Tailwind Plus, licenza](https://tailwindcss.com/plus/license), [Preline,
 
 ## 10. Squadra Paperclip: flussi e cancelli
 
+> **In pausa dal 2026-10-20.** Si lavora con un agente solo, Claude Code o Codex, insieme a Simone: come in `AGENTS.md`, sezione «Lavorare con Claude Code o Codex», con le skill in `.agents/skills/`. Questa sezione e le istruzioni in `docs/agenti/` e `docs/skill/` restano per quando la squadra riparte; i tre cancelli (brief, design, messa online) restano decisioni di Simone.
+
 Gli agenti sono gli stessi per tutti i Project; si attivano solo su assegnazione di un task, tranne il PM che fa un controllo giornaliero. Le fondamenta (prompt A-Q) le fai tu con Claude Code; Paperclip entra dopo il rilascio v1.
 
 **Flusso di un sito cliente:**

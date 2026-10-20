@@ -3,9 +3,9 @@ import Container from '@/core/ui/Container.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getTheme } from '@/core/settings';
 import { presetMetas } from '@/themes/metas';
-import { fonts, palettes, patterns, shapes, textures } from '@/themes/presets';
+import { fonts, palettes, patterns, shapes, textures, themePresets } from '@/themes/presets';
 import { LIBRARY_DESCRIPTION } from './_library';
-import { blockGroups, THEME_STORAGE_KEY, themePresets } from './_nav';
+import { blockGroups, THEME_STORAGE_KEY } from './_nav';
 
 interface Props {
 	/** Titolo completo della pagina: catalogTitle() di _library.ts. */

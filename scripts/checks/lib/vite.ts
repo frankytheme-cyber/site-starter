@@ -10,6 +10,18 @@ import { ROOT } from './project.ts';
 export type LoadModule = (path: string) => Promise<Record<string, any>>;
 
 export async function withProjectModules<T>(use: (load: LoadModule) => Promise<T>): Promise<T> {
+	// Vite mette NODE_ENV=development nel processo: la build che i controlli o gli screenshot avviano
+	// dopo lo erediterebbe e non sarebbe quella di produzione (import.meta.env.DEV vero). Alla fine torna com'era.
+	const nodeEnv = process.env.NODE_ENV;
+	try {
+		return await loadWithVite(use);
+	} finally {
+		if (nodeEnv === undefined) delete process.env.NODE_ENV;
+		else process.env.NODE_ENV = nodeEnv;
+	}
+}
+
+async function loadWithVite<T>(use: (load: LoadModule) => Promise<T>): Promise<T> {
 	const server = await createServer({
 		root: ROOT,
 		configFile: false,

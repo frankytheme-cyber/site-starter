@@ -7,6 +7,11 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 ## Non rilasciato
 ### Novità
 
+- Lavoro con un agente solo, Claude Code o Codex, insieme a Simone: la squadra Paperclip è in pausa (nuova sezione «Lavorare con Claude Code o Codex» in `AGENTS.md`). Per il design:
+  - in sviluppo ogni pagina del sito accetta un tema di prova nell'indirizzo (`?palette=&fonts=&shape=&pattern=&texture=`, valori di `themePresets` in `src/themes/presets.ts`) senza toccare `theme.json`, e i link interni lo portano con sé; la build non cambia;
+  - `npm run design:shots`: screenshot delle pagine a 1280 e 375 px, con il tema di `theme.json` o con temi di prova a confronto (prima schermata, panoramica, sezioni, pagina intera e un `index.html` che le affianca), su un server di sviluppo tutto suo, in `reports/design/`;
+  - skill `direzione-visiva` (tre temi motivati dal brief, scelti da Simone sul sito vero) e `revisione-visiva` (screenshot, domande oltre i difetti, due passate), in `.agents/skills/` per Codex con un rimando in `.claude/skills/` per Claude Code. Le due cartelle sono gestite e arrivano ai siti con `blocks:sync`; il nuovo check `skills` verifica frontmatter e rimandi.
+
 - Effetti di sfondo e decori più visibili. Ogni palette ha le sue intensità (`--fx-default`, `--fx-muted`), calcolate dal nuovo `node scripts/effect-strength.ts` come le più alte che lasciano i testi AA con ogni effetto e texture: le palette con più margine hanno veli fino al 50% più forti di prima, terracotta resta com'era sul tono default. Sul tono muted aloni, aurora e sfumato usano anche una luce verso `--fx-glow` (bianco nelle palette chiare, nero in `notte`), che alza il contrasto. I decori hanno punti più grandi, linee più spesse e una sfumatura che copre più spazio. `check:contrast` legge le intensità della palette e si ferma se una è troppo alta. Ogni palette ha tre variabili in più (`--fx-glow`, `--fx-default`, `--fx-muted`).
 
 - Bordi tra sezioni: nelle ricette il campo `edge` (`dritto` di partenza, `onda`, `diagonale`, `curva`) dà una forma al bordo in alto della sezione, che copre il fondo della precedente nel suo colore (`src/themes/edges.css`, solo maschere, nessun colore). Non si applica alla prima sezione; `check:recipes` avvisa con più di 2 bordi, un bordo sulla prima sezione o tra due sezioni dello stesso tone. Dal vivo in fondo a `/catalogo/sfondi` e su `/catalogo/sfondi/bordi/`, nel catalogo la sezione «Bordi tra sezioni».
@@ -21,6 +26,10 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 - Otto palette nuove, dieci in tutto, tutte con contrasto AA verificato: `salvia` (salute, benessere), `cipria` (estetica, fioristi), `laguna` (mare, turismo), `bordeaux` (vino, ristoranti gastronomici), `cobalto` (professionisti, tecnologia), `antracite` (edilizia, artigiani), `prugna` (creativi, scuole) e `notte`, la prima palette scura (locali serali, barbieri, palestre). Si scelgono in `theme.json` come le altre.
 - Catalogo più facile da navigare: nuova pagina `/catalogo/temi` con palette, font e forme a confronto (anteprima dal vivo, mood, settori, «Usa questa»); nella barra nomi leggibili nei selettori, campione dei colori della palette attiva, menu «Blocchi» per categoria e pagina attiva evidenziata; l’indice raggruppa i blocchi per categoria con il numero di varianti; la pagina del singolo blocco ha precedente e successivo. `?palette=&fonts=&shape=&pattern=&texture=` vale in tutte le pagine del catalogo.
+
+### Correzioni
+
+- La build di `npm run check` e `npm run qa` (e quella di `npm run screenshots`) ora è quella di produzione: il caricatore Vite dei controlli lasciava `NODE_ENV=development` nel processo, e la build lo ereditava (`import.meta.env.DEV` vero, `PROD` falso). `scripts/checks/lib/vite.ts` lo rimette com'era.
 
 ## v0.0.3 (2026-10-19)
 ### Novità

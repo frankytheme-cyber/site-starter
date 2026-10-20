@@ -7,12 +7,11 @@
  */
 import SectionFrame from '@/core/SectionFrame.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { fonts, palettes, patterns, shapes, textures } from '@/themes/presets';
+import { themePresets as presets } from '@/themes/presets';
 import { backgroundSample, EDGE_SAMPLE } from '../_backgrounds';
 import { catalogTitle, LIBRARY_DESCRIPTION } from '../_library';
 
 const { Component, fixture } = backgroundSample();
-const presets = { palette: palettes, fonts, shape: shapes, pattern: patterns, texture: textures };
 ---
 
 <BaseLayout title={catalogTitle('Bordi tra sezioni')} description={LIBRARY_DESCRIPTION} noindex allFonts siteLayout={false}>

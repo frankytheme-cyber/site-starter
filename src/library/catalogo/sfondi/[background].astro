@@ -9,7 +9,7 @@ import { TONES } from '@/core/block-types';
 import SectionFrame from '@/core/SectionFrame.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { BACKGROUND_META, BACKGROUNDS } from '@/themes/backgrounds';
-import { fonts, palettes, patterns, shapes, textures } from '@/themes/presets';
+import { themePresets as presets } from '@/themes/presets';
 import { backgroundSample } from '../_backgrounds';
 import { catalogTitle, LIBRARY_DESCRIPTION } from '../_library';
 
@@ -20,7 +20,6 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { background } = Astro.props;
 const { name } = BACKGROUND_META[background];
 const { Component, fixture } = backgroundSample();
-const presets = { palette: palettes, fonts, shape: shapes, pattern: patterns, texture: textures };
 ---
 
 <BaseLayout title={catalogTitle(`Sfondo ${name}`)} description={LIBRARY_DESCRIPTION} noindex allFonts siteLayout={false}>

@@ -8,6 +8,7 @@ import { getLayout } from '@/core/layout';
 import { CATALOG_NAV_ITEM } from '@/core/navigation';
 import { openingHoursSpecification } from '@/core/opening-hours';
 import { getSiteSettings, getTheme } from '@/core/settings';
+import { themePresets } from '@/themes/presets';
 
 interface Props {
 	title: string;
@@ -32,6 +33,11 @@ const [theme, site, layout] = await Promise.all([getTheme(), getSiteSettings(), 
 // Nella libreria il menu ha anche la voce «Catalogo»; nei siti cliente no (core/navigation.ts).
 const extraNavItems = import.meta.env.LIBRARY_MODE ? [CATALOG_NAV_ITEM] : [];
 
+// Tema di prova, solo in sviluppo e nelle pagine del sito: ?palette=&fonts=&shape=&pattern=&texture=
+// nell'indirizzo cambia l'aspetto senza toccare theme.json (il catalogo ha i suoi selettori).
+// Per questo in sviluppo servono tutte le coppie di font; la build resta com'è.
+const themePreview = import.meta.env.DEV && siteLayout;
+
 // Di norma solo il CSS dei font scelti: gli altri preset non vengono collegati alla pagina.
 const fontStyles = import.meta.glob<string>('/src/themes/fonts/*.css', {
 	query: '?url',
@@ -40,7 +46,7 @@ const fontStyles = import.meta.glob<string>('/src/themes/fonts/*.css', {
 });
 const siteFontsHref = fontStyles[`/src/themes/fonts/${theme.fonts}.css`];
 if (!siteFontsHref) throw new Error(`Font "${theme.fonts}" non trovati in src/themes/fonts/`);
-const fontHrefs = allFonts ? Object.values(fontStyles) : [siteFontsHref];
+const fontHrefs = allFonts || themePreview ? Object.values(fontStyles) : [siteFontsHref];
 
 // Indirizzi assoluti: Astro.site arriva da site.json (astro.config.mjs).
 const absolute = (path: string) => new URL(path, Astro.site).href;
@@ -91,6 +97,28 @@ const jsonLd = JSON.stringify(localBusiness).replace(/</g, '\\u003c');
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		{
+			themePreview && (
+				<script is:inline define:vars={{ presets: themePresets }}>
+					// Prima del disegno, così non si vede il cambio di tema: solo valori ammessi dai preset.
+					const params = new URLSearchParams(location.search);
+					const chosen = Object.keys(presets).filter((key) => presets[key].includes(params.get(key)));
+					for (const key of chosen) document.documentElement.dataset[key] = params.get(key);
+					// I link interni portano con sé il tema di prova: si gira il sito con lo stesso aspetto.
+					if (chosen.length > 0) {
+						document.addEventListener('DOMContentLoaded', () => {
+							for (const link of document.querySelectorAll('a[href]')) {
+								const url = new URL(link.href);
+								const samePage = url.pathname === location.pathname && url.search === location.search;
+								if (url.origin !== location.origin || samePage) continue;
+								for (const key of chosen) url.searchParams.set(key, params.get(key));
+								link.setAttribute('href', url.pathname + url.search + url.hash);
+							}
+						});
+					}
+				</script>
+			)
+		}
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
