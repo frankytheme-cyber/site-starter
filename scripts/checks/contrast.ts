@@ -298,6 +298,15 @@ function readOverlays(css: string): { name: string; layer: Layer; opacity: numbe
 	});
 }
 
+/** I colori dei pulsanti sulla foto, [data-on-photo] { --photo-btn-fg: ...; --photo-btn-hover: ... } di overlays.css. */
+function readPhotoButtons(css: string): { fg: Layer; hover: Layer } | undefined {
+	const body = /\[data-on-photo\]\s*\{([^}]*)\}/.exec(css.replace(/\/\*[\s\S]*?\*\//g, ''))?.[1];
+	const layer = (name: string) => colorsIn(new RegExp(`--${name}\\s*:\\s*([^;]+);`).exec(body ?? '')?.[1] ?? '')[0];
+	const fg = layer('photo-btn-fg');
+	const hover = layer('photo-btn-hover');
+	return fg && hover ? { fg, hover } : undefined;
+}
+
 /** Il colore di un token della palette (o black, white). */
 const colorFrom = (vars: Vars) => (token: string) => KEYWORDS[token] ?? parseHex(vars.get(tokenName(token))!);
 
@@ -488,6 +497,25 @@ export function contrast({ root }: CheckContext) {
 					message: `testo bianco ${shown(ratio)}:1 sulla velatura sopra una foto bianca, minimo 4.5:1 (WCAG AA)`,
 					hint: 'scurisci la velatura (più nero nel color-mix) o alza l’opacità',
 				});
+			}
+		}
+	}
+
+	// Pulsanti sulla foto: il testo scuro (--photo-btn-fg) sul pieno bianco e sul passaggio (--photo-btn-hover).
+	const photo = existsSync(join(root, OVERLAYS_FILE)) ? readPhotoButtons(readFileSync(join(root, OVERLAYS_FILE), 'utf8')) : undefined;
+	if (photo) {
+		for (const { palette, vars } of complete) {
+			const fg = resolve(photo.fg, vars).rgb;
+			for (const [state, bg] of [['pieno', WHITE], ['passaggio', resolve(photo.hover, vars).rgb]] as const) {
+				const ratio = ratioOf(fg, bg);
+				if (ratio < 4.5) {
+					error({
+						file: OVERLAYS_FILE,
+						where: `pulsante sulla foto › ${state} › ${palette}`,
+						message: `testo ${shown(ratio)}:1 sul ${state === 'pieno' ? 'pieno bianco' : 'passaggio'}, minimo 4.5:1 (WCAG AA)`,
+						hint: 'scurisci --photo-btn-fg (più nero nel color-mix) o schiarisci --photo-btn-hover',
+					});
+				}
 			}
 		}
 	}

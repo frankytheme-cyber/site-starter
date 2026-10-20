@@ -86,6 +86,34 @@
 		}
 	}
 
+	/*
+	 * Sulla foto della hero full (velatura scura o colorata): pieno bianco col testo scuro della
+	 * palette, anello e link bianchi. Un pieno primary sulla velatura dello stesso colore sparirebbe.
+	 * Colori in src/themes/overlays.css, verificati da check:contrast.
+	 */
+	[data-on-photo] .btn {
+		--btn-soft-bg: var(--color-white);
+		--btn-soft-fg: var(--photo-btn-fg);
+	}
+	[data-on-photo] .btn[data-variant="primary"] {
+		background-color: var(--color-white);
+		color: var(--photo-btn-fg);
+	}
+	[data-on-photo] .btn[data-variant="link"] {
+		color: var(--color-white);
+	}
+	[data-on-photo] .btn:not(:disabled, [aria-disabled="true"], [data-state="disabled"]):is(:hover, [data-state="hover"]) {
+		&[data-variant="primary"] {
+			background-color: var(--photo-btn-hover);
+		}
+		&[data-variant="link"] {
+			color: var(--color-white);
+		}
+	}
+	[data-on-photo] .btn:is(:focus-visible, [data-state="focus"]) {
+		outline-color: var(--color-white);
+	}
+
 	/* Focus da tastiera: anello con stacco. Al click del mouse nessun anello. */
 	.btn:is(:focus-visible, [data-state="focus"]) {
 		outline: 2px solid var(--ring);

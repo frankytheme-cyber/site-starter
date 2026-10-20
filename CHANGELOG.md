@@ -18,6 +18,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Correzioni
 
+- Hero 1.2.1: sulla foto della variante `full` i pulsanti si staccano con ogni palette. Il pieno è bianco con il testo del colore della velatura colorata, il passaggio un bianco appena tinto, anello del focus e link bianchi; prima un pulsante primary scuro (antracite, bordeaux) quasi spariva sulla velatura dello stesso colore. Colori in `src/themes/overlays.css` (`--photo-btn-fg`, `--photo-btn-hover`), regole in `core/ui/button/button.css` (`[data-on-photo]`); `check:contrast` verifica il testo sul pieno e sul passaggio per ogni palette.
 - Il check `blocks` verifica i link delle ricette tipo dentro il loro insieme: con più insiemi, ognuno con la sua home `/`, le ancore delle altre home risultavano mancanti.
 
 ## v0.0.4 (2026-10-20)

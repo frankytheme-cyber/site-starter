@@ -9,3 +9,14 @@
 	background-color: color-mix(in oklab, var(--palette-primary) 45%, black);
 	opacity: 0.75;
 }
+
+/*
+ * Pulsanti sulla foto (hero full, [data-on-photo] in Hero.astro, regole in core/ui/button/button.css):
+ * il pieno è bianco con il testo del colore della velatura colorata, il passaggio un bianco appena
+ * tinto. Su ogni velatura il bianco si stacca (è il testo bianco già verificato qui sopra), e in ogni
+ * palette il testo resta AA: il check contrast verifica --photo-btn-fg sul bianco e su --photo-btn-hover.
+ */
+[data-on-photo] {
+	--photo-btn-fg: color-mix(in oklab, var(--palette-primary) 45%, black);
+	--photo-btn-hover: color-mix(in oklab, var(--palette-primary) 14%, white);
+}
