@@ -106,7 +106,7 @@ Nei link dei pulsanti (`href` delle cta e del menu) i recapiti non si scrivono: 
 
 ## Effetti di sfondo
 
-Accanto a `tone`, ogni sezione può avere `background`: un effetto dipinto sopra il colore del tono, con i colori della palette (CSS in `src/themes/backgrounds.css`). Il valore di partenza è `pieno`; gli altri servono a far notare poche sezioni: al massimo 3 per pagina, mai due vicine (controllo recipes). Ogni blocco ammette solo gli effetti della sua scheda (build). Il contrasto dei testi nel punto più carico è verificato su ogni palette e tono (controllo contrast). Sotto una foto a tutta sezione l’effetto non si vede. Dal vivo su `/catalogo/sfondi`, ogni effetto da solo su `/catalogo/sfondi/<effetto>/`.
+Accanto a `tone`, ogni sezione può avere `background`: un effetto dipinto sopra il colore del tono, con i colori della palette (CSS in `src/themes/backgrounds.css`). Il valore di partenza è `pieno`; gli altri servono a far notare poche sezioni: al massimo 3 per pagina, mai due vicine (controllo recipes). Ogni blocco ammette solo gli effetti della sua scheda (build). Il contrasto dei testi nel punto più carico è verificato su ogni palette e tono (controllo contrast). L’intensità dei veli dipende dalla palette (`--fx-default`, `--fx-muted`): la più alta che lascia i testi AA, quindi le palette con più margine di contrasto hanno effetti più visibili, terracotta i più tenui. Gli screenshot qui sotto, e quelli di decori, texture e bordi, usano la palette `laguna`, di intensità tipica. Sotto una foto a tutta sezione l’effetto non si vede. Dal vivo su `/catalogo/sfondi`, ogni effetto da solo su `/catalogo/sfondi/<effetto>/`.
 
 | Effetto | Nome | Com’è | Quando usarlo | Blocchi |
 | --- | --- | --- | --- | --- |

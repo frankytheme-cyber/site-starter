@@ -35,6 +35,11 @@ export const SCREEN_WIDTHS: Record<ScreenSize, number> = { desktop: 1280, mobile
 export const screenshotName = (type: string, variant: string, size: ScreenSize) => `${type}-${variant}-${size}.webp`;
 /** Screenshot desktop dell'hero con una palette, in docs/catalogo/img/. */
 export const paletteScreenshotName = (palette: string) => `hero-palette-${palette}-desktop.webp`;
+/**
+ * Palette degli screenshot di effetti, decori, texture e bordi: una di intensità tipica (--fx-default
+ * vicino a 1), non quella del template, che è la più tenue.
+ */
+export const EFFECTS_SCREENSHOT_PALETTE = 'laguna';
 /** Screenshot desktop di un effetto di sfondo sui tre toni (/catalogo/sfondi/<effetto>/), in docs/catalogo/img/. */
 export const backgroundScreenshotName = (background: string) => `sfondo-${background}-desktop.webp`;
 /** Screenshot desktop di un decoro (/catalogo/sfondi/decoro/?pattern=), in docs/catalogo/img/. */

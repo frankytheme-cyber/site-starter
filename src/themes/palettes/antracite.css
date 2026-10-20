@@ -31,4 +31,8 @@
 	--accent-hover: #dba502;
 	--border: #d9d8cf;
 	--ring: #2e3336;
+	/* Effetti di sfondo (backgrounds.css): colore di luce, palette chiara: le luci vanno verso il bianco; intensità da node scripts/effect-strength.ts. */
+	--fx-glow: #ffffff;
+	--fx-default: 1;
+	--fx-muted: 1.15;
 }

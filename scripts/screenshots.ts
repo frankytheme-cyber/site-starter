@@ -10,6 +10,7 @@
  * - per ogni decoro tranne nessuno, /catalogo/sfondi/decoro/?pattern=: decoro-<decoro>-desktop.webp;
  * - per ogni texture tranne liscia, /catalogo/sfondi/aurora/?texture=: texture-<texture>-desktop.webp;
  * - i bordi tra sezioni, /catalogo/sfondi/bordi/: bordi-desktop.webp.
+ * Effetti, decori, texture e bordi con la palette EFFECTS_SCREENSHOT_PALETTE (catalog.ts).
  * Prima di ogni scatto si aspettano i font e tutte le immagini (anche quelle lazy); movimento ridotto.
  * Gli screenshot che non corrispondono più a una variante vengono tolti.
  *
@@ -25,6 +26,7 @@ import sharp from 'sharp';
 import {
 	backgroundScreenshotName,
 	EDGES_SCREENSHOT,
+	EFFECTS_SCREENSHOT_PALETTE,
 	paletteScreenshotName,
 	patternScreenshotName,
 	SCREEN_WIDTHS,
@@ -113,10 +115,11 @@ try {
 			}
 		}
 		if (size.name === 'desktop') {
-			for (const background of backgrounds) await shoot(page, `/catalogo/sfondi/${background}/`, backgroundScreenshotName(background));
-			for (const pattern of patterns) await shoot(page, `/catalogo/sfondi/decoro/?pattern=${pattern}`, patternScreenshotName(pattern));
-			for (const texture of textures) await shoot(page, `/catalogo/sfondi/aurora/?texture=${texture}`, textureScreenshotName(texture));
-			await shoot(page, '/catalogo/sfondi/bordi/', EDGES_SCREENSHOT);
+			const palette = `palette=${EFFECTS_SCREENSHOT_PALETTE}`;
+			for (const background of backgrounds) await shoot(page, `/catalogo/sfondi/${background}/?${palette}`, backgroundScreenshotName(background));
+			for (const pattern of patterns) await shoot(page, `/catalogo/sfondi/decoro/?pattern=${pattern}&${palette}`, patternScreenshotName(pattern));
+			for (const texture of textures) await shoot(page, `/catalogo/sfondi/aurora/?texture=${texture}&${palette}`, textureScreenshotName(texture));
+			await shoot(page, `/catalogo/sfondi/bordi/?${palette}`, EDGES_SCREENSHOT);
 		}
 		await context.close();
 	}

@@ -5,42 +5,48 @@
  * colore del tono. Sulla radice i token sono quelli della palette (--bg, --surface, --primary...):
  * Section li ridefinisce solo per i figli.
  *
- * Solo token e color-mix. I veli scuri hanno intensità basse: la palette con meno margine
- * (primary su bg e su surface) decide il massimo. Il check contrast legge questo file: per ogni
- * palette, tono ed effetto verifica testo, testo secondario, link e anello di focus sul colore pieno
- * di ogni velo composto sul fondo, e sui veli sovrapposti dove le ellissi si toccano. Formati che
- * legge: var(--token), color-mix(in oklab, var(--token) N%, transparent | var(--token)) e
+ * Solo token e color-mix. I veli che scuriscono (primary, accent, fg sul default e sul muted) hanno
+ * un'intensità di base moltiplicata per quella della palette, --fx-default e --fx-muted in
+ * palettes/<nome>.css: la più alta con cui i testi restano AA, calcolata da
+ * scripts/effect-strength.ts, così le palette con più margine hanno effetti più visibili. Le luci
+ * verso --fx-glow (bianco nelle palette chiare, nero in quelle scure) alzano il contrasto e non si
+ * moltiplicano. Sul primary i veli sono di primary-hover, già AA con primary-fg.
+ *
+ * Il check contrast legge questo file: per ogni palette, tono ed effetto verifica testo, testo
+ * secondario, link e anello di focus sul colore pieno di ogni velo composto sul fondo, e sui veli
+ * sovrapposti dove le ellissi si toccano. Formati che legge: var(--token), color-mix(in oklab,
+ * var(--token) N% | calc(N% * var(--fx-default | --fx-muted, 1)), transparent | var(--token)) e
  * radial-gradient(Rx% Ry% at X% Y%, ..., transparent N%); per il decoro le proprietà --decor-*.
  */
 
-/* Sfumato: dal tono, in diagonale, verso un velo di primary (sul muted verso il bg, più chiaro). */
+/* Sfumato: dal tono, in diagonale, verso un velo di primary (sul muted verso la luce, più chiara). */
 [data-background="sfumato"] > [data-tone="default"] {
-	background-image: linear-gradient(160deg, transparent 30%, color-mix(in oklab, var(--primary) 10%, var(--bg)));
+	background-image: linear-gradient(160deg, transparent 25%, color-mix(in oklab, var(--primary) calc(18% * var(--fx-default, 1)), var(--bg)));
 }
 
 [data-background="sfumato"] > [data-tone="muted"] {
-	background-image: linear-gradient(160deg, transparent 30%, color-mix(in oklab, var(--primary) 6%, var(--bg)));
+	background-image: linear-gradient(160deg, transparent 25%, color-mix(in oklab, var(--primary) calc(10% * var(--fx-muted, 1)), var(--fx-glow)));
 }
 
 [data-background="sfumato"] > [data-tone="primary"] {
-	background-image: linear-gradient(160deg, transparent 30%, var(--primary-hover));
+	background-image: linear-gradient(160deg, transparent 25%, var(--primary-hover));
 }
 
 /*
- * Alone: due luci morbide in angoli opposti, che non si toccano: primary in alto a destra, accent in
- * basso a sinistra. Sul default sono veli leggeri; sul muted sono luci verso il bg, che alzano il
- * contrasto invece di abbassarlo; sul primary sono di primary-hover, già AA con primary-fg.
+ * Alone: due luci morbide in angoli opposti, che non si toccano. Sul default primary in alto a
+ * destra e accent in basso a sinistra; sul muted primary in alto a destra e una luce verso
+ * --fx-glow in basso a sinistra; sul primary due luci di primary-hover.
  */
 [data-background="alone"] > [data-tone="default"] {
 	background-image:
-		radial-gradient(75% 95% at 100% 0%, color-mix(in oklab, var(--primary) 13%, transparent), transparent 70%),
-		radial-gradient(60% 75% at 0% 100%, color-mix(in oklab, var(--accent) 13%, transparent), transparent 72%);
+		radial-gradient(75% 95% at 100% 0%, color-mix(in oklab, var(--primary) calc(18% * var(--fx-default, 1)), transparent), transparent 70%),
+		radial-gradient(60% 75% at 0% 100%, color-mix(in oklab, var(--accent) calc(18% * var(--fx-default, 1)), transparent), transparent 72%);
 }
 
 [data-background="alone"] > [data-tone="muted"] {
 	background-image:
-		radial-gradient(75% 95% at 100% 0%, color-mix(in oklab, var(--primary) 10%, var(--bg)), transparent 70%),
-		radial-gradient(60% 75% at 0% 100%, color-mix(in oklab, var(--accent) 10%, var(--bg)), transparent 72%);
+		radial-gradient(75% 95% at 100% 0%, color-mix(in oklab, var(--primary) calc(12% * var(--fx-muted, 1)), transparent), transparent 70%),
+		radial-gradient(60% 75% at 0% 100%, color-mix(in oklab, var(--fx-glow) 80%, transparent), transparent 72%);
 }
 
 [data-background="alone"] > [data-tone="primary"] {
@@ -50,21 +56,22 @@
 }
 
 /*
- * Aurora: tre aloni (mesh gradient), primary in alto a sinistra, accent a destra, il tono vicino in
- * basso. Le ellissi non si toccano: il check contrast lo verifica, altrimenti somma i veli.
+ * Aurora: tre aloni (mesh gradient), primary in alto a sinistra, accent a destra, il tono vicino (o
+ * la luce, sul muted) in basso. Le ellissi non si toccano: il check contrast lo verifica,
+ * altrimenti somma i veli.
  */
 [data-background="aurora"] > [data-tone="default"] {
 	background-image:
-		radial-gradient(55% 75% at 8% 0%, color-mix(in oklab, var(--primary) 12%, transparent), transparent 70%),
-		radial-gradient(50% 60% at 95% 20%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 70%),
+		radial-gradient(55% 75% at 8% 0%, color-mix(in oklab, var(--primary) calc(18% * var(--fx-default, 1)), transparent), transparent 70%),
+		radial-gradient(50% 60% at 95% 20%, color-mix(in oklab, var(--accent) calc(18% * var(--fx-default, 1)), transparent), transparent 70%),
 		radial-gradient(70% 70% at 55% 115%, color-mix(in oklab, var(--surface) 90%, transparent), transparent 70%);
 }
 
 [data-background="aurora"] > [data-tone="muted"] {
 	background-image:
-		radial-gradient(55% 75% at 8% 0%, color-mix(in oklab, var(--primary) 10%, var(--bg)), transparent 70%),
-		radial-gradient(50% 60% at 95% 20%, color-mix(in oklab, var(--accent) 12%, var(--bg)), transparent 70%),
-		radial-gradient(70% 70% at 55% 115%, color-mix(in oklab, var(--bg) 90%, transparent), transparent 70%);
+		radial-gradient(55% 75% at 8% 0%, color-mix(in oklab, var(--primary) calc(12% * var(--fx-muted, 1)), transparent), transparent 70%),
+		radial-gradient(50% 60% at 95% 20%, color-mix(in oklab, var(--accent) calc(12% * var(--fx-muted, 1)), transparent), transparent 70%),
+		radial-gradient(70% 70% at 55% 115%, color-mix(in oklab, var(--fx-glow) 80%, transparent), transparent 70%);
 }
 
 [data-background="aurora"] > [data-tone="primary"] {
@@ -78,8 +85,9 @@
  * Decoro: il motivo del sito (data-pattern su <html>, da theme.json; disegni in patterns/) su un
  * ::before dietro al contenuto, sopra il colore del tono e sotto le foto di sfondo (z-index -20, le
  * foto della Section stanno a -10). Qui i colori per tono, che i disegni usano: --decor-ink per
- * linee e punti, --decor-fill per le forme piene. Sul muted sono luci verso il bg; sul primary
- * sono di primary-hover, già AA con primary-fg. Il check contrast li legge come veli dell'effetto.
+ * linee e punti, --decor-fill per le forme piene. Sul default sono veli di fg e primary moltiplicati
+ * per --fx-default; sul muted linee e forme di luce (--fx-glow); sul primary di primary-hover. Il
+ * check contrast li legge come veli dell'effetto.
  */
 [data-background="decoro"] > [data-tone]::before {
 	content: "";
@@ -90,13 +98,13 @@
 }
 
 [data-background="decoro"] > [data-tone="default"] {
-	--decor-ink: color-mix(in oklab, var(--fg) 9%, transparent);
-	--decor-fill: color-mix(in oklab, var(--primary) 6%, transparent);
+	--decor-ink: color-mix(in oklab, var(--fg) calc(12% * var(--fx-default, 1)), transparent);
+	--decor-fill: color-mix(in oklab, var(--primary) calc(11% * var(--fx-default, 1)), transparent);
 }
 
 [data-background="decoro"] > [data-tone="muted"] {
-	--decor-ink: var(--bg);
-	--decor-fill: color-mix(in oklab, var(--bg) 80%, transparent);
+	--decor-ink: var(--fx-glow);
+	--decor-fill: color-mix(in oklab, var(--fx-glow) 70%, transparent);
 }
 
 [data-background="decoro"] > [data-tone="primary"] {

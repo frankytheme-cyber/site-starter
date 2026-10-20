@@ -1,5 +1,5 @@
 /* Righe: righe diagonali fitte che sfumano dall'angolo in alto a destra. */
 [data-pattern="righe"] [data-background="decoro"] > [data-tone]::before {
-	background-image: repeating-linear-gradient(-45deg, var(--decor-ink) 0 1px, transparent 1px 10px);
-	mask-image: linear-gradient(240deg, black 10%, transparent 62%);
+	background-image: repeating-linear-gradient(-45deg, var(--decor-ink) 0 2px, transparent 2px 12px);
+	mask-image: linear-gradient(240deg, black 25%, transparent 80%);
 }
