@@ -4,7 +4,7 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
-## Non rilasciato
+## v0.0.4 (2026-10-20)
 ### Novità
 
 - Skill `composizione` e `testi-sito` per l'agente che costruisce un sito con Simone. `composizione` prende il posto di `ricetta-pagina`: inventario del materiale, varianti scelte in base alle foto, alle recensioni e ai numeri che ci sono, ritmo di toni, effetti di sfondo e bordi, layout e menu, nota di design breve; le strutture di partenza per tipo di pagina e settore (lavori a domicilio, locali, studi professionali, ospitalità) sono in `.agents/skills/composizione/strutture.md`. `testi-sito` scrive i testi dai fatti del brief: regole, indicazioni campo per campo con esempi, frasi da evitare, controllo delle righe a 375 px.
