@@ -11,7 +11,7 @@ export const meta: BlockMeta = {
 	category: 'contatti',
 	scope: 'page',
 	backgrounds: ['pieno', 'sfumato', 'alone', 'aurora', 'decoro'],
-	version: '1.1.0',
+	version: '1.2.0',
 	source: { from: 'originale' },
 	variants: {
 		banner: {
@@ -28,5 +28,7 @@ export const meta: BlockMeta = {
 	],
 	fieldRules: {
 		showContacts: { note: 'Il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp.' },
+		phoneLabel: { note: 'Usato solo con showContacts; utile per usare lo stesso testo degli altri pulsanti della pagina.' },
+		whatsappLabel: { note: 'Usato solo con showContacts.' },
 	},
 };

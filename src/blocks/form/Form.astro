@@ -10,7 +10,7 @@ import Section from '@/core/ui/Section.astro';
 import type { FormProps } from './schema';
 
 type Props = FormProps;
-const { id, tone, variant, title, text, services, privacyHref, submitLabel = 'Invia la richiesta' } = Astro.props;
+const { id, tone, variant, eyebrow, title, text, services, privacyHref, submitLabel = 'Invia la richiesta' } = Astro.props;
 const site = Astro.props.site ?? await getSiteSettings();
 const uid = nextId(Astro.request, 'form');
 const demo = isLibraryMode() && Astro.url.pathname.startsWith('/catalogo');
@@ -23,7 +23,7 @@ const inputClass = 'mt-2 min-h-12 w-full min-w-0 rounded-button border border-bo
 <Section id={id} tone={tone} aria-labelledby={`${uid}-title`}>
 	<div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
 		<div>
-			<p class="mb-3 text-sm font-semibold tracking-wider text-fg-muted uppercase">{variant === 'preventivo' ? 'Il tuo prossimo progetto' : 'Scrivici'}</p>
+			<p class="mb-3 text-sm font-semibold tracking-wider text-fg-muted uppercase">{eyebrow ?? (variant === 'preventivo' ? 'Il tuo prossimo progetto' : 'Scrivici')}</p>
 			<h2 id={`${uid}-title`} class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
 			{text && <p class="mt-5 max-w-lg text-lg text-pretty text-fg-muted">{text}</p>}
 			<div class="mt-8 border-t border-border pt-6">

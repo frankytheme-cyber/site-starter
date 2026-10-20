@@ -8,8 +8,8 @@ import { icons, type IconName } from '@/core/icons';
 
 interface Props {
 	name: IconName;
-	/** sm 16px (nel testo) · md 20px (pulsanti, liste) · lg 24px (card, elenchi di servizi). */
-	size?: 'sm' | 'md' | 'lg';
+	/** sm 16px (nel testo) · md 20px (pulsanti, liste) · lg 24px (card, elenchi di servizi) · xl 48px (al posto di una foto). */
+	size?: 'sm' | 'md' | 'lg' | 'xl';
 	/**
 	 * Senza label l'icona è decorativa e nascosta agli screen reader. Serve quando l'icona
 	 * porta un'informazione che non è già nel testo, es. è l'unico contenuto di un link.
@@ -20,7 +20,7 @@ interface Props {
 
 const { name, size = 'md', label, class: className } = Astro.props;
 
-const sizes = { sm: 'size-4', md: 'size-5', lg: 'size-6' };
+const sizes = { sm: 'size-4', md: 'size-5', lg: 'size-6', xl: 'size-12' };
 const a11y = label ? ({ role: 'img', 'aria-label': label } as const) : ({ 'aria-hidden': 'true' } as const);
 ---
 

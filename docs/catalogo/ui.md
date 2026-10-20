@@ -157,8 +157,8 @@ prende quello del testo intorno (text-primary sul contenitore per colorarla).
 ```ts
 interface Props {
 	name: IconName;
-	/** sm 16px (nel testo) · md 20px (pulsanti, liste) · lg 24px (card, elenchi di servizi). */
-	size?: 'sm' | 'md' | 'lg';
+	/** sm 16px (nel testo) · md 20px (pulsanti, liste) · lg 24px (card, elenchi di servizi) · xl 48px (al posto di una foto). */
+	size?: 'sm' | 'md' | 'lg' | 'xl';
 	/**
 	 * Senza label l'icona è decorativa e nascosta agli screen reader. Serve quando l'icona
 	 * porta un'informazione che non è già nel testo, es. è l'unico contenuto di un link.

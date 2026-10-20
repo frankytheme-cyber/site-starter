@@ -11,7 +11,7 @@ export const meta: BlockMeta = {
 	category: 'apertura',
 	scope: 'page',
 	backgrounds: ['pieno', 'sfumato', 'alone', 'aurora', 'decoro'],
-	version: '1.2.1',
+	version: '1.3.0',
 	source: { from: 'originale' },
 	variants: {
 		split: {
@@ -32,6 +32,7 @@ export const meta: BlockMeta = {
 	],
 	fieldRules: {
 		image: { requiredFor: ['split', 'full'], note: 'centered non la mostra.' },
+		imageShape: { note: 'Solo per la variante split; nelle altre non ha effetto.' },
 		overlay: { note: 'Solo per la variante full; nelle altre non ha effetto.' },
 	},
 };

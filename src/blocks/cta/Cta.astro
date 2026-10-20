@@ -8,14 +8,14 @@ import type { CtaProps } from './schema';
 
 type Props = CtaProps;
 
-const { id, tone, variant, title, text, primary, secondary, showContacts } = Astro.props;
+const { id, tone, variant, title, text, primary, secondary, showContacts, phoneLabel, whatsappLabel } = Astro.props;
 
 // I recapiti arrivano solo da site.json: lo schema del blocco non li contiene.
 const settings = showContacts ? await getSiteSettings() : undefined;
 const contacts: { href: string; icon: IconName; label: string }[] = [];
 if (settings) {
-	contacts.push({ href: '@telefono', icon: 'telefono', label: `Chiama ${settings.phone}` });
-	if (settings.whatsapp) contacts.push({ href: '@whatsapp', icon: 'whatsapp', label: 'Scrivici su WhatsApp' });
+	contacts.push({ href: '@telefono', icon: 'telefono', label: phoneLabel ?? `Chiama ${settings.phone}` });
+	if (settings.whatsapp) contacts.push({ href: '@whatsapp', icon: 'whatsapp', label: whatsappLabel ?? 'Scrivici su WhatsApp' });
 }
 ---
 

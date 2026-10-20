@@ -11,6 +11,12 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
+- Migliorie ai blocchi chieste dal sito pilota, tutte facoltative (i siti non cambiano finché non le usano; dopo `blocks:sync`, `npm run gen:decap` per vederle nel CMS):
+  - hero 1.3.0: `imageShape` (`verticale` di partenza, 4:5, o `orizzontale`, 4:3) sceglie il formato della foto della variante `split` su desktop;
+  - services 1.2.0: in `cards-immagine` la foto diventa facoltativa per voce, e un servizio senza foto mostra la sua icona nello stesso spazio (serve la foto o l'icona); `Icon` ha la misura `xl`;
+  - gallery 1.1.0: `showCaptions` mostra le didascalie anche sotto le miniature di `griglia-popup`;
+  - form 1.1.0: `eyebrow` facoltativo al posto dell'occhiello fisso;
+  - cta 1.2.0: `phoneLabel` e `whatsappLabel` per i testi dei pulsanti dei recapiti con `showContacts`.
 - Il resto del flusso per un agente solo, al posto delle procedure di Paperclip: skill `nuovo-sito` (inizializzazione, brief con Simone, `site.json`, foto), `redirect`, `messa-online` (controlli strict, confronto col brief, SEO, riepilogo per Simone), `aggiornamento-libreria` (`blocks:sync`) e, nella libreria, `nuovo-blocco` (blocco o variante nuova). `AGENTS.md` le elenca nell'ordine del lavoro, con le regole su branch e PR.
 - `npm run images`: senza argomenti elenca le foto del sito con dimensioni e orientamento; con file o cartelle le prepara in `src/assets/images` (raddrizzate secondo l'EXIF, lato lungo al massimo 2400 px, senza metadati né posizione GPS, nomi in kebab-case senza accenti).
 - Regole di composizione definitive nel catalogo (`docs/catalogo/README.md`), le stesse della skill `composizione`: il materiale decide le varianti, una sezione vuota si toglie, effetti e bordi con misura, ritmo vario, almeno una cta per pagina.

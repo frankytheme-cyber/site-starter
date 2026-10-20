@@ -22,12 +22,12 @@ export const schema = ({ image }: SchemaContext) =>
 			items: z
 				.array(
 					z.object({
-						/** Obbligatoria per cards-icone; le altre varianti non la mostrano. */
-						icon: iconSchema().optional().describe('Icona|Obbligatoria per la variante cards-icone'),
-						/** Obbligatoria per cards-immagine e alternato; cards-icone non la mostra. */
+						/** Obbligatoria per cards-icone; in cards-immagine sostituisce la foto che manca. */
+						icon: iconSchema().optional().describe('Icona|Obbligatoria per la variante cards-icone; in cards-immagine si vede al posto della foto, se manca'),
+						/** Obbligatoria per alternato; in cards-immagine foto o icona; cards-icone non la mostra. */
 						image: imageSchema(image)
 							.optional()
-							.describe('Foto|Obbligatoria per le varianti cards-immagine e alternato; facoltativa nelle schede'),
+							.describe('Foto|Obbligatoria per la variante alternato; in cards-immagine serve la foto o l’icona; facoltativa nelle schede'),
 						title: z.string().min(1).max(50).describe('Nome del servizio|Al massimo 50 caratteri'),
 						text: z.string().min(1).max(180).describe('Descrizione|Cosa comprende il servizio, al massimo 180 caratteri'),
 						link: ctaSchema
@@ -40,18 +40,20 @@ export const schema = ({ image }: SchemaContext) =>
 				.describe('Servizi|Da 2 a 6 servizi'),
 		})
 		// rule: La variante cards-icone richiede l’icona in ogni servizio.
-		// rule: Le varianti cards-immagine e alternato richiedono la foto in ogni servizio.
+		// rule: La variante alternato richiede la foto in ogni servizio.
+		// rule: Nella variante cards-immagine ogni servizio ha la foto o, se manca, l’icona.
 		.superRefine((props, ctx) => {
-			const needsIcon = props.variant === 'cards-icone';
-			const needsImage = props.variant === 'cards-immagine' || props.variant === 'alternato';
 			props.items.forEach((item, index) => {
-				if (needsIcon && !item.icon) {
+				if (props.variant === 'cards-icone' && !item.icon) {
 					ctx.addIssue({ code: 'custom', message: 'la variante cards-icone richiede icon', path: ['items', index, 'icon'] });
 				}
-				if (needsImage && !item.image) {
+				if (props.variant === 'alternato' && !item.image) {
+					ctx.addIssue({ code: 'custom', message: 'la variante alternato richiede image', path: ['items', index, 'image'] });
+				}
+				if (props.variant === 'cards-immagine' && !item.image && !item.icon) {
 					ctx.addIssue({
 						code: 'custom',
-						message: `la variante ${props.variant} richiede image`,
+						message: 'la variante cards-immagine richiede image, o icon al posto della foto',
 						path: ['items', index, 'image'],
 					});
 				}

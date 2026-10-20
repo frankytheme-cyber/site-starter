@@ -878,6 +878,17 @@ collections:
                     pattern:
                       - ^[\s\S]{5,}$
                       - almeno 5 caratteri
+              - name: imageShape
+                label: Formato della foto
+                hint: "Solo per la variante split, su desktop: verticale (4:5) oppure orizzontale (4:3), per non tagliare una foto larga"
+                required: false
+                default: verticale
+                widget: select
+                options:
+                  - label: Verticale (4:5)
+                    value: verticale
+                  - label: Orizzontale (4:3)
+                    value: orizzontale
               - name: overlay
                 label: Velatura
                 hint: "Sopra la foto della variante full: scura (nera) o colorata (col colore principale del sito); il testo resta bianco e leggibile"
@@ -2615,6 +2626,12 @@ collections:
                 min: 2
                 max: 12
                 collapsed: false
+              - name: showCaptions
+                label: Didascalie in vista
+                hint: "Solo per la variante griglia-popup: mostra la didascalia sotto ogni miniatura, oltre che nella foto ingrandita"
+                required: false
+                default: false
+                widget: boolean
               - name: id
                 label: Ancora
                 hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
@@ -3759,7 +3776,7 @@ collections:
                 fields:
                   - name: icon
                     label: Icona
-                    hint: Obbligatoria per la variante cards-icone
+                    hint: Obbligatoria per la variante cards-icone; in cards-immagine si vede al posto della foto, se manca
                     required: false
                     widget: select
                     options:
@@ -4093,7 +4110,7 @@ collections:
                         value: airbnb
                   - name: image
                     label: Foto
-                    hint: Obbligatoria per le varianti cards-immagine e alternato; facoltativa nelle schede
+                    hint: Obbligatoria per la variante alternato; in cards-immagine serve la foto o l’icona; facoltativa nelle schede
                     required: false
                     widget: object
                     collapsed: true
@@ -5752,6 +5769,22 @@ collections:
                 hint: Aggiunge i pulsanti con i recapiti presi da «Dati attività»
                 widget: boolean
                 default: false
+              - name: phoneLabel
+                label: Testo del pulsante Chiama
+                hint: "Solo con i recapiti in vista; vuoto: «Chiama» seguito dal numero. Senza numeri scritti a mano"
+                required: false
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,25}$
+                  - al massimo 25 caratteri
+              - name: whatsappLabel
+                label: Testo del pulsante WhatsApp
+                hint: "Solo con i recapiti in vista; vuoto: «Scrivici su WhatsApp»"
+                required: false
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,25}$
+                  - al massimo 25 caratteri
               - name: id
                 label: Ancora
                 hint: "Nome della sezione per i link (#nome): minuscole, cifre e trattini"
@@ -5815,6 +5848,14 @@ collections:
                 options:
                   - contatto
                   - preventivo
+              - name: eyebrow
+                label: Occhiello
+                hint: "Breve testo sopra il titolo, al massimo 40 caratteri; vuoto: «Scrivici» o, nel preventivo, «Il tuo prossimo progetto»"
+                required: false
+                widget: string
+                pattern:
+                  - ^[\s\S]{1,40}$
+                  - al massimo 40 caratteri
               - name: title
                 label: Titolo
                 hint: Titolo della sezione, al massimo 70 caratteri
