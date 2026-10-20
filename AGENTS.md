@@ -18,7 +18,8 @@ La specifica completa del sistema è in `docs/specifica.md`; in caso di dubbio p
 
 Un agente solo lavora con Simone in conversazione: compone le pagine, sistema dati e immagini, fa i controlli. Le decisioni restano a Simone: brief, aspetto del sito, messa online, merge.
 
-- **Skill** in `.agents/skills/<nome>/SKILL.md`, dove le trova Codex; per Claude Code, `.claude/skills/<nome>/SKILL.md` ha un rimando con lo stesso nome e la stessa descrizione (check `skills`). Per costruire un sito, in quest'ordine: `direzione-visiva` (il tema, scelto con Simone sul sito vero), `composizione` (layout, menu e pagine; prende il posto di `ricetta-pagina`), `testi-sito` (i testi dai fatti del brief) e `revisione-visiva` (le pagine a 375 e 1280 px, corrette prima di mostrarle). Le procedure di `docs/skill/` sono della squadra Paperclip: valgono i comandi, non i passaggi tra agenti, task e cancelli.
+- **Skill** in `.agents/skills/<nome>/SKILL.md`, dove le trova Codex; per Claude Code, `.claude/skills/<nome>/SKILL.md` ha un rimando con lo stesso nome e la stessa descrizione (check `skills`). Un sito, in quest'ordine: `nuovo-sito` (inizializzazione, brief, dati e foto), `redirect` (se c'è un sito da sostituire), `direzione-visiva` (il tema, scelto con Simone sul sito vero), `composizione` (layout, menu e pagine), `testi-sito` (i testi dai fatti del brief), `revisione-visiva` (le pagine a 375 e 1280 px, corrette prima di mostrarle), `messa-online` (verifica finale e riepilogo per Simone); dopo, `aggiornamento-libreria` per una versione nuova. Nella libreria: `nuovo-blocco`. Le procedure di `docs/skill/` sono della squadra Paperclip, in pausa.
+- **Branch e PR:** mai commit su `main`. In un sito, fino alla prima messa online si lavora su `lancio` con una PR in bozza; dopo, e nella libreria, un branch e una PR per ogni lavoro (`gh pr create`). Il merge lo fa Simone.
 - **Guardare il sito:** `npx astro dev --background`. In sviluppo ogni pagina accetta un tema di prova nell'indirizzo, senza toccare `theme.json`: `/?palette=laguna&fonts=fresco&shape=arrotondato&pattern=onde&texture=liscia` (valori di `src/themes/presets.ts`; i link interni lo portano con sé, nella build non c'è). `npm run design:shots` fa gli screenshot delle pagine, anche con più temi a confronto, in `reports/design/`.
 - **Design nei siti cliente:** solo preset, varianti e ricette. Le skill di design generiche installate sul computer (es. `frontend-design`) qui non valgono: niente CSS, componenti o pagine `.astro` scritti nel sito. Se i blocchi non bastano, proponi a Simone una variante o un blocco nuovo nella libreria.
 
@@ -88,6 +89,7 @@ L'aspetto del sito si sceglie in `src/content/settings/theme.json` (`palette`, `
 | `npm run dev`            | Server di sviluppo su `localhost:4321`            |
 | `npm run build`          | Build di produzione in `dist/`                    |
 | `npm run preview`        | Anteprima locale della build                      |
+| `npm run images`         | Elenco delle foto di `src/assets/images` (dimensioni, orientamento); `-- <file o cartella>` le prepara e le copia lì: raddrizzate, lato lungo 2400 px, senza metadati, nomi in kebab-case |
 | `npm run design:shots`   | Screenshot delle pagine a 1280 e 375 px, anche con temi di prova a confronto, in `reports/design/` (skill `direzione-visiva` e `revisione-visiva`) |
 | `npm run check`          | Controlli statici + build; `-- --strict` con le regole di pubblicazione |
 | `npm run qa`             | `check` + link, accessibilità, interattivi, Lighthouse sul sito servito |

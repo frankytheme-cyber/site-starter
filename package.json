@@ -12,6 +12,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "design:shots": "node scripts/design-shots.ts",
+    "images": "node scripts/images.ts",
     "astro": "astro",
     "check": "node scripts/checks/run.ts --suite=check",
     "qa": "node scripts/checks/run.ts --suite=qa",
