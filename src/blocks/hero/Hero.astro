@@ -37,7 +37,8 @@ const isCentered = variant === 'centered';
 			isFull && 'min-h-96 lg:min-h-128',
 		]}
 	>
-		<div class:list={[isCentered && 'mx-auto max-w-3xl text-center', isFull && 'max-w-2xl text-white']}>
+		{/* data-on-photo: sulla foto i pulsanti diventano chiari (core/ui/button/button.css). */}
+		<div class:list={[isCentered && 'mx-auto max-w-3xl text-center', isFull && 'max-w-2xl text-white']} data-on-photo={isFull ? '' : undefined}>
 			{
 				eyebrow && (
 					<p class:list={['mb-4 text-sm font-semibold tracking-wider uppercase', !isFull && 'text-primary']}>

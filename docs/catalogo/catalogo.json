@@ -1841,7 +1841,7 @@
 			"name": "Hero",
 			"scope": "page",
 			"category": "apertura",
-			"version": "1.2.0",
+			"version": "1.2.1",
 			"interactive": false,
 			"source": {
 				"from": "originale"
