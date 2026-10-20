@@ -43,7 +43,7 @@ Per l'agente che compone un sito cliente con Simone. L'aspetto si sceglie tra i 
 
    Simone può mescolare (la palette di una, i font di un'altra): rifai gli screenshot della combinazione prima di confermarla.
 
-5. **Scrivi la scelta** in `src/content/settings/theme.json` e in `docs/nota-design.md`, sezione «Tema»: la direzione scelta con il motivo, le altre due come alternative con i loro valori.
+5. **Scrivi la scelta** in `src/content/settings/theme.json` e in `docs/nota-design.md`, sezione «Tema»: la direzione scelta con il motivo, le altre due come alternative con i loro valori. Poi le pagine si compongono con la skill `composizione`.
 
 6. **Decoro:** se `pattern` non è `nessuno`, scegli già le una o due sezioni con `"background": "decoro"`; altrimenti nessuna sezione lo usa (`check:recipes` lo segnala).
 

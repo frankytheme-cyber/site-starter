@@ -30,7 +30,7 @@ Si guarda la pagina disegnata, non il JSON. `npm run qa` trova gli errori (contr
    - **Mobile.** A 375 px la pagina è composta, non un desktop schiacciato: immagini leggibili, pulsanti facili da toccare, nessuna sezione infinita.
    - **Coerenza.** Foto con lo stesso trattamento, icone dello stesso stile, la stessa voce in tutte le pagine.
 
-4. **Correggi** con quello che la ricetta permette: variante, tono, `background`, `edge`, ordine e numero delle sezioni, testi, scelta e ordine delle foto. In un sito non si toccano blocchi né CSS: se il difetto è del blocco, segnalalo a Simone come lavoro per la libreria.
+4. **Correggi** con quello che la ricetta permette: variante, tono, `background`, `edge`, ordine e numero delle sezioni (skill `composizione`), testi (skill `testi-sito`), scelta e ordine delle foto. In un sito non si toccano blocchi né CSS: se il difetto è del blocco, segnalalo a Simone come lavoro per la libreria.
 
 5. **Rifai gli screenshot** e ricomincia dal passo 2. Almeno due passate; ti fermi quando una passata non trova niente oltre il dettaglio.
 
