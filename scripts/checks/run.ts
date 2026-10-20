@@ -38,6 +38,7 @@ import {
 } from './lib/report.ts';
 import { recipes } from './recipes.ts';
 import { release } from './release.ts';
+import { skills } from './skills.ts';
 import { tokens } from './tokens.ts';
 
 interface CheckDefinition {
@@ -67,6 +68,7 @@ const CHECKS: Record<string, CheckDefinition> = {
 	// Prima della build: il prebuild rigenera config.yml e il confronto non avrebbe più senso.
 	decap: { run: decap },
 	tokens: { run: tokens },
+	skills: { run: skills },
 	contrast: { run: contrast },
 	forms: { run: forms },
 	blocks: {
@@ -96,7 +98,7 @@ const CHECKS: Record<string, CheckDefinition> = {
 };
 
 const SUITES: Record<string, string[]> = {
-	check: ['recipes', 'astro-check', 'decap', 'tokens', 'contrast', 'forms', 'blocks', 'lock', 'build', 'release'],
+	check: ['recipes', 'astro-check', 'decap', 'tokens', 'skills', 'contrast', 'forms', 'blocks', 'lock', 'build', 'release'],
 };
 SUITES.qa = [...SUITES.check, 'links', 'a11y', 'interactive', 'buttons', 'lighthouse'];
 

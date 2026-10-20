@@ -4,7 +4,7 @@ Documentazione della libreria: architettura, catalogo blocchi, guida all'uso com
 
 - [`specifica.md`](specifica.md): specifica completa del sistema (architettura, blocchi, CMS, controlli, squadra di agenti, cancelli); arriva anche nei siti con `blocks:sync`.
 - [`catalogo/`](catalogo/README.md): catalogo dei blocchi generato dagli schemi (regole, schede con screenshot, campi ed esempi JSON, temi, icone, `catalogo.json` per le macchine), primitive e ricette tipo.
-- [`skill/`](skill/): skill degli agenti Paperclip, una cartella per skill con `SKILL.md` (quando usarla, passi con i comandi, criterio di fine, cosa non fare); arrivano nei siti con `blocks:sync`.
+- [`skill/`](skill/): skill degli agenti Paperclip (in pausa dal 2026-10-20: con Claude Code e Codex le skill sono in `.agents/skills/`, vedi `AGENTS.md`), una cartella per skill con `SKILL.md` (quando usarla, passi con i comandi, criterio di fine, cosa non fare); arrivano nei siti con `blocks:sync`.
 - [`agenti/capabilities.json`](agenti/capabilities.json): testi esatti del campo Capabilities in Paperclip, da aggiornare insieme alle istruzioni.
 - [`agenti/`](agenti/): istruzioni di ruolo degli agenti Paperclip, un file per agente, copiate tali e quali nelle istruzioni dell'agente in Paperclip; arrivano nei siti con `blocks:sync`.
 - [`modelli/`](modelli/): modello del brief (`brief.md`, che nel sito si compila in `docs/brief.md`) e dei task del PM (`task.md`).

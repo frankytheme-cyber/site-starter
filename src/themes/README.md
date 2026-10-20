@@ -1,7 +1,7 @@
 # Temi
 
 `base.css` definisce i token semantici per Tailwind (`bg-primary`, `text-fg-muted`, `font-heading`, `rounded-box`...) e importa palette, forme, decori, texture ed effetti di sfondo.
-I valori arrivano dai preset in `palettes/`, `fonts/`, `shapes/`, `patterns/` e `textures/`, scelti in `src/content/settings/theme.json` (schema in `presets.ts`) e applicati da `BaseLayout` come `data-*` su `<html>`.
+I valori arrivano dai preset in `palettes/`, `fonts/`, `shapes/`, `patterns/` e `textures/`, scelti in `src/content/settings/theme.json` (schema in `presets.ts`) e applicati da `BaseLayout` come `data-*` su `<html>`. `themePresets` di `presets.ts` elenca i valori ammessi per ogni attributo: lo usano i selettori del catalogo, il tema di prova delle pagine in sviluppo (`?palette=&fonts=…`, vedi `src/layouts/README.md`) e `npm run design:shots`.
 
 Ogni preset ha accanto al suo CSS una scheda `<nome>.meta.ts` (`PresetMeta` di `presets.ts`: `name`, `mood` con 2-4 aggettivi, `adattoA` con i settori; le palette anche `colors`, i colori da mostrare, uguali a quelli del CSS). `metas.ts` le raccoglie per il catalogo (sezione «Temi» di `docs/catalogo/README.md`); un preset senza scheda ferma `npm run gen:catalog` e il check `blocks`. Un preset nuovo: CSS, scheda, voce in `presets.ts` (e per palette, forme, decori e texture l'`@import` in `base.css`), poi `npm run catalog`.
 

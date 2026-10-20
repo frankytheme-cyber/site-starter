@@ -13,6 +13,14 @@ export const patterns = ['nessuno', 'punti', 'griglia', 'righe', 'onde', 'cerchi
 /** Texture: la grana sopra lo sfondo di ogni sezione (textures/). */
 export const textures = ['liscia', 'grana', 'carta'] as const;
 
+/**
+ * Valori ammessi per ogni attributo del tema su <html> (data-palette, data-fonts, data-shape,
+ * data-pattern, data-texture): li usano i selettori del catalogo, il tema di prova delle pagine in
+ * sviluppo (BaseLayout) e npm run design:shots.
+ */
+export const themePresets = { palette: palettes, fonts, shape: shapes, pattern: patterns, texture: textures };
+export type ThemeKey = keyof typeof themePresets;
+
 export type Palette = (typeof palettes)[number];
 export type Fonts = (typeof fonts)[number];
 export type Shape = (typeof shapes)[number];
