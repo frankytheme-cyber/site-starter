@@ -2,7 +2,7 @@
 
 # services — Servizi
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.1.0 · contenuti · non interattivo · disegno originale · dal vivo `/catalogo/services/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.2.0 · contenuti · non interattivo · disegno originale · dal vivo `/catalogo/services/`
 
 Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione breve e link facoltativo.
 
@@ -18,7 +18,7 @@ Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione br
 
   <img src="../img/services-cards-icone-mobile.webp" alt="Servizi, cards-icone, 375 px" width="240">
 
-- `cards-immagine` — Griglia di card con una foto in alto. **Quando usarla:** Quando c’è una foto adatta per ogni servizio: più concreta delle icone. Fixture «Card con immagine», dal vivo `/catalogo/services/cards-immagine/`.
+- `cards-immagine` — Griglia di card con una foto in alto; un servizio senza foto mostra la sua icona nello stesso spazio. **Quando usarla:** Quando c’è una foto adatta per quasi tutti i servizi: più concreta delle icone. Fixture «Card con immagine», dal vivo `/catalogo/services/cards-immagine/`.
 
   ![Servizi, cards-immagine, 1280 px](../img/services-cards-immagine-desktop.webp)
 
@@ -45,8 +45,8 @@ Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione br
 | `title` | testo | sì | max 70 | «Titolo» |
 | `intro` | testo | no | max 240 | «Introduzione» |
 | `items` | elenco | sì | 2–6 voci | «Servizi» |
-| `items[].icon` | icona | per cards-icone | [lista icone](../README.md#icone) | «Icona» · Le altre varianti non la mostrano. |
-| `items[].image` | gruppo | per cards-immagine, alternato |  | «Foto» · Facoltativa in schede; cards-icone non la mostra. |
+| `items[].icon` | icona | per cards-icone | [lista icone](../README.md#icone) | «Icona» · In cards-immagine si vede al posto della foto che manca; alternato e schede non la mostrano. |
+| `items[].image` | gruppo | per alternato |  | «Foto» · In cards-immagine la foto o l’icona; facoltativa in schede; cards-icone non la mostra. |
 | `items[].image.src` | immagine | sì, se c’è `items[].image` | foto in src/assets/images | «File» |
 | `items[].image.alt` | testo | sì, se c’è `items[].image` | min 5 | «Testo alternativo» |
 | `items[].title` | testo | sì | max 50 | «Nome del servizio» |
@@ -62,7 +62,8 @@ Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `ty
 **Regole:**
 
 - La variante cards-icone richiede l’icona in ogni servizio.
-- Le varianti cards-immagine e alternato richiedono la foto in ogni servizio.
+- La variante alternato richiede la foto in ogni servizio.
+- Nella variante cards-immagine ogni servizio ha la foto o, se manca, l’icona.
 
 **Esempio pronto** (fixture «Card con icona», una sezione per `sections`; immagini relative a `src/content/pages`):
 

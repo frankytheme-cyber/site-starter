@@ -2,7 +2,7 @@
 
 # cta — Invito all’azione
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.1.0 · contatti · non interattivo · disegno originale · dal vivo `/catalogo/cta/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.2.0 · contatti · non interattivo · disegno originale · dal vivo `/catalogo/cta/`
 
 Fascia che chiede a chi visita di fare il passo successivo: chiedere un preventivo, chiamare, scrivere.
 
@@ -42,6 +42,8 @@ Fascia che chiede a chi visita di fare il passo successivo: chiedere un preventi
 | `secondary.style` | scelta | no | `primary` · `secondary` · `ghost` · `link` | «Stile» |
 | `secondary.icon` | icona | no | [lista icone](../README.md#icone) | «Icona» |
 | `showContacts` | sì/no | sì |  | «Mostra telefono e WhatsApp» · Il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp. |
+| `phoneLabel` | testo | no | max 25 | «Testo del pulsante Chiama» · Usato solo con showContacts; utile per usare lo stesso testo degli altri pulsanti della pagina. |
+| `whatsappLabel` | testo | no | max 25 | «Testo del pulsante WhatsApp» · Usato solo con showContacts. |
 
 Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`cta`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`), `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `aurora`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)), ed `edge`, il bordo in alto ([bordi tra sezioni](../README.md#bordi-tra-sezioni)): vedi `src/content/pages/README.md`.
 

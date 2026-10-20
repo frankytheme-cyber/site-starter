@@ -94,6 +94,12 @@ const cardSizes = twoColumns
 								class="aspect-3/2 w-full object-cover"
 							/>
 						)}
+						{/* Senza foto, l'icona nello stesso spazio: le card restano allineate. */}
+						{variant === 'cards-immagine' && !item.image && item.icon && (
+							<div class="flex aspect-3/2 w-full items-center justify-center bg-primary text-primary-fg">
+								<Icon name={item.icon} size="xl" />
+							</div>
+						)}
 						<div class="flex flex-1 flex-col p-6">
 							{variant === 'cards-icone' && item.icon && (
 								<span class="mb-5 flex size-12 items-center justify-center rounded-button bg-primary text-primary-fg">

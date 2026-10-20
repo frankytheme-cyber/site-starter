@@ -17,6 +17,19 @@ export const schema = () =>
 		showContacts: z
 			.boolean()
 			.describe('Mostra telefono e WhatsApp|Aggiunge i pulsanti con i recapiti presi da «Dati attività»'),
+		/** Testi dei pulsanti dei recapiti, con showContacts: senza, «Chiama <numero>» e «Scrivici su WhatsApp». */
+		phoneLabel: z
+			.string()
+			.min(1)
+			.max(25)
+			.optional()
+			.describe('Testo del pulsante Chiama|Solo con i recapiti in vista; vuoto: «Chiama» seguito dal numero. Senza numeri scritti a mano'),
+		whatsappLabel: z
+			.string()
+			.min(1)
+			.max(25)
+			.optional()
+			.describe('Testo del pulsante WhatsApp|Solo con i recapiti in vista; vuoto: «Scrivici su WhatsApp»'),
 	});
 
 export type CtaProps = BlockProps<typeof schema>;

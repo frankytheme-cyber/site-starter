@@ -1841,7 +1841,7 @@
 			"name": "Hero",
 			"scope": "page",
 			"category": "apertura",
-			"version": "1.2.1",
+			"version": "1.3.0",
 			"interactive": false,
 			"source": {
 				"from": "originale"
@@ -2106,6 +2106,22 @@
 					},
 					"label": "Testo alternativo",
 					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
+				},
+				{
+					"path": "imageShape",
+					"type": "scelta",
+					"required": false,
+					"default": "verticale",
+					"limits": "`verticale` · `orizzontale`",
+					"constraints": {
+						"values": [
+							"verticale",
+							"orizzontale"
+						]
+					},
+					"label": "Formato della foto",
+					"hint": "Solo per la variante split, su desktop: verticale (4:5) oppure orizzontale (4:3), per non tagliare una foto larga",
+					"note": "Solo per la variante split; nelle altre non ha effetto."
 				},
 				{
 					"path": "overlay",
@@ -3110,7 +3126,7 @@
 			"name": "Galleria",
 			"scope": "page",
 			"category": "contenuti",
-			"version": "1.0.0",
+			"version": "1.1.0",
 			"interactive": true,
 			"source": {
 				"from": "originale"
@@ -3302,6 +3318,17 @@
 					},
 					"label": "Didascalia",
 					"hint": "Dove e cosa, al massimo 100 caratteri"
+				},
+				{
+					"path": "showCaptions",
+					"type": "sì/no",
+					"required": false,
+					"default": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Didascalie in vista",
+					"hint": "Solo per la variante griglia-popup: mostra la didascalia sotto ogni miniatura, oltre che nella foto ingrandita",
+					"note": "Solo per la variante griglia-popup; nelle altre la didascalia si vede già."
 				}
 			],
 			"example": {
@@ -4012,7 +4039,7 @@
 			"name": "Servizi",
 			"scope": "page",
 			"category": "contenuti",
-			"version": "1.1.0",
+			"version": "1.2.0",
 			"interactive": false,
 			"source": {
 				"from": "originale"
@@ -4022,7 +4049,8 @@
 			"avoidWhen": "Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei lavori, non un elenco.",
 			"rules": [
 				"La variante cards-icone richiede l’icona in ogni servizio.",
-				"Le varianti cards-immagine e alternato richiedono la foto in ogni servizio."
+				"La variante alternato richiede la foto in ogni servizio.",
+				"Nella variante cards-immagine ogni servizio ha la foto o, se manca, l’icona."
 			],
 			"backgrounds": [
 				"pieno",
@@ -4044,8 +4072,8 @@
 				},
 				{
 					"name": "cards-immagine",
-					"description": "Griglia di card con una foto in alto.",
-					"whenToUse": "Quando c’è una foto adatta per ogni servizio: più concreta delle icone.",
+					"description": "Griglia di card con una foto in alto; un servizio senza foto mostra la sua icona nello stesso spazio.",
+					"whenToUse": "Quando c’è una foto adatta per quasi tutti i servizi: più concreta delle icone.",
 					"fixture": "Card con immagine",
 					"preview": "/catalogo/services/cards-immagine/",
 					"screenshots": {
@@ -4148,22 +4176,21 @@
 						"values": "icone"
 					},
 					"label": "Icona",
-					"hint": "Obbligatoria per la variante cards-icone",
-					"note": "Le altre varianti non la mostrano."
+					"hint": "Obbligatoria per la variante cards-icone; in cards-immagine si vede al posto della foto, se manca",
+					"note": "In cards-immagine si vede al posto della foto che manca; alternato e schede non la mostrano."
 				},
 				{
 					"path": "items[].image",
 					"type": "gruppo",
 					"required": false,
 					"requiredFor": [
-						"cards-immagine",
 						"alternato"
 					],
 					"limits": "",
 					"constraints": {},
 					"label": "Foto",
-					"hint": "Obbligatoria per le varianti cards-immagine e alternato; facoltativa nelle schede",
-					"note": "Facoltativa in schede; cards-icone non la mostra."
+					"hint": "Obbligatoria per la variante alternato; in cards-immagine serve la foto o l’icona; facoltativa nelle schede",
+					"note": "In cards-immagine la foto o l’icona; facoltativa in schede; cards-icone non la mostra."
 				},
 				{
 					"path": "items[].image.src",
@@ -4499,7 +4526,7 @@
 			"name": "Invito all’azione",
 			"scope": "page",
 			"category": "contatti",
-			"version": "1.1.0",
+			"version": "1.2.0",
 			"interactive": false,
 			"source": {
 				"from": "originale"
@@ -4715,6 +4742,30 @@
 					"label": "Mostra telefono e WhatsApp",
 					"hint": "Aggiunge i pulsanti con i recapiti presi da «Dati attività»",
 					"note": "Il pulsante WhatsApp compare solo se site.json ha il numero WhatsApp."
+				},
+				{
+					"path": "phoneLabel",
+					"type": "testo",
+					"required": false,
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante Chiama",
+					"hint": "Solo con i recapiti in vista; vuoto: «Chiama» seguito dal numero. Senza numeri scritti a mano",
+					"note": "Usato solo con showContacts; utile per usare lo stesso testo degli altri pulsanti della pagina."
+				},
+				{
+					"path": "whatsappLabel",
+					"type": "testo",
+					"required": false,
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante WhatsApp",
+					"hint": "Solo con i recapiti in vista; vuoto: «Scrivici su WhatsApp»",
+					"note": "Usato solo con showContacts."
 				}
 			],
 			"example": {
@@ -4743,7 +4794,7 @@
 			"name": "Modulo di contatto",
 			"scope": "page",
 			"category": "contatti",
-			"version": "1.0.1",
+			"version": "1.1.0",
 			"interactive": true,
 			"source": {
 				"from": "originale"
@@ -4798,6 +4849,17 @@
 					},
 					"label": "Variante",
 					"hint": "contatto: nome, email, telefono e messaggio · preventivo: aggiunge servizio e comune dell’intervento"
+				},
+				{
+					"path": "eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "max 40",
+					"constraints": {
+						"maxLength": 40
+					},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo, al massimo 40 caratteri; vuoto: «Scrivici» o, nel preventivo, «Il tuo prossimo progetto»"
 				},
 				{
 					"path": "title",

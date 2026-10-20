@@ -9,7 +9,7 @@ export const meta: BlockMeta = {
 		'Senza foto vere: non si riempie con immagini d’archivio o inventate, si usa un altro blocco. Con meno di 2 foto. Per foto che accompagnano un testo (about, services). Per una serie da sfogliare con testo e link (carousel).',
 	category: 'contenuti',
 	scope: 'page',
-	version: '1.0.0',
+	version: '1.1.0',
 	source: { from: 'originale' },
 	interactive: true,
 	variants: {
@@ -30,5 +30,6 @@ export const meta: BlockMeta = {
 	fieldRules: {
 		'items[].before': { requiredFor: ['prima-dopo'], note: 'Le altre varianti non la mostrano. Stessa inquadratura del «dopo».' },
 		items: { note: 'Prima-dopo: al massimo 6 coppie.' },
+		showCaptions: { note: 'Solo per la variante griglia-popup; nelle altre la didascalia si vede già.' },
 	},
 };

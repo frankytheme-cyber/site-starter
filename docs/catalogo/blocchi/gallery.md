@@ -2,7 +2,7 @@
 
 # gallery — Galleria
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.0.0 · contenuti · interattivo · disegno originale · dal vivo `/catalogo/gallery/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.1.0 · contenuti · interattivo · disegno originale · dal vivo `/catalogo/gallery/`
 
 Le foto dei lavori svolti: una griglia che si ingrandisce al clic, coppie prima e dopo, oppure una foto grande alla volta.
 
@@ -46,6 +46,7 @@ Le foto dei lavori svolti: una griglia che si ingrandisce al clic, coppie prima 
 | `items[].before.src` | immagine | sì, se c’è `items[].before` | foto in src/assets/images | «File» |
 | `items[].before.alt` | testo | sì, se c’è `items[].before` | min 5 | «Testo alternativo» |
 | `items[].caption` | testo | no | max 100 | «Didascalia» |
+| `showCaptions` | sì/no | no (predefinito `false`) |  | «Didascalie in vista» · Solo per la variante griglia-popup; nelle altre la didascalia si vede già. |
 
 Nelle note, tra «», l’etichetta del campo nel CMS. Ogni sezione ha anche `type` (`gallery`), `id` (ancora facoltativa, in kebab-case), `tone` (`default`, `muted`, `primary`), `background`, l’effetto dello sfondo (`pieno`, `sfumato`, `alone`, `decoro`; [effetti di sfondo](../README.md#effetti-di-sfondo)), ed `edge`, il bordo in alto ([bordi tra sezioni](../README.md#bordi-tra-sezioni)): vedi `src/content/pages/README.md`.
 

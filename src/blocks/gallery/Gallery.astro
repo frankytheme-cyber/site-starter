@@ -9,7 +9,7 @@ import type { GalleryProps } from './schema';
 
 type Props = GalleryProps;
 
-const { id, tone, variant, eyebrow, title, intro, items } = Astro.props;
+const { id, tone, variant, eyebrow, title, intro, items, showCaptions } = Astro.props;
 
 // Griglia: il link porta alla foto grande (senza JS apre il file, con JS la finestra).
 const full = variant === 'griglia-popup' ? await Promise.all(items.map((item) => getImage({ src: item.image.src, width: 1600 }))) : [];
@@ -40,8 +40,9 @@ const full = variant === 'griglia-popup' ? await Promise.all(items.map((item) =>
 									sizes="(min-width: 1152px) 368px, (min-width: 768px) 31vw, 47vw"
 									class="aspect-square w-full object-cover motion-safe:transition-transform motion-safe:duration-300 group-hover:motion-safe:scale-105"
 								/>
-								{item.caption && <span class="sr-only">{item.caption}</span>}
+								{item.caption && !showCaptions && <span class="sr-only">{item.caption}</span>}
 							</a>
+							{item.caption && showCaptions && <p class="mt-2 text-sm text-pretty text-fg-muted">{item.caption}</p>}
 						</li>
 					))}
 				</ul>

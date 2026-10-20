@@ -2,7 +2,7 @@
 
 # form — Modulo di contatto
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.0.1 · contatti · interattivo · disegno originale · dal vivo `/catalogo/form/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.1.0 · contatti · interattivo · disegno originale · dal vivo `/catalogo/form/`
 
 Modulo di contatto o richiesta di preventivo, con invio tramite Resend su Vercel e collegamento all’informativa privacy.
 
@@ -29,6 +29,7 @@ Modulo di contatto o richiesta di preventivo, con invio tramite Resend su Vercel
 | Campo | Tipo | Obbl. | Limiti | Note |
 | --- | --- | --- | --- | --- |
 | `variant` | scelta | sì | `contatto` · `preventivo` | «Variante» |
+| `eyebrow` | testo | no | max 40 | «Occhiello» |
 | `title` | testo | sì | max 70 | «Titolo» |
 | `text` | testo | no | max 240 | «Introduzione» |
 | `services` | elenco | per preventivo | 1–12 voci | «Servizi richiesti» · Ignorato nella variante contatto. |

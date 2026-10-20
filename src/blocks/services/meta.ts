@@ -10,7 +10,7 @@ export const meta: BlockMeta = {
 		'Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei lavori, non un elenco.',
 	category: 'contenuti',
 	scope: 'page',
-	version: '1.1.0',
+	version: '1.2.0',
 	source: { from: 'originale' },
 	variants: {
 		'cards-icone': {
@@ -18,8 +18,8 @@ export const meta: BlockMeta = {
 			whenToUse: 'Servizi brevi e simili tra loro, quando non c’è una foto per ognuno.',
 		},
 		'cards-immagine': {
-			description: 'Griglia di card con una foto in alto.',
-			whenToUse: 'Quando c’è una foto adatta per ogni servizio: più concreta delle icone.',
+			description: 'Griglia di card con una foto in alto; un servizio senza foto mostra la sua icona nello stesso spazio.',
+			whenToUse: 'Quando c’è una foto adatta per quasi tutti i servizi: più concreta delle icone.',
 		},
 		alternato: {
 			description: 'Righe di foto e testo che si alternano a destra e a sinistra.',
@@ -32,10 +32,11 @@ export const meta: BlockMeta = {
 	},
 	rules: [
 		'La variante cards-icone richiede l’icona in ogni servizio.',
-		'Le varianti cards-immagine e alternato richiedono la foto in ogni servizio.',
+		'La variante alternato richiede la foto in ogni servizio.',
+		'Nella variante cards-immagine ogni servizio ha la foto o, se manca, l’icona.',
 	],
 	fieldRules: {
-		'items[].icon': { requiredFor: ['cards-icone'], note: 'Le altre varianti non la mostrano.' },
-		'items[].image': { requiredFor: ['cards-immagine', 'alternato'], note: 'Facoltativa in schede; cards-icone non la mostra.' },
+		'items[].icon': { requiredFor: ['cards-icone'], note: 'In cards-immagine si vede al posto della foto che manca; alternato e schede non la mostrano.' },
+		'items[].image': { requiredFor: ['alternato'], note: 'In cards-immagine la foto o l’icona; facoltativa in schede; cards-icone non la mostra.' },
 	},
 };

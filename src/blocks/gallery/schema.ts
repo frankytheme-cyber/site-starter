@@ -25,6 +25,11 @@ export const schema = ({ image }: SchemaContext) =>
 				.min(2)
 				.max(12)
 				.describe('Foto|Da 2 a 12, solo foto reali'),
+			/** Solo griglia-popup: le didascalie anche sotto le miniature, non solo nella finestra. */
+			showCaptions: z
+				.boolean()
+				.default(false)
+				.describe('Didascalie in vista|Solo per la variante griglia-popup: mostra la didascalia sotto ogni miniatura, oltre che nella foto ingrandita'),
 		})
 		// rule: La variante prima-dopo richiede la foto «prima» (before) in ogni elemento e al massimo 6 coppie.
 		.superRefine((props, ctx) => {

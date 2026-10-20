@@ -26,9 +26,9 @@ Per l'agente che costruisce un sito cliente con Simone. Il sito si completa, non
 
    | Se c'è | Usa | Se manca |
    | --- | --- | --- |
-   | una foto forte di un lavoro, del locale o delle persone | hero `split`; `full` solo se la foto regge il testo sopra | hero `centered` |
-   | una foto per ogni servizio | services `cards-immagine`, o `alternato` nella pagina dei servizi | services `cards-icone` |
-   | almeno 4 foto vere di lavori | gallery `griglia-popup` (fino a 12 per blocco) | niente gallery |
+   | una foto forte di un lavoro, del locale o delle persone | hero `split` (`imageShape: "orizzontale"` per una foto larga); `full` solo se la foto regge il testo sopra | hero `centered` |
+   | una foto per quasi ogni servizio | services `cards-immagine` (ai servizi senza foto basta l'icona), o `alternato` nella pagina dei servizi | services `cards-icone` |
+   | almeno 4 foto vere di lavori | gallery `griglia-popup` (fino a 12 per blocco; `showCaptions` se le didascalie contano) | niente gallery |
    | coppie prima e dopo con la stessa inquadratura | gallery `prima-dopo` (fino a 6 coppie) | — |
    | da 3 a 8 foto di qualità da guardare in grande | gallery `slider` | — |
    | progetti o casi da raccontare, ognuno con foto e testo | carousel `immagini-testo` | — |

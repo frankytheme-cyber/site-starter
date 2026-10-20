@@ -24,6 +24,12 @@ export const schema = ({ image }: SchemaContext) =>
 				.describe('Pulsante secondario|Un’alternativa meno importante: compila testo e link, oppure nessuno dei due'),
 			/** Obbligatoria per split e full; centered non la mostra. */
 			image: imageSchema(image).optional().describe('Foto|Obbligatoria per le varianti split e full'),
+			/** Solo per split: il formato della foto su desktop (su mobile è sempre 4:3). */
+			imageShape: z
+				.enum(['verticale', 'orizzontale'])
+				.meta({ optionLabels: { verticale: 'Verticale (4:5)', orizzontale: 'Orizzontale (4:3)' } })
+				.default('verticale')
+				.describe('Formato della foto|Solo per la variante split, su desktop: verticale (4:5) oppure orizzontale (4:3), per non tagliare una foto larga'),
 			/** Solo per full: la velatura sulla foto, sotto il testo bianco (src/themes/overlays.css). */
 			overlay: z
 				.enum(['scura', 'colorata'])
