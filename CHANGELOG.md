@@ -7,6 +7,8 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 ## Non rilasciato
 ### Novità
 
+- Skill `composizione` e `testi-sito` per l'agente che costruisce un sito con Simone. `composizione` prende il posto di `ricetta-pagina`: inventario del materiale, varianti scelte in base alle foto, alle recensioni e ai numeri che ci sono, ritmo di toni, effetti di sfondo e bordi, layout e menu, nota di design breve; le strutture di partenza per tipo di pagina e settore (lavori a domicilio, locali, studi professionali, ospitalità) sono in `.agents/skills/composizione/strutture.md`. `testi-sito` scrive i testi dai fatti del brief: regole, indicazioni campo per campo con esempi, frasi da evitare, controllo delle righe a 375 px.
+
 - Lavoro con un agente solo, Claude Code o Codex, insieme a Simone: la squadra Paperclip è in pausa (nuova sezione «Lavorare con Claude Code o Codex» in `AGENTS.md`). Per il design:
   - in sviluppo ogni pagina del sito accetta un tema di prova nell'indirizzo (`?palette=&fonts=&shape=&pattern=&texture=`, valori di `themePresets` in `src/themes/presets.ts`) senza toccare `theme.json`, e i link interni lo portano con sé; la build non cambia;
   - `npm run design:shots`: screenshot delle pagine a 1280 e 375 px, con il tema di `theme.json` o con temi di prova a confronto (prima schermata, panoramica, sezioni, pagina intera e un `index.html` che le affianca), su un server di sviluppo tutto suo, in `reports/design/`;

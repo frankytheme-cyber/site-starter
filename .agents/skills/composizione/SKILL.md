@@ -1,0 +1,109 @@
+---
+name: composizione
+description: Usala per comporre o rifare le pagine di un sito cliente con Simone, cioè layout, menu e ricette JSON con i blocchi e le varianti del catalogo, dopo aver scelto il tema.
+---
+
+# Composizione delle pagine
+
+Per l'agente che costruisce un sito cliente con Simone. Il sito si completa, non si inventa: blocchi e varianti del catalogo, preset del tema, fatti del brief. L'ordine del lavoro: tema (skill `direzione-visiva`), composizione, testi (skill `testi-sito`), revisione (skill `revisione-visiva`).
+
+## Prima di comporre
+
+- **Brief:** `docs/brief.md` approvato da Simone. Se manca, compilalo con lui partendo da `docs/modelli/brief.md`: senza attività, servizi, azione principale e pagine (sezioni 1-3) non si compone. Un dato che manca va in «Da chiedere», mai inventato.
+- **Note del sito:** `docs/sito.md`.
+- **Inventario del materiale**, prima di scegliere i blocchi: il materiale decide le varianti, non il contrario.
+  - foto in `src/assets/images/`: cosa mostra ognuna (lavoro finito, prima e dopo, sede, persone, prodotti), orientamento e qualità;
+  - recensioni e numeri del brief, ognuno con la fonte;
+  - dati di `src/content/settings/site.json` (telefono, WhatsApp, email, indirizzo, orari): decidono link speciali e blocchi dei contatti.
+- **Catalogo:** `docs/catalogo/README.md` (regole d'oro e di composizione, effetti di sfondo, bordi) e, per ogni blocco che usi, la scheda `docs/catalogo/blocchi/<tipo>.md` con gli screenshot.
+- **Tema** già scelto con la skill `direzione-visiva`.
+
+## Passi
+
+1. **Pagine.** Una ricetta per ogni pagina del brief, né una in più né una in meno: `src/content/pages/<slug>.json`, con `index.json` per la home e slug brevi in italiano (`servizi`, `chi-siamo`, `lavori`, `contatti`). Privacy e cookie restano le ricette del template, con `"kind": "legale"`. Per ogni pagina parti dalla struttura del suo tipo e del suo settore in `.agents/skills/composizione/strutture.md`, o da una ricetta tipo di `docs/catalogo/ricette-tipo/` se somiglia.
+
+2. **Varianti dal materiale:**
+
+   | Se c'è | Usa | Se manca |
+   | --- | --- | --- |
+   | una foto forte di un lavoro, del locale o delle persone | hero `split`; `full` solo se la foto regge il testo sopra | hero `centered` |
+   | una foto per ogni servizio | services `cards-immagine`, o `alternato` nella pagina dei servizi | services `cards-icone` |
+   | almeno 4 foto vere di lavori | gallery `griglia-popup` (fino a 12 per blocco) | niente gallery |
+   | coppie prima e dopo con la stessa inquadratura | gallery `prima-dopo` (fino a 6 coppie) | — |
+   | da 3 a 8 foto di qualità da guardare in grande | gallery `slider` | — |
+   | progetti o casi da raccontare, ognuno con foto e testo | carousel `immagini-testo` | — |
+   | una foto vera del titolare, della squadra o della sede | about `immagine-testo` | about `con-numeri`, o niente about |
+   | da 2 a 4 numeri con la fonte | about `con-numeri` | niente numeri |
+   | recensioni reali con autore e fonte | testimonials `cards` (2-6), `slider` (3-10) o `singola` (una forte) | niente recensioni |
+   | punti di forza dimostrabili | features `3-colonne` (3 o 6 brevi) o `lista` (4-5, o più lunghi) | niente features |
+   | un percorso dal primo contatto alla fine del lavoro | process `passi-numerati` (3, 4 o 6 passi) o `timeline` (5 passi, o testi lunghi) | — |
+   | alternative parallele tra cui chi visita sceglie (pranzo o cena, privati o imprese) | tabs `testo`, o `testo-immagine` con una foto per scheda | — |
+   | domande vere con la risposta nel brief | accordion `faq`, una per pagina | niente faq |
+   | comuni serviti | areas `elenco-zone`, o `mappa-link` se c'è anche una sede da raggiungere | — |
+   | una sede da visitare (negozio, studio, locale) | contact `info-mappa` | contact `info-cta` (a domicilio, su appuntamento) |
+   | invio dei moduli configurato (`docs/form.md`) e informativa privacy approvata | form `contatto` o `preventivo` | cta con `@telefono`, `@whatsapp`, `@email` |
+
+   Foto solo da `src/assets/images/`: mai le foto di prova (`fixtures/`), mai stock per lavori, persone e sede. Una foto che serve e non c'è si chiede a Simone.
+
+3. **Ritmo della pagina.**
+   - **Toni:** alterna `default` e `muted`; `primary` una o due volte per pagina, di solito sull'invito finale.
+   - **Effetti di sfondo** (`background`): al massimo 3, mai in sezioni vicine, dove servono a far notare qualcosa: l'apertura (hero con `alone`, `aurora`, `sfumato` o `decoro`), un punto chiave (chi siamo, recensioni, punti di forza) e l'invito finale (cta con `aurora`). Sotto una hero `full` l'effetto non si vede: usalo altrove. `decoro` solo se il tema ha un `pattern`, in una o due sezioni per pagina, sugli stessi tipi di sezione in tutto il sito.
+   - **Bordi** (`edge`): al massimo 2 per pagina, mai sulla prima sezione, solo tra toni diversi. Un solo tipo di bordo per sito: `onda` per siti morbidi (benessere, mare, natura, bambini), `diagonale` per siti decisi (officine, edilizia, sport), `curva`, la più neutra, per far risaltare l'invito finale.
+   - **Varietà:** alterna sezioni dense (griglie di card) e leggere (un testo, una recensione, un invito); mai tre griglie di card di fila. La home tra 6 e 9 sezioni, le pagine interne tra 4 e 6, mai più di 12.
+   - **Chiusura:** ogni pagina non legale ha una `cta`, di norma in fondo (con `--strict` la mancanza è un errore); al massimo due cta per pagina, una sola `banner`.
+
+4. **Ricette.** Ogni file ha `"$schema": "../../../.astro/collections/pages.schema.json"`, `title` (al massimo 60 caratteri) e `description` (al massimo 160), poi le sezioni piatte: `type`, `variant`, `id` (ancora in kebab-case per le sezioni linkate dal menu o dai pulsanti), `tone`, `background`, `edge` e i campi della scheda. L'esempio pronto in fondo a ogni scheda è il punto di partenza di una sezione. Immagini con percorso `../../assets/images/<file>` e un `alt` che dice cosa mostra. Recapiti mai nei testi: nei pulsanti `@telefono`, `@whatsapp`, `@email`, `@mappa`, nelle cta `showContacts`. Una pagina non ancora pronta resta `"draft": true`.
+
+5. **Layout** in `src/content/settings/layout.json`:
+   - header `con-cta` quando un'azione principale va spinta da ogni pagina (preventivo, prenotazione; serve la `cta` in `navigation.json`), altrimenti `semplice`; `sticky` per le pagine lunghe; `logo` `immagine` solo se il logo è in `site.json`;
+   - footer `colonne` di norma, `minimale` per siti di una o due pagine; `ctaBand` spento se le pagine chiudono già con una cta.
+
+6. **Menu** in `src/content/settings/navigation.json`: al massimo 5 o 6 voci (lo schema ne ammette 7), con le parole che usa il cliente; sottomenu (fino a 6 voci) solo se aiutano davvero; `cta` uguale all'azione principale; `footer.legal` con privacy e cookie, `footer.links` per le pagine secondarie. In un sito di una sola pagina le voci sono ancore della home (`/#servizi`).
+
+7. **Testi** con la skill `testi-sito`.
+
+8. **Controlli**, finché non ci sono errori:
+
+   ```sh
+   npm run check:recipes
+   ```
+
+   I messaggi dicono file, sezione e campo: `src/content/pages/index.json → sezione 3 (services) → items[2].title`.
+
+9. **Revisione** con la skill `revisione-visiva`, poi `npm run qa`.
+
+10. **Nota di design** in `docs/nota-design.md`, breve: scelte e motivi, non la cronaca del lavoro.
+
+    ```markdown
+    # Nota di design — <nome attività>
+
+    ## Tema
+    <palette> · <fonts> · <shape> · <pattern> · <texture>: perché. Alternative mostrate a Simone: …
+
+    ## Layout e menu
+    Header <variante> (sticky sì o no), footer <variante> (ctaBand sì o no), voci del menu: perché.
+
+    ## Pagine
+    ### <slug>
+    1. <blocco> `<variante>` (<tone>; <background> e <edge> se non sono quelli di partenza): perché, con quale materiale.
+
+    ## Immagini
+    Foto usate e dove, foto scartate e perché, stock con fonte e licenza (oppure «nessuna»).
+
+    ## Da decidere con Simone
+    - …
+    ```
+
+11. **Mostra a Simone** il sito acceso (`npx astro dev --background`, poi `http://localhost:4321/`) e le immagini della revisione: cosa hai scelto, perché, cosa manca. Le decisioni sono sue.
+
+## Criterio di fine
+
+Una ricetta per ogni pagina del brief; layout e menu scritti; nota di design completa; `npm run qa` senza errori; Simone ha visto il sito. Prima della messa online servirà `npm run qa -- --strict`.
+
+## Non fare
+
+- Non scrivere CSS, componenti o pagine `.astro` nel sito e non toccare i file gestiti. Se un blocco o una variante non basta, proponi a Simone il lavoro nella libreria, con i campi di `docs/skill/richiesta-blocco/SKILL.md`.
+- Non forzare un blocco a fare altro: la scheda dice quando evitarlo.
+- Mai dati inventati: recapiti, numeri, recensioni, foto di lavori o di persone che non ci sono.
+- Mai più di un hero per pagina, e sempre come prima sezione.
+- Non chiudere in voci da aprire (accordion, tabs) ciò che tutti devono leggere, come prezzi e garanzie.
