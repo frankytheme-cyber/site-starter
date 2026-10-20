@@ -1,6 +1,6 @@
 {
 	"library": "site-starter",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"recipeRules": [
 		{
 			"rule": "Un solo hero per pagina, come prima sezione: contiene l’unico h1.",

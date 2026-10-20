@@ -1,6 +1,6 @@
 # site-starter — Specifica v1
 
-Versione: allineata alla libreria v0.0.4
+Versione: allineata alla libreria v0.0.5
 
 ## Visione e principi
 
