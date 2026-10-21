@@ -76,3 +76,5 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		},
 	},
 ];
+
+fixtures.push({ name: 'Griglia con didascalie visibili', props: { ...fixtures[0].props, showCaptions: true } });

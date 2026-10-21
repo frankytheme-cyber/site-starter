@@ -6,6 +6,8 @@
 
 Dal vivo: `/catalogo` (tutti i blocchi con i selettori di palette, font e forma e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/temi` (palette, font e forme a confronto), `/catalogo/sfondi` (gli effetti di sfondo sui tre toni), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.
 
+Per consultazioni mirate: `npm run catalog:query` (indice breve), `-- hero` (scheda), `-- --cerca foto`, `-- --temi artigiano`, `-- --icone telefono`, `-- --regole`. Il comando legge solo questo catalogo locale e funziona anche nei siti cliente; non richiede Astro acceso.
+
 ## Regole d’oro delle ricette
 
 1. Un solo hero per pagina, come prima sezione: contiene l’unico h1. *(controllo recipes)*

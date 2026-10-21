@@ -4,6 +4,19 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
+## Non rilasciato
+
+### Correzioni
+
+- Screenshot di design: le immagini senza sorgente del popup non consumano il timeout; risorse visibili fallite sono segnalate. Chromium viene verificato prima di avviare Astro e le risorse si chiudono anche in caso di errore.
+- Inventario delle foto ricorsivo, senza fixture o symlink; preparazione in posizione con sostituzione solo dopo la codifica riuscita.
+
+### Novità
+
+- `catalog:query` per consultare solo blocchi, temi, icone o regole utili; istruzioni e skill condivise più mirate, con riferimenti su richiesta.
+- `design:shots -- --riusa`, con manifest e hash dei sorgenti, per riusare screenshot invariati. QA finale completa e revisione visiva mantenute.
+- Fixture e regressioni per hero orizzontale, servizi con foto e icone, didascalie, occhiello del form ed etichette CTA; controlli `tooling` e `design` nelle suite.
+
 ## v0.0.5 (2026-10-20)
 ### Breaking
 

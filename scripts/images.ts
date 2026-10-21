@@ -16,12 +16,11 @@ import { existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
 import { basename, extname, join, resolve } from 'node:path';
 import sharp from 'sharp';
 import { rel, ROOT } from './checks/lib/project.ts';
+import { IMAGE_EXTENSIONS as INPUT, imageInventory, prepareImage } from './lib/images.ts';
 
 const DIR = join(ROOT, 'src/assets/images');
-const MAX_SIDE = 2400;
 /** Sotto questa misura del lato lungo una foto va bene per card e miniature, non per una hero. */
 const SMALL = 1200;
-const INPUT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.tif', '.tiff', '.avif']);
 
 const args = process.argv.slice(2);
 const overwrite = args.includes('--sovrascrivi');
@@ -65,12 +64,7 @@ function inputs(): string[] {
 }
 
 if (paths.length === 0) {
-	const files = existsSync(DIR)
-		? readdirSync(DIR)
-				.filter((name) => INPUT.has(extname(name).toLowerCase()))
-				.sort()
-				.map((name) => join(DIR, name))
-		: [];
+	const files = imageInventory(DIR);
 	if (files.length === 0) console.log('Nessuna foto in src/assets/images (le foto di prova di fixtures/ non contano).');
 	for (const file of files) console.log(await describe(file));
 	process.exit(0);
@@ -87,11 +81,7 @@ for (const source of inputs()) {
 		continue;
 	}
 	try {
-		// rotate() raddrizza la foto secondo l'EXIF; senza withMetadata() i metadati non vengono copiati.
-		const image = sharp(source).rotate().resize({ width: MAX_SIDE, height: MAX_SIDE, fit: 'inside', withoutEnlargement: true });
-		if (format === 'png') await image.png({ compressionLevel: 9 }).toFile(target);
-		else if (format === 'webp') await image.webp({ quality: 85 }).toFile(target);
-		else await image.jpeg({ quality: 85, mozjpeg: true }).toFile(target);
+		await prepareImage(source, target, format);
 		console.log(`✓ ${await describe(target)}`);
 		done++;
 	} catch (cause) {

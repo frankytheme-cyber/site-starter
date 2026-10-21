@@ -211,3 +211,15 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		},
 	},
 ];
+
+fixtures.push({
+	name: 'Card con foto e icone',
+	props: {
+		...fixtures[2].props,
+		items: [
+			fixtures[2].props.items[0],
+			{ icon: 'regalo', title: 'Confezioni regalo', text: 'Prepariamo confezioni per ogni occasione, anche su ordinazione.' },
+			{ icon: 'negozio', title: 'Ritiro in negozio', text: 'Ordina e passa a ritirare quando preferisci.' },
+		],
+	},
+});

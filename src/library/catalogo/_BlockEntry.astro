@@ -98,7 +98,7 @@ const SubHeading = href ? 'h3' : 'h2';
 
 	{
 		fixtures.map((fixture) => (
-			<div class="border-t border-border">
+			<div class="border-t border-border" data-fixture={fixture.name}>
 				<Container>
 					<p class="py-2 text-sm text-fg-muted">
 						Fixture <span class="font-semibold text-fg">{fixture.name}</span>

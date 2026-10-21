@@ -35,7 +35,9 @@
     "blocks:sync": "node scripts/blocks-sync.ts",
     "check:template": "node scripts/template-as-site.ts",
     "cms:local": "node scripts/cms-local.ts",
-    "pr": "node scripts/github-pr.ts"
+    "pr": "node scripts/github-pr.ts",
+    "catalog:query": "node scripts/catalog-query.ts",
+    "test:tools": "node --test scripts/design-tools.test.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

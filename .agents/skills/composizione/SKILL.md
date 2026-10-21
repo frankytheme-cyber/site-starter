@@ -12,10 +12,10 @@ Per l'agente che costruisce un sito cliente con Simone. Il sito si completa, non
 - **Brief:** `docs/brief.md` approvato da Simone. Se manca, compilalo con lui partendo da `docs/modelli/brief.md`: senza attività, servizi, azione principale e pagine (sezioni 1-3) non si compone. Un dato che manca va in «Da chiedere», mai inventato.
 - **Note del sito:** `docs/sito.md`.
 - **Inventario del materiale**, prima di scegliere i blocchi: il materiale decide le varianti, non il contrario.
-  - foto in `src/assets/images/`: cosa mostra ognuna (lavoro finito, prima e dopo, sede, persone, prodotti), orientamento e qualità;
+  - `npm run images` (include sottocartelle, esclude fixture): cosa mostra ognuna (lavoro finito, prima e dopo, sede, persone, prodotti), orientamento e qualità;
   - recensioni e numeri del brief, ognuno con la fonte;
   - dati di `src/content/settings/site.json` (telefono, WhatsApp, email, indirizzo, orari): decidono link speciali e blocchi dei contatti.
-- **Catalogo:** `docs/catalogo/README.md` (regole d'oro e di composizione, effetti di sfondo, bordi) e, per ogni blocco che usi, la scheda `docs/catalogo/blocchi/<tipo>.md` con gli screenshot.
+- **Catalogo:** `npm run catalog:query -- --regole` per le regole; `npm run catalog:query` per l’indice breve. Consulta una scheda completa e i suoi screenshot solo per i blocchi candidati. Non caricare tutto `catalogo.json`.
 - **Tema** già scelto con la skill `direzione-visiva`.
 
 ## Passi
@@ -24,26 +24,7 @@ Per l'agente che costruisce un sito cliente con Simone. Il sito si completa, non
 
 2. **Varianti dal materiale:**
 
-   | Se c'è | Usa | Se manca |
-   | --- | --- | --- |
-   | una foto forte di un lavoro, del locale o delle persone | hero `split` (`imageShape: "orizzontale"` per una foto larga); `full` solo se la foto regge il testo sopra | hero `centered` |
-   | una foto per quasi ogni servizio | services `cards-immagine` (ai servizi senza foto basta l'icona), o `alternato` nella pagina dei servizi | services `cards-icone` |
-   | almeno 4 foto vere di lavori | gallery `griglia-popup` (fino a 12 per blocco; `showCaptions` se le didascalie contano) | niente gallery |
-   | coppie prima e dopo con la stessa inquadratura | gallery `prima-dopo` (fino a 6 coppie) | — |
-   | da 3 a 8 foto di qualità da guardare in grande | gallery `slider` | — |
-   | progetti o casi da raccontare, ognuno con foto e testo | carousel `immagini-testo` | — |
-   | una foto vera del titolare, della squadra o della sede | about `immagine-testo` | about `con-numeri`, o niente about |
-   | da 2 a 4 numeri con la fonte | about `con-numeri` | niente numeri |
-   | recensioni reali con autore e fonte | testimonials `cards` (2-6), `slider` (3-10) o `singola` (una forte) | niente recensioni |
-   | punti di forza dimostrabili | features `3-colonne` (3 o 6 brevi) o `lista` (4-5, o più lunghi) | niente features |
-   | un percorso dal primo contatto alla fine del lavoro | process `passi-numerati` (3, 4 o 6 passi) o `timeline` (5 passi, o testi lunghi) | — |
-   | alternative parallele tra cui chi visita sceglie (pranzo o cena, privati o imprese) | tabs `testo`, o `testo-immagine` con una foto per scheda | — |
-   | domande vere con la risposta nel brief | accordion `faq`, una per pagina | niente faq |
-   | comuni serviti | areas `elenco-zone`, o `mappa-link` se c'è anche una sede da raggiungere | — |
-   | una sede da visitare (negozio, studio, locale) | contact `info-mappa` | contact `info-cta` (a domicilio, su appuntamento) |
-   | invio dei moduli configurato (`docs/form.md`) e informativa privacy approvata | form `contatto` o `preventivo` | cta con `@telefono`, `@whatsapp`, `@email` |
-
-   Foto solo da `src/assets/images/`: mai le foto di prova (`fixtures/`), mai stock per lavori, persone e sede. Una foto che serve e non c'è si chiede a Simone.
+   Consulta solo le righe pertinenti di `.agents/skills/composizione/materiali.md`. Senza foto vere scegli varianti senza foto; senza prove non aggiungere numeri o recensioni; senza invio configurato usa CTA di contatto. Per ogni blocco scelto verifica `whenToUse`, `avoidWhen`, campi e regole con `npm run catalog:query -- <tipo>`; non leggere tutte le schede.
 
 3. **Ritmo della pagina.**
    - **Toni:** alterna `default` e `muted`; `primary` una o due volte per pagina, di solito sull'invito finale.
@@ -70,7 +51,7 @@ Per l'agente che costruisce un sito cliente con Simone. Il sito si completa, non
 
    I messaggi dicono file, sezione e campo: `src/content/pages/index.json → sezione 3 (services) → items[2].title`.
 
-9. **Revisione** con la skill `revisione-visiva`, poi `npm run qa`.
+9. **Revisione** con la skill `revisione-visiva`, poi `npm run qa` (include `check`; non ripeterlo sugli stessi sorgenti).
 
 10. **Nota di design** in `docs/nota-design.md`, breve: scelte e motivi, non la cronaca del lavoro.
 
