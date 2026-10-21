@@ -3,6 +3,7 @@ import { catalogVariants } from '@/core/catalog';
 import type { Block } from '@/core/registry';
 import Container from '@/core/ui/Container.astro';
 import { fixtureJson } from './_example';
+import { variantAnchor } from './_nav';
 
 interface Props {
 	block: Block;
@@ -59,7 +60,7 @@ const SubHeading = href ? 'h3' : 'h2';
 			<dl class="mt-2 grid gap-5">
 				{
 					variants.map((variant) => (
-						<div class="sm:flex sm:gap-3">
+						<div id={variantAnchor(meta.type, variant.name)} class="scroll-mt-24 sm:flex sm:gap-3">
 							<dt class="shrink-0 sm:w-28">
 								<code>{variant.name}</code>
 							</dt>

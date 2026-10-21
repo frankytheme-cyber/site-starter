@@ -37,7 +37,7 @@ const describe = (meta: PresetMeta) => {
 				<p class="mt-3 max-w-3xl text-fg-muted">
 					L’aspetto del sito si sceglie in <code>src/content/settings/theme.json</code> combinando una palette, una coppia
 					di font e una forma. Ogni scheda mostra il preset dal vivo; «Usa questa» lo applica a tutto il catalogo, e
-					«Vedi i blocchi» apre l’elenco dei blocchi con quel preset. Tutte le palette hanno il contrasto AA verificato
+					«Vedi i blocchi» mostra tutti i blocchi dal vivo con quel preset. Tutte le palette hanno il contrasto AA verificato
 					da <code>npm run check:contrast</code>. Decoro e texture si provano dalla barra in alto e su{' '}
 					<a href="/catalogo/sfondi/" class="text-primary underline underline-offset-4">Sfondi</a>.
 				</p>
@@ -92,7 +92,7 @@ const describe = (meta: PresetMeta) => {
 										<button type="button" hidden data-use-preset="palette" value={key} aria-pressed="false" class={useClass}>
 											Usa questa
 										</button>
-										<a href={`/catalogo/?palette=${key}`} class="text-sm text-primary underline underline-offset-4">
+										<a href={`/catalogo/tutti/?palette=${key}`} class="text-sm text-primary underline underline-offset-4">
 											Vedi i blocchi
 										</a>
 									</div>
@@ -120,7 +120,7 @@ const describe = (meta: PresetMeta) => {
 									<button type="button" hidden data-use-preset="fonts" value={key} aria-pressed="false" class={useClass}>
 										Usa questa
 									</button>
-									<a href={`/catalogo/?fonts=${key}`} class="text-sm text-primary underline underline-offset-4">
+									<a href={`/catalogo/tutti/?fonts=${key}`} class="text-sm text-primary underline underline-offset-4">
 										Vedi i blocchi
 									</a>
 								</div>
@@ -148,7 +148,7 @@ const describe = (meta: PresetMeta) => {
 									<button type="button" hidden data-use-preset="shape" value={key} aria-pressed="false" class={useClass}>
 										Usa questa
 									</button>
-									<a href={`/catalogo/?shape=${key}`} class="text-sm text-primary underline underline-offset-4">
+									<a href={`/catalogo/tutti/?shape=${key}`} class="text-sm text-primary underline underline-offset-4">
 										Vedi i blocchi
 									</a>
 								</div>

@@ -1,0 +1,58 @@
+---
+/**
+ * Tutti i blocchi dal vivo, con ogni fixture: per vedere un tema su tutto il catalogo insieme
+ * («Vedi i blocchi» di Temi). Pagina lunga: per scegliere un blocco c'è l'indice a schede, /catalogo.
+ */
+import { blocks } from '@/core/registry';
+import Container from '@/core/ui/Container.astro';
+import BlockEntry from './_BlockEntry.astro';
+import CatalogLayout from './_CatalogLayout.astro';
+import { catalogTitle } from './_library';
+import { blockGroups } from './_nav';
+---
+
+<CatalogLayout title={catalogTitle('Tutti i blocchi dal vivo')}>
+	<main>
+		<Container>
+			<div class="py-10">
+				<h1 class="text-3xl font-bold">Tutti i blocchi dal vivo</h1>
+				<p class="mt-3 max-w-3xl text-fg-muted">
+					{blocks.length}{' '}
+					{blocks.length === 1 ? 'blocco' : 'blocchi'} con tutte le fixture, nel tema scelto in alto: serve a vedere
+					un tema su tutto il catalogo. Per scegliere un blocco è più comodo l’<a
+						href="/catalogo/"
+						class="text-primary underline underline-offset-4">indice a schede</a
+					>; i preset si confrontano in <a href="/catalogo/temi/" class="text-primary underline underline-offset-4"
+						>Temi</a
+					>.
+				</p>
+				<nav id="indice" aria-label="Blocchi" class="mt-6 scroll-mt-24">
+					<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+						{
+							blockGroups.map((group) => (
+								<li>
+									<p class="text-xs font-semibold uppercase tracking-wide text-fg-muted">{group.category}</p>
+									<ul class="mt-2 grid gap-1">
+										{group.blocks.map((block) => (
+											<li>
+												<a href={`#${block.type}`} class="text-primary underline underline-offset-4">
+													{block.name}
+												</a>
+												<span class="text-sm text-fg-muted">
+													{' '}
+													· {block.variants.length} {block.variants.length === 1 ? 'variante' : 'varianti'}
+												</span>
+											</li>
+										))}
+									</ul>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+			</div>
+		</Container>
+
+		{blocks.map((block) => <BlockEntry block={block} href={`/catalogo/${block.type}/`} />)}
+	</main>
+</CatalogLayout>

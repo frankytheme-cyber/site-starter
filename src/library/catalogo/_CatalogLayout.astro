@@ -31,6 +31,12 @@ const links = [
 	{ href: '/catalogo/ui/', label: 'UI' },
 	{ href: '/catalogo/sfondi/', label: 'Sfondi' },
 ];
+// Riassunto del tema nel pulsante «Tema»: palette, font e forma (decoro e texture si vedono nel pannello).
+const summaryKeys = ['palette', 'fonts', 'shape'];
+const summary = controls
+	.filter((control) => summaryKeys.includes(control.key))
+	.map(({ metas, value }) => metas[value].name)
+	.join(' · ');
 const linkClass = 'text-sm text-primary underline-offset-4 hover:underline aria-[current=page]:font-semibold aria-[current=page]:underline';
 // Colori della palette attiva: leggono i token, quindi cambiano da soli col selettore.
 const swatches = ['bg-bg', 'bg-surface', 'bg-fg', 'bg-primary', 'bg-accent'];
@@ -58,10 +64,11 @@ const swatches = ['bg-bg', 'bg-surface', 'bg-fg', 'bg-primary', 'bg-accent'];
 			sessionStorage.setItem(storageKey, JSON.stringify(saved));
 		} catch {}
 	</script>
-	<header data-catalog-bar data-storage-key={THEME_STORAGE_KEY} class="sticky top-0 z-50 border-b border-border bg-bg">
+	{/* Da tablet in su resta in cima; su mobile scorre via, per lasciare lo schermo ai blocchi. */}
+	<header data-catalog-bar data-storage-key={THEME_STORAGE_KEY} class="relative z-50 border-b border-border bg-bg md:sticky md:top-0">
 		<Container>
-			<div class="flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
-				<nav aria-label="Catalogo" class="mr-auto flex flex-wrap items-center gap-x-5 gap-y-2">
+			<div class="flex flex-wrap items-center gap-x-5 gap-y-2 py-2">
+				<nav aria-label="Catalogo" class="mr-auto flex flex-wrap items-center gap-x-5 gap-y-1">
 					<a href="/" class="text-sm text-primary underline underline-offset-4">← Sito</a>
 					<a href="/catalogo/" class="font-heading text-lg font-bold" aria-current={path === '/catalogo/' ? 'page' : undefined}>
 						Catalogo blocchi
@@ -70,28 +77,37 @@ const swatches = ['bg-bg', 'bg-surface', 'bg-fg', 'bg-primary', 'bg-accent'];
 						<summary class="flex min-h-9 cursor-pointer list-none items-center gap-1 text-sm text-primary [&::-webkit-details-marker]:hidden">
 							Blocchi <span aria-hidden="true">▾</span>
 						</summary>
-						<div class="absolute left-0 top-full z-10 mt-2 grid w-max max-w-[calc(100vw-2rem)] gap-4 rounded-box border border-border bg-bg p-4 shadow-lg sm:grid-cols-2">
-							{
-								blockGroups.map((group) => (
-									<div>
-										<p class="text-xs font-semibold uppercase tracking-wide text-fg-muted">{group.category}</p>
-										<ul class="mt-1">
-											{group.blocks.map((block) => (
-												<li>
-													<a
-														href={`/catalogo/${block.type}/`}
-														aria-current={path === `/catalogo/${block.type}/` ? 'page' : undefined}
-														class="flex min-h-8 items-center gap-2 text-sm text-fg hover:text-primary hover:underline aria-[current=page]:font-semibold aria-[current=page]:text-primary"
-													>
-														{block.name}
-														<span class="text-xs text-fg-muted">{block.variants}</span>
-													</a>
-												</li>
-											))}
-										</ul>
-									</div>
-								))
-							}
+						<div class="absolute left-0 top-full z-10 mt-2 w-max max-w-[calc(100vw-2rem)] rounded-box border border-border bg-bg p-4 shadow-lg">
+							<div class="grid gap-4 sm:grid-cols-2">
+								{
+									blockGroups.map((group) => (
+										<div>
+											<p class="text-xs font-semibold uppercase tracking-wide text-fg-muted">{group.category}</p>
+											<ul class="mt-1">
+												{group.blocks.map((block) => (
+													<li>
+														<a
+															href={`/catalogo/${block.type}/`}
+															aria-current={path === `/catalogo/${block.type}/` ? 'page' : undefined}
+															class="flex min-h-8 items-center gap-2 text-sm text-fg hover:text-primary hover:underline aria-[current=page]:font-semibold aria-[current=page]:text-primary"
+														>
+															{block.name}
+															<span class="text-xs text-fg-muted">{block.variants.length}</span>
+														</a>
+													</li>
+												))}
+											</ul>
+										</div>
+									))
+								}
+							</div>
+							<a
+								href="/catalogo/tutti/"
+								aria-current={path === '/catalogo/tutti/' ? 'page' : undefined}
+								class="mt-4 inline-flex min-h-8 items-center border-t border-border pt-3 text-sm text-primary underline underline-offset-4 aria-[current=page]:font-semibold"
+							>
+								Tutti i blocchi dal vivo
+							</a>
 						</div>
 					</details>
 					{
@@ -102,38 +118,59 @@ const swatches = ['bg-bg', 'bg-surface', 'bg-fg', 'bg-primary', 'bg-accent'];
 						))
 					}
 				</nav>
-				{
-					controls.map(({ key, label, options, metas, value }) => (
-						<label class="flex items-center gap-2 text-sm">
-							<span class="text-fg-muted">{label}</span>
-							{key === 'palette' && (
-								<span aria-hidden="true" class="flex overflow-hidden rounded-button border border-border">
-									{swatches.map((swatch) => (
-										<span class={`h-5 w-2.5 ${swatch}`} />
-									))}
-								</span>
-							)}
-							<select
-								data-theme-control={key}
-								class="min-h-9 rounded-button border border-border bg-bg px-3 text-fg"
-							>
-								{options.map((option) => (
-									<option value={option} selected={option === value}>
-										{metas[option].name}
-									</option>
-								))}
-							</select>
-						</label>
-					))
-				}
+				{/* Il tema in un pannello: chiuso, la barra resta su una riga e mostra la scelta attuale. */}
+				<details data-catalog-menu class="relative ml-auto">
+					<summary class="flex min-h-9 cursor-pointer list-none items-center gap-2 rounded-button border border-border px-3 text-sm hover:border-primary [&::-webkit-details-marker]:hidden">
+						<span class="font-semibold">Tema</span>
+						<span aria-hidden="true" class="flex overflow-hidden rounded-button border border-border">
+							{swatches.map((swatch) => (
+								<span class={`h-4 w-2 ${swatch}`} />
+							))}
+						</span>
+						<span data-theme-summary class="hidden text-fg-muted lg:inline">{summary}</span>
+						<span aria-hidden="true">▾</span>
+					</summary>
+					<div class="absolute right-0 top-full z-10 mt-2 w-72 max-w-[calc(100vw-2rem)] rounded-box border border-border bg-bg p-4 shadow-lg">
+						<div class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-2">
+							{
+								controls.map(({ key, label, options, metas, value }) => (
+									<>
+										<label for={`tema-${key}`} class="text-sm text-fg-muted">
+											{label}
+										</label>
+										<select
+											id={`tema-${key}`}
+											data-theme-control={key}
+											class="min-h-9 w-full rounded-button border border-border bg-bg px-3 text-sm text-fg"
+										>
+											{options.map((option) => (
+												<option value={option} selected={option === value}>
+													{metas[option].name}
+												</option>
+											))}
+										</select>
+									</>
+								))
+							}
+						</div>
+						<p class="mt-3 border-t border-border pt-3 text-sm text-fg-muted">
+							Vale in tutto il catalogo, non cambia <code>theme.json</code>.{' '}
+							<a href="/catalogo/temi/" class="text-primary underline underline-offset-4">Confronta i preset</a>
+						</p>
+					</div>
+				</details>
 			</div>
 		</Container>
 	</header>
-	{/* Subito, prima degli script dei blocchi: l'header sticky legge --sticky-offset all'avvio. */}
+	{/*
+		Subito, prima degli script dei blocchi: l'header sticky legge --sticky-offset all'avvio.
+		Su mobile la barra non è sticky, quindi i blocchi si agganciano al bordo della finestra.
+	*/}
 	<script is:inline>
+		const catalogBar = document.querySelector('[data-catalog-bar]');
 		document.documentElement.style.setProperty(
 			'--sticky-offset',
-			`${document.querySelector('[data-catalog-bar]').offsetHeight}px`,
+			`${getComputedStyle(catalogBar).position === 'sticky' ? catalogBar.offsetHeight : 0}px`,
 		);
 	</script>
 	<slot />
@@ -143,10 +180,25 @@ const swatches = ['bg-bg', 'bg-surface', 'bg-fg', 'bg-primary', 'bg-accent'];
 	// Cambia i data-* di <html> al volo e ricorda la scelta tra le pagine del catalogo.
 	const root = document.documentElement;
 
-	// I blocchi sticky (es. header) si agganciano sotto questa barra, che su mobile va su più righe.
+	// I blocchi sticky (es. header) si agganciano sotto questa barra quando è sticky (da tablet in su).
 	const bar = document.querySelector<HTMLElement>('[data-catalog-bar]')!;
 	const storageKey = bar.dataset.storageKey!;
-	new ResizeObserver(() => root.style.setProperty('--sticky-offset', `${bar.offsetHeight}px`)).observe(bar);
+	new ResizeObserver(() => {
+		const offset = getComputedStyle(bar).position === 'sticky' ? bar.offsetHeight : 0;
+		root.style.setProperty('--sticky-offset', `${offset}px`);
+	}).observe(bar);
+
+	// Il pulsante «Tema» riassume la scelta: i nomi delle opzioni scelte.
+	const themeSummary = bar.querySelector<HTMLElement>('[data-theme-summary]');
+	const summaryKeys = ['palette', 'fonts', 'shape'];
+	const updateSummary = () => {
+		if (!themeSummary) return;
+		themeSummary.textContent = summaryKeys
+			.map((key) => bar.querySelector<HTMLSelectElement>(`[data-theme-control="${key}"]`))
+			.map((select) => select?.selectedOptions[0]?.text)
+			.filter(Boolean)
+			.join(' · ');
+	};
 
 	let saved: Record<string, string> = {};
 	try {
@@ -165,15 +217,20 @@ const swatches = ['bg-bg', 'bg-surface', 'bg-fg', 'bg-primary', 'bg-accent'];
 			try {
 				sessionStorage.setItem(storageKey, JSON.stringify(saved));
 			} catch {}
+			updateSummary();
 		});
 	}
+	updateSummary();
 
-	// Menu «Blocchi»: si chiude con Esc o cliccando fuori.
-	const menu = document.querySelector<HTMLDetailsElement>('[data-catalog-menu]');
-	if (menu) {
+	// Menu «Blocchi» e pannello «Tema»: uno aperto alla volta, si chiudono con Esc o cliccando fuori.
+	const menus = [...document.querySelectorAll<HTMLDetailsElement>('[data-catalog-menu]')];
+	document.addEventListener('click', (event) => {
+		for (const menu of menus) if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+	});
+	for (const menu of menus) {
 		const summary = menu.querySelector('summary')!;
-		document.addEventListener('click', (event) => {
-			if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+		menu.addEventListener('toggle', () => {
+			if (menu.open) for (const other of menus) if (other !== menu) other.open = false;
 		});
 		menu.addEventListener('keydown', (event) => {
 			if (event.key === 'Escape' && menu.open) {
