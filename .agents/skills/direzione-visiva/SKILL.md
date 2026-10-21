@@ -14,7 +14,7 @@ Per l'agente che compone un sito cliente con Simone. L'aspetto si sceglie tra i 
 
 ## Passi
 
-1. **Leggi** `docs/brief.md` (settore, clienti, tono, preferenze di colore e di stile, siti che piacciono e no, logo), `docs/sito.md` e le tabelle «Temi» di `docs/catalogo/README.md` (mood e settori di ogni preset, screenshot in `docs/catalogo/img/`). Poi guarda le foto in `src/assets/images/`: colori, luce, materiali. Sono loro a comandare.
+1. **Leggi** `docs/brief.md` (settore, clienti, tono, preferenze di colore e di stile, siti che piacciono e no, logo), `docs/sito.md` e `npm run catalog:query -- --temi <settore>` (ricerca testuale per mood e settori; senza filtro se non trovi alternative). Apri gli screenshot dei soli preset candidati, indicati nei risultati. Poi guarda le foto in `src/assets/images/`: colori, luce, materiali. Sono loro a comandare.
    Se il brief non dice nulla su tono e stile, chiedi a Simone tre aggettivi per l'attività e un sito che gli piace, prima di proporre.
 
 2. **Tre direzioni diverse davvero**, non tre palette sullo stesso impianto:
@@ -31,7 +31,7 @@ Per l'agente che compone un sito cliente con Simone. L'aspetto si sceglie tra i 
 3. **Guardale sul sito vero:**
 
    ```sh
-   npm run design:shots -- --pagine index --tema laguna,fresco,arrotondato,onde,liscia --tema ardesia,moderno,squadrato,nessuno,liscia --tema notte,carattere,squadrato,righe,grana
+   npm run design:shots -- --riusa --pagine index --tema laguna,fresco,arrotondato,onde,liscia --tema ardesia,moderno,squadrato,nessuno,liscia --tema notte,carattere,squadrato,righe,grana
    ```
 
    Ogni `--tema` elenca i preset in qualsiasi ordine; quelli che mancano restano di `theme.json`. Le immagini sono in `reports/design/<data-ora>/`, una cartella per direzione: apri `-apertura` e `-panoramica` a 1280 (`desktop`) e 375 px (`mobile`). Scarta o correggi una direzione che non regge: foto spente dalla palette, titoli che vanno a capo male con quel font, decoro che disturba il testo, un sito scuro che sembra di un altro settore.

@@ -4,8 +4,8 @@ Due comandi, un solo formato di report:
 
 | Comando                     | Cosa esegue                                                                          | Quando                             |
 | --------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------- |
-| `npm run check`             | recipes, astro-check, decap, tokens, skills, contrast, forms, blocks, catalog, lock, build (+ release) | prima di ogni commit; CI sulle PR e sui push su `main` |
-| `npm run qa`                | tutto `check`, poi su `astro preview`: links, a11y, interactive, buttons, lighthouse | prima di una PR; CI sulle PR       |
+| `npm run check`             | recipes, astro-check, decap, tokens, skills, contrast, forms, tooling, blocks, lock, build (+ release) | prima di ogni commit; CI sulle PR e sui push su `main` |
+| `npm run qa`                | tutto `check`, poi su `astro preview`: links, a11y, interactive, buttons, design, lighthouse | prima di una PR; CI sulle PR       |
 | `npm run check -- --strict` | come sopra con le regole di pubblicazione: recipes come errori, release attivo (nei siti cliente) | CI sulle PR verso `main`           |
 | `npm run check:template`    | solo libreria: il template, inizializzato come sito, deve fallire `qa --strict` solo per i segnaposto | CI sulle PR (job `template-as-site`) |
 
@@ -26,6 +26,11 @@ Gli stessi script girano nella repo site-starter (la **libreria**, solo con `SIT
 - `build`: in un sito cliente fallisce se `/catalogo` è nel build.
 
 ## I check
+
+- `tooling` (check): test offline di inventario ricorsivo, normalizzazione in posizione e conservazione dell’originale in caso di errore; query mirate, invalidazione degli screenshot e preflight del browser. Comando mirato: `npm run test:tools`.
+- `design` (qa): attese delle immagini senza sorgente, fallite, pendenti e lazy; nella libreria verifica a 375/1280 px le fixture di hero orizzontale, servizi misti, didascalie e popup, occhiello del form ed etichette CTA. Evidenze in `reports/design-qa/`.
+
+`qa` comprende già `check`: non lanciarli in sequenza sugli stessi sorgenti. Durante l’iterazione usa controlli mirati, poi la QA completa finale. `design:shots -- --riusa` riusa solo esecuzioni riuscite con sorgenti/opzioni identiche e file ancora presenti; `manifest.json` registra hash, pagine, temi, larghezze ed esito. Non sostituisce la revisione delle immagini né i controlli finali. Senza `--riusa` acquisisce sempre immagini nuove.
 
 `forms` esegue `npm run test:forms` con Resend simulato: validazione server, origini,
 honeypot, limiti del corpo, retry idempotenti, errori e risposta HTML senza JavaScript.
@@ -53,7 +58,7 @@ un errore e blocco dei doppi invii. Configurazione: [`form.md`](form.md).
 
 Note:
 
-- **Redirect al rilascio.** Nei siti con `--strict`, `release` legge la risposta esplicita a «Esiste un sito online?» in `docs/brief.md`. Con sito esistente o redirect configurati richiede `docs/redirects.md`, decisione datata, righe decise e corrispondenza esatta con `vercel.json` (solo `source`, `destination`, `permanent: true`). La procedura e il formato sono nella skill `redirect`. Il template senza brief e senza redirect resta valido per `check:template`; un brief presente con risposta mancante è un errore. L'Approval Paperclip va verificata dal PM.
+- **Redirect al rilascio.** Nei siti con `--strict`, `release` legge la risposta esplicita a «Esiste un sito online?» in `docs/brief.md`. Con sito esistente o redirect configurati richiede `docs/redirects.md`, decisione datata, righe decise e corrispondenza esatta con `vercel.json` (solo `source`, `destination`, `permanent: true`). La procedura e il formato sono nella skill `redirect`. Il template senza brief e senza redirect resta valido per `check:template`; un brief presente con risposta mancante è un errore. Nel flusso corrente la decisione di Simone si raccoglie in conversazione; l'Approval del PM riguarda solo Paperclip, in pausa.
 - **Test del controllo redirect.** `node --test scripts/checks/redirects.test.ts` verifica anche proposte pendenti, mappe respinte, configurazioni non approvate e redirect mancanti.
 - **Ordine.** `recipes` gira per primo: dati non validi o un'immagine che manca si leggono con file, sezione e campo, e `astro-check` e `build`, che si fermerebbero sullo stesso errore, vengono saltati. `decap` gira prima della build: il `prebuild` rigenera `config.yml`, e dopo il confronto non direbbe più niente.
 - **Messaggi dei contenuti.** Ricette e impostazioni si validano con l'error map italiana di `src/core/content-validation.ts`, sia in `recipes` sia nella build (i loader di `src/content.config.ts`): sezioni ed elementi si contano da 1, con il tipo del blocco.

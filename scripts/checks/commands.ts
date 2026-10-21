@@ -43,6 +43,14 @@ export async function forms({ root }: CheckContext) {
 	return findings;
 }
 
+/** Strumenti locali: immagini, query catalogo, evidenze e browser mancante, senza Chromium. */
+export async function tooling({ root }: CheckContext) {
+	const { findings, error } = collector('tooling');
+	const { code, output } = await exec(process.execPath, ['--test', 'scripts/design-tools.test.ts'], root);
+	if (code !== 0) error({ message: 'test degli strumenti non riusciti', hint: output.trim().split('\n').slice(-24).join(' | ') });
+	return findings;
+}
+
 /**
  * build: npm run build (con il prebuild che rigenera la configurazione di Decap).
  * Nella suite qa SITE_URL punta al server di anteprima: canonical e Open Graph restano sullo stesso host.

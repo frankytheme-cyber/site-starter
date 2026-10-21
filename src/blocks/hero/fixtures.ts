@@ -79,3 +79,5 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		},
 	},
 ];
+
+fixtures.push({ name: 'Split con foto orizzontale', props: { ...fixtures[0].props, imageShape: 'orizzontale' } });

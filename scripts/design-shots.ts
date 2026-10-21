@@ -19,12 +19,13 @@
  *      npm run design:shots -- --tema laguna,fresco --tema notte,carattere,squadrato
  *                                        temi di prova: preset in qualsiasi ordine, gli altri da theme.json
  *      npm run design:shots -- --sezioni                         anche un'immagine per sezione
+ *      npm run design:shots -- --riusa                           riusa immagini solo con sorgenti e opzioni identiche
  *      npm run design:shots -- --larghezze 375                   solo mobile (375) o solo desktop (1280)
  */
 import type { ChildProcess } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { chromium, type Browser, type Page } from 'playwright';
 import sharp from 'sharp';
 import { SCREEN_WIDTHS } from '../src/core/catalog.ts';
 import { isLibraryMode } from '../src/core/mode.ts';
@@ -32,8 +33,10 @@ import { type ThemeKey, themePresets } from '../src/themes/presets.ts';
 import { loadRecipes } from './checks/lib/content.ts';
 import { freePort, startDev, stopPreview } from './checks/lib/preview.ts';
 import { rel, ROOT } from './checks/lib/project.ts';
+import { settleDesignPage } from './lib/design-page.ts';
+import { designFingerprint, reusableDesignReport } from './lib/design-evidence.ts';
 
-const USAGE = 'uso: npm run design:shots -- [--pagine index,servizi] [--percorsi /catalogo/hero/split/] [--tema laguna,fresco …] [--sezioni] [--larghezze 375,1280]';
+const USAGE = 'uso: npm run design:shots -- [--pagine index,servizi] [--percorsi /catalogo/hero/split/] [--tema laguna,fresco …] [--sezioni] [--larghezze 375,1280] [--riusa]';
 const SIZES = [
 	{ name: 'desktop', width: SCREEN_WIDTHS.desktop, height: 800 },
 	{ name: 'mobile', width: SCREEN_WIDTHS.mobile, height: 812 },
@@ -41,7 +44,6 @@ const SIZES = [
 /** Lato lungo massimo delle immagini da far leggere agli agenti. */
 const MAX_SIDE = 2000;
 const JPEG = { quality: 82, mozjpeg: true };
-const IMAGE_TIMEOUT = 15_000;
 // La barra degli strumenti di Astro c'è solo in sviluppo: negli screenshot non serve.
 const HIDE_DEV_TOOLBAR = 'astro-dev-toolbar { display: none !important; }';
 const THEME_FILE = 'src/content/settings/theme.json';
@@ -74,7 +76,7 @@ const list = (value: string) =>
 
 // ---------------------------------------------------------------------------- argomenti
 
-const FLAGS = new Set(['--pagine', '--percorsi', '--tema', '--larghezze', '--sezioni']);
+const FLAGS = new Set(['--pagine', '--percorsi', '--tema', '--larghezze', '--sezioni', '--riusa']);
 const options = new Map<string, string[]>();
 const args = process.argv.slice(2);
 for (let index = 0; index < args.length; index++) {
@@ -82,7 +84,7 @@ for (let index = 0; index < args.length; index++) {
 	const equals = arg.indexOf('=');
 	const flag = equals > 0 ? arg.slice(0, equals) : arg;
 	if (!FLAGS.has(flag)) fail(`argomento sconosciuto: ${arg}`);
-	if (flag === '--sezioni') {
+	if (flag === '--sezioni' || flag === '--riusa') {
 		options.set(flag, []);
 		continue;
 	}
@@ -175,28 +177,6 @@ const withSections = options.has('--sezioni');
 
 // ---------------------------------------------------------------------------- screenshot
 
-/** Immagini caricate (le lazy diventano eager) e font pronti, con un tetto di attesa. */
-async function settle(page: Page) {
-	await page.evaluate(async (timeout) => {
-		const images = [...document.images];
-		for (const image of images) image.loading = 'eager';
-		const loaded = Promise.all(
-			images.map((image) =>
-				image.complete && image.naturalWidth > 0
-					? image.decode().catch(() => {})
-					: new Promise((resolve) => {
-							image.addEventListener('load', resolve, { once: true });
-							image.addEventListener('error', resolve, { once: true });
-						}),
-			),
-		);
-		await Promise.race([loaded, new Promise((resolve) => setTimeout(resolve, timeout))]);
-		await document.fonts.ready;
-	}, IMAGE_TIMEOUT);
-	// Un attimo per gli script dei blocchi interattivi (frecce del carosello, schede).
-	await page.waitForTimeout(300);
-}
-
 /** Le sezioni della pagina, cioè le radici <Section> dei blocchi in <main>, in coordinate della pagina. */
 const sectionBoxes = (page: Page) =>
 	page.evaluate(() =>
@@ -213,9 +193,23 @@ async function save(image: ReturnType<typeof sharp>, file: string, fit = true) {
 	await image.jpeg(JPEG).toFile(file);
 }
 
+const selection = { targets, themes, sizes, withSections, library: isLibraryMode(), siteUrl: process.env.SITE_URL ?? '', platform: process.platform, arch: process.arch,
+	contactFormEnabled: process.env.CONTACT_FORM_ENABLED === '1' && Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM),
+};
+const fingerprint = designFingerprint(ROOT, selection);
+if (options.has('--riusa')) {
+	const previous = reusableDesignReport(join(ROOT, 'reports/design'), fingerprint);
+	if (previous) {
+		console.log(`Screenshot invariati: ${rel(join(previous, 'index.html'))} (manifest.json: sorgenti e opzioni identiche)`);
+		process.exit(0);
+	}
+}
+
+if (!existsSync(chromium.executablePath())) fail('Chromium non installato', 'esegui npx playwright install chromium, poi ripeti il comando');
+
 const pad = (value: number) => String(value).padStart(2, '0');
 const now = new Date();
-const stamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+const stamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}-${now.getMilliseconds()}-${process.pid}`;
 const outDir = join(ROOT, 'reports', 'design', stamp);
 mkdirSync(outDir, { recursive: true });
 
@@ -229,14 +223,15 @@ for (const signal of ['SIGINT', 'SIGTERM'] as const) {
 		process.exit(130);
 	});
 }
-console.log(`Server di sviluppo su http://127.0.0.1:${port}/ (si chiude alla fine)…`);
-server = await startDev(port);
 
 const shots: Shot[] = [];
 const problems: string[] = [];
 const notes = new Set<string>();
-const browser = await chromium.launch();
+let browser: Browser | undefined;
 try {
+	browser = await chromium.launch();
+	console.log(`Server di sviluppo su http://127.0.0.1:${port}/ (si chiude alla fine)…`);
+	server = await startDev(port);
 	for (const size of sizes) {
 		const context = await browser.newContext({
 			baseURL: `http://127.0.0.1:${port}`,
@@ -256,7 +251,12 @@ try {
 					continue;
 				}
 				await page.addStyleTag({ content: HIDE_DEV_TOOLBAR });
-				await settle(page);
+				const resourceProblems = await settleDesignPage(page);
+				if (resourceProblems.length) {
+					problems.push(...resourceProblems.map((problem) => `${where}: ${problem}`));
+					continue;
+				}
+				await page.waitForTimeout(300);
 				const opening = await page.screenshot({ type: 'png', animations: 'disabled' });
 				const full = await page.screenshot({ type: 'png', fullPage: true, animations: 'disabled' });
 				const prefix = `${target.name}-${size.name}`;
@@ -283,8 +283,7 @@ try {
 		await context.close();
 	}
 } finally {
-	await browser.close();
-	if (server) stopPreview(server);
+	try { await browser?.close(); } finally { if (server) stopPreview(server); }
 }
 
 // ---------------------------------------------------------------------------- confronto
@@ -347,6 +346,12 @@ ${rows}
 </html>
 `,
 );
+
+if (designFingerprint(ROOT, selection) !== fingerprint) problems.push('sorgenti cambiati durante gli screenshot: ripeti il comando');
+writeFileSync(join(outDir, 'manifest.json'), JSON.stringify({
+	createdAt: now.toISOString(), fingerprint, selection, success: problems.length === 0, problems,
+	files: ['index.html', ...shots.flatMap((shot) => shot.files.map((file) => `${shot.theme}/${file}`))],
+}, null, 2) + '\n');
 
 const images = shots.reduce((total, shot) => total + shot.files.length, 0);
 const seconds = Math.round((Date.now() - startedAt) / 1000);

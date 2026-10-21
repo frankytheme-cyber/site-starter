@@ -18,10 +18,10 @@
  *      npm run screenshots -- --no-build     usa la dist/ che c'è
  *      npm run catalog                       gen:catalog + screenshots
  */
-import { spawnSync } from 'node:child_process';
-import { mkdirSync, readdirSync, unlinkSync } from 'node:fs';
+import { type ChildProcess, spawnSync } from 'node:child_process';
+import { existsSync, mkdirSync, readdirSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
-import { chromium, type Page } from 'playwright';
+import { chromium, type Browser, type Page } from 'playwright';
 import sharp from 'sharp';
 import {
 	backgroundScreenshotName,
@@ -37,6 +37,7 @@ import {
 import { requireLibraryMode } from '../src/core/mode.ts';
 import { freePort, startPreview, stopPreview } from './checks/lib/preview.ts';
 import { ROOT } from './checks/lib/project.ts';
+import { settleDesignPage } from './lib/design-page.ts';
 import { CATALOG_DIR, generateCatalog } from './gen-catalog.ts';
 
 const IMG_DIR = join(CATALOG_DIR, 'img');
@@ -44,10 +45,13 @@ const SIZES = [
 	{ name: 'desktop', width: SCREEN_WIDTHS.desktop, height: 900 },
 	{ name: 'mobile', width: SCREEN_WIDTHS.mobile, height: 800 },
 ] as const;
-const IMAGE_TIMEOUT = 15_000;
 
 // Fotografa /catalogo, che esiste solo in modalità libreria; la build qui sotto eredita la variabile.
 requireLibraryMode('npm run screenshots');
+if (!existsSync(chromium.executablePath())) {
+	console.error('Chromium non installato: esegui npx playwright install chromium, poi ripeti il comando.');
+	process.exit(1);
+}
 
 const { variants, palettes, backgrounds, patterns, textures, images, problems } = await generateCatalog();
 if (problems.length > 0) {
@@ -61,40 +65,23 @@ if (!process.argv.includes('--no-build')) {
 	if (build.status !== 0) process.exit(build.status ?? 1);
 }
 
-/** Immagini caricate (le lazy diventano eager) e font pronti, con un tetto di attesa. */
-async function settle(page: Page) {
-	await page.evaluate(async (timeout) => {
-		const images = [...document.images];
-		for (const image of images) image.loading = 'eager';
-		const loaded = Promise.all(
-			images.map((image) =>
-				image.complete && image.naturalWidth > 0
-					? image.decode().catch(() => {})
-					: new Promise((resolve) => {
-							image.addEventListener('load', resolve, { once: true });
-							image.addEventListener('error', resolve, { once: true });
-						}),
-			),
-		);
-		await Promise.race([loaded, new Promise((resolve) => setTimeout(resolve, timeout))]);
-		await document.fonts.ready;
-	}, IMAGE_TIMEOUT);
-	// Un attimo per gli script dei blocchi interattivi (frecce del carosello, schede).
-	await page.waitForTimeout(200);
-}
-
 async function shoot(page: Page, path: string, file: string) {
-	await page.goto(path, { waitUntil: 'load' });
-	await settle(page);
+	const response = await page.goto(path, { waitUntil: 'load' });
+	if (!response?.ok()) throw new Error(`${path}: HTTP ${response?.status() ?? '?'}`);
+	const problems = await settleDesignPage(page);
+	if (problems.length) throw new Error(`${path}: ${problems.join('; ')}`);
+	await page.waitForTimeout(200);
 	const png = await page.locator('main').screenshot({ type: 'png', animations: 'disabled' });
 	await sharp(png).webp({ quality: SCREENSHOT_QUALITY }).toFile(join(IMG_DIR, file));
 	console.log(`  ${file}`);
 }
 
 const port = await freePort();
-const preview = await startPreview(port);
-const browser = await chromium.launch();
+let preview: ChildProcess | undefined;
+let browser: Browser | undefined;
 try {
+	browser = await chromium.launch();
+	preview = await startPreview(port);
 	mkdirSync(IMG_DIR, { recursive: true });
 	for (const size of SIZES) {
 		const context = await browser.newContext({
@@ -127,6 +114,5 @@ try {
 	for (const file of stale) unlinkSync(join(IMG_DIR, file));
 	console.log(`\n${images.length} screenshot in docs/catalogo/img${stale.length > 0 ? `; tolti ${stale.join(', ')}` : ''}.`);
 } finally {
-	await browser.close();
-	stopPreview(preview);
+	try { await browser?.close(); } finally { if (preview) stopPreview(preview); }
 }

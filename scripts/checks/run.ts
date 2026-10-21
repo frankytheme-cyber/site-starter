@@ -13,8 +13,9 @@ import { join } from 'node:path';
 import { a11y } from './a11y.ts';
 import { blocks } from './blocks.ts';
 import { buttons } from './buttons.ts';
-import { astroCheck, build, forms } from './commands.ts';
+import { astroCheck, build, forms, tooling } from './commands.ts';
 import { contrast } from './contrast.ts';
+import { design } from './design.ts';
 import { decap } from './decap.ts';
 import { interactive } from './interactive.ts';
 import { lighthouse } from './lighthouse.ts';
@@ -71,6 +72,7 @@ const CHECKS: Record<string, CheckDefinition> = {
 	skills: { run: skills },
 	contrast: { run: contrast },
 	forms: { run: forms },
+	tooling: { run: tooling },
 	blocks: {
 		run: blocks,
 		skip: ({ isLibrary: library }) => (library ? undefined : 'solo nella libreria, con SITE_STARTER_LIBRARY=1'),
@@ -94,13 +96,14 @@ const CHECKS: Record<string, CheckDefinition> = {
 	a11y: { run: a11y, needsBuild: true, needsServer: true },
 	interactive: { run: interactive, needsBuild: true, needsServer: true },
 	buttons: { run: buttons, needsBuild: true, needsServer: true },
+	design: { run: design, needsBuild: true, needsServer: true },
 	lighthouse: { run: lighthouse, needsBuild: true, needsServer: true },
 };
 
 const SUITES: Record<string, string[]> = {
-	check: ['recipes', 'astro-check', 'decap', 'tokens', 'skills', 'contrast', 'forms', 'blocks', 'lock', 'build', 'release'],
+	check: ['recipes', 'astro-check', 'decap', 'tokens', 'skills', 'contrast', 'forms', 'tooling', 'blocks', 'lock', 'build', 'release'],
 };
-SUITES.qa = [...SUITES.check, 'links', 'a11y', 'interactive', 'buttons', 'lighthouse'];
+SUITES.qa = [...SUITES.check, 'links', 'a11y', 'interactive', 'buttons', 'design', 'lighthouse'];
 
 // ---------------------------------------------------------------------------- argomenti
 

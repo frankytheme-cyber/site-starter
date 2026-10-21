@@ -19,3 +19,5 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		site: contacts[0].site,
 	},
 ];
+
+fixtures.push({ ...fixtures[0], name: 'Contatto con occhiello personalizzato', props: { ...fixtures[0].props, title: 'Parliamo del tuo progetto', eyebrow: 'Il tuo progetto inizia qui' } });

@@ -56,11 +56,11 @@ Vanno bene per chiunque, quindi non dicono niente: «qualità e professionalità
 3. Rileggi tutto il sito di fila, come chi lo visita: ripetizioni tra sezioni e pagine, nomi diversi per la stessa cosa, frasi da evitare. Le più comuni si trovano anche così:
 
    ```sh
-   grep -n -i -E "qualità e professionalità|a 360 gradi|passione e dedizione|leader|eccellenza|prezzi competitivi|non esitare|siamo lieti|benvenuti" src/content/pages/*.json
+   rg -n -i "qualità e professionalità|a 360 gradi|passione e dedizione|leader|eccellenza|prezzi competitivi|non esitare|siamo lieti|benvenuti" src/content/pages/*.json
    ```
 
 4. `npm run check:recipes`: limiti dei campi, recapiti scritti nei testi, segnaposto.
-5. `npm run design:shots -- --sezioni`: a 375 px i titoli di sezione stanno su due righe, quello della hero su tre al massimo, e nessuna parola resta sola sull'ultima riga.
+5. Delega la verifica delle lunghezze alla stessa acquisizione della skill `revisione-visiva`: `npm run design:shots -- --pagine <pagine-cambiate> --sezioni --riusa`. Se le immagini correnti sono già disponibili, guardale senza rifarle. A 375 px i titoli di sezione stanno su due righe, quello della hero su tre al massimo, e nessuna parola resta sola sull'ultima riga.
 6. Mostra a Simone hero, titoli di sezione e inviti di ogni pagina: conosce il cliente e il suo modo di parlare.
 
 ## Criterio di fine

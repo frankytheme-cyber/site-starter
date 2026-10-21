@@ -9,11 +9,11 @@ Per l'agente che lavora con Simone, nella repo del sito. Verifichi tutto, correg
 
 ## Passi
 
-1. **Controlli di rilascio**, finché non ci sono errori:
+1. **Controlli di rilascio**, finché non ci sono errori. `qa` comprende già check e build; non eseguire prima un altro check completo:
 
    ```sh
    npm run qa -- --strict
-   grep -n -A1 "❌" reports/qa.md     # ogni errore, con il suggerimento sulla riga sotto
+   rg -n -A1 "❌" reports/qa.md     # ogni errore, con il suggerimento sulla riga sotto
    ```
 
    Con `--strict` sono errori anche i segnaposto (`DA-COMPILARE`, `og-DA-COMPILARE`), le regole delle ricette, i dati legali e i link a privacy e cookie nel footer, le bozze linkate, l'immagine per i social, i redirect. Non si abbassano soglie e non si spengono controlli. Un errore che dipende da un dato mancante (testi legali, P.IVA) va nel riepilogo per Simone, non si risolve inventando.
@@ -24,7 +24,7 @@ Per l'agente che lavora con Simone, nella repo del sito. Verifichi tutto, correg
    - recensioni e numeri solo con una fonte presente nel brief; foto dei lavori vere, stock dichiarato in `docs/nota-design.md`;
    - testi di privacy e cookie quelli forniti o approvati da Simone.
 
-3. **SEO**, sulla build con l'indirizzo vero di `site.json`:
+3. **SEO**, sulla build con l’indirizzo vero di `site.json`. Questa build aggiuntiva serve: quella della QA usa l’URL dell’anteprima per canonical e Open Graph.
 
    ```sh
    npm run build

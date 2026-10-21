@@ -13,7 +13,7 @@ Per l'agente che lavora con Simone, nella repo di un sito cliente, mai nella lib
 
    ```sh
    git remote get-url origin       # la repo del sito, non frankytheme-cyber/site-starter
-   grep -s SITE_STARTER_LIBRARY .env   # nessuna riga con 1: un sito cliente non la imposta
+   rg '^SITE_STARTER_LIBRARY=' .env   # nessuna riga con 1: un sito cliente non la imposta
    test -e blocks.lock.json && echo "già inizializzato"
    git status --porcelain          # vuoto
    ```
@@ -35,6 +35,8 @@ Per l'agente che lavora con Simone, nella repo di un sito cliente, mai nella lib
 
    Fino alla prima messa online si lavora su `lancio`, con una sola PR in bozza; dopo, un branch e una PR per ogni modifica. Il merge lo fa sempre Simone.
 
+Prima dei primi screenshot o della QA: `npx playwright install chromium` se il browser manca (su CI Linux: `npx playwright install --with-deps chromium`). Serve una volta per ambiente/versione di Playwright, non a ogni passaggio.
+
 3. **Brief** in `docs/brief.md`, partendo dal modello: `test -e docs/brief.md || cp docs/modelli/brief.md docs/brief.md`.
    - Compilalo con Simone sezione per sezione, da 1 a 7. Chiedi solo ciò che manca, al massimo tre domande per volta, con una proposta o due-tre opzioni quando puoi. Le risposte si scrivono come le dà lui.
    - Un dato che manca resta `da chiedere`, con una riga in «Da chiedere»: a chi, entro quando, cosa ne dipende. Mai un dato dedotto o inventato.
@@ -48,8 +50,10 @@ Per l'agente che lavora con Simone, nella repo di un sito cliente, mai nella lib
 
    ```sh
    npm run images -- <file o cartella>   # raddrizza, ridimensiona a 2400 px, toglie i metadati, nomi in kebab-case
-   npm run images                        # inventario: dimensioni, orientamento, foto piccole
+   npm run images                        # inventario ricorsivo: dimensioni, orientamento, foto piccole
    ```
+
+   L’importazione di una cartella legge solo i file direttamente al suo interno; passa esplicitamente le sottocartelle necessarie. `--sovrascrivi` permette di preparare anche una foto già nella destinazione senza perderla se la codifica fallisce.
 
    Rinomina ogni file con quello che mostra (`facciata-condominio-dopo.jpg`). Guardale una per una: tieni da parte quelle storte, sfocate, con persone o targhe riconoscibili senza consenso. Non dedurre da una foto chi ha fatto il lavoro, dove o quando. Immagine per i social: una foto orizzontale vera in `defaultOgImage` di `site.json` (Astro la ritaglia a 1200×630), al posto di `og-DA-COMPILARE.jpg`; il logo, se c'è, in `logo`.
 

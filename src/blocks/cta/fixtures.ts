@@ -62,3 +62,5 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 		},
 	},
 ];
+
+fixtures.push({ ...fixtures[1], name: 'Recapiti con etichette personalizzate', props: { ...fixtures[1].props, phoneLabel: 'Parla con noi', whatsappLabel: 'Mandaci le foto' } });

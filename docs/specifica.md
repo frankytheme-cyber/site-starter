@@ -4,14 +4,16 @@ Versione: allineata alla libreria v0.0.5
 
 ## Visione e principi
 
-`site-starter` è una libreria di blocchi Astro + Tailwind v4 con cui una squadra di agenti su Paperclip **completa** siti vetrina per piccole attività, senza inventarli. Stack: Astro, Tailwind v4, Decap CMS, deploy su Vercel, font self-hosted (GDPR). Sito pilota: toscanaimbiancature.it.
+`site-starter` è una libreria di blocchi Astro + Tailwind v4 con cui Simone e un solo agente (Claude Code o Codex) **completano** siti vetrina per piccole attività, senza inventarli. Stack: Astro, Tailwind v4, Decap CMS, deploy su Vercel, font self-hosted (GDPR). Sito pilota: toscanaimbiancature.it.
+
+**Flusso corrente:** skill condivise in `.agents/skills/`, rimandi in `.claude/skills/`, istruzioni essenziali in `AGENTS.md` e dettagli su richiesta in `docs/riferimento-agenti.md`. Paperclip è in pausa; i ruoli e le procedure della squadra descritti più avanti sono conservati per una futura ripresa e non governano il lavoro corrente. Le approvazioni di Simone in conversazione valgono per il flusso corrente.
 
 **Principi**
 
-1. **Il sito si completa, non si inventa.** Il Designer compone blocchi esistenti; un blocco nuovo nasce solo nella libreria, su task approvato.
+1. **Il sito si completa, non si inventa.** L’agente compone blocchi esistenti; un blocco nuovo nasce solo nella libreria, su task approvato.
 2. **Solo classi semantiche** (`bg-primary`, `text-fg-muted`, `font-heading`). La palette di Tailwind è disattivata e vietata dai controlli.
 3. **Temi intercambiabili.** Palette, coppie di font e forme sono preset verificati WCAG AA.
-4. **La ricetta genera il sito.** Il Designer consegna JSON (tema, layout, pagine); le pagine si generano e si validano da sole.
+4. **La ricetta genera il sito.** L’agente consegna JSON (tema, layout, pagine); le pagine si generano e si validano da sole.
 5. **Niente dati inventati.** Recapiti e dati legali solo da `site.json`; recensioni e numeri con `fonte`; foto dei lavori solo reali.
 6. **I controlli bloccano, gli agenti si correggono.** Ogni errore indica file, sezione, campo e cosa fare.
 7. **Tre cancelli umani:** brief, design, messa online. Nessun agente pubblica da solo.
@@ -219,7 +221,7 @@ Fonti: [Tailwind Plus, licenza](https://tailwindcss.com/plus/license), [Preline,
 
 ## 10. Squadra Paperclip: flussi e cancelli
 
-> **In pausa dal 2026-10-20.** Si lavora con un agente solo, Claude Code o Codex, insieme a Simone: come in `AGENTS.md`, sezione «Lavorare con Claude Code o Codex», con le skill in `.agents/skills/`. Questa sezione e le istruzioni in `docs/agenti/` e `docs/skill/` restano per quando la squadra riparte; i tre cancelli (brief, design, messa online) restano decisioni di Simone.
+> **In pausa dal 2026-10-20.** Si lavora con un agente solo, Claude Code o Codex, insieme a Simone: come in `AGENTS.md`, con le skill in `.agents/skills/`. Questa sezione e le istruzioni in `docs/agenti/` e `docs/skill/` restano per quando la squadra riparte; i tre cancelli (brief, design, messa online) restano decisioni di Simone.
 
 Gli agenti sono gli stessi per tutti i Project; si attivano solo su assegnazione di un task, tranne il PM che fa un controllo giornaliero. Le fondamenta (prompt A-Q) le fai tu con Claude Code; Paperclip entra dopo il rilascio v1.
 

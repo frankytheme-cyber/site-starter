@@ -2,6 +2,7 @@
 
 Documentazione della libreria: architettura, catalogo blocchi, guida all'uso come template per i siti cliente. Questo indice e `CHANGELOG.md` restano solo nella libreria: `site:init` li toglie dai siti.
 
+- **Flusso corrente:** un agente con Simone; skill in `.agents/skills/` e regole essenziali in `AGENTS.md`. [`riferimento-agenti.md`](riferimento-agenti.md) contiene i dettagli da consultare per argomento. Per il catalogo usa `npm run catalog:query -- --help`; evita di caricare il JSON completo.
 - [`specifica.md`](specifica.md): specifica completa del sistema (architettura, blocchi, CMS, controlli, squadra di agenti, cancelli); arriva anche nei siti con `blocks:sync`.
 - [`catalogo/`](catalogo/README.md): catalogo dei blocchi generato dagli schemi (regole, schede con screenshot, campi ed esempi JSON, temi, icone, `catalogo.json` per le macchine), primitive e ricette tipo.
 - [`skill/`](skill/): skill degli agenti Paperclip (in pausa dal 2026-10-20: con Claude Code e Codex le skill sono in `.agents/skills/`, vedi `AGENTS.md`), una cartella per skill con `SKILL.md` (quando usarla, passi con i comandi, criterio di fine, cosa non fare); arrivano nei siti con `blocks:sync`.

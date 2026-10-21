@@ -12,15 +12,17 @@ Si guarda la pagina disegnata, non il JSON. `npm run qa` trova gli errori (contr
 1. **Screenshot** delle pagine, con un'immagine per sezione:
 
    ```sh
-   npm run design:shots -- --sezioni                         # tutte le pagine
-   npm run design:shots -- --pagine index,servizi --sezioni  # solo alcune
+   npm run design:shots -- --sezioni --riusa                         # tutte le pagine
+   npm run design:shots -- --pagine index,servizi --sezioni --riusa  # solo alcune
    ```
+
+   Durante l’iterazione seleziona le pagine coinvolte; un cambio di tema, layout o componente condiviso coinvolge tutte le pagine che lo usano. `--riusa` controlla hash dei sorgenti, opzioni ed esistenza delle immagini: se non coincidono, le rifà. Non considerare automaticamente corrente uno screenshot trovato sul disco.
 
    In `reports/design/<data-ora>/<tema>/`, per ogni pagina a 1280 (`desktop`) e 375 px (`mobile`): `-apertura` (la prima schermata), `-panoramica` (la pagina intera rimpicciolita) e `-NN-<tipo>` (le sezioni, numerate come nella ricetta). Apri le immagini e guardale davvero: prima la panoramica, poi l'apertura, poi ogni sezione. `-intera` è a grandezza vera, per `index.html`.
 
 2. **Prima impressione**, sull'apertura a 375 e 1280 px: in cinque secondi si capisce cosa fa l'attività, dove, e cosa fare (una sola azione principale)? Se ci sono foto vere, la hero mostra il lavoro?
 
-3. **Rispondi per iscritto** a ogni domanda, pagina per pagina; per ogni no, il punto preciso e la correzione.
+3. **Verifica tutte le voci** seguenti, pagina per pagina. Annota problemi, punti non verificabili e correzioni; per le voci superate basta un riepilogo per pagina, senza ricopiare la lista.
    - **Materiale.** Uso tutte le foto adatte di `src/assets/images/`? Varianti con foto dove le foto ci sono (hero `split` o `full`, servizi `cards-immagine` o `alternato`, gallery)? Nessuna foto ripetuta senza motivo, nessuna tagliata male?
    - **Gerarchia.** Un solo punto forte per schermata? I titoli dicono qualcosa di questa attività («Imbiancature a Firenze e provincia», non «I nostri servizi» o «Galleria» da soli)?
    - **Ritmo.** Toni alternati con misura (`primary` una o due volte), effetti di sfondo dove servono (apertura, un punto chiave, invito finale), sezioni di lunghezza diversa? Sei blocchi uguali di fila stancano.
@@ -32,7 +34,7 @@ Si guarda la pagina disegnata, non il JSON. `npm run qa` trova gli errori (contr
 
 4. **Correggi** con quello che la ricetta permette: variante, tono, `background`, `edge`, ordine e numero delle sezioni (skill `composizione`), testi (skill `testi-sito`), scelta e ordine delle foto. In un sito non si toccano blocchi né CSS: se il difetto è del blocco, segnalalo a Simone come lavoro per la libreria.
 
-5. **Rifai gli screenshot** e ricomincia dal passo 2. Almeno due passate; ti fermi quando una passata non trova niente oltre il dettaglio.
+5. **Seconda passata:** dopo le correzioni acquisisci solo le pagine coinvolte e ricomincia dal passo 2. Se non hai cambiato nulla, riesamina le immagini correnti: non serve acquisirle due volte. Ti fermi quando la passata di conferma non trova niente oltre il dettaglio.
 
 6. **Mostra a Simone** cosa hai trovato e corretto (prima e dopo per i punti principali), cosa resta e cosa servirebbe: una foto, un dato, una variante nuova.
 
@@ -41,7 +43,7 @@ Si guarda la pagina disegnata, non il JSON. `npm run qa` trova gli errori (contr
 Per un blocco nuovo o cambiato, la sua pagina del catalogo (tutte le varianti e le fixture) su un campione di temi, invece di tutte le combinazioni:
 
 ```sh
-npm run design:shots -- --sezioni --percorsi /catalogo/<tipo>/ \
+npm run design:shots -- --sezioni --riusa --percorsi /catalogo/<tipo>/ \
   --tema terracotta,classico,morbido --tema cobalto,moderno,squadrato --tema notte,carattere,arrotondato \
   --tema cipria,elegante,arrotondato --tema antracite,robusto,squadrato --tema salvia,amichevole,morbido
 ```
@@ -50,10 +52,10 @@ Il campione copre fondi caldi, freddi e scuri, font con grazie, sottili e strett
 
 ## Criterio di fine
 
-Due passate, l'ultima senza difetti oltre il dettaglio; risposte scritte alle domande del passo 3; `npm run qa` senza errori; Simone ha visto le immagini finali.
+Due passate, l'ultima senza difetti oltre il dettaglio; esito delle voci del passo 3 e riferimenti alle immagini in `docs/nota-design.md` (nella libreria, nella PR); `npm run qa` senza errori (include già `check`); Simone ha visto le immagini finali.
 
 ## Non fare
 
-- Non dire «nessun difetto» senza aver risposto alle domande del passo 3.
+- Non dire «nessun difetto» senza aver verificato tutte le voci del passo 3 e guardato le immagini.
 - Non correggere scrivendo CSS, componenti o pagine `.astro` nel sito: si cambia la ricetta, o si porta il caso nella libreria.
 - Non inventare dati per riempire una sezione: un dato che manca si chiede a Simone.
