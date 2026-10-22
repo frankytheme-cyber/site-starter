@@ -13,6 +13,7 @@ const CATALOG = new URL('../../library/catalogo/', import.meta.url);
 
 const ROUTES: [pattern: string, entrypoint: string][] = [
 	['/catalogo', 'index.astro'],
+	['/catalogo/tutti', 'tutti.astro'],
 	['/catalogo/temi', 'temi.astro'],
 	['/catalogo/ui', 'ui.astro'],
 	['/catalogo/bottoni', 'bottoni.astro'],

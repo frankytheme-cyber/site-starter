@@ -1,55 +1,118 @@
 ---
+/**
+ * Indice del catalogo: una scheda per blocco con la miniatura della prima variante (screenshot di
+ * docs/catalogo/img, col tema di theme.json), le varianti e il link alla pagina del blocco, dove
+ * tutto è dal vivo col tema della barra. Tutti i blocchi dal vivo insieme: /catalogo/tutti.
+ */
+import { Image } from 'astro:assets';
 import { blocks } from '@/core/registry';
 import Container from '@/core/ui/Container.astro';
-import BlockEntry from './_BlockEntry.astro';
 import CatalogLayout from './_CatalogLayout.astro';
 import { catalogTitle } from './_library';
-import { blockGroups } from './_nav';
+import { blockGroups, variantAnchor } from './_nav';
+import { variantScreenshot } from './_screenshots';
+
+const slug = (category: string) =>
+	`categoria-${category.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().replace(/[^a-z]+/g, '-')}`;
+const groups = blockGroups.map((group) => ({
+	...group,
+	id: slug(group.category),
+	label: group.category.charAt(0).toUpperCase() + group.category.slice(1),
+	blocks: group.blocks.map((block) => {
+		const screenshot = block.variants[0] ? variantScreenshot(block.type, block.variants[0]) : undefined;
+		// Più larga della miniatura (16:10): si vede intera in larghezza, invece di perdere i lati.
+		const short = screenshot ? screenshot.height / screenshot.width < 10 / 16 : false;
+		return { ...block, screenshot, short };
+	}),
+}));
+const chip = 'rounded-button border border-border px-2 py-0.5 text-xs';
 ---
 
 <CatalogLayout title={catalogTitle()}>
 	<main>
 		<Container>
 			<div class="py-10">
-				<p class="text-fg-muted">
+				<h1 class="text-3xl font-bold">Blocchi</h1>
+				<p class="mt-3 max-w-3xl text-fg-muted">
 					{blocks.length}{' '}
-					{blocks.length === 1 ? 'blocco' : 'blocchi'} in <code>src/blocks</code>, ognuno con le sue fixture. Usa i
-					selettori in alto per provarli con ogni palette, font e forma, o confronta i preset nella pagina{' '}
-					<a href="/catalogo/temi/" class="text-primary underline underline-offset-4">Temi</a>.
+					{blocks.length === 1 ? 'blocco' : 'blocchi'} in <code>src/blocks</code>. Le miniature mostrano la prima
+					variante col tema di <code>theme.json</code>; apri un blocco per vederlo dal vivo col tema scelto in alto, con
+					tutte le varianti e il JSON da copiare. Per vedere un tema su tutti i blocchi insieme:{' '}
+					<a href="/catalogo/tutti/" class="text-primary underline underline-offset-4">tutti i blocchi dal vivo</a>.
 				</p>
-				<p class="mt-2 text-fg-muted">
-					Anche: <a href="/catalogo/bottoni/" class="text-primary underline underline-offset-4">bottoni</a> in ogni
-					variante, stato e tono, <a href="/catalogo/ui/" class="text-primary underline underline-offset-4">primitive UI</a>,{' '}
-					<a href="/catalogo/icone/" class="text-primary underline underline-offset-4">icone</a> ed{' '}
-					<a href="/catalogo/sfondi/" class="text-primary underline underline-offset-4">effetti di sfondo</a>.
-				</p>
-				<nav id="indice" aria-label="Blocchi" class="mt-6 scroll-mt-24">
-					<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+				<nav aria-label="Categorie" class="mt-5">
+					<ul class="flex flex-wrap gap-2">
 						{
-							blockGroups.map((group) => (
+							groups.map((group) => (
 								<li>
-									<p class="text-xs font-semibold uppercase tracking-wide text-fg-muted">{group.category}</p>
-									<ul class="mt-2 grid gap-1">
-										{group.blocks.map((block) => (
-											<li>
-												<a href={`#${block.type}`} class="text-primary underline underline-offset-4">
-													{block.name}
-												</a>
-												<span class="text-sm text-fg-muted">
-													{' '}
-													· {block.variants} {block.variants === 1 ? 'variante' : 'varianti'}
-												</span>
-											</li>
-										))}
-									</ul>
+									<a
+										href={`#${group.id}`}
+										class="inline-flex min-h-9 items-center gap-1.5 rounded-button border border-border px-3 text-sm hover:border-primary hover:text-primary"
+									>
+										{group.label}
+										<span class="text-fg-muted">{group.blocks.length}</span>
+									</a>
 								</li>
 							))
 						}
 					</ul>
 				</nav>
+
+				{
+					groups.map((group) => (
+						<section aria-labelledby={group.id} class="mt-10">
+							<h2 id={group.id} class="scroll-mt-24 text-xl font-bold">
+								{group.label}
+							</h2>
+							<ul class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+								{group.blocks.map((block) => (
+									<li
+										id={block.type}
+										class="relative flex scroll-mt-24 flex-col overflow-hidden rounded-box border border-border bg-bg hover:border-primary has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-primary"
+									>
+										<div class="aspect-[16/10] overflow-hidden border-b border-border bg-surface">
+											{block.screenshot ? (
+												<Image
+													src={block.screenshot}
+													alt=""
+													widths={[400, 800]}
+													sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+													class:list={['size-full', block.short ? 'object-contain' : 'object-cover object-top']}
+												/>
+											) : (
+												<p class="flex size-full items-center justify-center p-4 text-center text-sm text-fg-muted">
+													Miniatura da generare: <code>npm run catalog</code>
+												</p>
+											)}
+										</div>
+										<div class="flex flex-1 flex-col p-4">
+											<h3 class="font-heading text-xl font-bold">
+												{/* Il link copre tutta la scheda; le varianti restano cliccabili sopra. */}
+												<a href={`/catalogo/${block.type}/`} class="after:absolute after:inset-0 focus-visible:outline-none">
+													{block.name}
+												</a>
+											</h3>
+											<p class="mt-1 line-clamp-2 text-sm text-fg-muted">{block.description}</p>
+											<div class="mt-auto flex flex-wrap items-center gap-1.5 pt-3">
+												{block.variants.map((variant) => (
+													<a
+														href={`/catalogo/${block.type}/#${variantAnchor(block.type, variant)}`}
+														class={`${chip} relative z-10 font-mono hover:border-primary hover:text-primary`}
+													>
+														{variant}
+													</a>
+												))}
+												{block.interactive && <span class={`${chip} text-fg-muted`}>interattivo</span>}
+												{block.layout && <span class={`${chip} text-fg-muted`}>layout.json</span>}
+											</div>
+										</div>
+									</li>
+								))}
+							</ul>
+						</section>
+					))
+				}
 			</div>
 		</Container>
-
-		{blocks.map((block) => <BlockEntry block={block} href={`/catalogo/${block.type}/`} />)}
 	</main>
 </CatalogLayout>
