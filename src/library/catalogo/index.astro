@@ -3,6 +3,7 @@
  * Indice del catalogo: una scheda per blocco con la miniatura della prima variante (screenshot di
  * docs/catalogo/img, col tema di theme.json), le varianti e il link alla pagina del blocco, dove
  * tutto è dal vivo col tema della barra. Tutti i blocchi dal vivo insieme: /catalogo/tutti.
+ * Ricerca e filtri (senza foto, interattivi) con JS; senza, l'elenco resta tutto visibile.
  */
 import { Image } from 'astro:assets';
 import { blocks } from '@/core/registry';
@@ -10,6 +11,7 @@ import Container from '@/core/ui/Container.astro';
 import CatalogLayout from './_CatalogLayout.astro';
 import { catalogTitle } from './_library';
 import { blockGroups, variantAnchor } from './_nav';
+import { blockNeeds } from './_needs';
 import { variantScreenshot } from './_screenshots';
 
 const slug = (category: string) =>
@@ -22,7 +24,19 @@ const groups = blockGroups.map((group) => ({
 		const screenshot = block.variants[0] ? variantScreenshot(block.type, block.variants[0]) : undefined;
 		// Più larga della miniatura (16:10): si vede intera in larghezza, invece di perdere i lati.
 		const short = screenshot ? screenshot.height / screenshot.width < 10 / 16 : false;
-		return { ...block, screenshot, short };
+		const needs = blockNeeds(block.type);
+		const photo = needs?.needs.find((need) => need.label === 'Foto')?.detail;
+		// Testo in cui cerca il filtro: nome, descrizioni, varianti, campi e regole (non «quando evitarlo»).
+		const search = [
+			block.name,
+			block.type,
+			block.description,
+			needs?.block.whenToUse,
+			...(needs?.block.variants.flatMap((variant) => [variant.name, variant.description, variant.whenToUse]) ?? []),
+			...(needs?.block.fields.map((field) => field.label) ?? []),
+			...(needs?.block.rules ?? []),
+		].join(' ');
+		return { ...block, screenshot, short, photo, photoFree: needs?.photoFree ?? true, search };
 	}),
 }));
 const chip = 'rounded-button border border-border px-2 py-0.5 text-xs';
@@ -58,9 +72,35 @@ const chip = 'rounded-button border border-border px-2 py-0.5 text-xs';
 					</ul>
 				</nav>
 
+				{/* Visibile solo con JS: lo script toglie hidden. */}
+				<form data-catalog-filters hidden role="search" aria-label="Filtra i blocchi" class="mt-6 flex flex-wrap items-end gap-x-6 gap-y-3">
+					<label class="grid gap-1 text-sm">
+						<span class="text-fg-muted">Cerca</span>
+						<input
+							type="search"
+							name="q"
+							placeholder="foto, mappa, orari, recensioni…"
+							autocomplete="off"
+							class="min-h-10 w-80 max-w-full rounded-button border border-border bg-bg px-3 text-fg"
+						/>
+					</label>
+					<label class="flex min-h-10 items-center gap-2 text-sm">
+						<input type="checkbox" name="senza-foto" class="size-4 accent-primary" />
+						Si usa senza foto
+					</label>
+					<label class="flex min-h-10 items-center gap-2 text-sm">
+						<input type="checkbox" name="interattivo" class="size-4 accent-primary" />
+						Interattivo
+					</label>
+					<p class="flex min-h-10 items-center gap-3 text-sm text-fg-muted">
+						<span data-filter-status role="status"></span>
+						<button type="reset" hidden data-filter-reset class="text-primary underline underline-offset-4">Azzera</button>
+					</p>
+				</form>
+
 				{
 					groups.map((group) => (
-						<section aria-labelledby={group.id} class="mt-10">
+						<section aria-labelledby={group.id} data-filter-group class="mt-10">
 							<h2 id={group.id} class="scroll-mt-24 text-xl font-bold">
 								{group.label}
 							</h2>
@@ -68,6 +108,10 @@ const chip = 'rounded-button border border-border px-2 py-0.5 text-xs';
 								{group.blocks.map((block) => (
 									<li
 										id={block.type}
+										data-filter-item
+										data-search={block.search}
+										data-photo-free={String(block.photoFree)}
+										data-interactive={String(Boolean(block.interactive))}
 										class="relative flex scroll-mt-24 flex-col overflow-hidden rounded-box border border-border bg-bg hover:border-primary has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-primary"
 									>
 										<div class="aspect-[16/10] overflow-hidden border-b border-border bg-surface">
@@ -93,6 +137,7 @@ const chip = 'rounded-button border border-border px-2 py-0.5 text-xs';
 												</a>
 											</h3>
 											<p class="mt-1 line-clamp-2 text-sm text-fg-muted">{block.description}</p>
+											{block.photo && <p class="mt-2 text-xs text-fg-muted">Foto: {block.photo}</p>}
 											<div class="mt-auto flex flex-wrap items-center gap-1.5 pt-3">
 												{block.variants.map((variant) => (
 													<a
@@ -112,7 +157,65 @@ const chip = 'rounded-button border border-border px-2 py-0.5 text-xs';
 						</section>
 					))
 				}
+				<p data-filter-empty hidden class="mt-10 text-fg-muted">
+					Nessun blocco corrisponde: prova con meno parole o togli un filtro. Un blocco che manca si propone a Simone.
+				</p>
 			</div>
 		</Container>
 	</main>
 </CatalogLayout>
+
+<script>
+	// Ricerca e filtri dell'indice: nasconde le schede che non corrispondono e le categorie rimaste vuote.
+	// La scelta resta nell'indirizzo (?q=&senza-foto=1&interattivo=1), insieme ai parametri del tema.
+	const form = document.querySelector<HTMLFormElement>('[data-catalog-filters]');
+	if (form) {
+		const items = [...document.querySelectorAll<HTMLElement>('[data-filter-item]')];
+		const groups = [...document.querySelectorAll<HTMLElement>('[data-filter-group]')];
+		const status = form.querySelector('[data-filter-status]')!;
+		const reset = form.querySelector<HTMLButtonElement>('[data-filter-reset]')!;
+		const empty = document.querySelector<HTMLElement>('[data-filter-empty]')!;
+		const query = form.elements.namedItem('q') as HTMLInputElement;
+		const photoFree = form.elements.namedItem('senza-foto') as HTMLInputElement;
+		const interactive = form.elements.namedItem('interattivo') as HTMLInputElement;
+		const normalize = (text: string) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+		const texts = new Map(items.map((item) => [item, normalize(item.dataset.search ?? '')]));
+
+		const params = new URLSearchParams(location.search);
+		query.value = params.get('q') ?? '';
+		photoFree.checked = params.get('senza-foto') === '1';
+		interactive.checked = params.get('interattivo') === '1';
+
+		const apply = () => {
+			const words = normalize(query.value).split(/\s+/).filter(Boolean);
+			let shown = 0;
+			for (const item of items) {
+				const match =
+					words.every((word) => texts.get(item)!.includes(word)) &&
+					(!photoFree.checked || item.dataset.photoFree === 'true') &&
+					(!interactive.checked || item.dataset.interactive === 'true');
+				item.hidden = !match;
+				if (match) shown++;
+			}
+			for (const group of groups) group.hidden = !group.querySelector('[data-filter-item]:not([hidden])');
+			const active = words.length > 0 || photoFree.checked || interactive.checked;
+			status.textContent = active ? `${shown} di ${items.length} blocchi` : '';
+			reset.hidden = !active;
+			empty.hidden = shown > 0;
+
+			const url = new URL(location.href);
+			const set = (key: string, value: string) => (value ? url.searchParams.set(key, value) : url.searchParams.delete(key));
+			set('q', query.value.trim());
+			set('senza-foto', photoFree.checked ? '1' : '');
+			set('interattivo', interactive.checked ? '1' : '');
+			history.replaceState(null, '', url);
+		};
+
+		form.hidden = false;
+		form.addEventListener('input', apply);
+		form.addEventListener('submit', (event) => event.preventDefault());
+		// Il reset svuota i campi dopo l'evento: si applica al giro successivo.
+		form.addEventListener('reset', () => setTimeout(apply));
+		apply();
+	}
+</script>
