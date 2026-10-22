@@ -1,16 +1,28 @@
 ---
 import CtaButton from '@/core/ui/button/CtaButton.astro';
+import Carousel from '@/core/ui/Carousel.astro';
+import CarouselSlide from '@/core/ui/CarouselSlide.astro';
 import Img from '@/core/ui/Img.astro';
 import Section from '@/core/ui/Section.astro';
 import type { HeroProps } from './schema';
 
 type Props = HeroProps;
 
-const { id, tone, variant, eyebrow, title, subtitle, primaryCta, secondaryCta, image, imageShape, overlay } = Astro.props;
+const { id, tone, variant, eyebrow, title, subtitle, primaryCta, secondaryCta, image, imageShape, overlay, slides } = Astro.props;
 
 const isSplit = variant === 'split';
 const isFull = variant === 'full';
 const isCentered = variant === 'centered';
+const isSlider = variant === 'slider';
+
+// Slider: la prima slide sono i campi della hero (h1), le altre vengono da slides (h2).
+const sliderSlides =
+	isSlider && image
+		? [
+				{ eyebrow, title, subtitle, primaryCta, secondaryCta, image },
+				...(slides ?? []).map((slide) => ({ ...slide, primaryCta: slide.cta, secondaryCta: undefined })),
+			]
+		: [];
 ---
 
 <Section id={id} tone={tone}>
@@ -30,56 +42,99 @@ const isCentered = variant === 'centered';
 		)
 	}
 
-	<div
-		class:list={[
-			'grid items-center gap-12 lg:gap-16',
-			isSplit && 'lg:grid-cols-2',
-			isFull && 'min-h-96 lg:min-h-128',
-		]}
-	>
-		{/* data-on-photo: sulla foto i pulsanti diventano chiari (core/ui/button/button.css). */}
-		<div class:list={[isCentered && 'mx-auto max-w-3xl text-center', isFull && 'max-w-2xl text-white']} data-on-photo={isFull ? '' : undefined}>
-			{
-				eyebrow && (
-					<p class:list={['mb-4 text-sm font-semibold tracking-wider uppercase', !isFull && 'text-primary']}>
-						{eyebrow}
-					</p>
-				)
-			}
-			<h1
+	{
+		isSlider && (
+			<Carousel label={title}>
+				{sliderSlides.map((slide, index) => {
+					const Heading = index === 0 ? 'h1' : 'h2';
+					return (
+						<CarouselSlide width="full">
+							<div class="relative isolate flex h-full min-h-112 items-end overflow-hidden rounded-box p-6 sm:p-10 lg:min-h-128 lg:p-16">
+								<Img
+									src={slide.image.src}
+									alt={slide.image.alt}
+									priority={index === 0}
+									sizes="(min-width: 1152px) 1152px, 100vw"
+									class="absolute inset-0 -z-10 size-full object-cover"
+								/>
+								{/* Stessa velatura della variante full: il testo bianco è verificato dal check contrast. */}
+								<div
+									class:list={['absolute inset-0 -z-10', overlay !== 'colorata' && 'bg-black/60']}
+									data-overlay={overlay === 'colorata' ? 'colorata' : undefined}
+								/>
+								<div class="max-w-2xl text-white" data-on-photo>
+									{slide.eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider uppercase">{slide.eyebrow}</p>}
+									<Heading class="text-4xl font-bold tracking-tight text-balance sm:text-5xl">{slide.title}</Heading>
+									{slide.subtitle && <p class="mt-6 text-lg text-pretty sm:text-xl">{slide.subtitle}</p>}
+									{slide.primaryCta && (
+										<div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+											<CtaButton cta={slide.primaryCta} tone={tone} />
+											{slide.secondaryCta && <CtaButton cta={slide.secondaryCta} defaultStyle="secondary" tone={tone} />}
+										</div>
+									)}
+								</div>
+							</div>
+						</CarouselSlide>
+					);
+				})}
+			</Carousel>
+		)
+	}
+
+	{
+		!isSlider && (
+			<div
 				class:list={[
-					'text-4xl font-bold tracking-tight text-balance sm:text-5xl',
-					/* In split il titolo ha mezza colonna: a 6xl un titolo di 70 caratteri va su 5 righe. */
-					!isSplit && 'lg:text-6xl',
+					'grid items-center gap-12 lg:gap-16',
+					isSplit && 'lg:grid-cols-2',
+					isFull && 'min-h-96 lg:min-h-128',
 				]}
 			>
-				{title}
-			</h1>
-			{
-				subtitle && (
-					<p class:list={['mt-6 text-lg text-pretty sm:text-xl', !isFull && 'text-fg-muted']}>{subtitle}</p>
-				)
-			}
-			{/*
-				Su mobile uno sotto l'altro, a tutta larghezza: se andassero a capo solo quando il font è
-				più largo, all'arrivo del web font la pagina salterebbe (CLS).
-			*/}
-			<div class:list={['mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4', isCentered && 'sm:justify-center']}>
-				<CtaButton cta={primaryCta} tone={tone} />
-				{secondaryCta && <CtaButton cta={secondaryCta} defaultStyle="secondary" tone={tone} />}
-			</div>
-		</div>
+				{/* data-on-photo: sulla foto i pulsanti diventano chiari (core/ui/button/button.css). */}
+				<div class:list={[isCentered && 'mx-auto max-w-3xl text-center', isFull && 'max-w-2xl text-white']} data-on-photo={isFull ? '' : undefined}>
+					{
+						eyebrow && (
+							<p class:list={['mb-4 text-sm font-semibold tracking-wider uppercase', !isFull && 'text-primary']}>
+								{eyebrow}
+							</p>
+						)
+					}
+					<h1
+						class:list={[
+							'text-4xl font-bold tracking-tight text-balance sm:text-5xl',
+							/* In split il titolo ha mezza colonna: a 6xl un titolo di 70 caratteri va su 5 righe. */
+							!isSplit && 'lg:text-6xl',
+						]}
+					>
+						{title}
+					</h1>
+					{
+						subtitle && (
+							<p class:list={['mt-6 text-lg text-pretty sm:text-xl', !isFull && 'text-fg-muted']}>{subtitle}</p>
+						)
+					}
+					{/*
+						Su mobile uno sotto l'altro, a tutta larghezza: se andassero a capo solo quando il font è
+						più largo, all'arrivo del web font la pagina salterebbe (CLS).
+					*/}
+					<div class:list={['mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4', isCentered && 'sm:justify-center']}>
+						<CtaButton cta={primaryCta} tone={tone} />
+						{secondaryCta && <CtaButton cta={secondaryCta} defaultStyle="secondary" tone={tone} />}
+					</div>
+				</div>
 
-		{
-			isSplit && image && (
-				<Img
-					src={image.src}
-					alt={image.alt}
-					priority
-					sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 100vw"
-					class:list={['aspect-4/3 w-full rounded-box object-cover', imageShape !== 'orizzontale' && 'lg:aspect-4/5']}
-				/>
-			)
-		}
-	</div>
+				{
+					isSplit && image && (
+						<Img
+							src={image.src}
+							alt={image.alt}
+							priority
+							sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 100vw"
+							class:list={['aspect-4/3 w-full rounded-box object-cover', imageShape !== 'orizzontale' && 'lg:aspect-4/5']}
+						/>
+					)
+				}
+			</div>
+		)
+	}
 </Section>

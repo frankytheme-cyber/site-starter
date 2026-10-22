@@ -48,7 +48,7 @@ Sezioni delle ricette di pagina (`scope: "page"`), nell’ordine in cui compaion
 
 | Blocco | Categoria | Varianti | Quando usarlo |
 | --- | --- | --- | --- |
-| [hero — Hero](blocchi/hero.md) | apertura | `split`, `full`, `centered` | Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare). |
+| [hero — Hero](blocchi/hero.md) | apertura | `split`, `full`, `slider`, `centered` | Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare). |
 | [accordion — Accordion](blocchi/accordion.md) | contenuti | `faq`, `contenuti` | Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, cosa preparare prima di un appuntamento. |
 | [carousel — Carosello](blocchi/carousel.md) | contenuti | `immagini`, `immagini-testo` | Per una serie di elementi dello stesso tipo che si sfogliano: foto dei lavori finiti, prima e dopo, progetti, recensioni con foto. |
 | [about — Chi siamo](blocchi/about.md) | contenuti | `immagine-testo`, `con-numeri` | Nella pagina «Chi siamo» o come sezione di presentazione in home. Con i numeri solo se il cliente li ha forniti e sa dire da dove vengono. |

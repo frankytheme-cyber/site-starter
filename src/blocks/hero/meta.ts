@@ -11,7 +11,8 @@ export const meta: BlockMeta = {
 	category: 'apertura',
 	scope: 'page',
 	backgrounds: ['pieno', 'sfumato', 'alone', 'aurora', 'decoro'],
-	version: '1.3.0',
+	interactive: true,
+	version: '1.4.0',
 	source: { from: 'originale' },
 	variants: {
 		split: {
@@ -22,17 +23,25 @@ export const meta: BlockMeta = {
 			description: 'Foto a tutta larghezza con velatura (scura o colorata, campo overlay) e testo chiaro sopra.',
 			whenToUse: 'Quando c’è una foto di grande qualità e si vuole impatto; non con foto piccole o confuse.',
 		},
+		slider: {
+			description:
+				'Da 2 a 5 foto con velatura e testo bianco, una alla volta, da sfogliare con frecce, pallini, dito o tastiera; non scorre mai da sola. Il titolo della prima slide è l’h1.',
+			whenToUse:
+				'Quando l’attività ha più servizi o ambienti da mettere in evidenza subito e foto di qualità per ognuno; con una foto sola usa full.',
+		},
 		centered: {
 			description: 'Solo testo, centrato, senza foto.',
 			whenToUse: 'Pagine interne (servizi, contatti, note legali) o quando manca una foto adatta.',
 		},
 	},
 	rules: [
-		'Le varianti split e full richiedono la foto (image).',
+		'Le varianti split, full e slider richiedono la foto (image).',
+		'La variante slider richiede almeno un’altra slide (slides).',
 	],
 	fieldRules: {
-		image: { requiredFor: ['split', 'full'], note: 'centered non la mostra.' },
+		image: { requiredFor: ['split', 'full', 'slider'], note: 'centered non la mostra; nello slider è la foto della prima slide.' },
+		slides: { requiredFor: ['slider'], note: 'Le altre varianti la ignorano.' },
 		imageShape: { note: 'Solo per la variante split; nelle altre non ha effetto.' },
-		overlay: { note: 'Solo per la variante full; nelle altre non ha effetto.' },
+		overlay: { note: 'Per le varianti full e slider (tutte le slide); nelle altre non ha effetto.' },
 	},
 };
