@@ -1,9 +1,10 @@
 ---
-import { catalogVariants } from '@/core/catalog';
+import { catalogVariants, NO_VARIANT } from '@/core/catalog';
 import type { Block } from '@/core/registry';
 import Container from '@/core/ui/Container.astro';
 import { fixtureJson } from './_example';
 import { variantAnchor } from './_nav';
+import { blockNeeds, plainLimits, requiredIn } from './_needs';
 
 interface Props {
 	block: Block;
@@ -13,15 +14,40 @@ interface Props {
 
 const { block, href } = Astro.props;
 const { meta, Component, fixtures } = block;
-// Per ogni variante: la pagina da sola e il JSON della prima fixture, da incollare in una ricetta o in layout.json.
-const variants = catalogVariants(meta, fixtures).map((variant) => ({
-	...variant,
-	jsonId: `json-${meta.type}-${variant.name}`,
-	json: fixtureJson(block, variant.fixture),
-}));
+const variantOf = (fixture: Block['fixtures'][number]) =>
+	typeof fixture.props.variant === 'string' ? fixture.props.variant : NO_VARIANT;
+// Per ogni variante: descrizione, la pagina da sola, il JSON della prima fixture (da incollare in una
+// ricetta o in layout.json) e subito sotto tutte le sue fixture dal vivo.
+const variants = catalogVariants(meta, fixtures).map((variant) => {
+	const anchor = variantAnchor(meta.type, variant.name);
+	return {
+		...variant,
+		anchor,
+		jsonId: `json-${anchor}`,
+		json: fixtureJson(block, variant.fixture),
+		fixtures: fixtures.filter((fixture) => variantOf(fixture) === variant.name),
+	};
+});
+// Fixture di una variante che il catalogo non elenca: non dovrebbero esserci, ma non si nascondono.
+const others = fixtures.filter((fixture) => !variants.some((variant) => variant.name === variantOf(fixture)));
+const sections = [
+	...variants,
+	...(others.length > 0 ? [{ name: 'altre', anchor: `${meta.type}-altre`, fixtures: others, description: undefined }] : []),
+];
 const jsonTarget = meta.scope === 'layout' ? 'src/content/settings/layout.json' : 'le sezioni di una ricetta';
+const listId = `${meta.type}-varianti`;
 const Heading = href ? 'h2' : 'h1';
 const SubHeading = href ? 'h3' : 'h2';
+const examples = (count: number) => `${count} ${count === 1 ? 'esempio' : 'esempi'}`;
+// «Cosa serve» solo nella pagina del blocco: in «tutti dal vivo» allungherebbe ogni voce.
+const needs = href ? undefined : blockNeeds(meta.type);
+const fields = (needs?.block.fields ?? []).map((field) => {
+	const variantsRequired = requiredIn(needs!.block, field);
+	const required =
+		variantsRequired.length === 0 ? 'no' : variantsRequired.length === needs!.block.variants.length ? 'sì' : `in ${variantsRequired.join(', ')}`;
+	return { ...field, required, limits: plainLimits(field.limits), note: field.note ?? field.hint };
+});
+const needsId = `${meta.type}-cosa-serve`;
 ---
 
 <article id={meta.type} class="scroll-mt-24 border-t-4 border-border">
@@ -56,78 +82,187 @@ const SubHeading = href ? 'h3' : 'h2';
 				</div>
 			</dl>
 
-			<SubHeading class="mt-8 font-semibold">Varianti</SubHeading>
-			<dl class="mt-2 grid gap-5">
-				{
-					variants.map((variant) => (
-						<div id={variantAnchor(meta.type, variant.name)} class="scroll-mt-24 sm:flex sm:gap-3">
-							<dt class="shrink-0 sm:w-28">
-								<code>{variant.name}</code>
-							</dt>
-							<dd class="min-w-0 flex-1">
-								<p class="text-fg-muted">{variant.description}</p>
-								<p class="mt-1 text-sm">
-									<span class="font-semibold">Quando usarla:</span> {variant.whenToUse}
-								</p>
-								<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-									<a href={`/catalogo/${meta.type}/${variant.name}/`} class="inline-flex min-h-9 items-center text-primary underline underline-offset-4">
-										Apri da sola
-									</a>
-									<button
-										type="button"
-										hidden
-										data-copy-json={variant.jsonId}
-										class="min-h-9 rounded-button border border-border px-3 font-semibold hover:bg-current/10"
-									>
-										Copia JSON
-									</button>
-									<span data-copy-status={variant.jsonId} role="status" class="text-fg-muted" />
-								</div>
-								<details class="mt-1 text-sm">
-									<summary class="min-h-9 cursor-pointer py-1.5">
-										JSON della fixture «{variant.fixture.name}», per {jsonTarget}
-									</summary>
-									<pre id={variant.jsonId} class="mt-2 overflow-x-auto rounded-box bg-surface p-4 text-xs text-surface-fg"><code>{variant.json}</code></pre>
+			{
+				!href && (
+					<section aria-labelledby={needsId} class="mt-8 rounded-box border border-border p-5">
+						<SubHeading id={needsId} class="font-semibold">
+							Cosa serve
+						</SubHeading>
+						{needs ? (
+							<>
+								<dl class="mt-3 grid gap-x-8 gap-y-2 sm:grid-cols-2">
+									{needs.needs.map((need) => (
+										<div class="flex flex-wrap gap-x-2">
+											<dt class="font-semibold">{need.label}</dt>
+											<dd class="text-fg-muted">{need.detail}</dd>
+										</div>
+									))}
+									{needs.block.backgrounds.length > 0 && (
+										<div class="flex flex-wrap gap-x-2">
+											<dt class="font-semibold">Sfondi ammessi</dt>
+											<dd class="text-fg-muted">{needs.block.backgrounds.join(', ')}</dd>
+										</div>
+									)}
+								</dl>
+								{needs.block.rules.length > 0 && (
+									<>
+										<p class="mt-4 font-semibold">Regole</p>
+										<ul class="mt-1 list-disc space-y-1 pl-5 text-fg-muted">
+											{needs.block.rules.map((rule) => (
+												<li>{rule}</li>
+											))}
+										</ul>
+									</>
+								)}
+								<details class="mt-4">
+									<summary class="min-h-9 cursor-pointer py-1.5 font-semibold">Campi ({fields.length}): tipo, obbligo e limiti</summary>
+									<div class="mt-2 overflow-x-auto">
+										<table class="w-full min-w-2xl text-left text-sm">
+											<thead class="border-b border-border text-fg-muted">
+												<tr>
+													<th scope="col" class="py-2 pr-4 font-semibold">Campo</th>
+													<th scope="col" class="py-2 pr-4 font-semibold">Tipo</th>
+													<th scope="col" class="py-2 pr-4 font-semibold">Obbligatorio</th>
+													<th scope="col" class="py-2 pr-4 font-semibold">Limiti</th>
+													<th scope="col" class="py-2 font-semibold">Note</th>
+												</tr>
+											</thead>
+											<tbody>
+												{fields.map((field) => (
+													<tr class="border-b border-border align-top">
+														<th scope="row" class="py-2 pr-4 font-normal">
+															{field.label}
+															<code class="block text-xs text-fg-muted">{field.path}</code>
+														</th>
+														<td class="py-2 pr-4">{field.type}</td>
+														<td class="py-2 pr-4">{field.required}</td>
+														<td class="py-2 pr-4">{field.limits}</td>
+														<td class="py-2 text-fg-muted">{field.note}</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
+									</div>
 								</details>
-							</dd>
-						</div>
-					))
-				}
-			</dl>
+							</>
+						) : (
+							<p class="mt-2 text-fg-muted">
+								Scheda non ancora generata: <code>npm run gen:catalog</code>.
+							</p>
+						)}
+					</section>
+				)
+			}
+
+			<nav id={listId} aria-label={`Varianti di ${meta.name}`} class="mt-8 scroll-mt-24">
+				<SubHeading class="font-semibold">
+					{`${variants.length} ${variants.length === 1 ? 'variante' : 'varianti'}`}
+				</SubHeading>
+				<ul class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+					{
+						sections.map((section) => (
+							<li>
+								<a
+									href={`#${section.anchor}`}
+									class="block h-full rounded-box border border-border p-3 hover:border-primary focus-visible:border-primary"
+								>
+									<span class="flex flex-wrap items-baseline justify-between gap-x-2">
+										<code class="font-semibold text-primary">{section.name}</code>
+										<span class="text-xs text-fg-muted">{examples(section.fixtures.length)}</span>
+									</span>
+									{section.description && <span class="mt-1 block text-sm text-fg-muted">{section.description}</span>}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
 		</div>
 	</Container>
 
 	{
-		fixtures.map((fixture) => (
-			<div class="border-t border-border" data-fixture={fixture.name}>
+		sections.map((section, index) => (
+			<section id={section.anchor} aria-labelledby={`${section.anchor}-titolo`} class="scroll-mt-16 border-t-2 border-border">
 				<Container>
-					<p class="py-2 text-sm text-fg-muted">
-						Fixture <span class="font-semibold text-fg">{fixture.name}</span>
-						{typeof fixture.props.variant === 'string' && (
-							<>
-								{' · variante '}
-								<code>{fixture.props.variant}</code>
-							</>
-						)}
-						{fixture.tone && (
-							<>
-								{' · tone '}
-								<code>{fixture.tone}</code>
-							</>
-						)}
-						{fixture.site && ' · dati di prova al posto di site.json'}
-					</p>
+					<div class="flex flex-col gap-x-8 gap-y-3 py-6 lg:flex-row lg:items-start lg:justify-between">
+						<div class="max-w-3xl">
+							<p class="text-sm text-fg-muted">
+								{'json' in section ? `Variante ${index + 1} di ${variants.length}` : 'Altre fixture'} · {examples(section.fixtures.length)}
+							</p>
+							<SubHeading id={`${section.anchor}-titolo`} class="text-2xl font-bold">
+								{/* Nome del blocco per gli screen reader: in «tutti dal vivo» più blocchi hanno una variante «slider». */}
+								<span class="sr-only">{meta.name}, variante </span>
+								<code>{section.name}</code>
+							</SubHeading>
+							{'json' in section ? (
+								<>
+									<p class="mt-2">{section.description}</p>
+									<p class="mt-1 text-sm">
+										<span class="font-semibold">Quando usarla:</span> {section.whenToUse}
+									</p>
+								</>
+							) : (
+								<p class="mt-2 text-fg-muted">Fixture con una variante che il catalogo non elenca: controlla meta.ts.</p>
+							)}
+						</div>
+						<div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm lg:shrink-0 lg:justify-end">
+							{'json' in section && (
+								<>
+									<button
+										type="button"
+										hidden
+										data-copy-json={section.jsonId}
+										class="min-h-9 rounded-button border border-border px-3 font-semibold hover:bg-current/10"
+									>
+										Copia JSON
+									</button>
+									<a href={`/catalogo/${meta.type}/${section.name}/`} class="inline-flex min-h-9 items-center text-primary underline underline-offset-4">
+										Apri da sola
+									</a>
+								</>
+							)}
+							<a href={`#${listId}`} class="inline-flex min-h-9 items-center text-primary underline underline-offset-4">
+								↑ Varianti
+							</a>
+							{'json' in section && <span data-copy-status={section.jsonId} role="status" class="basis-full text-fg-muted lg:text-right" />}
+						</div>
+					</div>
+					{'json' in section && (
+						<details class="pb-4 text-sm">
+							<summary class="min-h-9 cursor-pointer py-1.5">
+								JSON della fixture «{section.fixture.name}», per {jsonTarget}
+							</summary>
+							<pre id={section.jsonId} class="mt-2 overflow-x-auto rounded-box bg-surface p-4 text-xs text-surface-fg"><code>{section.json}</code></pre>
+						</details>
+					)}
 				</Container>
-				<Component tone={fixture.tone} {...fixture.props} site={fixture.site} />
-				{/* Un blocco sticky resta agganciato solo dentro il suo contenitore: qui gli si dà spazio per scorrere. */}
-				{fixture.props.sticky === true && (
-					<Container>
-						<p class="flex h-[150vh] items-start pt-10 text-fg-muted">
-							Scorri: il blocco resta in cima e dopo 80px si compatta.
-						</p>
-					</Container>
-				)}
-			</div>
+
+				{section.fixtures.map((fixture) => (
+					<div class="border-t border-border" data-fixture={fixture.name}>
+						<Container>
+							<p class="py-2 text-sm text-fg-muted">
+								Fixture <span class="font-semibold text-fg">{fixture.name}</span>
+								{fixture.tone && (
+									<>
+										{' · tone '}
+										<code>{fixture.tone}</code>
+									</>
+								)}
+								{fixture.site && ' · dati di prova al posto di site.json'}
+							</p>
+						</Container>
+						<Component tone={fixture.tone} {...fixture.props} site={fixture.site} />
+						{/* Un blocco sticky resta agganciato solo dentro il suo contenitore: qui gli si dà spazio per scorrere. */}
+						{fixture.props.sticky === true && (
+							<Container>
+								<p class="flex h-[150vh] items-start pt-10 text-fg-muted">
+									Scorri: il blocco resta in cima e dopo 80px si compatta.
+								</p>
+							</Container>
+						)}
+					</div>
+				))}
+			</section>
 		))
 	}
 </article>
