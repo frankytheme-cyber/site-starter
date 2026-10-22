@@ -14,6 +14,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 ### Novità
 
 - Catalogo più comodo: `/catalogo` è un indice a schede con miniatura, varianti (link alla variante nella pagina del blocco) e categorie; tutti i blocchi dal vivo passano a `/catalogo/tutti`. La barra sta su una riga, con palette, font, forma, decoro e texture nel pannello «Tema»; su mobile non resta fissa in alto.
+- Pagina del blocco divisa per variante: in alto le varianti con descrizione e numero di esempi; per ognuna «Quando usarla», «Copia JSON», «Apri da sola» e subito sotto le sue fixture dal vivo, non più mescolate in fondo.
 - `catalog:query` per consultare solo blocchi, temi, icone o regole utili; istruzioni e skill condivise più mirate, con riferimenti su richiesta.
 - `design:shots -- --riusa`, con manifest e hash dei sorgenti, per riusare screenshot invariati. QA finale completa e revisione visiva mantenute.
 - Fixture e regressioni per hero orizzontale, servizi con foto e icone, didascalie, occhiello del form ed etichette CTA; controlli `tooling` e `design` nelle suite.
