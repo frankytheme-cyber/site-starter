@@ -1,9 +1,12 @@
 import laboratorio from '@/assets/images/fixtures/artigiano-laboratorio.jpg';
 import vetrina from '@/assets/images/fixtures/negozio-vetrina.jpg';
+import cucina from '@/assets/images/fixtures/ristorante-cucina.jpg';
+import piatto from '@/assets/images/fixtures/ristorante-piatto.jpg';
+import sala from '@/assets/images/fixtures/ristorante-sala.jpg';
 import type { BlockFixture } from '@/core/block-types';
 import type { schema } from './schema';
 
-// Attività di esempio di settori diversi: artigiano (split), negozio (full), studio professionale (centered).
+// Attività di esempio di settori diversi: artigiano (split), negozio (full), ristorante (slider), studio professionale (centered).
 export const fixtures: BlockFixture<typeof schema>[] = [
 	{
 		name: 'Split',
@@ -50,6 +53,50 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 				src: vetrina,
 				alt: 'Vetrina di una bottega con la tenda a righe bianche e rosse e la porta verde',
 			},
+		},
+	},
+	{
+		name: 'Slider',
+		props: {
+			variant: 'slider',
+			eyebrow: 'Trattoria di quartiere',
+			title: 'Cucina di casa, a pranzo e a cena',
+			subtitle: 'Piatti della tradizione con ingredienti del mercato, in una sala tranquilla a due passi dal centro.',
+			primaryCta: { label: 'Prenota un tavolo', href: '#prenota' },
+			secondaryCta: { label: 'Il menu', href: '#menu' },
+			image: { src: sala, alt: 'Sala della trattoria con tavoli apparecchiati e luci calde' },
+			slides: [
+				{
+					eyebrow: 'La cucina',
+					title: 'La pasta la tiriamo a mano ogni mattina',
+					subtitle: 'Tagliatelle, ravioli e gnocchi preparati in cucina, con i sughi della stagione.',
+					cta: { label: 'Guarda il menu', href: '#menu' },
+					image: { src: cucina, alt: 'Cucina della trattoria con pentole sui fornelli' },
+				},
+				{
+					title: 'Feste e cene private su prenotazione',
+					image: { src: piatto, alt: 'Piatto di pasta al pomodoro servito su una tovaglia a quadri' },
+				},
+			],
+		},
+	},
+	{
+		name: 'Slider, velatura colorata e testi al limite',
+		props: {
+			variant: 'slider',
+			overlay: 'colorata',
+			title: 'Cucina di casa a pranzo e cena, con piatti del mercato di ogni giorno',
+			subtitle:
+				'Piatti della tradizione preparati con ingredienti scelti ogni mattina al mercato, serviti in una sala tranquilla a due passi dal centro, con un menu che cambia spesso.',
+			primaryCta: { label: 'Prenota un tavolo stasera', href: '#prenota' },
+			image: { src: sala, alt: 'Sala della trattoria con tavoli apparecchiati e luci calde' },
+			slides: [
+				{
+					title: 'Feste e cene private su prenotazione',
+					cta: { label: 'Chiedi una data', href: '#prenota' },
+					image: { src: piatto, alt: 'Piatto di pasta al pomodoro servito su una tovaglia a quadri' },
+				},
+			],
 		},
 	},
 	{

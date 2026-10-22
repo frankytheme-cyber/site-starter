@@ -1841,8 +1841,8 @@
 			"name": "Hero",
 			"scope": "page",
 			"category": "apertura",
-			"version": "1.3.0",
-			"interactive": false,
+			"version": "1.4.0",
+			"interactive": true,
 			"source": {
 				"from": "originale"
 			},
@@ -1850,7 +1850,8 @@
 			"whenToUse": "Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare).",
 			"avoidWhen": "A metà pagina o più di una volta nella stessa pagina: contiene l’unico h1. Per inviti all’azione intermedi serve un blocco dedicato.",
 			"rules": [
-				"Le varianti split e full richiedono la foto (image)."
+				"Le varianti split, full e slider richiedono la foto (image).",
+				"La variante slider richiede almeno un’altra slide (slides)."
 			],
 			"backgrounds": [
 				"pieno",
@@ -1883,6 +1884,17 @@
 					}
 				},
 				{
+					"name": "slider",
+					"description": "Da 2 a 5 foto con velatura e testo bianco, una alla volta, da sfogliare con frecce, pallini, dito o tastiera; non scorre mai da sola. Il titolo della prima slide è l’h1.",
+					"whenToUse": "Quando l’attività ha più servizi o ambienti da mettere in evidenza subito e foto di qualità per ognuno; con una foto sola usa full.",
+					"fixture": "Slider",
+					"preview": "/catalogo/hero/slider/",
+					"screenshots": {
+						"desktop": "img/hero-slider-desktop.webp",
+						"mobile": "img/hero-slider-mobile.webp"
+					}
+				},
+				{
 					"name": "centered",
 					"description": "Solo testo, centrato, senza foto.",
 					"whenToUse": "Pagine interne (servizi, contatti, note legali) o quando manca una foto adatta.",
@@ -1899,16 +1911,17 @@
 					"path": "variant",
 					"type": "scelta",
 					"required": true,
-					"limits": "`split` · `full` · `centered`",
+					"limits": "`split` · `full` · `centered` · `slider`",
 					"constraints": {
 						"values": [
 							"split",
 							"full",
-							"centered"
+							"centered",
+							"slider"
 						]
 					},
 					"label": "Variante",
-					"hint": "split: testo e foto affiancati · full: foto a tutta larghezza · centered: solo testo"
+					"hint": "split: testo e foto affiancati · full: foto a tutta larghezza · centered: solo testo · slider: da 2 a 5 foto con testo, da sfogliare"
 				},
 				{
 					"path": "eyebrow",
@@ -2075,13 +2088,14 @@
 					"required": false,
 					"requiredFor": [
 						"split",
-						"full"
+						"full",
+						"slider"
 					],
 					"limits": "",
 					"constraints": {},
 					"label": "Foto",
-					"hint": "Obbligatoria per le varianti split e full",
-					"note": "centered non la mostra."
+					"hint": "Obbligatoria per le varianti split, full e slider (nello slider è la prima slide)",
+					"note": "centered non la mostra; nello slider è la foto della prima slide."
 				},
 				{
 					"path": "image.src",
@@ -2136,8 +2150,155 @@
 						]
 					},
 					"label": "Velatura",
-					"hint": "Sopra la foto della variante full: scura (nera) o colorata (col colore principale del sito); il testo resta bianco e leggibile",
-					"note": "Solo per la variante full; nelle altre non ha effetto."
+					"hint": "Sopra la foto delle varianti full e slider: scura (nera) o colorata (col colore principale del sito); il testo resta bianco e leggibile",
+					"note": "Per le varianti full e slider (tutte le slide); nelle altre non ha effetto."
+				},
+				{
+					"path": "slides",
+					"type": "elenco",
+					"required": false,
+					"requiredFor": [
+						"slider"
+					],
+					"limits": "1–4 voci",
+					"constraints": {
+						"minItems": 1,
+						"maxItems": 4
+					},
+					"label": "Altre slide",
+					"hint": "Solo per la variante slider: da 1 a 4 slide dopo la prima (che usa titolo, testi, pulsanti e foto qui sopra)",
+					"note": "Le altre varianti la ignorano."
+				},
+				{
+					"path": "slides[].eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo della slide"
+				},
+				{
+					"path": "slides[].title",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "slides",
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Il titolo della slide, al massimo 70 caratteri"
+				},
+				{
+					"path": "slides[].subtitle",
+					"type": "testo",
+					"required": false,
+					"limits": "max 200",
+					"constraints": {
+						"maxLength": 200
+					},
+					"label": "Sottotitolo",
+					"hint": "Una o due frasi, al massimo 200 caratteri"
+				},
+				{
+					"path": "slides[].cta",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante",
+					"hint": "Facoltativo: l’azione legata a questa slide"
+				},
+				{
+					"path": "slides[].cta.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "slides[].cta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "slides[].cta.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "slides[].cta",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "slides[].cta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "slides[].cta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				},
+				{
+					"path": "slides[].image",
+					"type": "gruppo",
+					"required": true,
+					"requiredWith": "slides",
+					"limits": "",
+					"constraints": {},
+					"label": "Foto",
+					"hint": "La foto della slide, sotto il testo bianco con la velatura scelta"
+				},
+				{
+					"path": "slides[].image.src",
+					"type": "immagine",
+					"required": true,
+					"requiredWith": "slides",
+					"limits": "foto in src/assets/images",
+					"constraints": {
+						"format": "image"
+					},
+					"label": "File",
+					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
+				},
+				{
+					"path": "slides[].image.alt",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "slides",
+					"limits": "min 5",
+					"constraints": {
+						"minLength": 5
+					},
+					"label": "Testo alternativo",
+					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
 				}
 			],
 			"example": {
