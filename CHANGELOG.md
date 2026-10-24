@@ -4,8 +4,7 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
-## Non rilasciato
-
+## v0.0.6 (2026-10-24)
 ### Correzioni
 
 - Catalogo, pagina Sfondi: la scheda Decoro mostra «Punti» quando nella barra è scelto «nessuno», invece di restare piena.
