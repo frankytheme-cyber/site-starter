@@ -24,10 +24,10 @@ Leggi [qualita-grafica.md](../direzione-visiva/qualita-grafica.md) quando valuti
 
    In `reports/design/<data-ora>/<tema>/`, per ogni pagina a 1280 (`desktop`) e 375 px (`mobile`): `-apertura` (la prima schermata), `-panoramica` (la pagina intera rimpicciolita) e `-NN-<tipo>` (le sezioni, numerate come nella ricetta). Apri le immagini e guardale davvero: prima la panoramica, poi l'apertura, poi ogni sezione. `-intera` è a grandezza vera, per `index.html`.
 
-2. **Prima impressione**, sull'apertura a 375 e 1280 px: in cinque secondi si capisce cosa fa l'attività, dove, e cosa fare (una sola azione principale)? Se ci sono foto vere, la hero mostra il lavoro?
+2. **Prima impressione**, sull'apertura a 375 e 1280 px: in cinque secondi si capisce cosa fa l'attività, dove, e cosa fare (una sola azione principale)? La hero rende visibile il soggetto dell’attività con materiali reali o placeholder dichiarati? Una scelta senza immagini ha una motivazione nel progetto?
 
 3. **Verifica tutte le voci** seguenti, pagina per pagina. Annota problemi, punti non verificabili e correzioni; per le voci superate basta un riepilogo per pagina, senza ricopiare la lista.
-   - **Materiale.** Uso tutte le foto adatte di `src/assets/images/`? Varianti con foto dove le foto ci sono (hero `split` o `full`, servizi `cards-immagine` o `alternato`, gallery)? Nessuna foto ripetuta senza motivo, nessuna tagliata male?
+   - **Materiale.** Uso tutte le foto adatte di `src/assets/images/`? Varianti con foto dove le foto ci sono (hero `split` o `full`, servizi `cards-immagine` o `alternato`, gallery)? Nessuna foto ripetuta senza motivo, nessuna tagliata male? Placeholder dichiarati e tracciati secondo [la regola](../nuovo-sito/immagini-placeholder.md), senza sembrare lavori reali? Immagini ottimizzate e nessun salto di impaginazione durante il caricamento?
    - **Gerarchia.** Un solo punto forte per schermata? I titoli dicono qualcosa di questa attività («Imbiancature a Firenze e provincia», non «I nostri servizi» o «Galleria» da soli)?
    - **Ritmo.** Toni alternati con misura (`primary` una o due volte), effetti di sfondo dove servono (apertura, un punto chiave, invito finale), sezioni di lunghezza diversa? Sei blocchi uguali di fila stancano.
    - **Settore.** Accanto a due o tre buoni siti dello stesso settore e della stessa zona, regge? Si distingue? Se puoi navigare, guardane qualcuno; altrimenti chiedi a Simone un riferimento.

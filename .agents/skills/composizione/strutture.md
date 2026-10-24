@@ -2,14 +2,16 @@
 
 Per la skill `composizione` (`.agents/skills/composizione/SKILL.md`): una struttura per tipo di pagina e per settore, da adattare al brief e al materiale. Ogni riga è una sezione: blocco `variante` (tono), con le alternative. I toni sono già alternati; effetti di sfondo e bordi sono indicati dove servono, entro i limiti (3 effetti e 2 bordi per pagina, mai sulla prima sezione). Una sezione senza materiale si toglie e i toni si riallineano: non si riempie.
 
-## Scegliere una struttura senza foto
+Se mancano le foto del brief, prepara prima [placeholder dichiarati](../nuovo-sito/immagini-placeholder.md) per le sezioni illustrative. Le alternative senza foto qui sotto servono per una scelta tipografica motivata o dove occorrerebbero prove reali non disponibili.
+
+## Scegliere una struttura senza immagini
 
 Prima di applicare le sequenze di settore, confronta impianti distinti con gli stessi testi e lo stesso tema:
 - raccolto: hero `centered`, servizi `cards-icone`, chiusura `banner`;
 - editoriale: hero `editoriale`, servizi `editoriale`, chiusura `split-contatto`;
 - tipografico: hero `manifesto`, servizi `elenco`, chiusura `split-contatto`.
 
-Sono combinazioni iniziali, non tre preset di sito. Materiale e obiettivo decidono quali sezioni aggiungere, togliere o spostare. Il catalogo `/catalogo/composizioni/` le mostra con le ricette `bottega-*-home.json` e gli stessi contenuti. Non usare foto di prova per differenziarle.
+Sono combinazioni iniziali, non tre preset di sito. Materiale e obiettivo decidono quali sezioni aggiungere, togliere o spostare. Il catalogo `/catalogo/composizioni/` le mostra con le ricette `bottega-*-home.json` e gli stessi contenuti. Nel confronto usa lo stesso insieme di immagini, quando previsto; non cambiare materiale solo per far apparire diverse le direzioni.
 
 ## Home
 

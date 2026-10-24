@@ -21,4 +21,4 @@ Consulta le righe pertinenti quando scegli le sezioni; verifica campi e limiti c
 | una sede da visitare (negozio, studio, locale) | contact `info-mappa` | contact `info-cta` (a domicilio, su appuntamento) |
 | invio dei moduli configurato (`docs/form.md`) e informativa privacy approvata | form `contatto` o `preventivo` | cta con `@telefono`, `@whatsapp`, `@email` |
 
-Foto solo da `src/assets/images/`: mai le foto di prova (`fixtures/`), mai stock per lavori, persone e sede. Una foto che serve e non c'è si chiede a Simone.
+Foto solo da `src/assets/images/`, mai dalle fixture. Se mancano immagini nel brief, usa [placeholder dichiarati](../nuovo-sito/immagini-placeholder.md) per illustrare aperture, servizi e presentazioni generiche: la tabella si legge anche su questi materiali. I ripieghi senza foto sono per direzioni volutamente tipografiche o immagini non pertinenti. Per lavori, persone e sede servono sempre foto vere: i placeholder non le sostituiscono come prove.
