@@ -25,6 +25,9 @@ import { chromium, type Browser, type Page } from 'playwright';
 import sharp from 'sharp';
 import {
 	backgroundScreenshotName,
+	COMPOSITION_EXAMPLES,
+	COMPOSITION_QUERY,
+	compositionScreenshotName,
 	EDGES_SCREENSHOT,
 	EFFECTS_SCREENSHOT_PALETTE,
 	paletteScreenshotName,
@@ -94,6 +97,9 @@ try {
 		console.log(`${size.name} (${size.width} px)`);
 		for (const { type, variant } of variants) {
 			await shoot(page, `/catalogo/${type}/${variant}/`, screenshotName(type, variant, size.name));
+		}
+		for (const { key } of COMPOSITION_EXAMPLES) {
+			await shoot(page, `/catalogo/composizioni/${key}/${COMPOSITION_QUERY}`, compositionScreenshotName(key, size.name));
 		}
 		const hero = variants.find(({ type }) => type === 'hero');
 		if (size.name === 'desktop' && hero) {

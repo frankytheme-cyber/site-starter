@@ -30,56 +30,85 @@ const isCentered = variant === 'centered';
 		)
 	}
 
-	<div
-		class:list={[
-			'grid items-center gap-12 lg:gap-16',
-			isSplit && 'lg:grid-cols-2',
-			isFull && 'min-h-96 lg:min-h-128',
-		]}
-	>
-		{/* data-on-photo: sulla foto i pulsanti diventano chiari (core/ui/button/button.css). */}
-		<div class:list={[isCentered && 'mx-auto max-w-3xl text-center', isFull && 'max-w-2xl text-white']} data-on-photo={isFull ? '' : undefined}>
-			{
-				eyebrow && (
-					<p class:list={['mb-4 text-sm font-semibold tracking-wider uppercase', !isFull && 'text-primary']}>
-						{eyebrow}
-					</p>
-				)
-			}
-			<h1
-				class:list={[
-					'text-4xl font-bold tracking-tight text-balance sm:text-5xl',
-					/* In split il titolo ha mezza colonna: a 6xl un titolo di 70 caratteri va su 5 righe. */
-					!isSplit && 'lg:text-6xl',
-				]}
-			>
-				{title}
-			</h1>
-			{
-				subtitle && (
-					<p class:list={['mt-6 text-lg text-pretty sm:text-xl', !isFull && 'text-fg-muted']}>{subtitle}</p>
-				)
-			}
-			{/*
-				Su mobile uno sotto l'altro, a tutta larghezza: se andassero a capo solo quando il font è
-				più largo, all'arrivo del web font la pagina salterebbe (CLS).
-			*/}
-			<div class:list={['mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4', isCentered && 'sm:justify-center']}>
-				<CtaButton cta={primaryCta} tone={tone} />
-				{secondaryCta && <CtaButton cta={secondaryCta} defaultStyle="secondary" tone={tone} />}
+	{variant === 'editoriale' ? (
+		<div class="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-16">
+			<div class="lg:col-span-7">
+				{eyebrow && <p class="mb-6 text-sm font-semibold text-primary">{eyebrow}</p>}
+				<h1 class="max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-7xl">{title}</h1>
+			</div>
+			<div class="border-t border-border pt-6 lg:col-span-5">
+				{subtitle && <p class="max-w-prose text-lg text-pretty text-fg-muted sm:text-xl">{subtitle}</p>}
+				<div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+					<CtaButton cta={primaryCta} tone={tone} />
+					{secondaryCta && <CtaButton cta={secondaryCta} defaultStyle="link" tone={tone} />}
+				</div>
 			</div>
 		</div>
+	) : variant === 'manifesto' ? (
+		<div>
+			{eyebrow && <p class="mb-8 text-sm font-semibold text-primary">{eyebrow}</p>}
+			<h1 class="max-w-5xl text-5xl font-bold tracking-tight text-balance sm:text-6xl lg:text-8xl">{title}</h1>
+			<div class="mt-10 grid gap-8 border-t border-border pt-8 lg:mt-16 lg:grid-cols-2 lg:items-start lg:gap-16">
+				{subtitle && <p class="max-w-prose text-lg text-pretty text-fg-muted sm:text-xl">{subtitle}</p>}
+				<div class:list={['flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:justify-end', !subtitle && 'lg:col-span-2']}>
+					<CtaButton cta={primaryCta} size="lg" tone={tone} />
+					{secondaryCta && <CtaButton cta={secondaryCta} defaultStyle="secondary" size="lg" tone={tone} />}
+				</div>
+			</div>
+		</div>
+	) : (
 
-		{
-			isSplit && image && (
-				<Img
-					src={image.src}
-					alt={image.alt}
-					priority
-					sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 100vw"
-					class:list={['aspect-4/3 w-full rounded-box object-cover', imageShape !== 'orizzontale' && 'lg:aspect-4/5']}
-				/>
-			)
-		}
-	</div>
+		<div
+			class:list={[
+				'grid items-center gap-12 lg:gap-16',
+				isSplit && 'lg:grid-cols-2',
+				isFull && 'min-h-96 lg:min-h-128',
+			]}
+		>
+			{/* data-on-photo: sulla foto i pulsanti diventano chiari (core/ui/button/button.css). */}
+			<div class:list={[isCentered && 'mx-auto max-w-3xl text-center', isFull && 'max-w-2xl text-white']} data-on-photo={isFull ? '' : undefined}>
+				{
+					eyebrow && (
+						<p class:list={['mb-4 text-sm font-semibold tracking-wider uppercase', !isFull && 'text-primary']}>
+							{eyebrow}
+						</p>
+					)
+				}
+				<h1
+					class:list={[
+						'text-4xl font-bold tracking-tight text-balance sm:text-5xl',
+						/* In split il titolo ha mezza colonna: a 6xl un titolo di 70 caratteri va su 5 righe. */
+						!isSplit && 'lg:text-6xl',
+					]}
+				>
+					{title}
+				</h1>
+				{
+					subtitle && (
+						<p class:list={['mt-6 text-lg text-pretty sm:text-xl', !isFull && 'text-fg-muted']}>{subtitle}</p>
+					)
+				}
+				{/*
+					Su mobile uno sotto l'altro, a tutta larghezza: se andassero a capo solo quando il font è
+					più largo, all'arrivo del web font la pagina salterebbe (CLS).
+				*/}
+				<div class:list={['mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4', isCentered && 'sm:justify-center']}>
+					<CtaButton cta={primaryCta} tone={tone} />
+					{secondaryCta && <CtaButton cta={secondaryCta} defaultStyle="secondary" tone={tone} />}
+				</div>
+			</div>
+
+			{
+				isSplit && image && (
+					<Img
+						src={image.src}
+						alt={image.alt}
+						priority
+						sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 100vw"
+						class:list={['aspect-4/3 w-full rounded-box object-cover', imageShape !== 'orizzontale' && 'lg:aspect-4/5']}
+					/>
+				)
+			}
+		</div>
+	)}
 </Section>

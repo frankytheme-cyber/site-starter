@@ -100,12 +100,14 @@ collections:
             fields:
               - name: variant
                 label: Variante
-                hint: "split: testo e foto affiancati · full: foto a tutta larghezza · centered: solo testo"
+                hint: "split: testo e foto affiancati · full: foto a tutta larghezza · centered: testo centrato · editoriale: titolo e introduzione su colonne · manifesto: titolo grande e azioni sotto"
                 widget: select
                 options:
                   - split
                   - full
                   - centered
+                  - editoriale
+                  - manifesto
               - name: eyebrow
                 label: Occhiello
                 hint: Breve testo sopra il titolo, es. il settore
@@ -4622,13 +4624,15 @@ collections:
             fields:
               - name: variant
                 label: Variante
-                hint: "cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda"
+                hint: "cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda · elenco: righe a tutta larghezza · editoriale: introduzione laterale e servizi in colonna"
                 widget: select
                 options:
                   - cards-icone
                   - cards-immagine
                   - alternato
                   - schede
+                  - elenco
+                  - editoriale
               - name: eyebrow
                 label: Occhiello
                 hint: Breve testo sopra il titolo

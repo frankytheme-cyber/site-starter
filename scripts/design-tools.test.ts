@@ -5,6 +5,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import sharp from 'sharp';
+import { z } from 'astro/zod';
+import { withProjectModules } from './checks/lib/vite.ts';
 import { ROOT } from './checks/lib/project.ts';
 import { imageInventory, prepareImage } from './lib/images.ts';
 import { designFingerprint, reusableDesignReport } from './lib/design-evidence.ts';
@@ -78,4 +80,20 @@ test('Chromium mancante: errore utile prima di avviare Astro', (t) => {
 	assert.equal(result.status, 1, result.stderr);
 	assert.match(result.stderr, /npx playwright install chromium/);
 	assert.doesNotMatch(result.stdout, /Server di sviluppo/);
+});
+
+// La correzione del caso senza foto non deve indebolire il requisito delle vecchie varianti.
+test('aperture testuali senza foto e obbligo foto delle varianti esistenti', async () => {
+	await withProjectModules(async (load) => {
+		const { schema } = await load('/src/blocks/hero/schema.ts');
+		const hero = schema({ image: () => z.string() });
+		const content = { title: 'Piante per la casa', primaryCta: { label: 'Scopri i servizi', href: '#servizi' } };
+		for (const variant of ['centered', 'editoriale', 'manifesto']) assert(hero.safeParse({ ...content, variant }).success, variant);
+		for (const variant of ['split', 'full']) {
+			const result = hero.safeParse({ ...content, variant });
+			assert(!result.success, `${variant} deve ancora richiedere la foto`);
+			assert(result.error.issues.some((issue: { path: string[] }) => issue.path[0] === 'image'));
+			assert(hero.safeParse({ ...content, variant, image: { src: 'fixture.jpg', alt: 'Pianta in vaso' } }).success);
+		}
+	});
 });

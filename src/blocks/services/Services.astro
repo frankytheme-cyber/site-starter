@@ -12,6 +12,9 @@ const { id, tone, variant, eyebrow, title, intro, items } = Astro.props;
 
 const isAlternato = variant === 'alternato';
 const isSchede = variant === 'schede';
+const isElenco = variant === 'elenco';
+const isEditoriale = variant === 'editoriale';
+const isTextLayout = isElenco || isEditoriale;
 
 // 2 e 4 card stanno su due colonne, 3, 5 e 6 su tre: niente card sole sull'ultima riga di una griglia da 2×2.
 const twoColumns = items.length === 2 || items.length === 4;
@@ -22,101 +25,118 @@ const cardSizes = twoColumns
 ---
 
 <Section id={id} tone={tone}>
-	<div class="mx-auto max-w-2xl text-center">
-		{eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider text-primary uppercase">{eyebrow}</p>}
-		<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
-		{intro && <p class="mt-4 text-lg text-pretty text-fg-muted">{intro}</p>}
-	</div>
+	<div class:list={[isEditoriale && 'grid gap-12 lg:grid-cols-3 lg:gap-20']}>
+		<div class:list={[!isTextLayout && 'mx-auto max-w-2xl text-center', isTextLayout && 'max-w-2xl']}>
+			{eyebrow && <p class="mb-4 text-sm font-semibold tracking-wider text-primary uppercase">{eyebrow}</p>}
+			<h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">{title}</h2>
+			{intro && <p class="mt-4 text-lg text-pretty text-fg-muted">{intro}</p>}
+		</div>
 
-	{
-		isSchede && (
-			<TabsList label={title} tabs={items.map((item) => item.title)} class="mt-12">
-				{items.map((item, index) => (
-					<Fragment slot={`panel-${index}`}>
-						<div class:list={['grid gap-8', item.image && 'md:grid-cols-2 md:items-center lg:gap-12']}>
+		{isTextLayout && (
+			<ul class:list={[isEditoriale ? 'lg:col-span-2' : 'mt-10']}>
+				{items.map((item) => (
+					<li class:list={['border-t border-border py-8 last:border-b', isElenco && 'grid gap-4 lg:grid-cols-12 lg:gap-8', isEditoriale && 'first:pt-0 first:border-t-0 lg:py-10']}>
+						<div class:list={['flex items-baseline gap-4', isElenco && 'lg:col-span-4']}>
+							{item.icon && <span class="shrink-0 self-center text-primary"><Icon name={item.icon} size="md" /></span>}
+							<h3 class:list={['font-bold tracking-tight text-balance', isEditoriale ? 'text-2xl' : 'text-xl sm:text-2xl']}>{item.title}</h3>
+						</div>
+						<p class:list={['max-w-prose text-pretty text-fg-muted', isEditoriale ? 'mt-4 text-lg' : item.link ? 'lg:col-span-5' : 'lg:col-span-8']}>{item.text}</p>
+						{item.link && <p class:list={[isEditoriale ? 'mt-5' : 'lg:col-span-3 lg:justify-self-end']}><CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} /></p>}
+					</li>
+				))}
+			</ul>
+		)}
+
+		{
+			isSchede && (
+				<TabsList label={title} tabs={items.map((item) => item.title)} class="mt-12">
+					{items.map((item, index) => (
+						<Fragment slot={`panel-${index}`}>
+							<div class:list={['grid gap-8', item.image && 'md:grid-cols-2 md:items-center lg:gap-12']}>
+								{item.image && (
+									<Img
+										src={item.image.src}
+										alt={item.image.alt}
+										sizes="(min-width: 1152px) 520px, (min-width: 768px) 45vw, 100vw"
+										class="aspect-4/3 w-full rounded-box object-cover"
+									/>
+								)}
+								<div class="max-w-2xl">
+									<p class="text-lg text-pretty text-fg-muted">{item.text}</p>
+									{item.link && (
+										<p class="mt-6">
+											<CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} />
+										</p>
+									)}
+								</div>
+							</div>
+						</Fragment>
+					))}
+				</TabsList>
+			)
+		}
+
+		{
+			isSchede || isTextLayout ? null : isAlternato ? (
+				<ul class="mt-16 grid gap-16 lg:gap-24">
+					{items.map((item, index) => (
+						<li class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
 							{item.image && (
 								<Img
 									src={item.image.src}
 									alt={item.image.alt}
-									sizes="(min-width: 1152px) 520px, (min-width: 768px) 45vw, 100vw"
-									class="aspect-4/3 w-full rounded-box object-cover"
+									sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 100vw"
+									class:list={['aspect-4/3 w-full rounded-box object-cover', index % 2 === 1 && 'lg:order-last']}
 								/>
 							)}
-							<div class="max-w-2xl">
-								<p class="text-lg text-pretty text-fg-muted">{item.text}</p>
+							<div>
+								<h3 class="text-2xl font-bold tracking-tight">{item.title}</h3>
+								<p class="mt-3 text-lg text-pretty text-fg-muted">{item.text}</p>
 								{item.link && (
 									<p class="mt-6">
 										<CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} />
 									</p>
 								)}
 							</div>
-						</div>
-					</Fragment>
-				))}
-			</TabsList>
-		)
-	}
-
-	{
-		isSchede ? null : isAlternato ? (
-			<ul class="mt-16 grid gap-16 lg:gap-24">
-				{items.map((item, index) => (
-					<li class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
-						{item.image && (
-							<Img
-								src={item.image.src}
-								alt={item.image.alt}
-								sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 100vw"
-								class:list={['aspect-4/3 w-full rounded-box object-cover', index % 2 === 1 && 'lg:order-last']}
-							/>
-						)}
-						<div>
-							<h3 class="text-2xl font-bold tracking-tight">{item.title}</h3>
-							<p class="mt-3 text-lg text-pretty text-fg-muted">{item.text}</p>
-							{item.link && (
-								<p class="mt-6">
-									<CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} />
-								</p>
+						</li>
+					))}
+				</ul>
+			) : (
+				<ul class:list={['mt-12 grid gap-8 sm:grid-cols-2', !twoColumns && 'lg:grid-cols-3']}>
+					{items.map((item) => (
+						<li data-surface class="flex flex-col overflow-hidden rounded-box bg-surface text-surface-fg">
+							{variant === 'cards-immagine' && item.image && (
+								<Img
+									src={item.image.src}
+									alt={item.image.alt}
+									sizes={cardSizes}
+									class="aspect-3/2 w-full object-cover"
+								/>
 							)}
-						</div>
-					</li>
-				))}
-			</ul>
-		) : (
-			<ul class:list={['mt-12 grid gap-8 sm:grid-cols-2', !twoColumns && 'lg:grid-cols-3']}>
-				{items.map((item) => (
-					<li data-surface class="flex flex-col overflow-hidden rounded-box bg-surface text-surface-fg">
-						{variant === 'cards-immagine' && item.image && (
-							<Img
-								src={item.image.src}
-								alt={item.image.alt}
-								sizes={cardSizes}
-								class="aspect-3/2 w-full object-cover"
-							/>
-						)}
-						{/* Senza foto, l'icona nello stesso spazio: le card restano allineate. */}
-						{variant === 'cards-immagine' && !item.image && item.icon && (
-							<div class="flex aspect-3/2 w-full items-center justify-center bg-primary text-primary-fg">
-								<Icon name={item.icon} size="xl" />
+							{/* Senza foto, l'icona nello stesso spazio: le card restano allineate. */}
+							{variant === 'cards-immagine' && !item.image && item.icon && (
+								<div class="flex aspect-3/2 w-full items-center justify-center bg-primary text-primary-fg">
+									<Icon name={item.icon} size="xl" />
+								</div>
+							)}
+							<div class="flex flex-1 flex-col p-6">
+								{variant === 'cards-icone' && item.icon && (
+									<span class="mb-5 flex size-12 items-center justify-center rounded-button bg-primary text-primary-fg">
+										<Icon name={item.icon} size="lg" />
+									</span>
+								)}
+								<h3 class="text-xl font-bold tracking-tight">{item.title}</h3>
+								<p class="mt-2 text-pretty text-fg-muted">{item.text}</p>
+								{item.link && (
+									<p class="mt-auto pt-5">
+										<CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} />
+									</p>
+								)}
 							</div>
-						)}
-						<div class="flex flex-1 flex-col p-6">
-							{variant === 'cards-icone' && item.icon && (
-								<span class="mb-5 flex size-12 items-center justify-center rounded-button bg-primary text-primary-fg">
-									<Icon name={item.icon} size="lg" />
-								</span>
-							)}
-							<h3 class="text-xl font-bold tracking-tight">{item.title}</h3>
-							<p class="mt-2 text-pretty text-fg-muted">{item.text}</p>
-							{item.link && (
-								<p class="mt-auto pt-5">
-									<CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} />
-								</p>
-							)}
-						</div>
-					</li>
-				))}
-			</ul>
-		)
-	}
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</div>
 </Section>

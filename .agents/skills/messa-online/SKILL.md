@@ -21,7 +21,7 @@ Per l'agente che lavora con Simone, nella repo del sito. Verifichi tutto, correg
 2. **Confronto con il brief**, che i controlli non coprono:
    - servizi, zone, orari e recapiti uguali al brief, in `site.json` e nelle pagine;
    - ogni pagina prevista dal brief esiste, nessuna in più; nessuna `"draft": true` rimasta;
-   - recensioni e numeri solo con una fonte presente nel brief; foto dei lavori vere, stock dichiarato in `docs/nota-design.md`;
+   - recensioni e numeri solo con una fonte presente nel brief; foto dei lavori vere, fonti delle immagini dichiarate in `docs/nota-design.md`; placeholder sostituiti o approvati esplicitamente da Simone come immagini illustrative definitive, secondo [la regola](../nuovo-sito/immagini-placeholder.md);
    - testi di privacy e cookie quelli forniti o approvati da Simone.
 
 3. **SEO**, sulla build con l’indirizzo vero di `site.json`. Questa build aggiuntiva serve: quella della QA usa l’URL dell’anteprima per canonical e Open Graph.
