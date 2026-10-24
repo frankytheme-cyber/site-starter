@@ -8,6 +8,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Correzioni
 
+- Catalogo, pagina Sfondi: la scheda Decoro mostra «Punti» quando nella barra è scelto «nessuno», invece di restare piena.
 - Screenshot di design: le immagini senza sorgente del popup non consumano il timeout; risorse visibili fallite sono segnalate. Chromium viene verificato prima di avviare Astro e le risorse si chiudono anche in caso di errore.
 - Inventario delle foto ricorsivo, senza fixture o symlink; preparazione in posizione con sostituzione solo dopo la codifica riuscita.
 
