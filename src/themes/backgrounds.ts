@@ -44,7 +44,7 @@ export const BACKGROUND_META: Record<Background, BackgroundMeta> = {
 	aurora: {
 		name: 'Aurora',
 		description: 'Tre aloni morbidi di primary, accent e del tono vicino, sparsi nella sezione (mesh gradient): l’effetto più scenografico.',
-		whenToUse: 'Solo per l’apertura (hero) o l’invito finale (cta), una volta per pagina.',
+		whenToUse: 'Solo per l’apertura (hero, slider) o l’invito finale (cta), una volta per pagina.',
 	},
 	decoro: {
 		name: 'Decoro',

@@ -8,13 +8,13 @@
  *
  * Il resto sono regole di contenuto. Senza --strict sono tutti avvisi. Con --strict:
  * - regole strutturali, errori ovunque: telefoni, email o P.IVA scritti nei testi delle sezioni;
- *   più di un hero; id di sezione duplicati; link interni a pagine o ancore inesistenti; alt uguale
+ *   più di una sezione di apertura (hero o slider); id di sezione duplicati; link interni a pagine o ancore inesistenti; alt uguale
  *   al nome del file; JSON non valido;
  * - segnaposto (DA-COMPILARE, og-DA-COMPILARE, lorem, TODO, […]): errori nei siti cliente, avvisi
  *   nella libreria, dove il template li contiene per scelta.
  * Sempre avvisi: due sezioni consecutive con lo stesso tone; più di 3 sezioni con un effetto di
  * sfondo, o due vicine; background "decoro" con pattern "nessuno" in theme.json; più di 2 bordi in
- * alto (edge), un bordo sulla prima sezione o dopo una sezione dello stesso tone; più di 12 sezioni; prima sezione che non è un hero; più di un accordion faq
+ * alto (edge), un bordo sulla prima sezione o dopo una sezione dello stesso tone; più di 12 sezioni; prima sezione che non è un hero o uno slider; più di un accordion faq
  * (i dati strutturati FAQPage sarebbero più di uno); nessuna cta (non nelle pagine legali,
  * "kind": "legale", né in quelle con noindex).
  *
@@ -48,9 +48,12 @@ import { withProjectModules } from './lib/vite.ts';
 const OG_HINT = 'metti l’immagine vera per i social: defaultOgImage in site.json («Dati attività»), o ogImage nella pagina';
 
 /** Chiavi che non contengono testo per chi visita: niente controlli sul contenuto. */
-const NOT_TEXT = new Set(['$schema', 'type', 'id', 'tone', 'background', 'edge', 'overlay', 'variant', 'icon']);
+const NOT_TEXT = new Set(['$schema', 'type', 'id', 'tone', 'background', 'edge', 'overlay', 'variant', 'icon', 'arrows', 'animation']);
 
 /** Recapiti da cercare nei testi, nell'ordine: un pezzo di testo già preso non si conta due volte. */
+/** I blocchi che aprono la pagina, con l'h1: hero o slider. */
+const isOpening = (section: JsonObject) => section.type === 'hero' || section.type === 'slider';
+
 const BUSINESS_DATA: { label: string; pattern: RegExp; accept?: (match: string) => boolean }[] = [
 	{ label: 'un indirizzo email', pattern: /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g },
 	// «P.IVA 01234567890» è un recapito solo, la parola da sola o il numero da solo pure.
@@ -213,13 +216,14 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 			}
 		});
 
-		const heroes = sections.flatMap((section, index) => (section.type === 'hero' ? [index] : []));
+		// hero e slider aprono la pagina e contengono l'h1: uno solo dei due.
+		const heroes = sections.flatMap((section, index) => (isOpening(section) ? [index] : []));
 		if (heroes.length > 1) {
 			rule({
 				file,
 				where: heroes.map((index) => `sezione ${index + 1}`).join(', '),
-				message: `${heroes.length} hero nella pagina`,
-				hint: 'ne va uno solo, in apertura: per le altre sezioni usa services o cta',
+				message: `${heroes.length} sezioni di apertura (hero o slider) nella pagina`,
+				hint: 'ne va una sola, in apertura: per le altre sezioni usa services, gallery o cta',
 			});
 		}
 
@@ -262,8 +266,8 @@ export async function recipes({ root, strict, isLibrary }: CheckContext): Promis
 				hint: 'togli edge dalla prima sezione; mettilo su una sezione più in basso, dopo una di tone diverso',
 			});
 		}
-		if (content.length > 0 && content[0].section.type !== 'hero') {
-			warning({ file, where: sectionLabel(content[0].section, content[0].index), message: 'la pagina non si apre con un hero' });
+		if (content.length > 0 && !isOpening(content[0].section)) {
+			warning({ file, where: sectionLabel(content[0].section, content[0].index), message: 'la pagina non si apre con un hero o uno slider' });
 		}
 		for (let i = 1; i < content.length; i++) {
 			const { section, index } = content[i];

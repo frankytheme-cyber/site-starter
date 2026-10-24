@@ -5,6 +5,7 @@
  * - accordion: Invio e Spazio sul titolo aprono e chiudono; con single, aprirne una chiude le altre.
  * - tabs @1280: frecce, Home/End, tabindex mobile, un pannello visibile alla volta. @375: accordion al posto delle schede.
  * - carousel: freccia successiva e pallini (aria-current), freccia precedente disabilitata all'inizio, niente autoplay.
+ * - slider in dissolvenza: pallini, freccia precedente disabilitata all'inizio, niente autoplay, freccia successiva da tastiera, slide nascoste inerti, frecce della tastiera sulla traccia.
  * - gallery: la miniatura si apre da tastiera in una finestra (focus dentro, frecce, Esc, focus di ritorno, scroll sbloccato); il cursore prima-dopo si muove con le frecce.
  * - email: nessuna pagina generata ha un mailto: o l'email di site.json in chiaro; con JS ogni link email (EmailLink) ha il mailto:, il testo è l'indirizzo e i pulsanti @email sono visibili.
  * Ogni componente si prova sulla prima pagina che lo contiene (prima le pagine del sito, poi il catalogo).
@@ -215,6 +216,42 @@ export async function interactive({ baseUrl }: CheckContext) {
 				await page.waitForTimeout(800);
 				expect('carosello', (await current()) === 1, 'dopo la freccia successiva il secondo pallino non ha aria-current');
 				expect('carosello', !(await prev.isDisabled()), 'dopo la freccia successiva la precedente resta disabilitata');
+			}
+			await page.close();
+		}
+
+		// ------------------------------------------------------------------ slider (dissolvenza: JS proprio, non scroll)
+		const sliderPath = pageWith(/<div[^>]*\sdata-slider-variant="dissolvenza"/);
+		if (!sliderPath) warning({ message: 'nessuna pagina con uno slider in dissolvenza da provare' });
+		else {
+			const expect = expectFor(sliderPath);
+			const page = await open(browser, sliderPath, DESKTOP);
+			const slider = page.locator('[data-slider-variant="dissolvenza"]').first();
+			await slider.scrollIntoViewIfNeeded();
+			const prev = slider.locator('[data-slider-prev]:visible');
+			const next = slider.locator('[data-slider-next]:visible');
+			const dots = slider.locator('[data-slider-dots] button');
+			const state = () =>
+				slider.evaluate((element) =>
+					[...element.querySelectorAll<HTMLElement>('[data-slider-slide]')].map((slide) => ({ active: slide.hasAttribute('data-active'), inert: slide.inert })),
+				);
+			const activeIndex = async () => (await state()).findIndex((slide) => slide.active);
+			await page.waitForTimeout(300);
+			if ((await next.count()) === 0) error({ where: sliderPath, message: 'frecce dello slider non visibili: lo script non è partito' });
+			else {
+				expect('slider', (await dots.count()) > 1, 'meno di due pallini');
+				expect('slider', (await dots.first().getAttribute('aria-current')) === 'true', 'all’inizio il primo pallino non ha aria-current');
+				expect('slider', await prev.first().isDisabled(), 'all’inizio la freccia precedente non è disabilitata');
+				await page.waitForTimeout(2500);
+				expect('slider', (await activeIndex()) === 0, 'lo slider cambia slide da solo (autoplay)');
+				await next.first().focus();
+				await press(page, 'Enter');
+				const slides = await state();
+				expect('slider', slides.findIndex((slide) => slide.active) === 1, 'dopo la freccia successiva non è attiva la seconda slide');
+				expect('slider', slides.every((slide) => slide.inert === !slide.active), 'le slide nascoste non sono inerti (il Tab ci entrerebbe)');
+				await slider.locator('[data-slider-track]').focus();
+				await press(page, 'ArrowLeft');
+				expect('slider', (await activeIndex()) === 0, 'la freccia sinistra della tastiera non torna alla slide precedente');
 			}
 			await page.close();
 		}

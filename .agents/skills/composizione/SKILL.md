@@ -86,5 +86,5 @@ Una ricetta per ogni pagina del brief; layout e menu scritti; nota di design com
 - Non scrivere CSS, componenti o pagine `.astro` nel sito e non toccare i file gestiti. Se un blocco o una variante non basta, proponi a Simone il lavoro nella libreria (skill `nuovo-blocco`, sezione «Prima»).
 - Non forzare un blocco a fare altro: la scheda dice quando evitarlo.
 - Mai dati inventati: recapiti, numeri, recensioni, foto di lavori o di persone che non ci sono.
-- Mai più di un hero per pagina, e sempre come prima sezione.
+- Mai più di un'apertura per pagina (hero o slider), e sempre come prima sezione. Lo slider solo con 2-5 foto di qualità di servizi o ambienti diversi; con una foto sola, hero `full`.
 - Non chiudere in voci da aprire (accordion, tabs) ciò che tutti devono leggere, come prezzi e garanzie.

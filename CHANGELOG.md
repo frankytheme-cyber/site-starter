@@ -13,7 +13,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
-- `hero` 1.4.0, variante `slider`: da 2 a 5 foto con velatura e testo bianco, da sfogliare con frecce, pallini, dito o tastiera, senza scorrimento automatico. La prima slide usa i campi della hero (h1), le altre il nuovo campo `slides` (da 1 a 4, titolo h2, pulsante facoltativo).
+- Blocco `slider` 1.0.0, di apertura al posto della hero: da 2 a 5 slide con foto, velatura e testo bianco (la prima con l’h1), da sfogliare con frecce, pallini, dito o tastiera, senza scorrimento automatico. Varianti `scorrimento` e `dissolvenza`; frecce `sotto`, `lati` o `nessuna`; testi e pulsanti che entrano a ogni slide (`animation`: `sale`, `dissolvenza`, `nessuna`), mai col movimento ridotto. JavaScript vanilla, senza librerie. La variante `slider` della hero, mai rilasciata, è sostituita da questo blocco. Il controllo delle ricette accetta `hero` o `slider` in apertura, uno solo per pagina.
 - Catalogo più comodo: `/catalogo` è un indice a schede con miniatura, varianti (link alla variante nella pagina del blocco) e categorie; tutti i blocchi dal vivo passano a `/catalogo/tutti`. La barra sta su una riga, con palette, font, forma, decoro e texture nel pannello «Tema»; su mobile non resta fissa in alto.
 - Pagina del blocco divisa per variante: in alto le varianti con descrizione e numero di esempi; per ognuna «Quando usarla», «Copia JSON», «Apri da sola» e subito sotto le sue fixture dal vivo, non più mescolate in fondo.
 - Indice del catalogo con ricerca (nome, descrizioni, varianti, campi, regole) e filtri «si usa senza foto» e «interattivo», salvati nell'indirizzo; ogni scheda dice se servono foto.
