@@ -10,12 +10,12 @@ Per consultazioni mirate: `npm run catalog:query` (indice breve), `-- hero` (sch
 
 ## Regole d’oro delle ricette
 
-1. Un solo hero per pagina, come prima sezione: contiene l’unico h1. *(controllo recipes)*
+1. Una sola apertura per pagina, hero o slider, come prima sezione: contiene l’unico h1. *(controllo recipes)*
 2. Di norma una cta, verso la fine, dopo i blocchi che convincono (servizi, lavori, domande); non nelle pagine legali ("kind": "legale"). *(controllo recipes)*
 3. Due sezioni vicine non hanno lo stesso tone (default, muted, primary). *(controllo recipes)*
 4. Effetto dello sfondo (background) su poche sezioni: al massimo 3 per pagina, mai in due sezioni vicine. *(controllo recipes)*
 5. Bordo in alto (edge) al massimo su 2 sezioni per pagina, mai sulla prima e solo dopo una sezione di tone diverso, altrimenti non si vede. *(controllo recipes)*
-6. Ogni blocco ammette solo gli effetti di sfondo della sua scheda: aurora solo in hero e cta, moduli, domande, schede e contatti solo pieno o sfumato. *(build)*
+6. Ogni blocco ammette solo gli effetti di sfondo della sua scheda: aurora solo in apertura (hero, slider) e cta, moduli, domande, schede e contatti solo pieno o sfumato. *(build)*
 7. Al massimo 12 sezioni: oltre, meglio dividere la pagina. *(controllo recipes)*
 8. Al massimo un accordion faq per pagina: i dati strutturati FAQPage per Google sono uno solo. *(controllo recipes)*
 9. Solo blocchi e varianti del catalogo; header e footer non sono sezioni ma stanno in layout.json. *(build)*
@@ -48,7 +48,8 @@ Sezioni delle ricette di pagina (`scope: "page"`), nell’ordine in cui compaion
 
 | Blocco | Categoria | Varianti | Quando usarlo |
 | --- | --- | --- | --- |
-| [hero — Hero](blocchi/hero.md) | apertura | `split`, `full`, `slider`, `centered` | Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare). |
+| [hero — Hero](blocchi/hero.md) | apertura | `split`, `full`, `centered` | Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare). |
+| [slider — Slider](blocchi/slider.md) | apertura | `scorrimento`, `dissolvenza` | Come primo blocco della home, al posto della hero, quando l’attività ha più servizi o ambienti da mettere in evidenza subito e una foto di qualità per ognuno. |
 | [accordion — Accordion](blocchi/accordion.md) | contenuti | `faq`, `contenuti` | Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, cosa preparare prima di un appuntamento. |
 | [carousel — Carosello](blocchi/carousel.md) | contenuti | `immagini`, `immagini-testo` | Per una serie di elementi dello stesso tipo che si sfogliano: foto dei lavori finiti, prima e dopo, progetti, recensioni con foto. |
 | [about — Chi siamo](blocchi/about.md) | contenuti | `immagine-testo`, `con-numeri` | Nella pagina «Chi siamo» o come sezione di presentazione in home. Con i numeri solo se il cliente li ha forniti e sa dire da dove vengono. |
@@ -116,11 +117,11 @@ Accanto a `tone`, ogni sezione può avere `background`: un effetto dipinto sopra
 
 | Effetto | Nome | Com’è | Quando usarlo | Blocchi |
 | --- | --- | --- | --- | --- |
-| `pieno` | Pieno | Solo il colore del tono, senza effetti. | La maggior parte delle sezioni: è il valore di partenza. | `hero`, `accordion`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `tabs`, `services`, `contact`, `cta`, `form`, `areas` |
-| `sfumato` | Sfumato | Sfumatura leggera in diagonale verso un velo di primary; sul tono primary verso primary-hover. | Per dare profondità a una sezione senza farla notare; va bene anche dietro a moduli e domande. | `hero`, `accordion`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `tabs`, `services`, `contact`, `cta`, `form`, `areas` |
-| `alone` | Alone | Due luci morbide in angoli opposti, in alto a destra e in basso a sinistra, con primary e accent molto diluiti. | Per scaldare una sezione da far notare: chi siamo, recensioni, invito finale. | `hero`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `services`, `cta`, `areas` |
-| `aurora` | Aurora | Tre aloni morbidi di primary, accent e del tono vicino, sparsi nella sezione (mesh gradient): l’effetto più scenografico. | Solo per l’apertura (hero) o l’invito finale (cta), una volta per pagina. | `hero`, `cta` |
-| `decoro` | Decoro | Il motivo del sito (pattern di theme.json: punti, griglia, righe, onde, cerchi o arco) che sfuma verso il centro della sezione. | Per dare carattere a una o due sezioni con lo stesso segno in tutto il sito; con pattern «nessuno» la sezione resta piena. | `hero`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `services`, `cta`, `areas` |
+| `pieno` | Pieno | Solo il colore del tono, senza effetti. | La maggior parte delle sezioni: è il valore di partenza. | `hero`, `slider`, `accordion`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `tabs`, `services`, `contact`, `cta`, `form`, `areas` |
+| `sfumato` | Sfumato | Sfumatura leggera in diagonale verso un velo di primary; sul tono primary verso primary-hover. | Per dare profondità a una sezione senza farla notare; va bene anche dietro a moduli e domande. | `hero`, `slider`, `accordion`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `tabs`, `services`, `contact`, `cta`, `form`, `areas` |
+| `alone` | Alone | Due luci morbide in angoli opposti, in alto a destra e in basso a sinistra, con primary e accent molto diluiti. | Per scaldare una sezione da far notare: chi siamo, recensioni, invito finale. | `hero`, `slider`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `services`, `cta`, `areas` |
+| `aurora` | Aurora | Tre aloni morbidi di primary, accent e del tono vicino, sparsi nella sezione (mesh gradient): l’effetto più scenografico. | Solo per l’apertura (hero, slider) o l’invito finale (cta), una volta per pagina. | `hero`, `slider`, `cta` |
+| `decoro` | Decoro | Il motivo del sito (pattern di theme.json: punti, griglia, righe, onde, cerchi o arco) che sfuma verso il centro della sezione. | Per dare carattere a una o due sezioni con lo stesso segno in tutto il sito; con pattern «nessuno» la sezione resta piena. | `hero`, `slider`, `carousel`, `about`, `process`, `gallery`, `features`, `testimonials`, `services`, `cta`, `areas` |
 
 ![Effetto Sfumato sui toni default, muted e primary](img/sfondo-sfumato-desktop.webp)
 ![Effetto Alone sui toni default, muted e primary](img/sfondo-alone-desktop.webp)

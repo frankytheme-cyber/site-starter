@@ -1,0 +1,267 @@
+---
+/**
+ * Slider di apertura: slide a tutta larghezza con foto, velatura e testo bianco. Senza JS è una traccia
+ * a scorrimento orizzontale (scroll-snap) in entrambe le varianti; con JS aggiunge frecce e pallini e,
+ * in dissolvenza, impila le slide e le sfuma una nell'altra (swipe col dito, frecce della tastiera).
+ * Niente scorrimento automatico. Regole: docs/blocchi-interattivi.md.
+ */
+import Button from '@/core/ui/button/Button.astro';
+import CtaButton from '@/core/ui/button/CtaButton.astro';
+import Img from '@/core/ui/Img.astro';
+import Section from '@/core/ui/Section.astro';
+import type { SliderProps } from './schema';
+
+type Props = SliderProps;
+
+const { id, tone, variant, slides, arrows, animation, overlay } = Astro.props;
+
+const label = slides[0].title;
+const sideArrows = arrows === 'lati';
+---
+
+<Section id={id} tone={tone}>
+	<div
+		data-slider
+		data-slider-variant={variant}
+		data-slider-animation={animation}
+		role="region"
+		aria-roledescription="carosello"
+		aria-label={label}
+	>
+		<div class="relative">
+			<div
+				data-slider-track
+				tabindex="0"
+				aria-label={`${label}: scorri per vedere tutto`}
+				class="flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain rounded-box motion-safe:scroll-smooth"
+			>
+				{
+					slides.map((slide, index) => {
+						const Heading = index === 0 ? 'h1' : 'h2';
+						return (
+							<div
+								data-slider-slide
+								role="group"
+								aria-roledescription="slide"
+								class:list={[
+									'relative isolate flex min-h-112 shrink-0 basis-full snap-start items-end overflow-hidden rounded-box p-6 sm:p-10 lg:min-h-128 lg:p-16',
+									sideArrows && 'md:px-24 lg:px-28',
+								]}
+							>
+								<Img
+									src={slide.image.src}
+									alt={slide.image.alt}
+									priority={index === 0}
+									sizes="(min-width: 1152px) 1152px, 100vw"
+									class="absolute inset-0 -z-10 size-full object-cover"
+								/>
+								{/* Stessa velatura della hero full: il testo bianco è verificato dal check contrast. */}
+								<div
+									class:list={['absolute inset-0 -z-10', overlay !== 'colorata' && 'bg-black/60']}
+									data-overlay={overlay === 'colorata' ? 'colorata' : undefined}
+								/>
+								{/* data-on-photo: sulla foto i pulsanti diventano chiari (core/ui/button/button.css). */}
+								<div class="max-w-2xl text-white" data-on-photo>
+									{slide.eyebrow && (
+										<p data-slider-reveal class="mb-4 text-sm font-semibold tracking-wider uppercase">
+											{slide.eyebrow}
+										</p>
+									)}
+									<Heading data-slider-reveal style="--slider-step: 1" class="text-4xl font-bold tracking-tight text-balance sm:text-5xl">
+										{slide.title}
+									</Heading>
+									{slide.subtitle && (
+										<p data-slider-reveal style="--slider-step: 2" class="mt-6 text-lg text-pretty sm:text-xl">
+											{slide.subtitle}
+										</p>
+									)}
+									{slide.primaryCta && (
+										<div
+											data-slider-reveal
+											style="--slider-step: 3"
+											class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
+										>
+											<CtaButton cta={slide.primaryCta} tone={tone} />
+											{slide.secondaryCta && <CtaButton cta={slide.secondaryCta} defaultStyle="secondary" tone={tone} />}
+										</div>
+									)}
+								</div>
+							</div>
+						);
+					})
+				}
+			</div>
+			{
+				sideArrows && (
+					<div
+						data-slider-js-only
+						hidden
+						data-on-photo
+						class="pointer-events-none absolute inset-y-0 inset-x-4 hidden items-center justify-between md:flex lg:inset-x-6"
+					>
+						<Button class="pointer-events-auto" variant="primary" icon="freccia-sinistra" aria-label="Precedente" data-slider-prev />
+						<Button class="pointer-events-auto" variant="primary" icon="freccia-destra" aria-label="Successiva" data-slider-next />
+					</div>
+				)
+			}
+		</div>
+		<div
+			data-slider-js-only
+			hidden
+			class:list={['mt-4 flex items-center gap-4', arrows === 'nessuna' ? 'justify-center' : 'justify-between', sideArrows && 'md:justify-center']}
+		>
+			<div data-slider-dots class="flex flex-wrap items-center gap-1"></div>
+			{
+				arrows !== 'nessuna' && (
+					<div class:list={['flex gap-2', sideArrows && 'md:hidden']}>
+						<Button variant="secondary" size="sm" icon="freccia-sinistra" aria-label="Precedente" data-slider-prev />
+						<Button variant="secondary" size="sm" icon="freccia-destra" aria-label="Successiva" data-slider-next />
+					</div>
+				)
+			}
+		</div>
+	</div>
+</Section>
+
+<style is:global>
+	/* Dissolvenza: con JS le slide stanno una sopra l'altra; la nuova sfuma sopra la vecchia, che sparisce dopo. */
+	[data-slider][data-js][data-slider-variant="dissolvenza"] [data-slider-track] {
+		display: grid;
+		overflow: hidden;
+		touch-action: pan-y;
+	}
+
+	[data-slider][data-js][data-slider-variant="dissolvenza"] [data-slider-slide] {
+		grid-area: 1 / 1;
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	[data-slider][data-js][data-slider-variant="dissolvenza"] [data-slider-slide][data-active] {
+		z-index: 1;
+		opacity: 1;
+		visibility: visible;
+	}
+
+	/* Animazioni solo per chi non ha chiesto di ridurre il movimento: altrimenti tutto compare subito. */
+	@media (prefers-reduced-motion: no-preference) {
+		[data-slider][data-js][data-slider-variant="dissolvenza"] [data-slider-slide] {
+			transition:
+				opacity 0s 300ms,
+				visibility 0s 300ms;
+		}
+
+		[data-slider][data-js][data-slider-variant="dissolvenza"] [data-slider-slide][data-active] {
+			transition: opacity 300ms ease-out;
+		}
+
+		/* Testi e pulsanti entrano a ogni slide, uno dopo l'altro (--slider-step); escono senza animazione. */
+		[data-slider][data-js]:not([data-slider-animation="nessuna"]) [data-slider-slide]:not([data-active]) [data-slider-reveal] {
+			opacity: 0;
+		}
+
+		[data-slider][data-js][data-slider-animation="sale"] [data-slider-slide]:not([data-active]) [data-slider-reveal] {
+			transform: translateY(1.5rem);
+		}
+
+		[data-slider][data-js] [data-slider-slide][data-active] [data-slider-reveal] {
+			transition:
+				opacity 300ms ease-out,
+				transform 300ms ease-out;
+			transition-delay: calc(var(--slider-step, 0) * 100ms + var(--slider-delay, 0ms));
+		}
+
+		/* In dissolvenza i testi aspettano che la foto sia comparsa. */
+		[data-slider][data-js][data-slider-variant="dissolvenza"] {
+			--slider-delay: 200ms;
+		}
+	}
+</style>
+
+<script>
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	for (const slider of document.querySelectorAll<HTMLElement>('[data-slider]')) {
+		const track = slider.querySelector<HTMLElement>('[data-slider-track]')!;
+		const dots = slider.querySelector<HTMLElement>('[data-slider-dots]')!;
+		const slides = [...track.querySelectorAll<HTMLElement>(':scope > [data-slider-slide]')];
+		const prevs = [...slider.querySelectorAll<HTMLButtonElement>('[data-slider-prev]')];
+		const nexts = [...slider.querySelectorAll<HTMLButtonElement>('[data-slider-next]')];
+		const fade = slider.dataset.sliderVariant === 'dissolvenza';
+		if (slides.length < 2) continue;
+
+		slider.dataset.js = '';
+		slider.querySelectorAll<HTMLElement>('[data-slider-js-only]').forEach((element) => (element.hidden = false));
+		slides.forEach((slide, index) => slide.setAttribute('aria-label', `${index + 1} di ${slides.length}`));
+
+		const dotButtons = slides.map((_, index) => {
+			const dot = document.createElement('button');
+			dot.type = 'button';
+			dot.className = 'group flex size-6 items-center justify-center rounded-full';
+			dot.setAttribute('aria-label', `Vai alla slide ${index + 1} di ${slides.length}`);
+			dot.innerHTML = '<span class="size-2.5 rounded-full bg-current opacity-35 group-aria-current:opacity-100 group-aria-current:scale-125 motion-safe:transition"></span>';
+			dot.addEventListener('click', () => goTo(index));
+			return dot;
+		});
+		dots.replaceChildren(...dotButtons);
+
+		let active = -1;
+
+		// Slide attiva: data-active fa partire l'animazione dei testi; in dissolvenza le altre sono inerti (nascoste).
+		const render = (index: number) => {
+			if (index === active) return;
+			active = index;
+			slides.forEach((slide, i) => {
+				slide.toggleAttribute('data-active', i === index);
+				if (fade) slide.inert = i !== index;
+			});
+			dotButtons.forEach((dot, i) => {
+				if (i === index) dot.setAttribute('aria-current', 'true');
+				else dot.removeAttribute('aria-current');
+			});
+			prevs.forEach((button) => (button.disabled = index === 0));
+			nexts.forEach((button) => (button.disabled = index === slides.length - 1));
+		};
+
+		const goTo = (index: number) => {
+			const target = Math.max(0, Math.min(slides.length - 1, index));
+			if (fade) render(target);
+			else track.scrollTo({ left: slides[target].offsetLeft - slides[0].offsetLeft, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+		};
+
+		prevs.forEach((button) => button.addEventListener('click', () => goTo(active - 1)));
+		nexts.forEach((button) => button.addEventListener('click', () => goTo(active + 1)));
+
+		if (fade) {
+			// La traccia non scorre più: frecce della tastiera e swipe orizzontale cambiano slide.
+			track.addEventListener('keydown', (event) => {
+				if (event.target !== track) return;
+				if (event.key === 'ArrowRight') goTo(active + 1);
+				else if (event.key === 'ArrowLeft') goTo(active - 1);
+				else return;
+				event.preventDefault();
+			});
+			let startX: number | undefined;
+			track.addEventListener('pointerdown', (event) => (startX = event.clientX));
+			track.addEventListener('pointerup', (event) => {
+				if (startX === undefined) return;
+				const delta = event.clientX - startX;
+				startX = undefined;
+				if (Math.abs(delta) > 40) goTo(active + (delta < 0 ? 1 : -1));
+			});
+			track.addEventListener('pointercancel', () => (startX = undefined));
+		} else {
+			// La slide attiva è quella ben visibile nella traccia: IntersectionObserver, non eventi di scroll.
+			const observer = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) if (entry.isIntersecting) render(slides.indexOf(entry.target as HTMLElement));
+				},
+				{ root: track, threshold: 0.6 },
+			);
+			slides.forEach((slide) => observer.observe(slide));
+		}
+
+		// Due frame dopo l'avvio, così anche i testi della prima slide entrano con l'animazione.
+		requestAnimationFrame(() => requestAnimationFrame(() => active === -1 && render(0)));
+	}
+</script>

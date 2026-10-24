@@ -3,7 +3,7 @@
 	"version": "0.0.5",
 	"recipeRules": [
 		{
-			"rule": "Un solo hero per pagina, come prima sezione: contiene l’unico h1.",
+			"rule": "Una sola apertura per pagina, hero o slider, come prima sezione: contiene l’unico h1.",
 			"check": "recipes"
 		},
 		{
@@ -23,7 +23,7 @@
 			"check": "recipes"
 		},
 		{
-			"rule": "Ogni blocco ammette solo gli effetti di sfondo della sua scheda: aurora solo in hero e cta, moduli, domande, schede e contatti solo pieno o sfumato.",
+			"rule": "Ogni blocco ammette solo gli effetti di sfondo della sua scheda: aurora solo in apertura (hero, slider) e cta, moduli, domande, schede e contatti solo pieno o sfumato.",
 			"check": "build"
 		},
 		{
@@ -917,6 +917,7 @@
 			"whenToUse": "La maggior parte delle sezioni: è il valore di partenza.",
 			"blocks": [
 				"hero",
+				"slider",
 				"accordion",
 				"carousel",
 				"about",
@@ -939,6 +940,7 @@
 			"whenToUse": "Per dare profondità a una sezione senza farla notare; va bene anche dietro a moduli e domande.",
 			"blocks": [
 				"hero",
+				"slider",
 				"accordion",
 				"carousel",
 				"about",
@@ -962,6 +964,7 @@
 			"whenToUse": "Per scaldare una sezione da far notare: chi siamo, recensioni, invito finale.",
 			"blocks": [
 				"hero",
+				"slider",
 				"carousel",
 				"about",
 				"process",
@@ -978,9 +981,10 @@
 			"key": "aurora",
 			"name": "Aurora",
 			"description": "Tre aloni morbidi di primary, accent e del tono vicino, sparsi nella sezione (mesh gradient): l’effetto più scenografico.",
-			"whenToUse": "Solo per l’apertura (hero) o l’invito finale (cta), una volta per pagina.",
+			"whenToUse": "Solo per l’apertura (hero, slider) o l’invito finale (cta), una volta per pagina.",
 			"blocks": [
 				"hero",
+				"slider",
 				"cta"
 			],
 			"screenshot": "img/sfondo-aurora-desktop.webp"
@@ -992,6 +996,7 @@
 			"whenToUse": "Per dare carattere a una o due sezioni con lo stesso segno in tutto il sito; con pattern «nessuno» la sezione resta piena.",
 			"blocks": [
 				"hero",
+				"slider",
 				"carousel",
 				"about",
 				"process",
@@ -1841,8 +1846,8 @@
 			"name": "Hero",
 			"scope": "page",
 			"category": "apertura",
-			"version": "1.4.0",
-			"interactive": true,
+			"version": "1.3.0",
+			"interactive": false,
 			"source": {
 				"from": "originale"
 			},
@@ -1850,8 +1855,7 @@
 			"whenToUse": "Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare).",
 			"avoidWhen": "A metà pagina o più di una volta nella stessa pagina: contiene l’unico h1. Per inviti all’azione intermedi serve un blocco dedicato.",
 			"rules": [
-				"Le varianti split, full e slider richiedono la foto (image).",
-				"La variante slider richiede almeno un’altra slide (slides)."
+				"Le varianti split e full richiedono la foto (image)."
 			],
 			"backgrounds": [
 				"pieno",
@@ -1884,17 +1888,6 @@
 					}
 				},
 				{
-					"name": "slider",
-					"description": "Da 2 a 5 foto con velatura e testo bianco, una alla volta, da sfogliare con frecce, pallini, dito o tastiera; non scorre mai da sola. Il titolo della prima slide è l’h1.",
-					"whenToUse": "Quando l’attività ha più servizi o ambienti da mettere in evidenza subito e foto di qualità per ognuno; con una foto sola usa full.",
-					"fixture": "Slider",
-					"preview": "/catalogo/hero/slider/",
-					"screenshots": {
-						"desktop": "img/hero-slider-desktop.webp",
-						"mobile": "img/hero-slider-mobile.webp"
-					}
-				},
-				{
 					"name": "centered",
 					"description": "Solo testo, centrato, senza foto.",
 					"whenToUse": "Pagine interne (servizi, contatti, note legali) o quando manca una foto adatta.",
@@ -1911,17 +1904,16 @@
 					"path": "variant",
 					"type": "scelta",
 					"required": true,
-					"limits": "`split` · `full` · `centered` · `slider`",
+					"limits": "`split` · `full` · `centered`",
 					"constraints": {
 						"values": [
 							"split",
 							"full",
-							"centered",
-							"slider"
+							"centered"
 						]
 					},
 					"label": "Variante",
-					"hint": "split: testo e foto affiancati · full: foto a tutta larghezza · centered: solo testo · slider: da 2 a 5 foto con testo, da sfogliare"
+					"hint": "split: testo e foto affiancati · full: foto a tutta larghezza · centered: solo testo"
 				},
 				{
 					"path": "eyebrow",
@@ -2088,14 +2080,13 @@
 					"required": false,
 					"requiredFor": [
 						"split",
-						"full",
-						"slider"
+						"full"
 					],
 					"limits": "",
 					"constraints": {},
 					"label": "Foto",
-					"hint": "Obbligatoria per le varianti split, full e slider (nello slider è la prima slide)",
-					"note": "centered non la mostra; nello slider è la foto della prima slide."
+					"hint": "Obbligatoria per le varianti split e full",
+					"note": "centered non la mostra."
 				},
 				{
 					"path": "image.src",
@@ -2150,155 +2141,8 @@
 						]
 					},
 					"label": "Velatura",
-					"hint": "Sopra la foto delle varianti full e slider: scura (nera) o colorata (col colore principale del sito); il testo resta bianco e leggibile",
-					"note": "Per le varianti full e slider (tutte le slide); nelle altre non ha effetto."
-				},
-				{
-					"path": "slides",
-					"type": "elenco",
-					"required": false,
-					"requiredFor": [
-						"slider"
-					],
-					"limits": "1–4 voci",
-					"constraints": {
-						"minItems": 1,
-						"maxItems": 4
-					},
-					"label": "Altre slide",
-					"hint": "Solo per la variante slider: da 1 a 4 slide dopo la prima (che usa titolo, testi, pulsanti e foto qui sopra)",
-					"note": "Le altre varianti la ignorano."
-				},
-				{
-					"path": "slides[].eyebrow",
-					"type": "testo",
-					"required": false,
-					"limits": "",
-					"constraints": {},
-					"label": "Occhiello",
-					"hint": "Breve testo sopra il titolo della slide"
-				},
-				{
-					"path": "slides[].title",
-					"type": "testo",
-					"required": true,
-					"requiredWith": "slides",
-					"limits": "max 70",
-					"constraints": {
-						"maxLength": 70
-					},
-					"label": "Titolo",
-					"hint": "Il titolo della slide, al massimo 70 caratteri"
-				},
-				{
-					"path": "slides[].subtitle",
-					"type": "testo",
-					"required": false,
-					"limits": "max 200",
-					"constraints": {
-						"maxLength": 200
-					},
-					"label": "Sottotitolo",
-					"hint": "Una o due frasi, al massimo 200 caratteri"
-				},
-				{
-					"path": "slides[].cta",
-					"type": "gruppo",
-					"required": false,
-					"limits": "",
-					"constraints": {},
-					"label": "Pulsante",
-					"hint": "Facoltativo: l’azione legata a questa slide"
-				},
-				{
-					"path": "slides[].cta.label",
-					"type": "testo",
-					"required": true,
-					"requiredWith": "slides[].cta",
-					"limits": "max 25",
-					"constraints": {
-						"maxLength": 25
-					},
-					"label": "Testo del pulsante",
-					"hint": "Al massimo 25 caratteri"
-				},
-				{
-					"path": "slides[].cta.href",
-					"type": "testo",
-					"required": true,
-					"requiredWith": "slides[].cta",
-					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
-					"constraints": {
-						"patterns": [
-							{
-								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
-								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
-							}
-						]
-					},
-					"label": "Link",
-					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
-				},
-				{
-					"path": "slides[].cta.style",
-					"type": "scelta",
-					"required": false,
-					"limits": "`primary` · `secondary` · `ghost` · `link`",
-					"constraints": {
-						"values": [
-							"primary",
-							"secondary",
-							"ghost",
-							"link"
-						]
-					},
-					"label": "Stile",
-					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
-				},
-				{
-					"path": "slides[].cta.icon",
-					"type": "icona",
-					"required": false,
-					"limits": "[lista icone](../README.md#icone)",
-					"constraints": {
-						"values": "icone"
-					},
-					"label": "Icona",
-					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
-				},
-				{
-					"path": "slides[].image",
-					"type": "gruppo",
-					"required": true,
-					"requiredWith": "slides",
-					"limits": "",
-					"constraints": {},
-					"label": "Foto",
-					"hint": "La foto della slide, sotto il testo bianco con la velatura scelta"
-				},
-				{
-					"path": "slides[].image.src",
-					"type": "immagine",
-					"required": true,
-					"requiredWith": "slides",
-					"limits": "foto in src/assets/images",
-					"constraints": {
-						"format": "image"
-					},
-					"label": "File",
-					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
-				},
-				{
-					"path": "slides[].image.alt",
-					"type": "testo",
-					"required": true,
-					"requiredWith": "slides",
-					"limits": "min 5",
-					"constraints": {
-						"minLength": 5
-					},
-					"label": "Testo alternativo",
-					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
+					"hint": "Sopra la foto della variante full: scura (nera) o colorata (col colore principale del sito); il testo resta bianco e leggibile",
+					"note": "Solo per la variante full; nelle altre non ha effetto."
 				}
 			],
 			"example": {
@@ -2322,6 +2166,371 @@
 						"src": "../../assets/images/fixtures/artigiano-laboratorio.jpg",
 						"alt": "Banco da lavoro in legno con martello, scalpello e sega appesi a un pannello forato"
 					}
+				}
+			}
+		},
+		{
+			"type": "slider",
+			"name": "Slider",
+			"scope": "page",
+			"category": "apertura",
+			"version": "1.0.0",
+			"interactive": true,
+			"source": {
+				"from": "originale"
+			},
+			"description": "Apertura con da 2 a 5 foto a tutta larghezza, velatura e testo bianco, una alla volta: si sfogliano con frecce, pallini, dito o tastiera e non scorrono mai da sole. Il titolo della prima slide è l’h1.",
+			"whenToUse": "Come primo blocco della home, al posto della hero, quando l’attività ha più servizi o ambienti da mettere in evidenza subito e una foto di qualità per ognuno.",
+			"avoidWhen": "Con una foto sola (hero full), con foto piccole o confuse, o a metà pagina: contiene l’h1. Per mostrare lavori o locali più in basso usa gallery.",
+			"rules": [
+				"Il pulsante secondario di una slide va solo insieme al principale (primaryCta)."
+			],
+			"backgrounds": [
+				"pieno",
+				"sfumato",
+				"alone",
+				"aurora",
+				"decoro"
+			],
+			"variants": [
+				{
+					"name": "scorrimento",
+					"description": "Le slide scorrono di lato, come un carosello: si trascinano col dito o col trackpad.",
+					"whenToUse": "Quasi sempre: chi visita capisce subito che ci sono altre foto e le sfoglia col dito.",
+					"fixture": "Scorrimento",
+					"preview": "/catalogo/slider/scorrimento/",
+					"screenshots": {
+						"desktop": "img/slider-scorrimento-desktop.webp",
+						"mobile": "img/slider-scorrimento-mobile.webp"
+					}
+				},
+				{
+					"name": "dissolvenza",
+					"description": "Le slide restano ferme e una sfuma nell’altra; col dito si passa alla successiva con uno swipe.",
+					"whenToUse": "Per attività dal tono calmo o elegante (ristoranti, benessere, studi), con foto simili per luce e inquadratura.",
+					"fixture": "Dissolvenza",
+					"preview": "/catalogo/slider/dissolvenza/",
+					"screenshots": {
+						"desktop": "img/slider-dissolvenza-desktop.webp",
+						"mobile": "img/slider-dissolvenza-mobile.webp"
+					}
+				}
+			],
+			"fields": [
+				{
+					"path": "variant",
+					"type": "scelta",
+					"required": true,
+					"limits": "`scorrimento` · `dissolvenza`",
+					"constraints": {
+						"values": [
+							"scorrimento",
+							"dissolvenza"
+						]
+					},
+					"label": "Variante",
+					"hint": "scorrimento: le slide scorrono di lato · dissolvenza: una slide sfuma nell’altra"
+				},
+				{
+					"path": "slides",
+					"type": "elenco",
+					"required": true,
+					"limits": "2–5 voci",
+					"constraints": {
+						"minItems": 2,
+						"maxItems": 5
+					},
+					"label": "Slide",
+					"hint": "Da 2 a 5, una alla volta; la prima è quella che si vede all’apertura della pagina"
+				},
+				{
+					"path": "slides[].eyebrow",
+					"type": "testo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Occhiello",
+					"hint": "Breve testo sopra il titolo della slide"
+				},
+				{
+					"path": "slides[].title",
+					"type": "testo",
+					"required": true,
+					"limits": "max 70",
+					"constraints": {
+						"maxLength": 70
+					},
+					"label": "Titolo",
+					"hint": "Il titolo della slide, al massimo 70 caratteri; quello della prima è il titolo principale della pagina"
+				},
+				{
+					"path": "slides[].subtitle",
+					"type": "testo",
+					"required": false,
+					"limits": "max 200",
+					"constraints": {
+						"maxLength": 200
+					},
+					"label": "Sottotitolo",
+					"hint": "Una o due frasi, al massimo 200 caratteri"
+				},
+				{
+					"path": "slides[].primaryCta",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante principale",
+					"hint": "Facoltativo: l’azione legata a questa slide"
+				},
+				{
+					"path": "slides[].primaryCta.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "slides[].primaryCta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "slides[].primaryCta.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "slides[].primaryCta",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "slides[].primaryCta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "slides[].primaryCta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				},
+				{
+					"path": "slides[].secondaryCta",
+					"type": "gruppo",
+					"required": false,
+					"limits": "",
+					"constraints": {},
+					"label": "Pulsante secondario",
+					"hint": "Un’alternativa meno importante, solo insieme al pulsante principale",
+					"note": "Solo insieme a slides[].primaryCta."
+				},
+				{
+					"path": "slides[].secondaryCta.label",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "slides[].secondaryCta",
+					"limits": "max 25",
+					"constraints": {
+						"maxLength": 25
+					},
+					"label": "Testo del pulsante",
+					"hint": "Al massimo 25 caratteri"
+				},
+				{
+					"path": "slides[].secondaryCta.href",
+					"type": "testo",
+					"required": true,
+					"requiredWith": "slides[].secondaryCta",
+					"limits": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa",
+					"constraints": {
+						"patterns": [
+							{
+								"pattern": "^(?:@telefono|@whatsapp|@email|@mappa|[^@\\s]\\S*)$",
+								"message": "un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa"
+							}
+						]
+					},
+					"label": "Link",
+					"hint": "Una pagina del sito (/contatti/), una sezione (#preventivo), un indirizzo completo, oppure @telefono, @whatsapp, @email o @mappa per i recapiti di «Dati attività»"
+				},
+				{
+					"path": "slides[].secondaryCta.style",
+					"type": "scelta",
+					"required": false,
+					"limits": "`primary` · `secondary` · `ghost` · `link`",
+					"constraints": {
+						"values": [
+							"primary",
+							"secondary",
+							"ghost",
+							"link"
+						]
+					},
+					"label": "Stile",
+					"hint": "primary: pieno · secondary: bordato · ghost: solo testo · link: sottolineato. Vuoto: quello previsto dal blocco"
+				},
+				{
+					"path": "slides[].secondaryCta.icon",
+					"type": "icona",
+					"required": false,
+					"limits": "[lista icone](../README.md#icone)",
+					"constraints": {
+						"values": "icone"
+					},
+					"label": "Icona",
+					"hint": "Facoltativa, accanto al testo (le frecce vanno dopo il testo)"
+				},
+				{
+					"path": "slides[].image",
+					"type": "gruppo",
+					"required": true,
+					"limits": "",
+					"constraints": {},
+					"label": "Foto",
+					"hint": "La foto della slide, sotto il testo bianco con la velatura scelta"
+				},
+				{
+					"path": "slides[].image.src",
+					"type": "immagine",
+					"required": true,
+					"limits": "foto in src/assets/images",
+					"constraints": {
+						"format": "image"
+					},
+					"label": "File",
+					"hint": "JPG, PNG o WebP; per le foto grandi almeno 1600 px di larghezza"
+				},
+				{
+					"path": "slides[].image.alt",
+					"type": "testo",
+					"required": true,
+					"limits": "min 5",
+					"constraints": {
+						"minLength": 5
+					},
+					"label": "Testo alternativo",
+					"hint": "Descrive la foto a chi non la vede, es. «Banco da lavoro con gli attrezzi appesi alla parete»"
+				},
+				{
+					"path": "arrows",
+					"type": "scelta",
+					"required": false,
+					"default": "sotto",
+					"limits": "`sotto` · `lati` · `nessuna`",
+					"constraints": {
+						"values": [
+							"sotto",
+							"lati",
+							"nessuna"
+						]
+					},
+					"label": "Frecce",
+					"hint": "sotto: a destra sotto la foto, con i pallini · lati: sopra la foto, a sinistra e a destra (sotto su mobile) · nessuna: solo pallini, dito e tastiera",
+					"note": "Con lati, sotto i 768 px le frecce vanno sotto la foto, per non coprire il testo."
+				},
+				{
+					"path": "animation",
+					"type": "scelta",
+					"required": false,
+					"default": "sale",
+					"limits": "`sale` · `dissolvenza` · `nessuna`",
+					"constraints": {
+						"values": [
+							"sale",
+							"dissolvenza",
+							"nessuna"
+						]
+					},
+					"label": "Animazione dei testi",
+					"hint": "Come entrano titolo, testi e pulsanti a ogni slide: salgono dal basso, compaiono in dissolvenza o nessuna; mai con il movimento ridotto",
+					"note": "Con il movimento ridotto i testi compaiono subito, senza animazione."
+				},
+				{
+					"path": "overlay",
+					"type": "scelta",
+					"required": false,
+					"default": "scura",
+					"limits": "`scura` · `colorata`",
+					"constraints": {
+						"values": [
+							"scura",
+							"colorata"
+						]
+					},
+					"label": "Velatura",
+					"hint": "Sopra le foto: scura (nera) o colorata (col colore principale del sito); il testo resta bianco e leggibile"
+				}
+			],
+			"example": {
+				"fixture": "Scorrimento",
+				"target": "sections",
+				"json": {
+					"type": "slider",
+					"variant": "scorrimento",
+					"slides": [
+						{
+							"eyebrow": "Trattoria di quartiere",
+							"title": "Cucina di casa, a pranzo e a cena",
+							"subtitle": "Piatti della tradizione con ingredienti del mercato, in una sala tranquilla a due passi dal centro.",
+							"primaryCta": {
+								"label": "Prenota un tavolo",
+								"href": "#prenota"
+							},
+							"secondaryCta": {
+								"label": "Il menu",
+								"href": "#menu"
+							},
+							"image": {
+								"src": "../../assets/images/fixtures/ristorante-sala.jpg",
+								"alt": "Sala della trattoria con tavoli apparecchiati e luci calde"
+							}
+						},
+						{
+							"eyebrow": "La cucina",
+							"title": "La pasta la tiriamo a mano ogni mattina",
+							"subtitle": "Tagliatelle, ravioli e gnocchi preparati in cucina, con i sughi della stagione.",
+							"primaryCta": {
+								"label": "Guarda il menu",
+								"href": "#menu"
+							},
+							"image": {
+								"src": "../../assets/images/fixtures/ristorante-cucina.jpg",
+								"alt": "Cucina della trattoria con pentole sui fornelli"
+							}
+						},
+						{
+							"title": "Feste e cene private su prenotazione",
+							"image": {
+								"src": "../../assets/images/fixtures/ristorante-piatto.jpg",
+								"alt": "Piatto di pasta al pomodoro servito su una tovaglia a quadri"
+							}
+						}
+					]
 				}
 			}
 		},
