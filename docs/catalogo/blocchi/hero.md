@@ -2,7 +2,7 @@
 
 # hero — Hero
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.3.0 · apertura · non interattivo · disegno originale · dal vivo `/catalogo/hero/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.4.0 · apertura · non interattivo · disegno originale · dal vivo `/catalogo/hero/`
 
 Apertura della pagina: titolo principale, sottotitolo e invito all’azione.
 
@@ -24,17 +24,29 @@ Apertura della pagina: titolo principale, sottotitolo e invito all’azione.
 
   <img src="../img/hero-full-mobile.webp" alt="Hero, full, 375 px" width="240">
 
-- `centered` — Solo testo, centrato, senza foto. **Quando usarla:** Pagine interne (servizi, contatti, note legali) o quando manca una foto adatta. Fixture «Centered», dal vivo `/catalogo/hero/centered/`.
+- `centered` — Solo testo, centrato, senza foto. **Quando usarla:** Pagine interne o messaggi brevi da leggere al centro; senza foto valuta anche editoriale e manifesto. Fixture «Centered», dal vivo `/catalogo/hero/centered/`.
 
   ![Hero, centered, 1280 px](../img/hero-centered-desktop.webp)
 
   <img src="../img/hero-centered-mobile.webp" alt="Hero, centered, 375 px" width="240">
 
+- `editoriale` — Titolo a sinistra, introduzione e azioni in una colonna separata a destra; senza foto. **Quando usarla:** Botteghe, studi e servizi senza foto, quando il messaggio e la sua spiegazione meritano pesi distinti. Su mobile si leggono in sequenza. Fixture «Editoriale», dal vivo `/catalogo/hero/editoriale/`.
+
+  ![Hero, editoriale, 1280 px](../img/hero-editoriale-desktop.webp)
+
+  <img src="../img/hero-editoriale-mobile.webp" alt="Hero, editoriale, 375 px" width="240">
+
+- `manifesto` — Titolo tipografico grande a tutta larghezza, poi una riga separata con introduzione e azioni; senza foto. **Quando usarla:** Un messaggio breve e riconoscibile deve guidare la home, senza dipendere da immagini. Preferisci titoli entro 40 caratteri; evita introduzioni lunghe. Fixture «Manifesto», dal vivo `/catalogo/hero/manifesto/`.
+
+  ![Hero, manifesto, 1280 px](../img/hero-manifesto-desktop.webp)
+
+  <img src="../img/hero-manifesto-mobile.webp" alt="Hero, manifesto, 375 px" width="240">
+
 **Campi:**
 
 | Campo | Tipo | Obbl. | Limiti | Note |
 | --- | --- | --- | --- | --- |
-| `variant` | scelta | sì | `split` · `full` · `centered` | «Variante» |
+| `variant` | scelta | sì | `split` · `full` · `centered` · `editoriale` · `manifesto` | «Variante» |
 | `eyebrow` | testo | no |  | «Occhiello» |
 | `title` | testo | sì | max 70 | «Titolo» |
 | `subtitle` | testo | no | max 200 | «Sottotitolo» |
@@ -48,7 +60,7 @@ Apertura della pagina: titolo principale, sottotitolo e invito all’azione.
 | `secondaryCta.href` | testo | sì, se c’è `secondaryCta` | un link (/pagina/, #sezione, https://...) oppure @telefono, @whatsapp, @email, @mappa | «Link» |
 | `secondaryCta.style` | scelta | no | `primary` · `secondary` · `ghost` · `link` | «Stile» |
 | `secondaryCta.icon` | icona | no | [lista icone](../README.md#icone) | «Icona» |
-| `image` | gruppo | per split, full |  | «Foto» · centered non la mostra. |
+| `image` | gruppo | per split, full |  | «Foto» · centered, editoriale e manifesto non la mostrano. |
 | `image.src` | immagine | sì, se c’è `image` | foto in src/assets/images | «File» |
 | `image.alt` | testo | sì, se c’è `image` | min 5 | «Testo alternativo» |
 | `imageShape` | scelta | no (predefinito `"verticale"`) | `verticale` · `orizzontale` | «Formato della foto» · Solo per la variante split; nelle altre non ha effetto. |

@@ -11,7 +11,7 @@ export const meta: BlockMeta = {
 	category: 'apertura',
 	scope: 'page',
 	backgrounds: ['pieno', 'sfumato', 'alone', 'aurora', 'decoro'],
-	version: '1.3.0',
+	version: '1.4.0',
 	source: { from: 'originale' },
 	variants: {
 		split: {
@@ -24,14 +24,22 @@ export const meta: BlockMeta = {
 		},
 		centered: {
 			description: 'Solo testo, centrato, senza foto.',
-			whenToUse: 'Pagine interne (servizi, contatti, note legali) o quando manca una foto adatta.',
+			whenToUse: 'Pagine interne o messaggi brevi da leggere al centro; senza foto valuta anche editoriale e manifesto.',
+		},
+		editoriale: {
+			description: 'Titolo a sinistra, introduzione e azioni in una colonna separata a destra; senza foto.',
+			whenToUse: 'Botteghe, studi e servizi senza foto, quando il messaggio e la sua spiegazione meritano pesi distinti. Su mobile si leggono in sequenza.',
+		},
+		manifesto: {
+			description: 'Titolo tipografico grande a tutta larghezza, poi una riga separata con introduzione e azioni; senza foto.',
+			whenToUse: 'Un messaggio breve e riconoscibile deve guidare la home, senza dipendere da immagini. Preferisci titoli entro 40 caratteri; evita introduzioni lunghe.',
 		},
 	},
 	rules: [
 		'Le varianti split e full richiedono la foto (image).',
 	],
 	fieldRules: {
-		image: { requiredFor: ['split', 'full'], note: 'centered non la mostra.' },
+		image: { requiredFor: ['split', 'full'], note: 'centered, editoriale e manifesto non la mostrano.' },
 		imageShape: { note: 'Solo per la variante split; nelle altre non ha effetto.' },
 		overlay: { note: 'Solo per la variante full; nelle altre non ha effetto.' },
 	},

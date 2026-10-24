@@ -81,3 +81,17 @@ export const fixtures: BlockFixture<typeof schema>[] = [
 ];
 
 fixtures.push({ name: 'Split con foto orizzontale', props: { ...fixtures[0].props, imageShape: 'orizzontale' } });
+
+const botanical = {
+	title: 'Un angolo verde, a casa tua',
+	subtitle: 'Scegli le piante per la luce e lo spazio che hai. Dai rinvasi ai piccoli balconi, partiamo dalla tua idea di verde.',
+	primaryCta: { label: 'Parliamo di piante', href: '#contatti' },
+	secondaryCta: { label: 'Scopri i servizi', href: '#servizi' },
+};
+fixtures.push(
+	{ name: 'Editoriale', props: { variant: 'editoriale', ...botanical } },
+	{ name: 'Manifesto', props: { variant: 'manifesto', ...botanical } },
+	{ name: 'Editoriale essenziale', tone: 'muted', props: { variant: 'editoriale', title: 'Piante per piccoli spazi', primaryCta: botanical.primaryCta } },
+	{ name: 'Manifesto essenziale', tone: 'primary', props: { variant: 'manifesto', title: 'Piante per piccoli spazi', primaryCta: botanical.primaryCta } },
+	...(['editoriale', 'manifesto'] as const).map((variant) => ({ name: `${variant} con testi al limite`, props: { ...botanical, variant, eyebrow: 'Una bottega dedicata alle piante da interno e ai piccoli spazi di casa', title: 'Piante da interno e piccoli spazi verdi, dalla scelta alla cura a casa', subtitle: 'Scegli le piante partendo dalla luce e dallo spazio che hai a disposizione. Una guida per capire cosa mettere in casa e come curarlo, dai rinvasi ai piccoli balconi, senza dare nulla per scontato.' } })),
+);

@@ -1846,7 +1846,7 @@
 			"name": "Hero",
 			"scope": "page",
 			"category": "apertura",
-			"version": "1.3.0",
+			"version": "1.4.0",
 			"interactive": false,
 			"source": {
 				"from": "originale"
@@ -1890,12 +1890,34 @@
 				{
 					"name": "centered",
 					"description": "Solo testo, centrato, senza foto.",
-					"whenToUse": "Pagine interne (servizi, contatti, note legali) o quando manca una foto adatta.",
+					"whenToUse": "Pagine interne o messaggi brevi da leggere al centro; senza foto valuta anche editoriale e manifesto.",
 					"fixture": "Centered",
 					"preview": "/catalogo/hero/centered/",
 					"screenshots": {
 						"desktop": "img/hero-centered-desktop.webp",
 						"mobile": "img/hero-centered-mobile.webp"
+					}
+				},
+				{
+					"name": "editoriale",
+					"description": "Titolo a sinistra, introduzione e azioni in una colonna separata a destra; senza foto.",
+					"whenToUse": "Botteghe, studi e servizi senza foto, quando il messaggio e la sua spiegazione meritano pesi distinti. Su mobile si leggono in sequenza.",
+					"fixture": "Editoriale",
+					"preview": "/catalogo/hero/editoriale/",
+					"screenshots": {
+						"desktop": "img/hero-editoriale-desktop.webp",
+						"mobile": "img/hero-editoriale-mobile.webp"
+					}
+				},
+				{
+					"name": "manifesto",
+					"description": "Titolo tipografico grande a tutta larghezza, poi una riga separata con introduzione e azioni; senza foto.",
+					"whenToUse": "Un messaggio breve e riconoscibile deve guidare la home, senza dipendere da immagini. Preferisci titoli entro 40 caratteri; evita introduzioni lunghe.",
+					"fixture": "Manifesto",
+					"preview": "/catalogo/hero/manifesto/",
+					"screenshots": {
+						"desktop": "img/hero-manifesto-desktop.webp",
+						"mobile": "img/hero-manifesto-mobile.webp"
 					}
 				}
 			],
@@ -1904,16 +1926,18 @@
 					"path": "variant",
 					"type": "scelta",
 					"required": true,
-					"limits": "`split` · `full` · `centered`",
+					"limits": "`split` · `full` · `centered` · `editoriale` · `manifesto`",
 					"constraints": {
 						"values": [
 							"split",
 							"full",
-							"centered"
+							"centered",
+							"editoriale",
+							"manifesto"
 						]
 					},
 					"label": "Variante",
-					"hint": "split: testo e foto affiancati · full: foto a tutta larghezza · centered: solo testo"
+					"hint": "split: testo e foto affiancati · full: foto a tutta larghezza · centered: testo centrato · editoriale: titolo e introduzione su colonne · manifesto: titolo grande e azioni sotto"
 				},
 				{
 					"path": "eyebrow",
@@ -2086,7 +2110,7 @@
 					"constraints": {},
 					"label": "Foto",
 					"hint": "Obbligatoria per le varianti split e full",
-					"note": "centered non la mostra."
+					"note": "centered, editoriale e manifesto non la mostrano."
 				},
 				{
 					"path": "image.src",
@@ -4409,7 +4433,7 @@
 			"name": "Servizi",
 			"scope": "page",
 			"category": "contenuti",
-			"version": "1.2.0",
+			"version": "1.3.0",
 			"interactive": false,
 			"source": {
 				"from": "originale"
@@ -4472,6 +4496,28 @@
 						"desktop": "img/services-schede-desktop.webp",
 						"mobile": "img/services-schede-mobile.webp"
 					}
+				},
+				{
+					"name": "elenco",
+					"description": "Righe aperte separate da un filetto, con titolo, descrizione e link affiancati su desktop. Niente card né foto.",
+					"whenToUse": "Servizi da confrontare e leggere tutti, con testi brevi e di peso simile; alternativa compatta alle card anche senza icone.",
+					"fixture": "Elenco",
+					"preview": "/catalogo/services/elenco/",
+					"screenshots": {
+						"desktop": "img/services-elenco-desktop.webp",
+						"mobile": "img/services-elenco-mobile.webp"
+					}
+				},
+				{
+					"name": "editoriale",
+					"description": "Introduzione laterale e una colonna di servizi con titoli grandi, separati da spazio e filetti; niente card né foto.",
+					"whenToUse": "Pochi servizi da raccontare con calma senza foto, con una lettura verticale. Per un elenco compatto usa elenco; per foto usa alternato.",
+					"fixture": "Editoriale",
+					"preview": "/catalogo/services/editoriale/",
+					"screenshots": {
+						"desktop": "img/services-editoriale-desktop.webp",
+						"mobile": "img/services-editoriale-mobile.webp"
+					}
 				}
 			],
 			"fields": [
@@ -4479,17 +4525,19 @@
 					"path": "variant",
 					"type": "scelta",
 					"required": true,
-					"limits": "`cards-icone` · `cards-immagine` · `alternato` · `schede`",
+					"limits": "`cards-icone` · `cards-immagine` · `alternato` · `schede` · `elenco` · `editoriale`",
 					"constraints": {
 						"values": [
 							"cards-icone",
 							"cards-immagine",
 							"alternato",
-							"schede"
+							"schede",
+							"elenco",
+							"editoriale"
 						]
 					},
 					"label": "Variante",
-					"hint": "cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda"
+					"hint": "cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda · elenco: righe a tutta larghezza · editoriale: introduzione laterale e servizi in colonna"
 				},
 				{
 					"path": "eyebrow",
@@ -4547,7 +4595,7 @@
 					},
 					"label": "Icona",
 					"hint": "Obbligatoria per la variante cards-icone; in cards-immagine si vede al posto della foto, se manca",
-					"note": "In cards-immagine si vede al posto della foto che manca; alternato e schede non la mostrano."
+					"note": "In cards-immagine si vede al posto della foto che manca; facoltativa in elenco ed editoriale; alternato e schede non la mostrano."
 				},
 				{
 					"path": "items[].image",
@@ -4560,7 +4608,7 @@
 					"constraints": {},
 					"label": "Foto",
 					"hint": "Obbligatoria per la variante alternato; in cards-immagine serve la foto o l’icona; facoltativa nelle schede",
-					"note": "In cards-immagine la foto o l’icona; facoltativa in schede; cards-icone non la mostra."
+					"note": "In cards-immagine la foto o l’icona; facoltativa in schede; cards-icone, elenco ed editoriale non la mostrano."
 				},
 				{
 					"path": "items[].image.src",

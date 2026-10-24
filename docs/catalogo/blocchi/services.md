@@ -2,7 +2,7 @@
 
 # services — Servizi
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.2.0 · contenuti · non interattivo · disegno originale · dal vivo `/catalogo/services/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.3.0 · contenuti · non interattivo · disegno originale · dal vivo `/catalogo/services/`
 
 Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione breve e link facoltativo.
 
@@ -36,17 +36,29 @@ Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione br
 
   <img src="../img/services-schede-mobile.webp" alt="Servizi, schede, 375 px" width="240">
 
+- `elenco` — Righe aperte separate da un filetto, con titolo, descrizione e link affiancati su desktop. Niente card né foto. **Quando usarla:** Servizi da confrontare e leggere tutti, con testi brevi e di peso simile; alternativa compatta alle card anche senza icone. Fixture «Elenco», dal vivo `/catalogo/services/elenco/`.
+
+  ![Servizi, elenco, 1280 px](../img/services-elenco-desktop.webp)
+
+  <img src="../img/services-elenco-mobile.webp" alt="Servizi, elenco, 375 px" width="240">
+
+- `editoriale` — Introduzione laterale e una colonna di servizi con titoli grandi, separati da spazio e filetti; niente card né foto. **Quando usarla:** Pochi servizi da raccontare con calma senza foto, con una lettura verticale. Per un elenco compatto usa elenco; per foto usa alternato. Fixture «Editoriale», dal vivo `/catalogo/services/editoriale/`.
+
+  ![Servizi, editoriale, 1280 px](../img/services-editoriale-desktop.webp)
+
+  <img src="../img/services-editoriale-mobile.webp" alt="Servizi, editoriale, 375 px" width="240">
+
 **Campi:**
 
 | Campo | Tipo | Obbl. | Limiti | Note |
 | --- | --- | --- | --- | --- |
-| `variant` | scelta | sì | `cards-icone` · `cards-immagine` · `alternato` · `schede` | «Variante» |
+| `variant` | scelta | sì | `cards-icone` · `cards-immagine` · `alternato` · `schede` · `elenco` · `editoriale` | «Variante» |
 | `eyebrow` | testo | no |  | «Occhiello» |
 | `title` | testo | sì | max 70 | «Titolo» |
 | `intro` | testo | no | max 240 | «Introduzione» |
 | `items` | elenco | sì | 2–6 voci | «Servizi» |
-| `items[].icon` | icona | per cards-icone | [lista icone](../README.md#icone) | «Icona» · In cards-immagine si vede al posto della foto che manca; alternato e schede non la mostrano. |
-| `items[].image` | gruppo | per alternato |  | «Foto» · In cards-immagine la foto o l’icona; facoltativa in schede; cards-icone non la mostra. |
+| `items[].icon` | icona | per cards-icone | [lista icone](../README.md#icone) | «Icona» · In cards-immagine si vede al posto della foto che manca; facoltativa in elenco ed editoriale; alternato e schede non la mostrano. |
+| `items[].image` | gruppo | per alternato |  | «Foto» · In cards-immagine la foto o l’icona; facoltativa in schede; cards-icone, elenco ed editoriale non la mostrano. |
 | `items[].image.src` | immagine | sì, se c’è `items[].image` | foto in src/assets/images | «File» |
 | `items[].image.alt` | testo | sì, se c’è `items[].image` | min 5 | «Testo alternativo» |
 | `items[].title` | testo | sì | max 50 | «Nome del servizio» |

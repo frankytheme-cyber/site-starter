@@ -17,7 +17,11 @@ Per l'agente che compone un sito cliente con Simone. L'aspetto si sceglie tra i 
 1. **Leggi** `docs/brief.md` (settore, clienti, tono, preferenze di colore e di stile, siti che piacciono e no, logo), `docs/sito.md` e `npm run catalog:query -- --temi <settore>` (ricerca testuale per mood e settori; senza filtro se non trovi alternative). Apri gli screenshot dei soli preset candidati, indicati nei risultati. Poi guarda le foto in `src/assets/images/`: colori, luce, materiali. Sono loro a comandare.
    Se il brief non dice nulla su tono e stile, chiedi a Simone tre aggettivi per l'attività e un sito che gli piace, prima di proporre.
 
-2. **Tre direzioni diverse davvero**, non tre palette sullo stesso impianto:
+2. **Prima la struttura, poi i preset.** Prepara tre composizioni della home dagli stessi fatti del brief. Devono cambiare almeno apertura (gerarchia o disposizione) e presentazione del contenuto principale, non soltanto colore, font, forma o decoro. Non aggiungere sezioni senza materiale per differenziarle. Confrontale prima con gli stessi cinque preset e gli stessi testi: se sembrano ancora la stessa pagina, non sono tre direzioni.
+
+   Senza foto valuta `hero centered`, `editoriale` e `manifesto`; per i servizi `cards-icone`, `elenco` o `editoriale`, secondo lunghezza e lettura. `schede` solo se si deve scegliere tra alternative, non per nascondere i servizi. Usa anche l’invito `split-contatto` dove serve: non chiudere sempre con un banner. Consulta solo i blocchi candidati. `/catalogo/composizioni/` mostra il confronto strutturale; le ricette `bottega-*-home.json` sono esempi di tre sezioni, non home complete da duplicare.
+
+   **Poi caratterizza le tre direzioni con i preset:**
    - **A, la più vicina al settore:** mood e settori del catalogo, la scelta che nessuno contesterà.
    - **B, un'alternativa credibile:** un'altra famiglia di colore e un'altra coppia di font, sempre adatte al brief.
    - **C, la più personale che il brief regge:** un font con carattere (`carattere`, `robusto`, `gourmet`, `elegante`...), una forma netta (`squadrato` o `arrotondato`), un decoro e una texture; la palette scura `notte` solo se l'attività la regge (locali serali, barbieri, palestre).
@@ -28,28 +32,30 @@ Per l'agente che compone un sito cliente con Simone. L'aspetto si sceglie tra i 
    - `pattern` diverso da `nessuno` solo se una o due sezioni useranno `"background": "decoro"`; `texture` `carta` o `grana` per siti materici, artigianali o fotografici;
    - la A può essere ovvia, la B e la C no: non ripartire sempre dagli stessi preset.
 
-3. **Guardale sul sito vero:**
+3. **Guardale sul sito vero, una ricetta per direzione.** Salva le tre ricette provvisorie in `docs/proposte-visive/`, fuori dalla collezione delle pagine. Applica una proposta alla home, acquisisci `npm run design:shots -- --pagine index --sezioni` e registra proposta e cartella del report nella nota di design; ripeti per le altre. Prima confronta le tre strutture con lo stesso tema, poi applica i preset candidati. Conserva i contenuti originari se stai rifacendo un sito e non sovrascrivere modifiche estranee.
+
+   `--tema` e i parametri nell’indirizzo cambiano solo i cinque preset della ricetta correntemente applicata: **non cambiano la composizione**. Tre `--tema` sulla stessa home sono un confronto di finiture, non tre direzioni. Per provare il tema su ciascuna ricetta:
 
    ```sh
-   npm run design:shots -- --riusa --pagine index --tema laguna,fresco,arrotondato,onde,liscia --tema ardesia,moderno,squadrato,nessuno,liscia --tema notte,carattere,squadrato,righe,grana
+   npm run design:shots -- --pagine index --sezioni --tema salvia,classico,morbido,nessuno,liscia
    ```
 
-   Ogni `--tema` elenca i preset in qualsiasi ordine; quelli che mancano restano di `theme.json`. Le immagini sono in `reports/design/<data-ora>/`, una cartella per direzione: apri `-apertura` e `-panoramica` a 1280 (`desktop`) e 375 px (`mobile`). Scarta o correggi una direzione che non regge: foto spente dalla palette, titoli che vanno a capo male con quel font, decoro che disturba il testo, un sito scuro che sembra di un altro settore.
+   Apri apertura, panoramica e sezioni a 1280 e 375 px. Scarta o correggi gerarchie ripetute, titoli che vanno a capo male, decoro che disturba e foto spente dal tema. Alla fine lascia applicata la proposta raccomandata, dichiarandola provvisoria. Le alternative restano nelle ricette salvate e nei rispettivi report; non inventare URL che pretendono di cambiare la struttura.
 
 4. **Proponi a Simone**, in un messaggio:
-   - per ogni direzione i cinque valori, il motivo e il link da aprire, con il server di sviluppo acceso (`npx astro dev --background`): per esempio `http://localhost:4321/?palette=laguna&fonts=fresco&shape=arrotondato&pattern=onde&texture=liscia`. I link interni portano con sé il tema, così si gira tutto il sito;
-   - le immagini di apertura delle tre direzioni, e `reports/design/<data-ora>/index.html` per il confronto completo;
+   - per ogni direzione la composizione (varianti, gerarchia e ritmo), i cinque valori e il motivo; il link live solo per la ricetta applicata, con il server di sviluppo acceso (`npx astro dev --background`): per esempio `http://localhost:4321/?palette=laguna&fonts=fresco&shape=arrotondato&pattern=onde&texture=liscia`. I link interni portano con sé il tema, così si gira tutto il sito;
+   - le immagini di apertura delle tre composizioni e i rispettivi report di confronto, identificati per proposta;
    - quale raccomandi e perché.
 
    Simone può mescolare (la palette di una, i font di un'altra): rifai gli screenshot della combinazione prima di confermarla.
 
-5. **Scrivi la scelta** in `src/content/settings/theme.json` e in `docs/nota-design.md`, sezione «Tema»: la direzione scelta con il motivo, le altre due come alternative con i loro valori. Poi le pagine si compongono con la skill `composizione`.
+5. **Applica la ricetta scelta alla home e scrivi i preset** in `src/content/settings/theme.json` e in `docs/nota-design.md`, sezione «Tema»: la direzione scelta con il motivo, le altre due come alternative con i loro valori. Poi le pagine si compongono con la skill `composizione`.
 
 6. **Decoro:** se `pattern` non è `nessuno`, scegli già le una o due sezioni con `"background": "decoro"`; altrimenti nessuna sezione lo usa (`check:recipes` lo segnala).
 
 ## Criterio di fine
 
-Simone ha scelto; `theme.json` è scritto; la nota di design ha scelta, motivo e alternative; `npm run check:recipes` senza errori.
+Simone ha visto tre strutture distinguibili anche a tema uguale e ha scelto; ricetta della home applicata e `theme.json` scritto; la nota di design ha scelta, motivo e alternative; `npm run check:recipes` senza errori.
 
 ## Non fare
 

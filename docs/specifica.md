@@ -98,8 +98,8 @@ Sedici blocchi: cinque di riferimento fatti da te (✦), gli altri dal Builder. 
 | --- | --- | --- | --- | --- |
 | header ✦ | layout | `semplice`, `con-cta`; opzione `sticky`; hamburger sempre su mobile | Sempre | Tu |
 | footer ✦ | layout | `colonne`, `minimale`; opzione `ctaBand` | Sempre; dati legali obbligatori | Tu |
-| hero ✦ | page | `split`, `full`, `centered` | Apertura di ogni pagina, una sola per pagina | Tu |
-| services ✦ | page | `cards-icone`, `cards-immagine`, `alternato`, `schede` | Elenco dei servizi principali | Tu |
+| hero ✦ | page | `split`, `full`, `centered`, `editoriale`, `manifesto` | Apertura di ogni pagina, una sola per pagina | Tu |
+| services ✦ | page | `cards-icone`, `cards-immagine`, `alternato`, `schede`, `elenco`, `editoriale` | Elenco dei servizi principali | Tu |
 | cta ✦ | page | `banner`, `split-contatto` | Chiusura di sezione o pagina | Tu |
 | accordion | page | `faq` (con JSON-LD), `contenuti` | Domande frequenti, informative | Tu (prompt I) |
 | tabs | page | `testo`, `testo-immagine` | Servizi per categoria, listini | Tu (prompt I) |
@@ -526,3 +526,11 @@ il Project Paperclip né esegue `site:init`; l'invito pendente deve essere accet
 - Lighthouse non bloccante anche sull'anteprima Vercel
 - Protezione di `main` sulle repo private (richiede GitHub Pro)
 - Valutazione di Sveltia CMS al posto di Decap
+
+## Composizioni riconoscibili anche senza foto
+
+Il tema cambia colori, font e finiture; la composizione decide gerarchia, allineamenti e ritmo. Per proporre direzioni visive diverse si confrontano prima le strutture con gli stessi testi e gli stessi preset, poi si caratterizza il tema. Senza foto non si ripiega automaticamente su hero centrata, card e banner.
+
+Le aperture testuali sono `centered` (messaggio raccolto al centro), `editoriale` (titolo e introduzione su colonne) e `manifesto` (titolo grande, spiegazione e azioni sotto). I servizi senza foto possono usare `cards-icone`, `elenco` (righe aperte) o `editoriale` (introduzione laterale); `schede` resta per alternative da scegliere, non per nascondere i servizi. Le varianti nuove non richiedono cambi alle ricette esistenti.
+
+Il catalogo `/catalogo/composizioni/` confronta tre ricette dimostrative con contenuti e toni identici: è un riferimento strutturale, non un modello di home completa. Le tre ricette `bottega-*-home.json` stanno in `docs/catalogo/ricette-tipo/`.

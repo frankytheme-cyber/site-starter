@@ -26,7 +26,9 @@ Per l'agente che costruisce un sito cliente con Simone. Il sito si completa, non
 
    Consulta solo le righe pertinenti di `.agents/skills/composizione/materiali.md`. Senza foto vere scegli varianti senza foto; senza prove non aggiungere numeri o recensioni; senza invio configurato usa CTA di contatto. Per ogni blocco scelto verifica `whenToUse`, `avoidWhen`, campi e regole con `npm run catalog:query -- <tipo>`; non leggere tutte le schede.
 
-3. **Ritmo della pagina.**
+3. **Struttura e ritmo della pagina.**
+   - La struttura tipo è una partenza, non uno stampo. Conferma la composizione scelta nella direzione visiva; non ricondurla automaticamente a hero centrata, tre card e banner. Registra gerarchia dell’apertura, presentazione dei servizi e tipo di chiusura nella nota di design.
+   - Senza foto: scegli `centered` per un messaggio raccolto, `editoriale` per titolo e spiegazione distinti, `manifesto` per un titolo breve dominante. Servizi `elenco` per confrontare righe compatte, `editoriale` per una lettura verticale con introduzione laterale, `cards-icone` se i servizi sono brevi e paralleli. Non aggiungere interazioni per il solo scopo di variare l’aspetto.
    - **Toni:** alterna `default` e `muted`; `primary` una o due volte per pagina, di solito sull'invito finale.
    - **Effetti di sfondo** (`background`): al massimo 3, mai in sezioni vicine, dove servono a far notare qualcosa: l'apertura (hero con `alone`, `aurora`, `sfumato` o `decoro`), un punto chiave (chi siamo, recensioni, punti di forza) e l'invito finale (cta con `aurora`). Sotto una hero `full` l'effetto non si vede: usalo altrove. `decoro` solo se il tema ha un `pattern`, in una o due sezioni per pagina, sugli stessi tipi di sezione in tutto il sito.
    - **Bordi** (`edge`): al massimo 2 per pagina, mai sulla prima sezione, solo tra toni diversi. Un solo tipo di bordo per sito: `onda` per siti morbidi (benessere, mare, natura, bambini), `diagonale` per siti decisi (officine, edilizia, sport), `curva`, la più neutra, per far risaltare l'invito finale.

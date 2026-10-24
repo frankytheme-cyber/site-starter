@@ -4,6 +4,13 @@ Le modifiche della libreria site-starter, una sezione per versione. `npm run rel
 
 Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: ricette, impostazioni, comandi), `### Novità`, `### Correzioni`. Solo nella libreria: `site:init` lo toglie dai siti.
 
+## Non rilasciato
+
+### Novità
+
+- Hero 1.4.0: varianti senza foto `editoriale` (titolo e spiegazione su colonne) e `manifesto` (titolo grande e fascia di azioni sotto). Services 1.3.0: `elenco` a righe aperte ed `editoriale` con introduzione laterale, entrambe senza card, foto o icone obbligatorie. Ricette esistenti compatibili.
+- `/catalogo/composizioni/`: tre pagine dimostrative dalle ricette `bottega-*-home.json`, a parità di testi, toni e tema, per valutare la differenza strutturale. Le skill distinguono composizione e finiture: prima il confronto della struttura, poi palette e font; senza foto non è obbligatorio ricadere su hero centrata e card.
+
 ## v0.0.6 (2026-10-24)
 ### Correzioni
 

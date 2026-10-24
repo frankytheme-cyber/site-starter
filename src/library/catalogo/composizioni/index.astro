@@ -1,0 +1,26 @@
+---
+import Container from '@/core/ui/Container.astro';
+import CatalogLayout from '../_CatalogLayout.astro';
+import { catalogTitle } from '../_library';
+const compositions = [
+	{ key: 'centrata', name: 'Centrata', description: 'Apertura al centro, servizi in card e invito centrato: il punto di confronto.' },
+	{ key: 'editoriale', name: 'Editoriale', description: 'Titolo e spiegazione su colonne, introduzione laterale ai servizi e invito a colonne.' },
+	{ key: 'manifesto', name: 'Manifesto', description: 'Titolo grande a tutta larghezza, servizi in righe aperte e invito a colonne.' },
+];
+const query = '?palette=salvia&fonts=classico&shape=morbido&pattern=nessuno&texture=liscia';
+---
+<CatalogLayout title={catalogTitle('Composizioni')}>
+	<main class="py-12">
+		<Container>
+			<h1 class="text-3xl font-bold sm:text-4xl">Stessi testi, strutture diverse</h1>
+			<p class="mt-4 max-w-3xl text-lg text-fg-muted">Tre pagine senza foto, con contenuti dimostrativi identici e gli stessi cinque preset. Cambiano solo le varianti dei blocchi. Il tema resta salvia, classico, morbido, senza decoro e con texture liscia.</p>
+			<ul class="mt-12 divide-y divide-border">
+				{compositions.map(({ key, name, description }) => <li class="grid gap-4 py-8 md:grid-cols-2">
+					<h2 class="text-2xl font-bold"><a class="text-primary underline underline-offset-4" href={`/catalogo/composizioni/${key}/${query}`}>{name}</a></h2>
+					<div><p class="text-fg-muted">{description}</p><a class="mt-4 inline-flex min-h-11 items-center text-primary underline underline-offset-4" href={`/catalogo/composizioni/${key}/${query}`}>Apri la composizione {key}</a></div>
+				</li>)}
+			</ul>
+			<p class="mt-8 max-w-3xl text-fg-muted">Le ricette sono in docs/catalogo/ricette-tipo/bottega-*-home.json: sono esempi per il confronto, non home complete da duplicare automaticamente. Servizi e immagini di un cliente si scelgono sempre dal suo brief.</p>
+		</Container>
+	</main>
+</CatalogLayout>

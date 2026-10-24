@@ -12,6 +12,8 @@ import { isLibraryMode, LIBRARY_ENV } from '../mode.ts';
 const CATALOG = new URL('../../library/catalogo/', import.meta.url);
 
 const ROUTES: [pattern: string, entrypoint: string][] = [
+	['/catalogo/composizioni', 'composizioni/index.astro'],
+	['/catalogo/composizioni/[composition]', 'composizioni/[composition].astro'],
 	['/catalogo', 'index.astro'],
 	['/catalogo/tutti', 'tutti.astro'],
 	['/catalogo/temi', 'temi.astro'],

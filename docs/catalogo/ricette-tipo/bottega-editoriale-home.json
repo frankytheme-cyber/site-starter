@@ -1,0 +1,59 @@
+{
+	"$schema": "../../../.astro/collections/pages.schema.json",
+	"title": "Piante da interno · Bottega dimostrativa",
+	"description": "Esempio fittizio per confrontare composizioni diverse con gli stessi testi, senza foto o dati commerciali.",
+	"sections": [
+		{
+			"type": "hero",
+			"variant": "editoriale",
+			"title": "Un angolo verde, a casa tua",
+			"subtitle": "Scegli le piante per la luce e lo spazio che hai. Dai rinvasi ai piccoli balconi, partiamo dalla tua idea di verde.",
+			"primaryCta": {
+				"label": "Parliamo di piante",
+				"href": "#contatti"
+			},
+			"secondaryCta": {
+				"label": "Scopri i servizi",
+				"href": "#servizi"
+			}
+		},
+		{
+			"type": "services",
+			"id": "servizi",
+			"tone": "muted",
+			"variant": "editoriale",
+			"title": "Tre modi di vivere il verde",
+			"intro": "Dalla scelta delle piante alla cura dei piccoli spazi di casa.",
+			"items": [
+				{
+					"icon": "foglia",
+					"title": "Piante da interno",
+					"text": "Una guida alla scelta, partendo dalla luce e dallo spazio disponibili in casa."
+				},
+				{
+					"icon": "fiore",
+					"title": "Rinvasi",
+					"text": "Un servizio dedicato al cambio del vaso e alla cura delle piante che hai già."
+				},
+				{
+					"icon": "sole",
+					"title": "Consulenza verde",
+					"text": "Idee per balconi e piccoli angoli di casa, anche quando lo spazio è poco."
+				}
+			]
+		},
+		{
+			"type": "cta",
+			"id": "contatti",
+			"tone": "default",
+			"variant": "split-contatto",
+			"title": "Da quale pianta cominciamo?",
+			"text": "Una pianta da scegliere, un rinvaso o un piccolo balcone: raccontaci la tua idea.",
+			"primary": {
+				"label": "Rivedi i servizi",
+				"href": "#servizi"
+			},
+			"showContacts": false
+		}
+	]
+}

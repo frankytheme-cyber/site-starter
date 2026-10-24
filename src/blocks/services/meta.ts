@@ -10,7 +10,7 @@ export const meta: BlockMeta = {
 		'Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei lavori, non un elenco.',
 	category: 'contenuti',
 	scope: 'page',
-	version: '1.2.0',
+	version: '1.3.0',
 	source: { from: 'originale' },
 	variants: {
 		'cards-icone': {
@@ -29,6 +29,14 @@ export const meta: BlockMeta = {
 			description: 'Un servizio per scheda, con testo, foto facoltativa e link; su mobile un elenco da aprire.',
 			whenToUse: 'Servizi alternativi tra cui scegliere; non per servizi che tutti devono vedere.',
 		},
+		elenco: {
+			description: 'Righe aperte separate da un filetto, con titolo, descrizione e link affiancati su desktop. Niente card né foto.',
+			whenToUse: 'Servizi da confrontare e leggere tutti, con testi brevi e di peso simile; alternativa compatta alle card anche senza icone.',
+		},
+		editoriale: {
+			description: 'Introduzione laterale e una colonna di servizi con titoli grandi, separati da spazio e filetti; niente card né foto.',
+			whenToUse: 'Pochi servizi da raccontare con calma senza foto, con una lettura verticale. Per un elenco compatto usa elenco; per foto usa alternato.',
+		},
 	},
 	rules: [
 		'La variante cards-icone richiede l’icona in ogni servizio.',
@@ -36,7 +44,7 @@ export const meta: BlockMeta = {
 		'Nella variante cards-immagine ogni servizio ha la foto o, se manca, l’icona.',
 	],
 	fieldRules: {
-		'items[].icon': { requiredFor: ['cards-icone'], note: 'In cards-immagine si vede al posto della foto che manca; alternato e schede non la mostrano.' },
-		'items[].image': { requiredFor: ['alternato'], note: 'In cards-immagine la foto o l’icona; facoltativa in schede; cards-icone non la mostra.' },
+		'items[].icon': { requiredFor: ['cards-icone'], note: 'In cards-immagine si vede al posto della foto che manca; facoltativa in elenco ed editoriale; alternato e schede non la mostrano.' },
+		'items[].image': { requiredFor: ['alternato'], note: 'In cards-immagine la foto o l’icona; facoltativa in schede; cards-icone, elenco ed editoriale non la mostrano.' },
 	},
 };

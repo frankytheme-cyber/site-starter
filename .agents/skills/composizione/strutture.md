@@ -2,13 +2,22 @@
 
 Per la skill `composizione` (`.agents/skills/composizione/SKILL.md`): una struttura per tipo di pagina e per settore, da adattare al brief e al materiale. Ogni riga è una sezione: blocco `variante` (tono), con le alternative. I toni sono già alternati; effetti di sfondo e bordi sono indicati dove servono, entro i limiti (3 effetti e 2 bordi per pagina, mai sulla prima sezione). Una sezione senza materiale si toglie e i toni si riallineano: non si riempie.
 
+## Scegliere una struttura senza foto
+
+Prima di applicare le sequenze di settore, confronta impianti distinti con gli stessi testi e lo stesso tema:
+- raccolto: hero `centered`, servizi `cards-icone`, chiusura `banner`;
+- editoriale: hero `editoriale`, servizi `editoriale`, chiusura `split-contatto`;
+- tipografico: hero `manifesto`, servizi `elenco`, chiusura `split-contatto`.
+
+Sono combinazioni iniziali, non tre preset di sito. Materiale e obiettivo decidono quali sezioni aggiungere, togliere o spostare. Il catalogo `/catalogo/composizioni/` le mostra con le ricette `bottega-*-home.json` e gli stessi contenuti. Non usare foto di prova per differenziarle.
+
 ## Home
 
 ### Lavori a domicilio
 
 Imbianchini, idraulici, elettricisti, falegnami, giardinieri, imprese di pulizie e di traslochi.
 
-1. hero `split` (default, `alone`): la foto di un lavoro finito; senza foto `centered`. Pulsanti: l'azione principale (`@telefono` o il preventivo) e «Guarda i lavori».
+1. hero `split` (default, `alone`): la foto di un lavoro finito; senza foto scegli `centered`, `editoriale` o `manifesto` dalla direzione visiva. Pulsanti: l'azione principale (`@telefono` o il preventivo) e «Guarda i lavori».
 2. services `cards-icone` o `cards-immagine` (muted, `id: servizi`): da 3 a 6 servizi.
 3. process `passi-numerati` (default): dal primo contatto al lavoro finito, se il brief lo racconta.
 4. gallery `griglia-popup` o `prima-dopo` (muted, `id: lavori`).
@@ -33,7 +42,7 @@ Ristoranti, bar, pasticcerie, negozi, parrucchieri, centri estetici.
 
 Commercialisti, avvocati, studi tecnici, studi medici, consulenti.
 
-1. hero `split` (default, `sfumato`): la foto dello studio o del titolare; `centered` senza foto.
+1. hero `split` (default, `sfumato`): la foto dello studio o del titolare; `editoriale` o `centered` senza foto, `manifesto` per un messaggio breve dominante.
 2. services `cards-icone` (muted, `id: servizi`).
 3. features `3-colonne` (default): come lavora lo studio, con fatti verificabili.
 4. about `con-numeri` (muted, `alone`) se ci sono numeri con la fonte, altrimenti `immagine-testo`.
@@ -65,7 +74,7 @@ B&B, case vacanza, agriturismi.
 
 ### Chi siamo
 
-1. hero `split` (default): la foto del titolare, della squadra o della sede; `centered` senza.
+1. hero `split` (default): la foto del titolare, della squadra o della sede; `editoriale` o `centered` senza foto.
 2. about `immagine-testo`, o `con-numeri` se ci sono numeri con la fonte (muted): la storia, con fatti.
 3. tabs `testo-immagine` (default): storia, metodo e squadra, una foto per scheda; senza foto features `lista`.
 4. carousel `immagini-testo` (muted): alcuni lavori o progetti raccontati in breve.

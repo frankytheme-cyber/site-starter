@@ -48,7 +48,7 @@ Sezioni delle ricette di pagina (`scope: "page"`), nell’ordine in cui compaion
 
 | Blocco | Categoria | Varianti | Quando usarlo |
 | --- | --- | --- | --- |
-| [hero — Hero](blocchi/hero.md) | apertura | `split`, `full`, `centered` | Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare). |
+| [hero — Hero](blocchi/hero.md) | apertura | `split`, `full`, `centered`, `editoriale`, `manifesto` | Come primo blocco di una pagina, per dire subito cosa fa l’attività e cosa può fare chi visita (chiedere un preventivo, prenotare, chiamare). |
 | [slider — Slider](blocchi/slider.md) | apertura | `scorrimento`, `dissolvenza` | Come primo blocco della home, al posto della hero, quando l’attività ha più servizi o ambienti da mettere in evidenza subito e una foto di qualità per ognuno. |
 | [accordion — Accordion](blocchi/accordion.md) | contenuti | `faq`, `contenuti` | Per le domande frequenti (variante faq, che Google può mostrare nei risultati) o per informazioni di dettaglio che solo alcuni cercano: condizioni, tempi, cosa preparare prima di un appuntamento. |
 | [carousel — Carosello](blocchi/carousel.md) | contenuti | `immagini`, `immagini-testo` | Per una serie di elementi dello stesso tipo che si sfogliano: foto dei lavori finiti, prima e dopo, progetti, recensioni con foto. |
@@ -58,7 +58,7 @@ Sezioni delle ricette di pagina (`scope: "page"`), nell’ordine in cui compaion
 | [features — Punti di forza](blocchi/features.md) | contenuti | `3-colonne`, `lista` | Per dire perché scegliere l’attività: garanzie, modo di lavorare, cosa la distingue. Di solito dopo i servizi o prima della cta. |
 | [testimonials — Recensioni](blocchi/testimonials.md) | contenuti | `cards`, `singola`, `slider` | Quando il cliente ha recensioni reali (Google, Facebook, messaggi) e può dire dove sono state scritte. |
 | [tabs — Schede](blocchi/tabs.md) | contenuti | `testo`, `testo-immagine` | Quando chi visita sceglie una strada tra poche alternative parallele dello stesso tipo: pranzo o cena, privati o imprese, servizi di base o completi. |
-| [services — Servizi](blocchi/services.md) | contenuti | `cards-icone`, `cards-immagine`, `alternato`, `schede` | Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno. |
+| [services — Servizi](blocchi/services.md) | contenuti | `cards-icone`, `cards-immagine`, `alternato`, `schede`, `elenco`, `editoriale` | Per dire cosa fa l’attività, di solito subito dopo l’hero. Nella pagina dei servizi, con la variante alternato, per dare più spazio a ciascuno. |
 | [contact — Contatti](blocchi/contact.md) | contatti | `info-mappa`, `info-cta` | Nella pagina contatti, o in fondo a una pagina che deve far trovare l’attività. Telefono, WhatsApp, email, indirizzo e orari non si scrivono nel blocco: arrivano da site.json. |
 | [cta — Invito all’azione](blocchi/cta.md) | contatti | `banner`, `split-contatto` | Dopo i blocchi che convincono (servizi, lavori, recensioni) e in fondo alla pagina, prima del footer. Con showContacts mostra telefono e WhatsApp dell’attività presi da site.json. |
 | [form — Modulo di contatto](blocchi/form.md) | contatti | `contatto`, `preventivo` | Quando chi visita deve inviare una richiesta scritta. Configura Resend secondo docs/form.md; il destinatario è l’email di site.json. Il catalogo simula l’invio senza spedire email. |
