@@ -9,11 +9,14 @@ import SectionFrame from '@/core/SectionFrame.astro';
 import Container from '@/core/ui/Container.astro';
 import { allowedBackgrounds, BACKGROUND_META, BACKGROUNDS } from '@/themes/backgrounds';
 import { EDGE_META } from '@/themes/edges';
+import { presetMetas } from '@/themes/metas';
 import { backgroundSample, EDGE_SAMPLE } from './_backgrounds';
 import CatalogLayout from './_CatalogLayout.astro';
 import { catalogTitle } from './_library';
 
 const { Component, fixture } = backgroundSample();
+// Il decoro mostrato nella scheda Decoro quando nella barra è scelto «nessuno», che altrimenti la lascerebbe piena.
+const DECOR_FALLBACK = 'punti';
 const pageBlocks = blocks.filter((block) => block.meta.scope === 'page');
 const effects = BACKGROUNDS.map((key) => ({
 	key,
@@ -53,7 +56,11 @@ const effects = BACKGROUNDS.map((key) => ({
 
 		{
 			effects.map((effect) => (
-				<article id={`sfondo-${effect.key}`} class="scroll-mt-20 border-t-4 border-border">
+				<article
+					id={`sfondo-${effect.key}`}
+					data-decor-sample={effect.key === 'decoro' ? DECOR_FALLBACK : undefined}
+					class="scroll-mt-20 border-t-4 border-border"
+				>
 					<Container>
 						<div class="py-8">
 							<h2 class="text-2xl font-bold">
@@ -61,7 +68,10 @@ const effects = BACKGROUNDS.map((key) => ({
 							</h2>
 							<p class="mt-2 max-w-3xl">{effect.description}</p>
 							{effect.key === 'decoro' && (
-								<p class="mt-2 max-w-3xl text-fg-muted">Scegli il decoro nella barra in alto: con «nessuno» le sezioni restano piene.</p>
+								<p class="mt-2 max-w-3xl text-fg-muted">
+									Scegli il decoro nella barra in alto. Con «nessuno» un sito resta pieno: qui, per mostrare l'effetto, si
+									vede «{presetMetas.patterns[DECOR_FALLBACK].name}».
+								</p>
 							)}
 							<dl class="mt-4 grid gap-4 md:grid-cols-2">
 								<div>
@@ -120,3 +130,19 @@ const effects = BACKGROUNDS.map((key) => ({
 		</article>
 	</main>
 </CatalogLayout>
+
+<script>
+	// La scheda Decoro segue il decoro della barra (data-pattern su <html>), «nessuno» escluso: i pattern
+	// scelgono le sezioni con [data-pattern] [data-background="decoro"], quindi basta lo stesso attributo qui.
+	const root = document.documentElement;
+	const sample = document.querySelector<HTMLElement>('[data-decor-sample]');
+	if (sample) {
+		const fallback = sample.dataset.decorSample!;
+		const sync = () => {
+			const current = root.dataset.pattern;
+			sample.dataset.pattern = !current || current === 'nessuno' ? fallback : current;
+		};
+		sync();
+		new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-pattern'] });
+	}
+</script>
