@@ -6,6 +6,8 @@
 
 Dal vivo: `/catalogo` (indice a schede con le miniature e il pannello «Tema» per palette, font, forma, decoro e texture), `/catalogo/<tipo>/` (un blocco con tutte le fixture e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/tutti` (tutti i blocchi dal vivo insieme), `/catalogo/temi` (palette, font e forme a confronto), `/catalogo/sfondi` (gli effetti di sfondo sui tre toni), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.
 
+Per valutare il progetto della pagina prima dei dettagli: [composizioni a confronto](composizioni.md), con anteprime generate dagli stessi testi e preset; dal vivo `/catalogo/composizioni/`.
+
 Per consultazioni mirate: `npm run catalog:query` (indice breve), `-- hero` (scheda), `-- --cerca foto`, `-- --temi artigiano`, `-- --icone telefono`, `-- --regole`. Il comando legge solo questo catalogo locale e funziona anche nei siti cliente; non richiede Astro acceso.
 
 ## Regole d’oro delle ricette

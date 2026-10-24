@@ -2,7 +2,7 @@
 
 # services — Servizi
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.3.0 · contenuti · non interattivo · disegno originale · dal vivo `/catalogo/services/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.3.1 · contenuti · non interattivo · disegno originale · dal vivo `/catalogo/services/`
 
 Elenco dei servizi dell’attività, da 2 a 6, ognuno con titolo, descrizione breve e link facoltativo.
 

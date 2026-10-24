@@ -7,6 +7,10 @@ description: Usala dopo aver composto o cambiato le pagine di un sito cliente, o
 
 Si guarda la pagina disegnata, non il JSON. `npm run qa` trova gli errori (contrasto, link, accessibilità); questa revisione trova le scelte deboli, quelle che Simone noterebbe per prime. Vale nei siti cliente e nella libreria.
 
+## Qualità oltre alla QA
+
+Leggi [qualita-grafica.md](../direzione-visiva/qualita-grafica.md) quando valuti la riuscita grafica. Prima dei dettagli verifica se la scelta principale della nota di design è riconoscibile nella pagina: gerarchia, tipografia, ritmo, materiale e continuità. Un sito può essere tecnicamente corretto e graficamente debole; non chiudere la revisione solo perché la QA passa.
+
 ## Passi
 
 1. **Screenshot** delle pagine, con un'immagine per sezione:
@@ -28,13 +32,13 @@ Si guarda la pagina disegnata, non il JSON. `npm run qa` trova gli errori (contr
    - **Ritmo.** Toni alternati con misura (`primary` una o due volte), effetti di sfondo dove servono (apertura, un punto chiave, invito finale), sezioni di lunghezza diversa? Sei blocchi uguali di fila stancano.
    - **Settore.** Accanto a due o tre buoni siti dello stesso settore e della stessa zona, regge? Si distingue? Se puoi navigare, guardane qualcuno; altrimenti chiedi a Simone un riferimento.
    - **Fiducia.** Recapiti, zona servita, foto vere, recensioni con la fonte: si trovano senza cercarli?
-   - **Testi.** Titoli al massimo su due righe a 375 px, nessuna parola sola sull'ultima riga, descrizioni che non ripetono il titolo, niente frasi fatte («qualità e professionalità», «a 360 gradi»).
+   - **Testi.** Titoli brevi con andate a capo curate a 375 px (di norma due righe per le sezioni e tre per la hero), nessuna parola isolata; non rimpicciolire tutti i titoli per farli entrare, descrizioni che non ripetono il titolo, niente frasi fatte («qualità e professionalità», «a 360 gradi»).
    - **Mobile.** A 375 px la pagina è composta, non un desktop schiacciato: immagini leggibili, pulsanti facili da toccare, nessuna sezione infinita.
    - **Coerenza.** Foto con lo stesso trattamento, icone dello stesso stile, la stessa voce in tutte le pagine.
 
 4. **Correggi** con quello che la ricetta permette: variante, tono, `background`, `edge`, ordine e numero delle sezioni (skill `composizione`), testi (skill `testi-sito`), scelta e ordine delle foto. In un sito non si toccano blocchi né CSS: se il difetto è del blocco, segnalalo a Simone come lavoro per la libreria.
 
-5. **Seconda passata:** dopo le correzioni acquisisci solo le pagine coinvolte e ricomincia dal passo 2. Se non hai cambiato nulla, riesamina le immagini correnti: non serve acquisirle due volte. Ti fermi quando la passata di conferma non trova niente oltre il dettaglio.
+5. **Seconda passata:** dopo le correzioni acquisisci solo le pagine coinvolte e ricomincia dal passo 2. Conferma che abbiano risolto il problema osservato senza indebolire la gerarchia o introdurre ripetizioni. Se non hai cambiato nulla, riesamina le immagini correnti: non serve acquisirle due volte. Ti fermi quando la passata di conferma non trova niente oltre il dettaglio.
 
 6. **Mostra a Simone** cosa hai trovato e corretto (prima e dopo per i punti principali), cosa resta e cosa servirebbe: una foto, un dato, una variante nuova.
 

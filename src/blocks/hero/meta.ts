@@ -11,7 +11,7 @@ export const meta: BlockMeta = {
 	category: 'apertura',
 	scope: 'page',
 	backgrounds: ['pieno', 'sfumato', 'alone', 'aurora', 'decoro'],
-	version: '1.4.0',
+	version: '1.4.1',
 	source: { from: 'originale' },
 	variants: {
 		split: {

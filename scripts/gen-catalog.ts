@@ -344,6 +344,7 @@ function readmePage(data: CatalogData, rules: string) {
 		'# Catalogo dei blocchi',
 		`**${data.library} — libreria di blocchi per siti vetrina**, versione **v${data.version}** (\`library.manifest.json\`). Le fixture usano attività di esempio di settori diversi (artigiano, negozio, ristorante, studio professionale) con recapiti finti. Tutto quello che segue è generato da \`npm run gen:catalog\` a partire da schemi, schede e fixture; gli screenshot da \`npm run screenshots\`; gli stessi dati per le macchine sono in [\`catalogo.json\`](catalogo.json). \`npm run check\` fallisce se questa cartella non corrisponde agli schemi.`,
 		'Dal vivo: `/catalogo` (indice a schede con le miniature e il pannello «Tema» per palette, font, forma, decoro e texture), `/catalogo/<tipo>/` (un blocco con tutte le fixture e «Copia JSON» per ogni variante), `/catalogo/<tipo>/<variante>/` (una variante da sola), `/catalogo/tutti` (tutti i blocchi dal vivo insieme), `/catalogo/temi` (palette, font e forme a confronto), `/catalogo/sfondi` (gli effetti di sfondo sui tre toni), `/catalogo/bottoni`, `/catalogo/ui`, `/catalogo/icone`.',
+		'Per valutare il progetto della pagina prima dei dettagli: [composizioni a confronto](composizioni.md), con anteprime generate dagli stessi testi e preset; dal vivo `/catalogo/composizioni/`.',
 		'Per consultazioni mirate: `npm run catalog:query` (indice breve), `-- hero` (scheda), `-- --cerca foto`, `-- --temi artigiano`, `-- --icone telefono`, `-- --regole`. Il comando legge solo questo catalogo locale e funziona anche nei siti cliente; non richiede Astro acceso.',
 		'## Regole d’oro delle ricette',
 		data.recipeRules.map((rule, index) => `${index + 1}. ${rule.rule}${rule.check ? ` *(${checkLabel[rule.check]})*` : ''}`).join('\n'),
@@ -696,6 +697,18 @@ export async function generateCatalog() {
 		for (const block of blocks) files[`blocchi/${block.type}.md`] = blockPage(block);
 		files['README.md'] = readmePage(data, currentRules());
 		files['ui.md'] = uiPage();
+		files['composizioni.md'] = [
+			GENERATED, '# Composizioni a confronto',
+			'Testi, toni e cinque preset uguali (salvia, classico, morbido, nessuno, liscia). Cambiano gerarchia e disposizione, senza foto. Dal vivo: `/catalogo/composizioni/`.',
+			...catalog.COMPOSITION_EXAMPLES.flatMap(({ key, name, intent, structure }) => [
+				`## ${name}`, intent, structure,
+				`![${name}, pagina a 1280 px](img/${catalog.compositionScreenshotName(key, 'desktop')})`,
+				`![${name}, pagina a 375 px](img/${catalog.compositionScreenshotName(key, 'mobile')})`,
+				`Ricetta di esempio: [bottega-${key}-home.json](ricette-tipo/bottega-${key}-home.json).`,
+			]),
+			'Gli esempi non sono home complete da duplicare: contenuti e priorità del brief guidano la composizione. Le anteprime sono generate da npm run catalog, non disegnate separatamente dal sito.',
+		].join('\n\n') + '\n';
+		images.push(...catalog.COMPOSITION_EXAMPLES.flatMap(({ key }) => (['desktop', 'mobile'] as const).map((size) => catalog.compositionScreenshotName(key, size))));
 		files['catalogo.json'] = `${JSON.stringify(data, null, '\t')}\n`;
 	});
 	return { files, images, variants, palettes, backgrounds, patterns, textures, problems };

@@ -2,7 +2,7 @@
 
 # hero — Hero
 
-[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.4.0 · apertura · non interattivo · disegno originale · dal vivo `/catalogo/hero/`
+[← Catalogo](../README.md) · sezione delle ricette (`page`) · v1.4.1 · apertura · non interattivo · disegno originale · dal vivo `/catalogo/hero/`
 
 Apertura della pagina: titolo principale, sottotitolo e invito all’azione.
 

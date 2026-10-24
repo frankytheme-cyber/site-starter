@@ -1,26 +1,60 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { COMPOSITION_EXAMPLES, COMPOSITION_QUERY, compositionScreenshotName } from '@/core/catalog';
 import Container from '@/core/ui/Container.astro';
 import CatalogLayout from '../_CatalogLayout.astro';
 import { catalogTitle } from '../_library';
-const compositions = [
-	{ key: 'centrata', name: 'Centrata', description: 'Apertura al centro, servizi in card e invito centrato: il punto di confronto.' },
-	{ key: 'editoriale', name: 'Editoriale', description: 'Titolo e spiegazione su colonne, introduzione laterale ai servizi e invito a colonne.' },
-	{ key: 'manifesto', name: 'Manifesto', description: 'Titolo grande a tutta larghezza, servizi in righe aperte e invito a colonne.' },
+
+const previews = import.meta.glob<ImageMetadata>('/docs/catalogo/img/composizione-*.webp', { eager: true, import: 'default' });
+const imageFor = (key: string, size: 'desktop' | 'mobile') => previews[`/docs/catalogo/img/${compositionScreenshotName(key, size)}`];
+const criteria = [
+	{ title: 'Gerarchia', text: 'Dove cade lo sguardo? Titolo, spiegazione e azione hanno pesi diversi?' },
+	{ title: 'Ritmo', text: 'Le sezioni fanno avanzare la lettura o ripetono sempre lo stesso schema?' },
+	{ title: 'Spazio', text: 'I vuoti distinguono i contenuti, senza separare ciò che va letto insieme?' },
+	{ title: 'Mobile', text: 'La proposta mantiene il suo carattere e resta facile da leggere e usare?' },
 ];
-const query = '?palette=salvia&fonts=classico&shape=morbido&pattern=nessuno&texture=liscia';
 ---
 <CatalogLayout title={catalogTitle('Composizioni')}>
-	<main class="py-12">
+	<main class="py-12 sm:py-16">
 		<Container>
-			<h1 class="text-3xl font-bold sm:text-4xl">Stessi testi, strutture diverse</h1>
-			<p class="mt-4 max-w-3xl text-lg text-fg-muted">Tre pagine senza foto, con contenuti dimostrativi identici e gli stessi cinque preset. Cambiano solo le varianti dei blocchi. Il tema resta salvia, classico, morbido, senza decoro e con texture liscia.</p>
-			<ul class="mt-12 divide-y divide-border">
-				{compositions.map(({ key, name, description }) => <li class="grid gap-4 py-8 md:grid-cols-2">
-					<h2 class="text-2xl font-bold"><a class="text-primary underline underline-offset-4" href={`/catalogo/composizioni/${key}/${query}`}>{name}</a></h2>
-					<div><p class="text-fg-muted">{description}</p><a class="mt-4 inline-flex min-h-11 items-center text-primary underline underline-offset-4" href={`/catalogo/composizioni/${key}/${query}`}>Apri la composizione {key}</a></div>
-				</li>)}
+			<div class="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-16">
+				<h1 class="max-w-2xl text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:col-span-7">La differenza è nella pagina.</h1>
+				<p class="max-w-prose text-lg text-pretty text-fg-muted lg:col-span-5">Stessi testi, stessi colori, nessuna foto. Confronta il peso del titolo, la lettura dei servizi e il ritmo della pagina.</p>
+			</div>
+
+			<ul class="mt-12 grid items-start gap-12 lg:mt-16 lg:grid-cols-3 lg:gap-8">
+				{COMPOSITION_EXAMPLES.map(({ key, name, intent, structure }) => {
+					const desktop = imageFor(key, 'desktop');
+					const mobile = imageFor(key, 'mobile');
+					return <li data-composition-preview={key}>
+						<a class="group block text-primary underline-offset-4 hover:underline" href={`/catalogo/composizioni/${key}/${COMPOSITION_QUERY}`}>
+							<h2 class="mb-4 text-2xl font-bold">{name}</h2>
+							<div class="overflow-hidden rounded-box border border-border bg-bg group-hover:border-primary">
+								{desktop ? <Image src={desktop} alt={`Pagina dimostrativa con composizione ${name.toLowerCase()}, vista desktop`} widths={[400, 800]} sizes="(min-width: 1024px) 33vw, 100vw" class="h-auto w-full" /> : <p class="p-8 text-sm text-fg-muted">Anteprima da generare con npm run catalog.</p>}
+							</div>
+						</a>
+						<p class="mt-5 text-lg font-semibold text-pretty">{intent}</p>
+						<p class="mt-2 text-pretty text-fg-muted">{structure}</p>
+						{mobile && <details class="mt-4 border-t border-border">
+							<summary class="min-h-11 cursor-pointer py-3 text-sm font-semibold text-primary">Guarda la versione mobile</summary>
+							<Image src={mobile} alt={`Composizione ${name.toLowerCase()} a 375 pixel`} width={375} class="mx-auto mt-2 h-auto w-full max-w-sm border border-border" />
+						</details>}
+					</li>;
+				})}
 			</ul>
-			<p class="mt-8 max-w-3xl text-fg-muted">Le ricette sono in docs/catalogo/ricette-tipo/bottega-*-home.json: sono esempi per il confronto, non home complete da duplicare automaticamente. Servizi e immagini di un cliente si scelgono sempre dal suo brief.</p>
+
+			<section aria-labelledby="criteri-grafici" class="mt-16 border-t border-border pt-10 sm:mt-24">
+				<h2 id="criteri-grafici" class="text-2xl font-bold sm:text-3xl">Diverso non basta. Deve funzionare meglio.</h2>
+				<dl class="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+					{criteria.map(({ title, text }) => <div><dt class="font-heading text-lg font-bold">{title}</dt><dd class="mt-2 text-pretty text-fg-muted">{text}</dd></div>)}
+				</dl>
+			</section>
+
+			<details class="mt-12 border-t border-border pt-4 text-sm text-fg-muted">
+				<summary class="min-h-11 cursor-pointer py-3 font-semibold text-primary">Ricette e preset del confronto</summary>
+				<p class="mt-2 max-w-3xl">Le anteprime sono generate dalle pagine reali con salvia, classico, morbido, nessuno e liscia. Le ricette bottega-*-home.json sono in docs/catalogo/ricette-tipo/: tre esempi di composizione, non home complete da duplicare. Il brief di ogni attività decide materiali, priorità e lunghezza.</p>
+			</details>
 		</Container>
 	</main>
 </CatalogLayout>

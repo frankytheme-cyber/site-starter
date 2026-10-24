@@ -10,7 +10,7 @@ export const meta: BlockMeta = {
 		'Per un solo servizio (basta un blocco di testo) o per più di 6 (meglio dividerli in più blocchi con un titolo ciascuno). Non per mostrare i lavori svolti: lì servono le foto dei lavori, non un elenco.',
 	category: 'contenuti',
 	scope: 'page',
-	version: '1.3.0',
+	version: '1.3.1',
 	source: { from: 'originale' },
 	variants: {
 		'cards-icone': {

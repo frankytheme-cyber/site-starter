@@ -12,6 +12,10 @@ Per l'agente che compone un sito cliente con Simone. L'aspetto si sceglie tra i 
 - Dopo il brief, prima di comporre tutte le pagine: basta la home, anche solo abbozzata (hero e due o tre sezioni con i testi veri).
 - Quando Simone chiede un altro aspetto, o il sito somiglia troppo a un altro.
 
+## Qualità della proposta
+
+Leggi [qualita-grafica.md](qualita-grafica.md) per definire il punto focale, la gerarchia, il ritmo e la critica della proposta. Registra la scelta grafica in una frase nella nota di design: cosa deve guidare la pagina e perché, dai contenuti del brief. Tre strutture diverse sono necessarie per il confronto, ma non dimostrano da sole la qualità del lavoro.
+
 ## Passi
 
 1. **Leggi** `docs/brief.md` (settore, clienti, tono, preferenze di colore e di stile, siti che piacciono e no, logo), `docs/sito.md` e `npm run catalog:query -- --temi <settore>` (ricerca testuale per mood e settori; senza filtro se non trovi alternative). Apri gli screenshot dei soli preset candidati, indicati nei risultati. Poi guarda le foto in `src/assets/images/`: colori, luce, materiali. Sono loro a comandare.
@@ -21,16 +25,9 @@ Per l'agente che compone un sito cliente con Simone. L'aspetto si sceglie tra i 
 
    Senza foto valuta `hero centered`, `editoriale` e `manifesto`; per i servizi `cards-icone`, `elenco` o `editoriale`, secondo lunghezza e lettura. `schede` solo se si deve scegliere tra alternative, non per nascondere i servizi. Usa anche l’invito `split-contatto` dove serve: non chiudere sempre con un banner. Consulta solo i blocchi candidati. `/catalogo/composizioni/` mostra il confronto strutturale; le ricette `bottega-*-home.json` sono esempi di tre sezioni, non home complete da duplicare.
 
-   **Poi caratterizza le tre direzioni con i preset:**
-   - **A, la più vicina al settore:** mood e settori del catalogo, la scelta che nessuno contesterà.
-   - **B, un'alternativa credibile:** un'altra famiglia di colore e un'altra coppia di font, sempre adatte al brief.
-   - **C, la più personale che il brief regge:** un font con carattere (`carattere`, `robusto`, `gourmet`, `elegante`...), una forma netta (`squadrato` o `arrotondato`), un decoro e una texture; la palette scura `notte` solo se l'attività la regge (locali serali, barbieri, palestre).
+   **Poi caratterizza le direzioni con i preset.** Dai a ciascuna un nome e una ragione legata ai contenuti: quale informazione domina, come si legge e quale materiale la sostiene. Evita di far coincidere sempre A con il colore del settore, B con un’altra palette e C con un font più vistoso: anche quello produce siti ripetitivi.
 
-   Ogni direzione ha i cinque valori (`palette`, `fonts`, `shape`, `pattern`, `texture`) e un motivo di una riga legato a un fatto del brief o delle foto, mai «perché è moderna». Per scegliere:
-   - le foto non devono litigare con la palette: legno, cotto e luce calda chiedono una palette calda, o un motivo chiaro per il contrario;
-   - con un logo, primary e accent gli devono stare bene accanto: vicini al suo colore, o neutri;
-   - `pattern` diverso da `nessuno` solo se una o due sezioni useranno `"background": "decoro"`; `texture` `carta` o `grana` per siti materici, artigianali o fotografici;
-   - la A può essere ovvia, la B e la C no: non ripartire sempre dagli stessi preset.
+   Indica i cinque valori (`palette`, `fonts`, `shape`, `pattern`, `texture`) con una motivazione breve. Possono coincidere in parte tra le proposte: non cambiare tutto solo per farle sembrare diverse. Le foto e il logo orientano la palette; leggibilità e tono orientano i font; forma, decoro e texture rifiniscono il progetto, non lo sostituiscono. `pattern` diverso da `nessuno` solo con una o due sezioni `background: "decoro"`; texture ed effetti restano facoltativi. Non aggiungerli per completare una formula.
 
 3. **Guardale sul sito vero, una ricetta per direzione.** Salva le tre ricette provvisorie in `docs/proposte-visive/`, fuori dalla collezione delle pagine. Applica una proposta alla home, acquisisci `npm run design:shots -- --pagine index --sezioni` e registra proposta e cartella del report nella nota di design; ripeti per le altre. Prima confronta le tre strutture con lo stesso tema, poi applica i preset candidati. Conserva i contenuti originari se stai rifacendo un sito e non sovrascrivere modifiche estranee.
 
@@ -40,7 +37,7 @@ Per l'agente che compone un sito cliente con Simone. L'aspetto si sceglie tra i 
    npm run design:shots -- --pagine index --sezioni --tema salvia,classico,morbido,nessuno,liscia
    ```
 
-   Apri apertura, panoramica e sezioni a 1280 e 375 px. Scarta o correggi gerarchie ripetute, titoli che vanno a capo male, decoro che disturba e foto spente dal tema. Alla fine lascia applicata la proposta raccomandata, dichiarandola provvisoria. Le alternative restano nelle ricette salvate e nei rispettivi report; non inventare URL che pretendono di cambiare la struttura.
+   Apri apertura, panoramica e sezioni a 1280 e 375 px. Scarta o correggi gerarchie ripetute, titoli che vanno a capo male, decoro che disturba e foto spente dal tema. Prima della consegna svolgi la critica indicata in qualita-grafica.md e correggi i punti deboli. Alla fine lascia applicata la proposta raccomandata, dichiarandola provvisoria. Le alternative restano nelle ricette salvate e nei rispettivi report; non inventare URL che pretendono di cambiare la struttura.
 
 4. **Proponi a Simone**, in un messaggio:
    - per ogni direzione la composizione (varianti, gerarchia e ritmo), i cinque valori e il motivo; il link live solo per la ricetta applicata, con il server di sviluppo acceso (`npx astro dev --background`): per esempio `http://localhost:4321/?palette=laguna&fonts=fresco&shape=arrotondato&pattern=onde&texture=liscia`. I link interni portano con sé il tema, così si gira tutto il sito;

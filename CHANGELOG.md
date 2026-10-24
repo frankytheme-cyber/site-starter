@@ -8,8 +8,13 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
+- Confronto delle composizioni con anteprime desktop e mobile generate dal sito, a tema e testi uguali, e criteri per leggere gerarchia, ritmo e comportamento su mobile. Le skill richiedono una proposta grafica motivata dai contenuti e una critica concreta prima della consegna, oltre alla sola varietà delle strutture.
 - Hero 1.4.0: varianti senza foto `editoriale` (titolo e spiegazione su colonne) e `manifesto` (titolo grande e fascia di azioni sotto). Services 1.3.0: `elenco` a righe aperte ed `editoriale` con introduzione laterale, entrambe senza card, foto o icone obbligatorie. Ricette esistenti compatibili.
 - `/catalogo/composizioni/`: tre pagine dimostrative dalle ricette `bottega-*-home.json`, a parità di testi, toni e tema, per valutare la differenza strutturale. Le skill distinguono composizione e finiture: prima il confronto della struttura, poi palette e font; senza foto non è obbligatorio ricadere su hero centrata e card.
+
+### Correzioni
+
+- Hero 1.4.1: gerarchia più netta per l’apertura editoriale su desktop. Services 1.3.1: titoli dei servizi editoriali subordinati al titolo di sezione; in elenco, descrizioni a tutta la larghezza disponibile quando manca il link.
 
 ## v0.0.6 (2026-10-24)
 ### Correzioni

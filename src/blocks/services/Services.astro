@@ -38,9 +38,9 @@ const cardSizes = twoColumns
 					<li class:list={['border-t border-border py-8 last:border-b', isElenco && 'grid gap-4 lg:grid-cols-12 lg:gap-8', isEditoriale && 'first:pt-0 first:border-t-0 lg:py-10']}>
 						<div class:list={['flex items-baseline gap-4', isElenco && 'lg:col-span-4']}>
 							{item.icon && <span class="shrink-0 self-center text-primary"><Icon name={item.icon} size="md" /></span>}
-							<h3 class:list={['font-bold tracking-tight text-balance', isEditoriale ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl']}>{item.title}</h3>
+							<h3 class:list={['font-bold tracking-tight text-balance', isEditoriale ? 'text-2xl' : 'text-xl sm:text-2xl']}>{item.title}</h3>
 						</div>
-						<p class:list={['max-w-prose text-pretty text-fg-muted', isEditoriale ? 'mt-4 text-lg' : 'lg:col-span-5']}>{item.text}</p>
+						<p class:list={['max-w-prose text-pretty text-fg-muted', isEditoriale ? 'mt-4 text-lg' : item.link ? 'lg:col-span-5' : 'lg:col-span-8']}>{item.text}</p>
 						{item.link && <p class:list={[isEditoriale ? 'mt-5' : 'lg:col-span-3 lg:justify-self-end']}><CtaButton cta={{ icon: 'freccia-destra', ...item.link }} defaultStyle="link" tone={tone} /></p>}
 					</li>
 				))}
