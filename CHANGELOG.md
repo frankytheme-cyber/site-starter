@@ -8,7 +8,7 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ### Novità
 
-- Immagini placeholder pertinenti e dichiarate nelle anteprime senza foto del brief: fonte e sostituzioni documentate, marcatori già riconosciuti dalla QA strict. Direzione visiva e composizione valutano una home completa; revisione rafforzata su gerarchia, densità, ritagli mobile e peso delle immagini.
+- Immagini placeholder pertinenti e dichiarate nelle anteprime senza foto del brief: fonte e sostituzioni documentate, marcatori già riconosciuti dalla QA strict. Direzione visiva e composizione valutano una home completa; revisione rafforzata su gerarchia, densità, ritagli mobile e peso delle immagini. Il controllo distingue scarsità di informazioni e assenza di foto: offerta, destinatari, scelta dei servizi e passo successivo devono essere comprensibili; le immagini non sostituiscono i contenuti. Palette motivata rispetto all’identità del brief.
 
 - Confronto delle composizioni con anteprime desktop e mobile generate dal sito, a tema e testi uguali, e criteri per leggere gerarchia, ritmo e comportamento su mobile. Le skill richiedono una proposta grafica motivata dai contenuti e una critica concreta prima della consegna, oltre alla sola varietà delle strutture.
 - Hero 1.4.0: varianti senza foto `editoriale` (titolo e spiegazione su colonne) e `manifesto` (titolo grande e fascia di azioni sotto). Services 1.3.0: `elenco` a righe aperte ed `editoriale` con introduzione laterale, entrambe senza card, foto o icone obbligatorie. Ricette esistenti compatibili.

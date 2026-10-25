@@ -32,6 +32,7 @@ Leggi [qualita-grafica.md](../direzione-visiva/qualita-grafica.md) quando valuti
    - **Ritmo.** Toni alternati con misura (`primary` una o due volte), effetti di sfondo dove servono (apertura, un punto chiave, invito finale), sezioni di lunghezza diversa? Sei blocchi uguali di fila stancano.
    - **Settore.** Accanto a due o tre buoni siti dello stesso settore e della stessa zona, regge? Si distingue? Se puoi navigare, guardane qualcuno; altrimenti chiedi a Simone un riferimento.
    - **Fiducia.** Recapiti, zona servita, foto vere, recensioni con la fonte: si trovano senza cercarli?
+   - **Informazioni.** Senza aprire elementi interattivi, sono chiari offerta, destinatario, differenze fra i servizi e passo successivo? La home sviluppa i fatti disponibili o mostra solo immagini, titoli e frasi generiche? Se era stata segnalata come scarna, verifica quale domanda del visitatore viene ora risolta. Distingui le lacune del brief da quelle della composizione.
    - **Testi.** Titoli brevi con andate a capo curate a 375 px (di norma due righe per le sezioni e tre per la hero), nessuna parola isolata; non rimpicciolire tutti i titoli per farli entrare, descrizioni che non ripetono il titolo, niente frasi fatte («qualità e professionalità», «a 360 gradi»).
    - **Mobile.** A 375 px la pagina è composta, non un desktop schiacciato: immagini leggibili, pulsanti facili da toccare, nessuna sezione infinita.
    - **Coerenza.** Foto con lo stesso trattamento, icone dello stesso stile, la stessa voce in tutte le pagine.
