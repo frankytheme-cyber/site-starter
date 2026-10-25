@@ -8,8 +8,8 @@ export const schema = ({ image }: SchemaContext) =>
 	z
 		.object({
 			variant: z
-				.enum(['split', 'full', 'centered'])
-				.describe('Variante|split: testo e foto affiancati · full: foto a tutta larghezza · centered: solo testo'),
+				.enum(['split', 'full', 'centered', 'editoriale', 'manifesto'])
+				.describe('Variante|split: testo e foto affiancati · full: foto a tutta larghezza · centered: testo centrato · editoriale: titolo e introduzione su colonne · manifesto: titolo grande e azioni sotto'),
 			eyebrow: z.string().min(1).optional().describe('Occhiello|Breve testo sopra il titolo, es. il settore'),
 			title: z.string().min(1).max(70).describe('Titolo|Il titolo principale della pagina, al massimo 70 caratteri'),
 			subtitle: z
@@ -22,7 +22,7 @@ export const schema = ({ image }: SchemaContext) =>
 			secondaryCta: ctaSchema
 				.optional()
 				.describe('Pulsante secondario|Un’alternativa meno importante: compila testo e link, oppure nessuno dei due'),
-			/** Obbligatoria per split e full; centered non la mostra. */
+			/** Obbligatoria per split e full; le varianti testuali non la mostrano. */
 			image: imageSchema(image).optional().describe('Foto|Obbligatoria per le varianti split e full'),
 			/** Solo per split: il formato della foto su desktop (su mobile è sempre 4:3). */
 			imageShape: z
@@ -38,7 +38,7 @@ export const schema = ({ image }: SchemaContext) =>
 				.describe('Velatura|Sopra la foto della variante full: scura (nera) o colorata (col colore principale del sito); il testo resta bianco e leggibile'),
 		})
 		// rule: Le varianti split e full richiedono la foto (image).
-		.refine((props) => props.variant === 'centered' || props.image, {
+		.refine((props) => !['split', 'full'].includes(props.variant) || Boolean(props.image), {
 			message: 'le varianti split e full richiedono image',
 			path: ['image'],
 		});

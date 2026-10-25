@@ -51,6 +51,15 @@ export const EDGES_SCREENSHOT = 'bordi-desktop.webp';
 /** Qualità WebP degli screenshot. */
 export const SCREENSHOT_QUALITY = 75;
 
+/** Composizioni dimostrative: fonte comune per indice, documentazione e screenshot. */
+export const COMPOSITION_EXAMPLES = [
+	{ key: 'centrata', name: 'Centrata', intent: 'Un messaggio raccolto, servizi di pari peso.', structure: 'Apertura al centro, griglia di card, chiusura centrata.' },
+	{ key: 'editoriale', name: 'Editoriale', intent: 'Titolo e spiegazione hanno ruoli distinti.', structure: 'Apertura su colonne, introduzione laterale, servizi in lettura verticale.' },
+	{ key: 'manifesto', name: 'Manifesto', intent: 'Il messaggio guida la pagina prima dei dettagli.', structure: 'Titolo dominante, servizi in righe aperte, invito a colonne.' },
+] as const;
+export const COMPOSITION_QUERY = '?palette=salvia&fonts=classico&shape=morbido&pattern=nessuno&texture=liscia';
+export const compositionScreenshotName = (key: string, size: ScreenSize) => `composizione-${key}-${size}.webp`;
+
 /** Percorso di un file di src/assets/images ("/src/assets/images/foto.jpg") visto da una ricetta in src/content/pages. */
 export const recipeImagePath = (sourcePath: string) => `../..${sourcePath.replace(/^\/?src(?=\/)/, '')}`;
 

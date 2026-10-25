@@ -223,3 +223,21 @@ fixtures.push({
 		],
 	},
 });
+
+const botanical = {
+	title: 'Tre modi di vivere il verde',
+	intro: 'Dalla scelta delle piante alla cura dei piccoli spazi di casa.',
+	items: [
+		{ title: 'Piante da interno', text: 'Una guida alla scelta, partendo dalla luce e dallo spazio disponibili in casa.', link: { label: 'Parliamo di piante', href: '#contatti' } },
+		{ title: 'Rinvasi', text: 'Un servizio dedicato al cambio del vaso e alla cura delle piante che hai già.' },
+		{ title: 'Consulenza verde', text: 'Idee per balconi e piccoli angoli di casa, anche quando lo spazio è poco.' },
+	],
+};
+fixtures.push(
+	{ name: 'Elenco', props: { variant: 'elenco', ...botanical } },
+	{ name: 'Editoriale', props: { variant: 'editoriale', ...botanical } },
+	...(['elenco', 'editoriale'] as const).map((variant) => ({
+		name: `${variant} con icone e testi lunghi`, tone: 'primary' as const,
+		props: { ...fixtures[5].props, variant, items: fixtures[5].props.items.map((item, index) => ({ ...item, ...(index === 1 ? { link: undefined } : {}) })) },
+	})),
+);

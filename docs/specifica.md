@@ -1,6 +1,6 @@
 # site-starter — Specifica v1
 
-Versione: allineata alla libreria v0.0.5
+Versione: allineata alla libreria v0.0.6
 
 ## Visione e principi
 
@@ -98,8 +98,8 @@ Sedici blocchi: cinque di riferimento fatti da te (✦), gli altri dal Builder. 
 | --- | --- | --- | --- | --- |
 | header ✦ | layout | `semplice`, `con-cta`; opzione `sticky`; hamburger sempre su mobile | Sempre | Tu |
 | footer ✦ | layout | `colonne`, `minimale`; opzione `ctaBand` | Sempre; dati legali obbligatori | Tu |
-| hero ✦ | page | `split`, `full`, `centered` | Apertura di ogni pagina, una sola per pagina | Tu |
-| services ✦ | page | `cards-icone`, `cards-immagine`, `alternato`, `schede` | Elenco dei servizi principali | Tu |
+| hero ✦ | page | `split`, `full`, `centered`, `editoriale`, `manifesto` | Apertura di ogni pagina, una sola per pagina | Tu |
+| services ✦ | page | `cards-icone`, `cards-immagine`, `alternato`, `schede`, `elenco`, `editoriale` | Elenco dei servizi principali | Tu |
 | cta ✦ | page | `banner`, `split-contatto` | Chiusura di sezione o pagina | Tu |
 | accordion | page | `faq` (con JSON-LD), `contenuti` | Domande frequenti, informative | Tu (prompt I) |
 | tabs | page | `testo`, `testo-immagine` | Servizi per categoria, listini | Tu (prompt I) |
@@ -280,7 +280,7 @@ esterno già mancante non giustifica cicli di correzione identici.
 
 Il controllo `release` legge nel brief la riga `- Esiste un sito online? sì, <indirizzo>` oppure `- Esiste un sito online? no`. Se il sito esiste, richiede la mappa anche quando la proposta viene respinta. La mappa conserva le colonne `Vecchio URL`, `Nuovo URL`, `Decisione`, `Note`; lo stato è `approvata il gg/mm/aaaa` o `respinta il gg/mm/aaaa`, ogni decisione è `sì` o `no` e ogni rifiuto ha una motivazione. I redirect Vercel devono corrispondere esattamente alle righe approvate, con `permanent: true`. Anche senza sito precedente, eventuali redirect configurati richiedono una mappa decisa. Questo verifica la coerenza dei file: il PM verifica separatamente l'Approval in Paperclip.
 
-**Foto**: lavori, prima/dopo, chi siamo e squadra solo con foto reali del cliente. Immagini stock con licenza commerciale libera solo per sfondi o hero generici, sempre dichiarate nel brief e nella nota di design.
+**Foto**: lavori, prima/dopo, persone, squadra e sede solo con foto reali del cliente. Nelle anteprime, quando il brief non contiene immagini adatte, si usano placeholder generici pertinenti e dichiarati (stock con licenza adatta o immagini generate), salvo divieto esplicito o direzione tipografica motivata. Possono illustrare aperture, servizi o una presentazione del settore; non provano fatti sull’attività. File con `DA-COMPILARE`, indicazione visibile, fonte e sostituzione documentate; prima della pubblicazione materiali definitivi o approvazione esplicita dell’uso illustrativo. Procedura unica: `.agents/skills/nuovo-sito/immagini-placeholder.md`.
 Un'indicazione esplicita del titolare di riusare le immagini del sito esistente è una
 fonte d'uso sufficiente nel suo perimetro: si registra con testo, data e URL, senza
 chiedere di nuovo lo stesso permesso. Non prova fatti ulteriori sul lavoro ritratto:
@@ -526,3 +526,13 @@ il Project Paperclip né esegue `site:init`; l'invito pendente deve essere accet
 - Lighthouse non bloccante anche sull'anteprima Vercel
 - Protezione di `main` sulle repo private (richiede GitHub Pro)
 - Valutazione di Sveltia CMS al posto di Decap
+
+## Composizioni riconoscibili anche senza foto
+
+Il tema cambia colori, font e finiture; la composizione decide gerarchia, allineamenti e ritmo. Per proporre direzioni visive diverse si confrontano prima le strutture con gli stessi testi e gli stessi preset, poi si caratterizza il tema. Senza foto non si ripiega automaticamente su hero centrata, card e banner.
+
+Le aperture testuali sono `centered` (messaggio raccolto al centro), `editoriale` (titolo e introduzione su colonne) e `manifesto` (titolo grande, spiegazione e azioni sotto). I servizi senza foto possono usare `cards-icone`, `elenco` (righe aperte) o `editoriale` (introduzione laterale); `schede` resta per alternative da scegliere, non per nascondere i servizi. Le varianti nuove non richiedono cambi alle ricette esistenti.
+
+Il catalogo `/catalogo/composizioni/` confronta tre ricette dimostrative con contenuti e toni identici: è un riferimento strutturale, non un modello di home completa. Le tre ricette `bottega-*-home.json` stanno in `docs/catalogo/ricette-tipo/`.
+
+La qualità grafica si valuta anche oltre la differenza strutturale: punto focale, gerarchia tipografica, misura dei testi, ritmo, ruolo dei materiali e continuità su mobile. La nota di design espone la scelta e le correzioni osservate, senza dedurre la qualità dai controlli tecnici o da punteggi estetici automatici. Il confronto del catalogo ha anteprime desktop e mobile generate dalle pagine reali, sempre con lo stesso tema; `npm run catalog` ne aggiorna immagini e documentazione.

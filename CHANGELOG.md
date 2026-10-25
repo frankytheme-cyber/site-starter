@@ -6,8 +6,22 @@ Formato: `## vX.Y.Z (data)`, poi `### Breaking` (cosa va cambiato nei siti: rice
 
 ## Non rilasciato
 
+### Novità
+
+- Immagini placeholder pertinenti e dichiarate nelle anteprime senza foto del brief: fonte e sostituzioni documentate, marcatori già riconosciuti dalla QA strict. Direzione visiva e composizione valutano una home completa; revisione rafforzata su gerarchia, densità, ritagli mobile e peso delle immagini. Il controllo distingue scarsità di informazioni e assenza di foto: offerta, destinatari, scelta dei servizi e passo successivo devono essere comprensibili; le immagini non sostituiscono i contenuti. Palette motivata rispetto all’identità del brief.
+
+- Confronto delle composizioni con anteprime desktop e mobile generate dal sito, a tema e testi uguali, e criteri per leggere gerarchia, ritmo e comportamento su mobile. Le skill richiedono una proposta grafica motivata dai contenuti e una critica concreta prima della consegna, oltre alla sola varietà delle strutture.
+- Hero 1.4.0: varianti senza foto `editoriale` (titolo e spiegazione su colonne) e `manifesto` (titolo grande e fascia di azioni sotto). Services 1.3.0: `elenco` a righe aperte ed `editoriale` con introduzione laterale, entrambe senza card, foto o icone obbligatorie. Ricette esistenti compatibili.
+- `/catalogo/composizioni/`: tre pagine dimostrative dalle ricette `bottega-*-home.json`, a parità di testi, toni e tema, per valutare la differenza strutturale. Le skill distinguono composizione e finiture: prima il confronto della struttura, poi palette e font; senza foto non è obbligatorio ricadere su hero centrata e card.
+
 ### Correzioni
 
+- Hero 1.4.1: gerarchia più netta per l’apertura editoriale su desktop. Services 1.3.1: titoli dei servizi editoriali subordinati al titolo di sezione; in elenco, descrizioni a tutta la larghezza disponibile quando manca il link.
+
+## v0.0.6 (2026-10-24)
+### Correzioni
+
+- Catalogo, pagina Sfondi: la scheda Decoro mostra «Punti» quando nella barra è scelto «nessuno», invece di restare piena.
 - Screenshot di design: le immagini senza sorgente del popup non consumano il timeout; risorse visibili fallite sono segnalate. Chromium viene verificato prima di avviare Astro e le risorse si chiudono anche in caso di errore.
 - Inventario delle foto ricorsivo, senza fixture o symlink; preparazione in posizione con sostituzione solo dopo la codifica riuscita.
 

@@ -46,7 +46,7 @@ Prima dei primi screenshot o della QA: `npx playwright install chromium` se il b
 
 4. **Dati dell'attività** in `src/content/settings/site.json`, solo dal brief: nome, descrizione, dati legali (forma giuridica, P.IVA; per le società REA, capitale e sede legale), indirizzo, orari, telefono, WhatsApp, email, social, `businessType` e `areaServed`. Lo schema dice i campi (`npm run check:recipes` segnala gli errori con il campo); il CMS li mostra in «Dati attività».
 
-5. **Foto.** Solo foto vere ricevute da Simone, o di una fonte che lui autorizza (per esempio «usa le foto del sito attuale»: scrivi in `docs/sito.md` la frase, la data e gli indirizzi originali).
+5. **Foto.** Per i materiali reali usa foto ricevute da Simone o da una fonte autorizzata (per esempio «usa le foto del sito attuale»: scrivi in `docs/sito.md` la frase, la data e gli indirizzi originali). Se il brief non contiene immagini adatte, prepara placeholder per l’anteprima seguendo [immagini-placeholder.md](immagini-placeholder.md): dichiarati, coerenti e sostituibili, senza simulare prove reali. Non ridurre automaticamente il progetto a soli testi.
 
    ```sh
    npm run images -- <file o cartella>   # raddrizza, ridimensiona a 2400 px, toglie i metadati, nomi in kebab-case

@@ -9,8 +9,8 @@ export const schema = ({ image }: SchemaContext) =>
 	z
 		.object({
 			variant: z
-				.enum(['cards-icone', 'cards-immagine', 'alternato', 'schede'])
-				.describe('Variante|cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda'),
+				.enum(['cards-icone', 'cards-immagine', 'alternato', 'schede', 'elenco', 'editoriale'])
+				.describe('Variante|cards-icone: card con icona · cards-immagine: card con foto · alternato: righe di foto e testo · schede: un servizio per scheda · elenco: righe a tutta larghezza · editoriale: introduzione laterale e servizi in colonna'),
 			eyebrow: z.string().min(1).optional().describe('Occhiello|Breve testo sopra il titolo'),
 			title: z.string().min(1).max(70).describe('Titolo|Titolo della sezione, al massimo 70 caratteri'),
 			intro: z

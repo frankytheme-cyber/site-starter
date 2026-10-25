@@ -82,6 +82,40 @@ export async function design({ baseUrl, isLibrary, reportsDir }: CheckContext) {
 			}
 			await page.close();
 		}
+		// Regressione del caso senza foto: la composizione deve cambiare realmente a tema uguale,
+		// restando leggibile e completa anche senza JavaScript.
+		for (const width of [375, 768, 1280]) {
+			const page = await browser.newPage({ viewport: { width, height: 812 }, javaScriptEnabled: false });
+			let referenceText: string | undefined;
+			let centeredFont = 0;
+			for (const composition of ['centrata', 'editoriale', 'manifesto']) {
+				try {
+					const response = await page.goto(new URL(`/catalogo/composizioni/${composition}/`, baseUrl).href);
+					assert(response?.ok(), 'pagina di confronto mancante');
+					const main = page.locator('main');
+					assert.equal(await main.locator('h1').count(), 1, 'deve esserci un solo h1');
+					assert.equal(await main.locator('img').count(), 0, 'il confronto deve funzionare senza foto');
+					assert.equal(await main.locator('h3').count(), 3, 'tutti i servizi devono essere visibili senza JS');
+					assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'overflow orizzontale');
+					const text = (await main.textContent())!.replace(/\s+/g, ' ').trim();
+					if (referenceText === undefined) referenceText = text;
+					else assert.equal(text, referenceText, 'il confronto altera i contenuti invece della struttura');
+					const h1 = main.locator('h1');
+					const fontSize = await h1.evaluate((node) => parseFloat(getComputedStyle(node).fontSize));
+					if (composition === 'centrata') centeredFont = fontSize;
+					else assert.equal(await main.locator('li[data-surface]').count(), 0, 'le nuove presentazioni non devono ricadere in card');
+					if (composition === 'editoriale') {
+						const title = (await h1.boundingBox())!;
+						const subtitle = (await main.locator('section').first().locator('p').first().boundingBox())!;
+						assert(width < 1024 ? subtitle.y >= title.y + title.height : subtitle.x >= title.x + title.width,
+							'titolo e spiegazione devono affiancarsi su desktop e impilarsi su mobile');
+					}
+					if (composition === 'manifesto' && width >= 1024) assert(fontSize > centeredFont, 'il manifesto deve avere una gerarchia dominante');
+				} catch (cause) { error({ where: `composizione ${composition} @${width}`, message: (cause as Error).message }); }
+			}
+			await page.close();
+		}
+
 	} finally { await browser.close(); }
 	return findings;
 }

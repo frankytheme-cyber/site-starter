@@ -4,8 +4,8 @@ Consulta le righe pertinenti quando scegli le sezioni; verifica campi e limiti c
 
 | Se c'è | Usa | Se manca |
 | --- | --- | --- |
-| una foto forte di un lavoro, del locale o delle persone | hero `split` (`imageShape: "orizzontale"` per una foto larga); `full` solo se la foto regge il testo sopra | hero `centered` |
-| una foto per quasi ogni servizio | services `cards-immagine` (ai servizi senza foto basta l'icona), o `alternato` nella pagina dei servizi | services `cards-icone` |
+| una foto forte di un lavoro, del locale o delle persone | hero `split` (`imageShape: "orizzontale"` per una foto larga); `full` solo se la foto regge il testo sopra | hero `centered`, `editoriale` o `manifesto` secondo gerarchia e lunghezza del messaggio |
+| una foto per quasi ogni servizio | services `cards-immagine` (ai servizi senza foto basta l'icona), o `alternato` nella pagina dei servizi | services `cards-icone`, `elenco` o `editoriale`: le ultime due non richiedono neppure icone |
 | almeno 4 foto vere di lavori | gallery `griglia-popup` (fino a 12 per blocco; `showCaptions` se le didascalie contano) | niente gallery |
 | coppie prima e dopo con la stessa inquadratura | gallery `prima-dopo` (fino a 6 coppie) | — |
 | da 3 a 8 foto di qualità da guardare in grande | gallery `slider` | — |
@@ -21,4 +21,4 @@ Consulta le righe pertinenti quando scegli le sezioni; verifica campi e limiti c
 | una sede da visitare (negozio, studio, locale) | contact `info-mappa` | contact `info-cta` (a domicilio, su appuntamento) |
 | invio dei moduli configurato (`docs/form.md`) e informativa privacy approvata | form `contatto` o `preventivo` | cta con `@telefono`, `@whatsapp`, `@email` |
 
-Foto solo da `src/assets/images/`: mai le foto di prova (`fixtures/`), mai stock per lavori, persone e sede. Una foto che serve e non c'è si chiede a Simone.
+Foto solo da `src/assets/images/`, mai dalle fixture. Se mancano immagini nel brief, usa [placeholder dichiarati](../nuovo-sito/immagini-placeholder.md) per illustrare aperture, servizi e presentazioni generiche: la tabella si legge anche su questi materiali. I ripieghi senza foto sono per direzioni volutamente tipografiche o immagini non pertinenti. Per lavori, persone e sede servono sempre foto vere: i placeholder non le sostituiscono come prove.

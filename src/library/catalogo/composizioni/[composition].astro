@@ -1,0 +1,38 @@
+---
+/** Le ricette del catalogo sono anche la fonte del confronto: stessi dati, solo varianti diverse. */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { z } from 'astro/zod';
+import { pageSchema } from '@/core/page-schema';
+import RenderSections from '@/core/RenderSections.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { themePresets as presets } from '@/themes/presets';
+import { catalogTitle } from '../_library';
+
+export const getStaticPaths = (() => {
+	const recipes = import.meta.glob('/docs/catalogo/ricette-tipo/bottega-*-home.json', { eager: true, import: 'default' });
+	return Object.entries(recipes).map(([path, recipe]) => ({
+		params: { composition: path.match(/bottega-(.+)-home\.json$/)![1] },
+		props: { recipe },
+	}));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+// Queste ricette sono senza foto. Lo schema accetta solo metadata già risolti, mai percorsi grezzi.
+const recipe = pageSchema({ image: () => z.object({
+	src: z.string(), width: z.number(), height: z.number(),
+	format: z.union([z.literal('png'), z.literal('jpg'), z.literal('jpeg'), z.literal('tiff'), z.literal('webp'), z.literal('gif'), z.literal('svg'), z.literal('avif'), z.literal('apng')]),
+}) }).parse(Astro.props.recipe);
+---
+
+<BaseLayout title={catalogTitle(`Composizione ${Astro.params.composition}`)} description={recipe.description} noindex allFonts siteLayout={false}>
+	<script is:inline define:vars={{ presets }}>
+		const params = new URLSearchParams(location.search);
+		for (const [key, values] of Object.entries(presets)) {
+			const value = params.get(key);
+			if (value && values.includes(value)) document.documentElement.dataset[key] = value;
+		}
+	</script>
+	<main data-composition={Astro.params.composition}>
+		<RenderSections sections={recipe.sections} />
+	</main>
+</BaseLayout>
